@@ -1,0 +1,118 @@
+@{
+    ViewData["Title"] = Localizer["Dashboard"].Value;
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+}
+
+<div class="space-y-8 animate-fade-in-up">
+    <!-- Welcome Section -->
+    <div class="glass-panel rounded-[2rem] p-8 lg:p-10 relative overflow-hidden">
+        <div class="relative z-10">
+            <h1 class="text-3xl lg:text-4xl font-extrabold text-white mb-2 tracking-tight">
+                @Localizer["WelcomeBackUser"] <span class="text-brand-cyan">@ViewBag.UserName!</span>
+            </h1>
+            <p class="text-slate-400 text-lg">@Localizer["DashboardSub"]</p>
+        </div>
+        <!-- Decorative Glow -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-brand-blue/10 rounded-full blur-[100px]"></div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        @* Helper for Stats Cards *@
+        @{
+            var stats = new[] {
+                new { Title = Localizer["TotalCourses"].Value, Value = Model.TotalCourses.ToString(), Icon = "fa-graduation-cap", Color = "text-brand-yellow", Bg = "bg-brand-yellow" },
+                new { Title = Localizer["Completed"].Value, Value = Model.CompletedCourses.ToString(), Icon = "fa-check-circle", Color = "text-green-400", Bg = "bg-green-400" },
+                new { Title = Localizer["InProgress"].Value, Value = Model.ActiveCourses.ToString(), Icon = "fa-spinner", Color = "text-brand-cyan", Bg = "bg-brand-cyan" },
+                new { Title = Localizer["MemberSince"].Value, Value = ViewBag.RegisterDate, Icon = "fa-calendar", Color = "text-brand-blue", Bg = "bg-brand-blue" }
+            };
+        }
+
+        @foreach (var stat in stats)
+        {
+            <div class="glass-panel p-6 rounded-2xl hover:border-white/20 transition-all duration-300 group hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">@stat.Title</p>
+                        <h3 class="text-2xl font-bold text-white mt-2">@stat.Value</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="fas @stat.Icon @stat.Color text-lg"></i>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="glass-panel rounded-[2rem] p-8">
+        <h2 class="text-xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-bolt text-brand-yellow @(isRtl ? "ml-3" : "mr-3")"></i> @Localizer["QuickActions"]
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a asp-area="User" asp-controller="Courses" asp-action="Index" class="group p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-brand-cyan/50 hover:bg-brand-cyan/5 transition-all">
+                <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-4 group-hover:rotate-12 transition-transform">
+                    <i class="fas fa-book text-brand-cyan"></i>
+                </div>
+                <h3 class="font-bold text-white">@Localizer["BrowseCourses"]</h3>
+                <p class="text-sm text-slate-400 mt-1">@Localizer["BrowseCoursesSub"]</p>
+            </a>
+
+            <a asp-area="User" asp-controller="Profile" asp-action="EditProfile" class="group p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-brand-blue/50 hover:bg-brand-blue/5 transition-all">
+                <div class="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center mb-4 group-hover:rotate-12 transition-transform">
+                    <i class="fas fa-user-edit text-brand-blue"></i>
+                </div>
+                <h3 class="font-bold text-white">@Localizer["EditProfile"]</h3>
+                <p class="text-sm text-slate-400 mt-1">@Localizer["EditProfileSub"]</p>
+            </a>
+
+            <a asp-area="User" asp-controller="Profile" asp-action="ChangePassword" class="group p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-brand-orange/50 hover:bg-brand-orange/5 transition-all">
+                <div class="w-10 h-10 rounded-xl bg-brand-orange/10 flex items-center justify-center mb-4 group-hover:rotate-12 transition-transform">
+                    <i class="fas fa-key text-brand-orange"></i>
+                </div>
+                <h3 class="font-bold text-white">@Localizer["ChangePassword"]</h3>
+                <p class="text-sm text-slate-400 mt-1">@Localizer["ChangePasswordSub"]</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="glass-panel rounded-[2rem] p-8">
+        <h2 class="text-xl font-bold text-white mb-6">@Localizer["RecentCourses"]</h2>
+        <div class="space-y-4">
+            @if (Model.RecentEnrollments != null && Model.RecentEnrollments.Count > 0)
+            {
+                foreach (var item in Model.RecentEnrollments)
+                {
+                    <div class="group flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all">
+                        <div class="flex items-center space-x-4 @(isRtl ? "space-x-reverse" : "")">
+                            <div class="w-12 h-12 rounded-xl bg-brand-dark flex items-center justify-center border border-white/5">
+                                <i class="fas fa-video text-brand-blue"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold group-hover:text-brand-cyan transition-colors">@(item.Course?.Title ?? "Unknown Course")</h4>
+                                <p class="text-slate-400 text-xs mt-1">Enrolled: @item.EnrollmentDate.ToString("MMM dd, yyyy")</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-sm font-bold @(item.IsCompleted ? "text-green-400" : "text-brand-cyan")">@item.ProgressPercentage.ToString("0")%</span>
+                            <div class="w-24 h-1.5 bg-white/10 rounded-full mt-2 overflow-hidden">
+                                <div class="h-full @(item.IsCompleted ? "bg-green-400" : "bg-brand-cyan") rounded-full" style="width: @item.ProgressPercentage%"></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="py-12 text-center">
+                    <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-box-open text-2xl text-slate-600"></i>
+                    </div>
+                    <p class="text-slate-400">@Localizer["NoEnrollments"]</p>
+                    <a asp-area="" asp-controller="Courses" asp-action="Index" class="text-brand-blue font-bold text-sm mt-2 hover:underline">@Localizer["StartLearning"]</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

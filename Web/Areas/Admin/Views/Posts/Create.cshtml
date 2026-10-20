@@ -1,0 +1,238 @@
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Mvc.ModelBinding.Validation
+@model Domain.Entities.Post.Post
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["CreateNewPost"].Value;
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full max-w-4xl mx-auto text-start" dir="@(isRtl ? "rtl" : "ltr")">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-brand-orange/10 border border-brand-orange/20 text-brand-orange flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") shadow-[0_0_20px_rgba(255,126,66,0.1)]">
+            <i class="fas fa-exclamation-triangle text-lg"></i>
+            <span class="font-medium text-sm">@TempData["ErrorMessage"]</span>
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+            <i class="fas fa-check-circle text-lg"></i>
+            <span class="font-medium text-sm">@TempData["SuccessMessage"]</span>
+        </div>
+    }
+
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10">
+        <div>
+            <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide">
+                @Localizer["CreateNewPost"]
+            </h1>
+            <p class="text-slate-400 text-sm font-medium">@Localizer["CreateNewPostSub"]</p>
+        </div>
+        <a asp-action="Index" class="w-full sm:w-auto text-center px-5 py-2.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg whitespace-nowrap">
+            <i class="fas @(isRtl ? "fa-arrow-right ml-2" : "fa-arrow-left mr-2") text-xs"></i> @Localizer["BackToPosts"]
+        </a>
+    </div>
+
+    <div class="w-full">
+        <form asp-action="Create" method="post" enctype="multipart/form-data" class="space-y-10">
+            @Html.AntiForgeryToken()
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div asp-validation-summary="All" class="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 text-rose-400 text-sm font-semibold flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") shadow-[0_0_15px_rgba(244,63,94,0.1)] mb-6">
+                    <i class="fas fa-triangle-exclamation text-lg"></i>
+                    <span>@Localizer["PleaseFixErrors"]</span>
+                </div>
+            }
+
+            <div class="space-y-6">
+                <h3 class="text-sm font-bold text-brand-cyan uppercase tracking-widest mb-6 flex items-center">
+                    <i class="fas fa-id-card-clip @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["GeneralInformation"]
+                </h3>
+
+                <div class="space-y-2">
+                    <label asp-for="Title" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                        @Localizer["PostTitle"] <span class="text-brand-orange">*</span>
+                    </label>
+                    <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                        <input asp-for="Title" class="w-full bg-transparent px-4 py-3.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-medium" placeholder="@Localizer["PostTitle"]" />
+                        <i class="fas fa-heading absolute @(isRtl ? "right-2" : "left-2") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-brand-cyan transition-colors text-sm"></i>
+                    </div>
+                    <span asp-validation-for="Title" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                </div>
+
+                <div class="space-y-2">
+                    <label asp-for="Description" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                        @Localizer["PostDescription"] <span class="text-brand-orange">*</span>
+                    </label>
+                    <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                        <textarea asp-for="Description" rows="3" class="w-full bg-transparent py-3 text-white placeholder-slate-600 focus:outline-none text-sm font-medium leading-relaxed resize-none" placeholder="@Localizer["PostDescription"]..."></textarea>
+                    </div>
+                    <span asp-validation-for="Description" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                </div>
+
+                <div class="space-y-2">
+                    <label asp-for="MetaDescription" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                        @Localizer["MetaDescription"] <span class="text-brand-orange">*</span>
+                    </label>
+                    <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                        <textarea asp-for="MetaDescription" rows="2" class="w-full bg-transparent py-3 text-white placeholder-slate-600 focus:outline-none text-sm font-medium leading-relaxed resize-none" placeholder="@Localizer["MetaDescription"]..."></textarea>
+                    </div>
+                    <span asp-validation-for="MetaDescription" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                    <p class="text-[10px] text-slate-500 font-medium flex items-center mt-2">
+                        <i class="fas fa-circle-info @(isRtl ? "ml-1.5" : "mr-1.5") text-brand-blue"></i> @Localizer["MetaDescriptionHelp"]
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-6">
+                <h3 class="text-sm font-bold text-brand-blue uppercase tracking-widest mb-6 flex items-center">
+                    <i class="fas fa-image @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["FeaturedImage"]
+                </h3>
+
+                <div class="space-y-4">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide">@Localizer["FeaturedImage"]</label>
+                    <div class="flex flex-col-reverse sm:flex-row items-center sm:items-start gap-6 bg-white/[0.01] p-5 rounded-2xl border border-white/[0.03]">
+                        <div class="w-full sm:flex-1 space-y-2">
+                            <input type="file" name="ImageFile" accept="image/*"
+                                   class="w-full bg-dark-bg/40 border border-white/5 rounded-xl px-4 py-2.5 text-white text-xs font-medium file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-brand-blue/20 file:text-brand-blue hover:file:bg-brand-blue/30 file:transition-colors" />
+                            <p class="text-[10px] text-slate-500 font-semibold leading-relaxed">@Localizer["ImageUploadConstraints"]</p>
+                        </div>
+
+                        <div class="w-full sm:w-32 h-32 rounded-xl overflow-hidden bg-dark-bg/60 flex items-center justify-center flex-shrink-0 border border-white/5 shadow-inner" id="imagePreview">
+                            <div class="text-center py-6 sm:py-4">
+                                <i class="fas fa-cloud-arrow-up text-3xl text-slate-600 mb-1.5 block animate-pulse"></i>
+                                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">@Localizer["NoImage"]</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-6">
+                <h3 class="text-sm font-bold text-brand-cyan uppercase tracking-widest mb-6 flex items-center">
+                    <i class="fas fa-file-waveform @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["PostContent"]
+                </h3>
+
+                <div class="space-y-2">
+                    <label asp-for="Body" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                        @Localizer["PostContent"] <span class="text-brand-orange">*</span>
+                    </label>
+                    <div class="border border-white/10 focus-within:border-brand-cyan/40 focus-within:ring-4 focus-within:ring-brand-cyan/5 rounded-2xl bg-dark-bg/30 p-2 transition-all">
+                        <textarea asp-for="Body" rows="15" id="postBody"
+                                  class="w-full bg-transparent p-4 text-slate-200 placeholder-slate-600 focus:outline-none font-mono text-sm leading-6 resize-y custom-scrollbar"
+                                  placeholder="@Localizer["PostContent"]..."></textarea>
+                    </div>
+                    <span asp-validation-for="Body" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                    <p class="text-[10px] text-slate-500 font-medium flex items-center mt-2">
+                        <i class="fas fa-info-circle @(isRtl ? "ml-1.5" : "mr-1.5") text-brand-blue"></i> @Localizer["PostContentHelp"]
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-6">
+                <h3 class="text-sm font-bold text-brand-yellow uppercase tracking-widest mb-6 flex items-center">
+                    <i class="fas fa-magnifying-glass @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["SEOAndTags"]
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-2">
+                        <label asp-for="Tags" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                            @Localizer["Tags"] <span class="text-brand-orange">*</span>
+                        </label>
+                        <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                            <input asp-for="Tags" class="w-full bg-transparent px-4 py-3.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-medium" placeholder="@Localizer["TagsPlaceholder"]" />
+                            <i class="fas fa-tags absolute @(isRtl ? "right-2" : "left-2") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-brand-cyan transition-colors text-sm"></i>
+                        </div>
+                        <span asp-validation-for="Tags" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                        <p class="text-[10px] text-slate-500 font-semibold mt-2">@Localizer["TagsPlaceholder"]</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label asp-for="ShortKey" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                            @Localizer["URLSlug"]
+                        </label>
+                        <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                            <input asp-for="ShortKey" class="w-full bg-transparent px-4 py-3.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-brand-blue font-mono text-base font-bold" placeholder="@Localizer["URLSlug"]" />
+                            <i class="fas fa-link absolute @(isRtl ? "right-2" : "left-2") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-brand-cyan transition-colors text-sm"></i>
+                        </div>
+                        <span asp-validation-for="ShortKey" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-6">
+                <h3 class="text-sm font-bold text-brand-orange uppercase tracking-widest mb-6 flex items-center">
+                    <i class="fas fa-sliders @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["PublishingOptions"]
+                </h3>
+
+                <div class="space-y-2">
+                    <label class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01] border border-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/[0.03] transition-colors group">
+                        <input asp-for="IsPublish" type="checkbox" class="w-4 h-4 rounded border-white/10 bg-dark-bg text-brand-cyan focus:ring-brand-cyan/20 focus:ring-offset-0" />
+                        <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition-colors flex items-center">
+                            <i class="fas fa-globe @(isRtl ? "ml-2" : "mr-2") text-slate-500 text-sm group-hover:text-brand-cyan transition-colors"></i>
+                            @Localizer["PublishPostImmediately"]
+                        </span>
+                    </label>
+                    <p class="text-[10px] text-slate-500 font-semibold @(isRtl ? "mr-8" : "ml-8")">@Localizer["DraftNotice"]</p>
+                </div>
+            </div>
+
+            <div class="bg-brand-cyan/5 border border-brand-cyan/10 rounded-2xl p-4 flex items-start @(isRtl ? "space-x-reverse" : "space-x-3")">
+                <i class="fas fa-info-circle text-brand-cyan text-sm mt-0.5"></i>
+                <p class="text-xs text-slate-400 font-medium">
+                    @Localizer["RequiredFieldsNote"]
+                </p>
+            </div>
+
+            <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-4 pt-6 border-t border-white/5">
+                <a asp-action="Index" class="w-full sm:w-auto text-center px-5 py-2.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-xs font-bold flex items-center justify-center">
+                    @Localizer["Cancel"]
+                </a>
+                <button type="submit" class="w-full sm:w-auto text-center px-6 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg font-black text-xs rounded-xl hover:shadow-[0_0_20px_rgba(66,234,255,0.3)] hover:scale-[1.01] transition-all flex items-center justify-center whitespace-nowrap">
+                    <i class="fas fa-plus @(isRtl ? "ml-1.5" : "mr-1.5") text-sm"></i> @Localizer["CreateNewPost"]
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Automated regex-based semantic url slug token logic
+        document.querySelector('input[name="Title"]')?.addEventListener('input', function(e) {
+            const shortKeyInput = document.querySelector('input[name="ShortKey"]');
+            if (shortKeyInput && !shortKeyInput.value) {
+                const slug = e.target.value
+                    .toLowerCase()
+                    .replace(/[\s_]+/g, '-')
+                    .replace(/[^\w\-]+/g, '')
+                    .replace(/\-\-+/g, '-')
+                    .replace(/^-+/, '')
+                    .replace(/-+$/, '');
+                shortKeyInput.value = slug;
+            }
+        });
+
+        // Fluid input reader image streaming preview node handler
+        document.querySelector('input[type="file"]')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('imagePreview');
+                    if (preview) {
+                        preview.innerHTML = `<img src="${event.target.result}" class="w-full h-full object-cover rounded-xl animate-[fadeIn_0.3s_ease]" alt="Preview">`;
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}

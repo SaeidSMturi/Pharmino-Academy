@@ -1,0 +1,680 @@
+@model Domain.Entities.User.User
+@using Domain.Entities.Security
+@using Domain.Entities.Course
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["UserProfile"].Value;
+    var suspiciousActivities = ViewBag.SuspiciousActivities as List<SuspiciousActivity>;
+    var lockHistory = ViewBag.LockHistory as List<AccountLockHistory>;
+    var userEnrollments = ViewBag.UserEnrollments as List<CourseEnrollment> ?? new List<CourseEnrollment>();
+    var allCourses = ViewBag.AllCourses as List<Course> ?? new List<Course>();
+    var enrolledCourseIds = userEnrollments.Select(e => e.CourseId).ToHashSet();
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start" dir="@(isRtl ? "rtl" : "ltr")">
+    <div class="mb-6">
+        <nav class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") text-xs font-semibold tracking-wide uppercase">
+            <a asp-action="Students" class="text-brand-cyan hover:text-white transition-colors">@Localizer["Users"]</a>
+            <i class="fas @(isRtl ? "fa-chevron-left" : "fa-chevron-right") text-slate-600 text-[10px]"></i>
+            <span class="text-slate-500">@Localizer["UserProfile"]</span>
+        </nav>
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl font-extrabold text-white tracking-wide">@Localizer["UserProfile"]</h1>
+            <p class="text-slate-400 text-sm mt-1 font-medium">@string.Format(Localizer["UserProfileSub"].Value, Model.UserName)</p>
+        </div>
+        <a asp-action="Students" class="px-5 py-2.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg">
+            <i class="fas @(isRtl ? "fa-arrow-right ml-2" : "fa-arrow-left mr-2") text-xs"></i>@Localizer["BackToList"]
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+        <div class="lg:col-span-1 sticky top-6">
+            <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05] relative overflow-hidden backdrop-blur-xl shadow-2xl">
+                <div class="absolute @(isRtl ? "-left-10" : "-right-10") -top-10 w-32 h-32 bg-brand-blue/5 rounded-full blur-3xl"></div>
+
+                <div class="text-center mb-6 relative z-10">
+                    <div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-dark-bg font-black text-3xl mb-4 shadow-[0_0_25px_rgba(255,126,66,0.3)]">
+                        @Model.UserName.Substring(0, 1).ToUpper()
+                    </div>
+                    <h2 class="text-lg font-bold text-white">@(Model.FirstName + " " + Model.LastName)</h2>
+                    <p class="text-xs font-medium text-slate-500 mt-0.5" dir="ltr">@@@Model.UserName</p>
+
+                    @if (Model.UserName.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <span class="inline-flex mt-3 px-3 py-1 text-[10px] font-bold bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20 rounded-lg uppercase tracking-wider">
+                            <i class="fas fa-shield-halved @(isRtl ? "ml-1.5" : "mr-1.5") mt-0.5"></i>@Localizer["AdminUsers"]
+                        </span>
+                    }
+                </div>
+
+                <div class="space-y-2 mb-6">
+                    @if (Model.IsBan)
+                    {
+                        <div class="px-4 py-2 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-xs font-bold flex items-center justify-center">
+                            <i class="fas fa-ban @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["AccountBanned"]
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl text-xs font-bold flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.05)]">
+                            <i class="fas fa-circle-check @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["AccountActive"]
+                        </div>
+                    }
+
+                    @if (Model.IsEmailActive)
+                    {
+                        <div class="px-4 py-2 bg-white/[0.02] border border-white/5 text-slate-300 rounded-xl text-xs font-semibold flex items-center justify-between">
+                            <span class="flex items-center"><i class="fas fa-envelope text-slate-500 @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["EmailStatus"]</span>
+                            <span class="text-emerald-400 text-[10px] font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/10">@Localizer["Verified"]</span>
+                        </div>
+                    }
+
+                    @if (Model.IsPhoneNumberActive)
+                    {
+                        <div class="px-4 py-2 bg-white/[0.02] border border-white/5 text-slate-300 rounded-xl text-xs font-semibold flex items-center justify-between">
+                            <span class="flex items-center"><i class="fas fa-phone text-slate-500 @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["PhoneStatus"]</span>
+                            <span class="text-emerald-400 text-[10px] font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/10">@Localizer["Verified"]</span>
+                        </div>
+                    }
+
+                    @if (Model.LoginWithGoogle)
+                    {
+                        <div class="px-4 py-2 bg-brand-blue/10 border border-brand-blue/20 text-brand-blue rounded-xl text-xs font-bold flex items-center justify-center">
+                            <i class="fab fa-google @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["GoogleLogin"]
+                        </div>
+                    }
+                </div>
+
+                <div class="space-y-2 border-t border-white/5 pt-4">
+                    @if (!Model.UserName.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.UserId"
+                           class="flex items-center justify-center w-full px-4 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg font-extrabold text-xs rounded-xl hover:shadow-[0_0_20px_rgba(66,234,255,0.3)] hover:scale-[1.01] transition-all">
+                            <i class="fas fa-edit @(isRtl ? "ml-2" : "mr-2") text-sm"></i>@Localizer["EditUser"]
+                        </a>
+                        <button onclick="toggleBan(@Model.UserId, @Model.IsBan.ToString().ToLower())"
+                                class="w-full px-4 py-2.5 bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/20 rounded-xl hover:bg-brand-yellow hover:text-dark-bg transition-all font-bold text-xs flex items-center justify-center">
+                            <i class="fas fa-user-shield @(isRtl ? "ml-2" : "mr-2") text-sm"></i>@(Model.IsBan ? Localizer["UnbanAccount"] : Localizer["BanAccount"])
+                        </button>
+                        <button onclick="deleteUser(@Model.UserId)"
+                                class="w-full px-4 py-2.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 rounded-xl hover:bg-rose-500 hover:text-white transition-all font-bold text-xs flex items-center justify-center">
+                            <i class="fas fa-trash @(isRtl ? "ml-2" : "mr-2") text-sm"></i>@Localizer["DeleteAccount"]
+                        </button>
+                    }
+                    else
+                    {
+                        <div class="p-4 bg-white/[0.01] border border-white/5 rounded-2xl text-center">
+                            <i class="fas fa-lock-keyhole text-2xl text-slate-600 mb-2"></i>
+                            <p class="text-xs text-slate-500 font-medium">@Localizer["MainAdminAccountCannotBeModified"]</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2 space-y-6">
+
+            <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05] relative overflow-hidden group">
+                <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-brand-cyan/0 via-brand-cyan/30 to-brand-cyan/0"></div>
+                <h3 class="text-base font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-address-card text-brand-cyan @(isRtl ? "ml-3" : "mr-3") text-lg"></i> @Localizer["PersonalInformation"]
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white/[0.01] p-4 rounded-2xl border border-white/[0.02]">
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">@Localizer["FirstName"]</label>
+                        <p class="text-white text-sm font-semibold">@Model.FirstName</p>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">@Localizer["LastName"]</label>
+                        <p class="text-white text-sm font-semibold">@Model.LastName</p>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">@Localizer["UserName"]</label>
+                        <p class="text-brand-cyan text-sm font-mono font-bold" dir="ltr">@@@Model.UserName</p>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">@Localizer["EmailAddress"]</label>
+                        <p class="text-white text-sm font-semibold truncate">@Model.Email</p>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">@Localizer["PhoneNumber"]</label>
+                        <p class="text-white text-sm font-semibold">@(string.IsNullOrEmpty(Model.PhoneNumber) ? Localizer["NotProvided"].Value : Model.PhoneNumber)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <h3 class="text-base font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-key text-brand-blue @(isRtl ? "ml-3" : "mr-3") text-lg"></i> @Localizer["UserRolesAndAccess"]
+                </h3>
+                @if (Model.UserRoles != null && Model.UserRoles.Any())
+                {
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @foreach (var userRole in Model.UserRoles)
+                        {
+                            <div class="bg-white/[0.01] border border-white/5 rounded-2xl p-4 flex flex-col justify-between group hover:border-brand-blue/30 transition-colors">
+                                <div class="flex items-start justify-between gap-2">
+                                    <div>
+                                        <h4 class="text-white text-sm font-bold group-hover:text-brand-blue transition-colors">@userRole.Role.DisplayName</h4>
+                                        <p class="text-[10px] text-slate-500 font-mono mt-0.5" dir="ltr">@userRole.Role.RoleName</p>
+                                        @if (!string.IsNullOrEmpty(userRole.Role.Description))
+                                        {
+                                            <p class="text-xs text-slate-400 mt-2 font-medium leading-relaxed">@userRole.Role.Description</p>
+                                        }
+                                    </div>
+                                    <span class="inline-flex items-center px-2 py-1 text-[9px] font-bold bg-brand-blue/10 text-brand-blue rounded-md tracking-wider uppercase border border-brand-blue/10">
+                                        @Localizer["Active"]
+                                    </span>
+                                </div>
+                                <div class="mt-4 pt-3 border-t border-white/5 flex items-center text-[10px] text-slate-500 font-medium">
+                                    <i class="far fa-clock @(isRtl ? "ml-1.5" : "mr-1.5") text-slate-600"></i> @Localizer["Assigned"]: <span dir="ltr" class="@(isRtl ? "mr-1" : "ml-1")">@userRole.AssignedDate.ToString("yyyy/MM/dd HH:mm")</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="bg-brand-yellow/5 border border-brand-yellow/10 rounded-2xl p-4 text-brand-yellow text-xs font-semibold flex items-center justify-center @(isRtl ? "space-x-reverse" : "space-x-2")">
+                        <i class="fas fa-triangle-exclamation text-sm"></i>
+                        <span>@Localizer["NoRolesFound"]</span>
+                    </div>
+                }
+            </div>
+
+            <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <h3 class="text-base font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-chart-bar text-brand-yellow @(isRtl ? "ml-3" : "mr-3") text-lg"></i> @Localizer["AccountActivity"]
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm bg-white/[0.01] p-4 rounded-2xl border border-white/[0.02]">
+                    <div class="flex flex-col justify-center">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">@Localizer["RegisteredOn"]</label>
+                        <p class="text-white font-semibold text-xs" dir="ltr">@Model.RegisterDate.ToString("yyyy/MM/dd HH:mm")</p>
+                    </div>
+                    <div class="flex flex-col justify-center">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">@Localizer["LastUpdated"]</label>
+                        <p class="text-white font-semibold text-xs" dir="ltr">@Model.LastChange.ToString("yyyy/MM/dd HH:mm")</p>
+                    </div>
+                    @if (Model.LastLoginDate.HasValue)
+                    {
+                        <div class="flex flex-col justify-center">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">@Localizer["LastLogin"]</label>
+                            <p class="text-brand-cyan font-semibold text-xs" dir="ltr">@Model.LastLoginDate.Value.ToString("yyyy/MM/dd HH:mm")</p>
+                        </div>
+                    }
+                    <div class="flex flex-col justify-center">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">@Localizer["FailedLoginAttempts"]</label>
+                        <p class="font-bold text-xs @(Model.TryCount > 0 ? "text-brand-orange" : "text-white")">@Model.TryCount</p>
+                    </div>
+                    @if (Model.LastTry.HasValue)
+                    {
+                        <div class="flex flex-col justify-center md:col-span-2 mt-2 pt-2 border-t border-white/[0.03]">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">@Localizer["LastFailedLogin"]</label>
+                            <p class="text-rose-400 font-semibold text-xs" dir="ltr">@Model.LastTry.Value.ToString("yyyy/MM/dd HH:mm")</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <h3 class="text-base font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-terminal text-emerald-400 @(isRtl ? "ml-3" : "mr-3") text-lg"></i> @Localizer["VerificationCodes"]
+                </h3>
+                <div class="space-y-3 font-mono text-xs">
+                    <div class="p-3 bg-white/[0.01] border border-white/5 rounded-xl flex items-center justify-between">
+                        <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">@Localizer["ActivationCode"]</span>
+                        <span class="text-emerald-400 select-all font-semibold" dir="ltr">@Model.ActiveCode</span>
+                    </div>
+                    <div class="p-3 bg-white/[0.01] border border-white/5 rounded-xl flex items-center justify-between">
+                        <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">@Localizer["SecurityToken"]</span>
+                        <span class="text-brand-cyan select-all font-semibold" dir="ltr">@Model.SecurityCode</span>
+                    </div>
+                    <div class="p-3 bg-white/[0.01] border border-white/5 rounded-xl flex items-center justify-between">
+                        <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">@Localizer["SmsVerificationCode"]</span>
+                        <span class="text-brand-yellow select-all font-semibold" dir="ltr">@(string.IsNullOrEmpty(Model.ActivePhoneNumberCode) ? "N/A" : Model.ActivePhoneNumberCode)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05] shadow-xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <h3 class="text-base font-bold text-white flex items-center">
+                        <i class="fas fa-graduation-cap @(isRtl ? "ml-3" : "mr-3") text-brand-cyan text-lg"></i> @Localizer["UserEnrollments"]
+                        <span class="@(isRtl ? "mr-3" : "ml-3") px-2 py-0.5 text-xs font-bold rounded-lg bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/10">@userEnrollments.Count</span>
+                    </h3>
+                    <div class="flex gap-2 w-full sm:w-auto @(isRtl ? "justify-start" : "justify-end")">
+                        <a asp-area="Admin" asp-controller="Enrollment" asp-action="Index" asp-route-userId="@Model.UserId"
+                           class="px-3 py-1.5 bg-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-xs font-bold">
+                            <i class="fas fa-list @(isRtl ? "ml-1" : "mr-1")"></i>@Localizer["AllEnrollments"]
+                        </a>
+                        <button onclick="openEnrollModal()"
+                                class="px-3 py-1.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] font-extrabold text-xs transition-all">
+                            <i class="fas fa-plus @(isRtl ? "ml-1" : "mr-1")"></i>@Localizer["EnrollInCourse"]
+                        </button>
+                    </div>
+                </div>
+
+                @if (userEnrollments.Any())
+                {
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-start border-collapse">
+                            <thead>
+                                <tr class="border-b border-white/5 text-slate-500 text-[10px] font-bold uppercase tracking-wider">
+                                    <th class="pb-3 px-2 text-start">@Localizer["Course"]</th>
+                                    <th class="pb-3 px-2 text-start">@Localizer["EnrollmentDate"]</th>
+                                    <th class="pb-3 px-2 text-start">@Localizer["Progress"]</th>
+                                    <th class="pb-3 px-2 text-start">@Localizer["PaymentStatus"]</th>
+                                    <th class="pb-3 px-2 @(isRtl ? "text-left" : "text-right")">@Localizer["Actions"]</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/[0.02]">
+                                @foreach (var enrollment in userEnrollments)
+                                {
+                                    var safeEnrollmentCourseTitle = (enrollment.Course?.Title ?? string.Empty).Replace("'", "\\'");
+                                    <tr class="hover:bg-white/[0.01] transition-colors group">
+                                        <td class="py-4 px-2 whitespace-nowrap">
+                                            <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3")">
+                                                <div class="w-8 h-8 rounded-lg bg-brand-cyan/10 border border-brand-cyan/10 flex items-center justify-center flex-shrink-0">
+                                                    <i class="fas fa-graduation-cap text-brand-cyan text-xs"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="text-white text-xs font-bold group-hover:text-brand-cyan transition-colors">@enrollment.Course?.Title</p>
+                                                    <p class="text-[10px] text-slate-500 font-mono mt-0.5" dir="ltr">ID: #@enrollment.CourseId</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-2 whitespace-nowrap text-slate-400 text-xs font-medium" dir="ltr">
+                                            @enrollment.EnrollmentDate.ToString("yyyy/MM/dd")
+                                        </td>
+                                        <td class="py-4 px-2 whitespace-nowrap">
+                                            <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3")">
+                                                <span class="text-xs font-bold @(enrollment.IsCompleted ? "text-emerald-400" : "text-brand-blue") w-8 @(isRtl ? "text-left" : "text-right")">
+                                                    @enrollment.ProgressPercentage%
+                                                </span>
+                                                <div class="w-16 h-1 bg-white/5 rounded-full overflow-hidden shadow-inner">
+                                                    <div class="h-full @(enrollment.IsCompleted ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" : "bg-brand-blue shadow-[0_0_8px_rgba(66,114,255,0.5)]") rounded-full"
+                                                         style="width: @enrollment.ProgressPercentage%"></div>
+                                                </div>
+                                                @if (enrollment.IsCompleted)
+                                                {
+                                                    <span class="px-1.5 py-0.5 text-[9px] font-bold rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 uppercase tracking-wider">@Localizer["Done"]</span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-2 whitespace-nowrap">
+                                            @if (enrollment.IsPaid)
+                                            {
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/10" dir="ltr">
+                                                    <i class="fas fa-coins @(isRtl ? "ml-1" : "mr-1")"></i>$@enrollment.PaymentAmount?.ToString("N0")
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-brand-orange/10 text-brand-orange border border-brand-orange/10 uppercase tracking-wide">
+                                                    <i class="fas fa-gift @(isRtl ? "ml-1" : "mr-1")"></i>@Localizer["Free"]
+                                                </span>
+                                            }
+                                        </td>
+                                        <td class="py-4 px-2 whitespace-nowrap @(isRtl ? "text-left" : "text-right")">
+                                            <button onclick="removeEnrollment(@enrollment.EnrollmentId, '@safeEnrollmentCourseTitle')"
+                                                    class="px-2 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded-lg hover:bg-rose-500 hover:text-white transition-all text-[10px] font-bold"
+                                                    title="@Localizer["Remove"]">
+                                                <i class="fas fa-user-minus @(isRtl ? "ml-1" : "mr-1")"></i> @Localizer["Remove"]
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="bg-white/[0.01] border border-white/5 border-dashed rounded-2xl p-8 text-center">
+                        <i class="fas fa-chart-network text-4xl text-slate-600 mb-3 block"></i>
+                        <h4 class="text-white text-sm font-bold mb-1">@Localizer["NoEnrolledCourses"]</h4>
+                        <p class="text-slate-500 text-xs max-w-xs mx-auto mb-4 font-medium">@Localizer["NoEnrolledCoursesSub"]</p>
+                        <button onclick="openEnrollModal()"
+                                class="inline-flex px-4 py-2 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl text-xs font-extrabold hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] transition-all">
+                            <i class="fas fa-plus @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["EnrollNow"]
+                        </button>
+                    </div>
+                }
+            </div>
+
+            @if (Model.IsLockedForSuspiciousActivity)
+            {
+                <div class="p-6 md:p-8 rounded-3xl bg-rose-500/[0.02] border-2 border-rose-500/30 relative overflow-hidden shadow-[0_0_30px_rgba(244,63,94,0.05)]">
+                    <h3 class="text-base font-bold text-rose-400 mb-4 flex items-center uppercase tracking-wide">
+                        <i class="fas fa-shield-alert @(isRtl ? "ml-3" : "mr-3") text-lg animate-pulse"></i> @Localizer["AccountLocked"]
+                    </h3>
+                    <div class="bg-rose-500/5 border border-rose-500/10 rounded-2xl p-4 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-medium">
+                            <div>
+                                <label class="text-[10px] font-bold text-rose-300 uppercase tracking-wider mb-1 block">@Localizer["LockedDate"]</label>
+                                <p class="text-white font-mono" dir="ltr">@Model.LockedAt?.ToString("yyyy/MM/dd HH:mm")</p>
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-rose-300 uppercase tracking-wider mb-1 block">@Localizer["SuspiciousFlags"]</label>
+                                <p class="text-white"><span class="inline-block px-2.5 py-0.5 bg-rose-500/20 text-rose-400 rounded-md font-bold font-mono">@Model.SuspiciousActivityCount</span></p>
+                            </div>
+                            <div class="md:col-span-2 border-t border-rose-500/10 pt-3">
+                                <label class="text-[10px] font-bold text-rose-300 uppercase tracking-wider mb-1 block">@Localizer["LockReason"]</label>
+                                <p class="text-slate-300 bg-black/20 p-3 rounded-xl border border-white/5 text-xs font-mono leading-relaxed">@Model.LockReason</p>
+                            </div>
+                        </div>
+                        <div class="pt-2">
+                            <a asp-area="Admin" asp-controller="Security" asp-action="UserDetails" asp-route-userId="@Model.UserId"
+                               class="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-bold text-xs hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:scale-[1.01] transition-all">
+                                <i class="fas fa-unlock-keyhole @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["ReviewAndUnlock"]
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (Model.SuspiciousActivityCount > 0)
+            {
+                <div class="p-6 md:p-8 rounded-3xl bg-brand-yellow/[0.02] border-2 border-brand-yellow/30 shadow-[0_0_30px_rgba(255,179,67,0.05)]">
+                    <h3 class="text-base font-bold text-brand-yellow mb-4 flex items-center uppercase tracking-wide">
+                        <i class="fas fa-triangle-exclamation @(isRtl ? "ml-3" : "mr-3") text-lg"></i> @Localizer["SuspiciousActivityWarning"]
+                    </h3>
+                    <div class="bg-brand-yellow/5 border border-brand-yellow/10 rounded-2xl p-4">
+                        <p class="text-slate-300 text-xs font-medium leading-relaxed mb-4">
+                            This account has <strong class="text-brand-yellow font-bold font-mono">@Model.SuspiciousActivityCount suspicious activities</strong> recorded. Accounts are automatically locked after <span class="text-white font-bold font-mono">5 flags</span>.
+                        </p>
+                        <a asp-area="Admin" asp-controller="Security" asp-action="UserDetails" asp-route-userId="@Model.UserId"
+                           class="inline-flex items-center px-4 py-2 bg-brand-yellow/10 border border-brand-yellow/20 text-brand-yellow rounded-xl font-bold text-xs hover:bg-brand-yellow hover:text-dark-bg transition-all">
+                            <i class="fas fa-binoculars @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["ViewSecurityLogs"]
+                        </a>
+                    </div>
+                </div>
+            }
+
+            @if (lockHistory != null && lockHistory.Any())
+            {
+                <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                    <h3 class="text-base font-bold text-white mb-6 flex items-center">
+                        <i class="fas fa-history text-brand-blue @(isRtl ? "ml-3" : "mr-3") text-lg"></i> @Localizer["AccountLockHistory"]
+                    </h3>
+                    <div class="space-y-4">
+                        @foreach (var history in lockHistory.Take(10))
+                        {
+                            var isLockAction = history.Action == "Locked";
+                            <div class="bg-white/[0.01] border @(isLockAction ? "border-rose-500/20" : "border-emerald-500/20") rounded-2xl p-4 relative group">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border
+                                        @(isLockAction ? "bg-rose-500/10 text-rose-400 border-rose-500/10" : "bg-emerald-500/10 text-emerald-400 border-emerald-500/10")">
+                                        <i class="fas @(isLockAction ? "fa-lock-open" : "fa-key") @(isRtl ? "ml-1.5" : "mr-1.5") text-[9px]"></i> @history.Action
+                                    </span>
+                                    <span class="text-[10px] text-slate-500 font-mono font-medium" dir="ltr">
+                                        @history.ActionDate.ToString("yyyy/MM/dd HH:mm")
+                                    </span>
+                                </div>
+                                <p class="text-slate-300 text-xs font-medium leading-relaxed mb-2">@history.Reason</p>
+
+                                @if (history.SuspiciousActivityCount > 0)
+                                {
+                                    <p class="text-[10px] text-slate-500 font-medium">
+                                        Suspicious Count: <span class="text-rose-400 font-bold font-mono">@history.SuspiciousActivityCount</span>
+                                    </p>
+                                }
+                                @if (!string.IsNullOrEmpty(history.AdminNotes))
+                                {
+                                    <div class="mt-3 pt-2.5 border-t border-white/5 text-xs text-slate-400 bg-black/10 p-2.5 rounded-xl border border-white/[0.02] font-mono leading-relaxed">
+                                        <span class="text-[10px] font-bold text-slate-500 block uppercase tracking-wider mb-1">@Localizer["AdminNotes"]</span>
+                                        @history.AdminNotes
+                                    </div>
+                                }
+                                @if (history.PerformedByAdminId.HasValue)
+                                {
+                                    <p class="text-[9px] text-slate-600 mt-2 font-mono @(isRtl ? "text-left" : "text-right")">
+                                        Admin ID: #@history.PerformedByAdminId
+                                    </p>
+                                }
+                            </div>
+                        }
+                    </div>
+                    @if (lockHistory.Count > 10)
+                    {
+                        <div class="mt-4 text-center">
+                            <a asp-area="Admin" asp-controller="Security" asp-action="UserDetails" asp-route-userId="@Model.UserId"
+                               class="inline-flex items-center text-brand-cyan hover:text-white text-xs font-bold uppercase tracking-wider group">
+                                @Localizer["ViewFullHistory"] (@lockHistory.Count) <i class="fas @(isRtl ? "fa-arrow-left mr-1.5 group-hover:-translate-x-1" : "fa-arrow-right ml-1.5 group-hover:translate-x-1") transition-transform"></i>
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (suspiciousActivities != null && suspiciousActivities.Any())
+            {
+                <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                    <h3 class="text-base font-bold text-white mb-6 flex items-center">
+                        <i class="fas fa-radar text-brand-orange @(isRtl ? "ml-3" : "mr-3") text-lg"></i> @Localizer["SuspiciousActivitiesAndLogs"]
+                    </h3>
+                    <div class="space-y-4">
+                        @foreach (var activity in suspiciousActivities.Take(10))
+                        {
+                            var isHighRisk = activity.SuspicionScore >= 80;
+                            var isMedRisk = activity.SuspicionScore >= 60 && activity.SuspicionScore < 80;
+                            var borderHighlight = isHighRisk ? "border-rose-500/20" : isMedRisk ? "border-brand-orange/20" : "border-brand-yellow/20";
+                            var scoreBadge = isHighRisk ? "bg-rose-500/10 text-rose-400 border-rose-500/10" : isMedRisk ? "bg-brand-orange/10 text-brand-orange border-brand-orange/10" : "bg-brand-yellow/10 text-brand-yellow border-brand-yellow/10";
+
+                            <div class="bg-white/[0.01] border @borderHighlight rounded-2xl p-4">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                                    <div class="flex flex-wrap items-center gap-1.5">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded bg-white/5 border border-white/5 text-[9px] font-bold uppercase tracking-wider text-slate-400">
+                                            @activity.ActivityType
+                                        </span>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded border text-[9px] font-bold uppercase tracking-wider @scoreBadge">
+                                            Risk Score: @activity.SuspicionScore
+                                        </span>
+                                        @if (activity.ResultedInBlock)
+                                        {
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded bg-rose-500/25 border border-rose-500/20 text-[9px] font-bold text-rose-400 uppercase tracking-wider">Blocked</span>
+                                        }
+                                        @if (activity.ReviewedByAdmin)
+                                        {
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/10 text-[9px] font-bold text-emerald-400 uppercase tracking-wider">Reviewed</span>
+                                        }
+                                    </div>
+                                    <span class="text-[10px] text-slate-500 font-mono font-medium" dir="ltr">
+                                        @activity.DetectedAt.ToString("yyyy/MM/dd HH:mm")
+                                    </span>
+                                </div>
+                                <p class="text-slate-300 text-xs font-medium leading-relaxed mb-3">@activity.Reason</p>
+
+                                <div class="flex flex-wrap items-center gap-4 text-[10px] text-slate-500 font-mono mt-1 pt-2 border-t border-white/[0.02]">
+                                    @if (!string.IsNullOrEmpty(activity.IpAddress))
+                                    {
+                                        <span dir="ltr"><i class="fas fa-network-wired text-slate-600 @(isRtl ? "ml-1" : "mr-1")"></i>IP: @activity.IpAddress</span>
+                                    }
+                                    @if (activity.VideoId.HasValue)
+                                    {
+                                        <span dir="ltr"><i class="fas fa-play-circle text-slate-600 @(isRtl ? "ml-1" : "mr-1")"></i>Video ID: #@activity.VideoId</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    @if (suspiciousActivities.Count > 10)
+                    {
+                        <div class="mt-4 text-center">
+                            <a asp-area="Admin" asp-controller="Security" asp-action="UserDetails" asp-route-userId="@Model.UserId"
+                               class="inline-flex items-center text-brand-cyan hover:text-white text-xs font-bold uppercase tracking-wider group">
+                                @Localizer["ViewAllActivities"] (@suspiciousActivities.Count) <i class="fas @(isRtl ? "fa-arrow-left mr-1.5 group-hover:-translate-x-1" : "fa-arrow-right ml-1.5 group-hover:translate-x-1") transition-transform"></i>
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div id="enrollModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-dark-bg/80 backdrop-blur-md transition-all p-4 text-start" dir="@(isRtl ? "rtl" : "ltr")">
+    <div class="bg-[#0B0D14]/90 border border-white/10 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-[fadeIn_0.3s_ease_forwards]">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/[0.01]">
+            <h4 class="text-white font-bold text-base flex items-center">
+                <i class="fas fa-graduation-cap @(isRtl ? "ml-2" : "mr-2") text-brand-cyan"></i>
+                @Localizer["EnrollInCourse"]
+            </h4>
+            <button onclick="closeEnrollModal()" class="text-slate-400 hover:text-white transition-colors">
+                <i class="fas fa-times text-sm"></i>
+            </button>
+        </div>
+        <div class="p-6 space-y-4">
+            <div>
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">@Localizer["SearchCourse"]</label>
+                <input type="text" id="courseSearch" placeholder="@Localizer["TypeToSearchCourses"]"
+                       oninput="filterCourses()"
+                       class="w-full px-4 py-2.5 bg-dark-bg/60 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-brand-cyan/40 text-sm font-medium" />
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">@Localizer["SelectCourse"]</label>
+                <div id="courseList" class="max-h-48 overflow-y-auto space-y-1.5 @(isRtl ? "pl-1" : "pr-1") custom-scrollbar">
+                    @foreach (var course in allCourses)
+                    {
+                        var isAlreadyEnrolled = enrolledCourseIds.Contains(course.CourseId);
+                        <label class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") p-3 rounded-xl border border-white/[0.02] bg-white/[0.01] hover:bg-white/5 cursor-pointer course-option transition-colors @(isAlreadyEnrolled ? "opacity-40 cursor-not-allowed border-none bg-transparent" : "")">
+                            <input type="radio" name="selectedCourse" value="@course.CourseId"
+                            @(isAlreadyEnrolled ? "disabled" : "")
+                                   class="text-brand-cyan focus:ring-brand-cyan/20 bg-dark-bg border-white/10" />
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-bold text-white truncate" data-course-title="@course.Title.ToLower()">@course.Title</p>
+                                <p class="text-[10px] text-slate-500 font-semibold mt-0.5">
+                                    $@course.Price.ToString("N0") &nbsp;·&nbsp;
+                                    @(isAlreadyEnrolled ? Localizer["AlreadyEnrolled"].Value : (course.IsActive ? Localizer["Active"].Value : Localizer["Inactive"].Value))
+                                </p>
+                            </div>
+                        </label>
+                    }
+                </div>
+            </div>
+            <div class="pt-2">
+                <label class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") cursor-pointer group">
+                    <input type="checkbox" id="markAsPaid" class="rounded text-brand-cyan focus:ring-brand-cyan/20 bg-dark-bg border-white/10" />
+                    <span class="text-xs font-bold text-slate-400 group-hover:text-slate-300 transition-colors">@Localizer["MarkAsPaid"]</span>
+                </label>
+            </div>
+        </div>
+        <div class="px-6 py-4 border-t border-white/5 flex justify-end @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01]">
+            <button onclick="closeEnrollModal()" class="px-4 py-2 bg-white/5 text-slate-300 rounded-xl hover:bg-white/10 transition-colors text-xs font-bold">
+                @Localizer["Cancel"]
+            </button>
+            <button onclick="submitEnrollment()" class="px-5 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] transition-all text-xs font-black">
+                <i class="fas fa-user-plus @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["ConfirmEnrollment"]
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Ban / Unban User
+        async function toggleBan(userId, isBan) {
+            const actionText = isBan ? 'unban' : 'ban';
+            if (!confirm(`Are you sure you want to ${actionText} this user?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/Admin/Users/ToggleBan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: userId })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.message || 'Operation failed.');
+                }
+            } catch (error) {
+                alert('Connection error while performing the operation.');
+            }
+        }
+
+        // Delete User
+        async function deleteUser(userId) {
+            if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/Admin/Users/Delete?id=' + userId, { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = '/Admin/Users';
+                } else {
+                    alert(result.message || 'Deletion failed.');
+                }
+            } catch (error) {
+                alert('Connection error while performing the operation.');
+            }
+        }
+
+        // Modal Controls
+        function openEnrollModal() {
+            document.getElementById('enrollModal').classList.remove('hidden');
+            document.getElementById('enrollModal').classList.add('flex');
+            document.getElementById('courseSearch').value = '';
+            filterCourses();
+        }
+
+        function closeEnrollModal() {
+            document.getElementById('enrollModal').classList.add('hidden');
+            document.getElementById('enrollModal').classList.remove('flex');
+            document.querySelectorAll('input[name="selectedCourse"]').forEach(r => r.checked = false);
+        }
+
+        function filterCourses() {
+            const q = document.getElementById('courseSearch').value.toLowerCase();
+            document.querySelectorAll('.course-option').forEach(el => {
+                const title = el.querySelector('[data-course-title]')?.dataset.courseTitle ?? '';
+                el.style.display = title.includes(q) ? '' : 'none';
+            });
+        }
+
+        async function submitEnrollment() {
+            const selected = document.querySelector('input[name="selectedCourse"]:checked');
+            if (!selected) { alert('Please select a course.'); return; }
+            const isPaid = document.getElementById('markAsPaid').checked;
+
+            try {
+                const response = await fetch('/Admin/Enrollment/AddEnrollment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: @Model.UserId, courseId: parseInt(selected.value), isPaid: isPaid })
+                });
+                const result = await response.json();
+                if (result.success) { closeEnrollModal(); location.reload(); }
+                else { alert('Error: ' + result.message); }
+            } catch (e) { alert('Connection error while enrolling user.'); }
+        }
+
+        async function removeEnrollment(enrollmentId, courseName) {
+            if (!confirm(`Are you sure you want to remove user from "${courseName}"?`)) return;
+            try {
+                const response = await fetch('/Admin/Enrollment/RemoveEnrollment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ enrollmentId: enrollmentId })
+                });
+                const result = await response.json();
+                if (result.success) { location.reload(); }
+                else { alert('Error: ' + result.message); }
+            } catch (e) { alert('Connection error while removing enrollment.'); }
+        }
+
+        document.getElementById('enrollModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEnrollModal();
+        });
+    </script>
+}

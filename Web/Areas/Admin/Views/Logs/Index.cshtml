@@ -1,0 +1,311 @@
+@model LogSummaryDto
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["SystemLogsManager"].Value;
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start" dir="@(isRtl ? "rtl" : "ltr")">
+    <div class="mb-6">
+        <nav class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") text-xs font-semibold tracking-wide uppercase">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="text-brand-cyan hover:text-white transition-colors">
+                @Localizer["Dashboard"]
+            </a>
+            <i class="fas @(isRtl ? "fa-chevron-left" : "fa-chevron-right") text-slate-600 text-[10px]"></i>
+            <span class="text-slate-500">@Localizer["SystemMonitoring"]</span>
+            <i class="fas @(isRtl ? "fa-chevron-left" : "fa-chevron-right") text-slate-600 text-[10px]"></i>
+            <span class="text-slate-400">@Localizer["LogsMatrix"]</span>
+        </nav>
+    </div>
+
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 @(isRtl ? "space-x-reverse" : "")">
+        <div class="text-start">
+            <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide flex items-center gap-3 @(isRtl ? "space-x-reverse" : "")">
+                <i class="fas fa-terminal text-brand-cyan drop-shadow-[0_0_8px_#42EAFF]"></i>
+                @Localizer["SystemLogsManager"]
+            </h1>
+            <p class="text-slate-400 text-sm font-medium">@Localizer["SystemLogsManagerSub"]</p>
+        </div>
+
+        <div class="flex items-center gap-3 self-end md:self-center @(isRtl ? "space-x-reverse" : "")">
+            <div class="bg-white/[0.01] border border-white/5 px-4 py-2.5 rounded-xl flex items-center gap-3 shadow-inner @(isRtl ? "space-x-reverse" : "")">
+                <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#10B981]"></div>
+                <span class="text-slate-300 text-xs font-bold uppercase tracking-wider">@Localizer["AutoRotatorActive"]</span>
+            </div>
+
+            <button onclick="openClearModal()" class="px-5 py-2.5 bg-brand-orange/10 border border-brand-orange/20 hover:bg-brand-orange hover:text-dark-bg text-brand-orange transition-all text-xs font-extrabold flex items-center gap-2 rounded-xl shadow-md whitespace-nowrap @(isRtl ? "space-x-reverse" : "")">
+                <i class="fas fa-trash-alt text-sm"></i> @Localizer["ClearAllLogs"]
+            </button>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-rose-500/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute -right-6 -top-6 w-24 h-24 bg-rose-500/10 rounded-full blur-2xl group-hover:bg-rose-500/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10 @(isRtl ? "space-x-reverse" : "")">
+                <div class="text-start">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">@Localizer["TotalSystemErrors"]</p>
+                    <h3 class="text-3xl font-extrabold text-white tracking-tight font-sans">@Model.TotalErrorsCount</h3>
+                </div>
+                <div class="w-11 h-11 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 text-lg shadow-[inset_0_0_12px_rgba(244,63,94,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-brand-blue/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute -right-6 -top-6 w-24 h-24 bg-brand-blue/10 rounded-full blur-2xl group-hover:bg-brand-blue/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10 @(isRtl ? "space-x-reverse" : "")">
+                <div class="text-start">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">@Localizer["ActiveLogFiles"]</p>
+                    <h3 class="text-3xl font-extrabold text-white tracking-tight font-sans">@Model.LogFiles.Count</h3>
+                </div>
+                <div class="w-11 h-11 rounded-2xl bg-brand-blue/10 border border-brand-blue/20 flex items-center justify-center text-brand-blue text-lg shadow-[inset_0_0_12px_rgba(66,114,255,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-brand-purple/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute -right-6 -top-6 w-24 h-24 bg-brand-cyan/10 rounded-full blur-2xl group-hover:bg-brand-cyan/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10 @(isRtl ? "space-x-reverse" : "")">
+                <div class="text-start">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">@Localizer["LogRetention"]</p>
+                    <h3 class="text-3xl font-extrabold text-white tracking-tight font-sans">30 @(isRtl ? "يوماً" : "Days")</h3>
+                </div>
+                <div class="w-11 h-11 rounded-2xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center text-brand-cyan text-lg shadow-[inset_0_0_12px_rgba(66,234,255,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-history"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="space-y-6">
+        @if (Model.LogFiles == null || !Model.LogFiles.Any())
+        {
+            <div class="p-12 text-center max-w-xl mx-auto border border-dashed border-white/5 rounded-3xl mt-12 relative overflow-hidden">
+                <div class="w-16 h-16 bg-white/[0.02] border border-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-folder-open text-slate-600 text-2xl animate-pulse"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-1">@Localizer["NoLogFilesIdentified"]</h3>
+                <p class="text-slate-500 text-xs font-medium max-w-xs mx-auto leading-relaxed">@Localizer["NoLogFilesSub"]</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var file in Model.LogFiles)
+            {
+                <div class="rounded-3xl bg-white/[0.01] border border-white/[0.03] overflow-hidden transition-all duration-300 hover:border-white/10 shadow-2xl">
+
+                    <div class="bg-white/[0.01] px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.03] @(isRtl ? "space-x-reverse" : "")">
+                        <div class="flex items-center gap-3 min-w-0 flex-1 @(isRtl ? "space-x-reverse" : "")">
+                            <div class="w-10 h-10 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-file-code @(file.FileName.Contains("Errors") || file.FileName.Contains("error") ? "text-brand-orange shadow-[0_0_8px_rgba(255,126,66,0.3)]" : "text-brand-blue") text-lg"></i>
+                            </div>
+                            <div class="min-w-0 flex-1 text-start">
+                                <h4 class="text-white font-bold text-sm tracking-wide truncate font-sans">@file.FileName</h4>
+                                <p class="text-[10px] font-mono text-slate-500 truncate max-w-md mt-0.5 text-left" dir="ltr">@file.FilePath</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2.5 self-end sm:self-center flex-shrink-0 @(isRtl ? "space-x-reverse" : "")">
+                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wide rounded-lg uppercase font-sans @(file.ErrorCount > 0 ? "bg-rose-500/10 text-rose-400 border border-rose-500/10" : "bg-white/5 text-slate-500")">
+                                @file.ErrorCount @Localizer["Exceptions"]
+                            </span>
+
+                            <button onclick="viewRawLog('@Url.Action("ViewRaw", "Logs", new { filePath = file.FilePath })')"
+                                    class="px-3 py-1.5 bg-white/5 border border-white/5 hover:bg-white/10 text-slate-300 hover:text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 @(isRtl ? "space-x-reverse" : "")">
+                                <i class="fas fa-eye text-xs"></i> @Localizer["RawNode"]
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-6">
+                        @if (!file.UniqueErrors.Any())
+                        {
+                            <p class="text-xs font-semibold text-slate-500 italic flex items-center gap-2 text-start @(isRtl ? "space-x-reverse" : "")">
+                                <i class="fas fa-check-circle text-emerald-400 shadow-[0_0_6px_#10B981] rounded-full"></i> @Localizer["OperationalIntegritySecure"]
+                            </p>
+                        }
+                        else
+                        {
+                            <div class="overflow-x-auto overflow-visible custom-scrollbar">
+                                <table class="w-full text-left border-collapse" dir="ltr">
+                                    <thead>
+                                        <tr class="border-b border-white/[0.03] text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+                                            <th class="pb-3 font-bold w-16 text-center">@Localizer["Loops"]</th>
+                                            <th class="pb-3 pl-4 font-bold text-left">@Localizer["DistinctErrorSignature"]</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-white/[0.02] text-xs font-mono">
+                                        @foreach (var uniqueErr in file.UniqueErrors)
+                                        {
+                                            <tr class="hover:bg-white/[0.01] transition-colors group">
+                                                <td class="py-4 text-center align-top whitespace-nowrap">
+                                                    <span class="inline-block px-2 py-0.5 min-w-[2.2rem] text-[10px] font-black font-mono rounded bg-brand-blue/10 text-brand-blue border border-brand-blue/10">
+                                                        @uniqueErr.OccurrenceCount
+                                                    </span>
+                                                </td>
+
+                                                <td class="py-4 pl-4 text-slate-300 leading-relaxed select-all align-top text-left">
+                                                    <div class="flex items-start gap-3 min-w-0">
+                                                        <div class="relative group/popover cursor-pointer mt-0.5 z-10 flex-shrink-0">
+                                                            <i class="fas fa-info-circle text-brand-cyan hover:text-white transition-colors text-sm drop-shadow-[0_0_6px_rgba(66,234,255,0.2)]"></i>
+
+                                                            <div class="absolute bottom-full left-0 mb-2.5 w-max max-w-xs sm:max-w-md bg-[#121622]/95 border border-white/10 text-slate-300 text-xs rounded-xl shadow-2xl opacity-0 invisible group-hover/popover:opacity-100 group-hover/popover:visible transition-all duration-200 p-4 backdrop-blur-xl">
+                                                                <div class="flex flex-col gap-2.5 font-sans font-medium text-left">
+                                                                    <div class="flex items-center gap-2 border-b border-white/5 pb-2">
+                                                                        <i class="far fa-clock text-emerald-400"></i>
+                                                                        <span><strong class="text-white">@Localizer["LastVectorOccurrence"]</strong> <span class="font-mono text-xs">@uniqueErr.LastOccurrenceDate</span></span>
+                                                                    </div>
+                                                                    <div class="flex items-start gap-2">
+                                                                        <i class="fas fa-folder-open text-brand-yellow mt-0.5"></i>
+                                                                        <span class="break-all"><strong class="text-white">@Localizer["SectionNamespace"]</strong> <span class="font-mono text-[11px] text-brand-cyan">@uniqueErr.Section</span></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="absolute -bottom-1.5 left-2 w-3 h-3 bg-[#121622] border-b border-r border-white/10 transform rotate-45"></div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="break-all selection:bg-brand-blue/30 text-slate-300 font-mono text-[11px] leading-relaxed flex-1 text-left">@uniqueErr.ErrorMessage</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<div id="rawLogModal" class="fixed inset-0 z-50 invisible opacity-0 transition-all duration-300 flex items-center justify-center p-4 bg-dark-bg/80 backdrop-blur-md">
+    <div class="bg-[#0B0D14]/90 border border-white/10 w-full max-w-5xl h-[80vh] flex flex-col rounded-3xl overflow-hidden shadow-2xl animate-[fadeIn_0.3s_ease]">
+        <div class="bg-white/[0.01] px-6 py-4 flex items-center justify-between border-b border-white/5 @(isRtl ? "space-x-reverse" : "")">
+            <h3 class="text-white font-bold flex items-center gap-2 text-sm uppercase tracking-wider @(isRtl ? "space-x-reverse" : "")">
+                <i class="fas fa-file-lines text-brand-cyan shadow-[0_0_8px_#42EAFF]"></i> @Localizer["RawDiagnosticsViewer"]
+            </h3>
+            <button onclick="closeModal()" class="text-slate-400 hover:text-white transition-colors text-base">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="flex-1 p-6 overflow-y-auto bg-dark-bg/30 custom-scrollbar text-left" dir="ltr">
+            <pre id="rawLogContainer" class="text-[11px] text-slate-300 font-mono whitespace-pre-wrap break-all leading-5 select-all selection:bg-brand-cyan/20 text-left"></pre>
+        </div>
+    </div>
+</div>
+
+<div id="clearLogsModal" class="fixed inset-0 z-50 invisible opacity-0 transition-all duration-300 flex items-center justify-center p-4 bg-dark-bg/80 backdrop-blur-md">
+    <div class="bg-[#0B0D14]/95 border border-rose-500/20 w-full max-w-md rounded-3xl overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300" id="clearLogsModalContent">
+        <div class="p-6 text-center">
+            <div class="w-16 h-16 rounded-full bg-rose-500/10 flex items-center justify-center mx-auto mb-4 border border-rose-500/20">
+                <i class="fas fa-exclamation-triangle text-rose-400 text-2xl animate-pulse"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">@Localizer["PurgeDiagnosticsCache"]</h3>
+            <p class="text-slate-400 text-xs font-medium mb-6 leading-relaxed">
+                @Localizer["PurgeDiagnosticsCacheSub"]
+                <span class="block text-rose-400 font-bold mt-2"><i class="fas fa-triangle-exclamation @(isRtl ? "ml-1" : "mr-1")"></i>@Localizer["WipeWarning"]</span>
+            </p>
+
+            <div class="flex items-center justify-center gap-3 @(isRtl ? "space-x-reverse" : "")">
+                <button onclick="closeClearModal()" class="px-4 py-2 rounded-xl text-slate-300 bg-white/5 hover:bg-white/10 border border-white/5 transition-colors text-xs font-bold">
+                    @Localizer["CancelOperation"]
+                </button>
+                <button onclick="executeClearLogs()" id="confirmClearBtn" class="px-5 py-2.5 rounded-xl text-dark-bg bg-gradient-to-r from-brand-orange to-brand-yellow font-black text-xs transition-colors flex items-center gap-2 shadow-lg shadow-brand-orange/20 @(isRtl ? "space-x-reverse" : "")">
+                    <i class="fas fa-trash-alt"></i> @Localizer["ExecuteTotalWipe"]
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function viewRawLog(url) {
+            const container = document.getElementById('rawLogContainer');
+            const modal = document.getElementById('rawLogModal');
+
+            container.textContent = "Loading log file...";
+
+            modal.classList.remove('invisible', 'opacity-0');
+            modal.classList.add('opacity-100');
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Could not load log file.');
+                }
+                const content = await response.text();
+                container.textContent = content || "Log file is empty.";
+            } catch (error) {
+                container.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('rawLogModal');
+            modal.classList.add('invisible', 'opacity-0');
+            modal.classList.remove('opacity-100');
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+                closeClearModal();
+            }
+        });
+
+        function openClearModal() {
+            const modal = document.getElementById('clearLogsModal');
+            const modalContent = document.getElementById('clearLogsModalContent');
+
+            document.body.appendChild(modal);
+
+            modal.classList.remove('invisible', 'opacity-0');
+            modal.classList.add('opacity-100');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }
+
+        function closeClearModal() {
+            const modal = document.getElementById('clearLogsModal');
+            const modalContent = document.getElementById('clearLogsModalContent');
+            modal.classList.add('invisible', 'opacity-0');
+            modal.classList.remove('opacity-100');
+            modalContent.classList.add('scale-95');
+            modalContent.classList.remove('scale-100');
+        }
+
+        async function executeClearLogs() {
+            const btn = document.getElementById('confirmClearBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin @(isRtl ? "ml-1" : "mr-1")"></i> Clearing...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('@Url.Action("ClearAllLogs", "Logs")', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    window.location.reload();
+                } else {
+                    alert(result.message || 'Error clearing logs.');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+}

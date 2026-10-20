@@ -1,0 +1,153 @@
+@model List<Domain.Entities.Course.CoursePdf>
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["CoursePdfFiles"].Value;
+    var courseId = (int)ViewBag.CourseId;
+    var courseTitle = (string)ViewBag.CourseTitle;
+}
+
+@Html.AntiForgeryToken()
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start" dir="@(isRtl ? "rtl" : "ltr")">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-brand-orange/10 border border-brand-orange/20 text-brand-orange flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") shadow-[0_0_20px_rgba(255,126,66,0.1)]">
+            <i class="fas fa-exclamation-triangle text-lg"></i>
+            <span class="font-medium text-sm">@TempData["ErrorMessage"]</span>
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+            <i class="fas fa-check-circle text-lg"></i>
+            <span class="font-medium text-sm">@TempData["SuccessMessage"]</span>
+        </div>
+    }
+
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10">
+        <div>
+            <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide">
+                @Localizer["CoursePdfFiles"]
+            </h1>
+            <p class="text-slate-400 text-sm font-medium">@Localizer["CourseTitle"]: <span class="text-brand-cyan">@courseTitle</span></p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto justify-end">
+            <a asp-action="Create" asp-route-courseId="@courseId"
+               class="w-full sm:w-auto text-center px-6 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue rounded-xl text-dark-bg font-extrabold hover:shadow-[0_0_20px_rgba(66,234,255,0.4)] hover:scale-[1.02] transition-all duration-300 whitespace-nowrap text-sm flex items-center justify-center">
+                <i class="fas fa-plus @(isRtl ? "ml-1.5" : "mr-1.5") text-sm"></i>
+                @Localizer["AddPdf"]
+            </a>
+
+            <a asp-area="Admin" asp-controller="Courses" asp-action="Details" asp-route-id="@courseId"
+               class="w-full sm:w-auto text-center px-5 py-2.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg whitespace-nowrap">
+                <i class="fas @(isRtl ? "fa-arrow-right ml-2" : "fa-arrow-left mr-2") text-xs"></i>
+                @Localizer["BackToCourses"]
+            </a>
+        </div>
+    </div>
+
+    <div class="w-full space-y-3">
+        @if (Model.Any())
+        {
+            @foreach (var pdf in Model)
+            {
+                <div class="p-4 rounded-2xl bg-white/[0.01] border border-white/[0.03] hover:bg-white/[0.02] hover:border-white/10 transition-all duration-200" data-pdf-id="@pdf.PdfId">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+
+                        <div class="flex items-start @(isRtl ? "space-x-reverse" : "space-x-4") flex-1 min-w-0">
+                            <div class="w-11 h-11 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 flex-shrink-0 text-lg shadow-[inset_0_0_10px_rgba(244,63,94,0.1)]">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                                    <h4 class="text-white font-bold text-sm truncate max-w-[200px] sm:max-w-md group-hover:text-brand-cyan">
+                                        @(string.IsNullOrWhiteSpace(pdf.Title) ? System.IO.Path.GetFileNameWithoutExtension(pdf.OriginalFileName) : pdf.Title)
+                                    </h4>
+                                    @if (!pdf.IsActive)
+                                    {
+                                        <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">@Localizer["Inactive"]</span>
+                                    }
+                                    @if (pdf.Price <= 0)
+                                    {
+                                        <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">@Localizer["Free"]</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded font-mono">$@pdf.Price.ToString("N2")</span>
+                                    }
+                                </div>
+
+                                <div class="grid grid-cols-1 gap-0.5 text-[10px] font-mono font-semibold text-slate-500 min-w-0">
+                                    <div class="truncate"><span class="text-slate-600 uppercase tracking-wider text-[9px] @(isRtl ? "ml-1" : "mr-1")">@Localizer["OriginalName"]:</span> @pdf.OriginalFileName</div>
+                                    <div class="truncate"><span class="text-slate-600 uppercase tracking-wider text-[9px] @(isRtl ? "ml-1" : "mr-1")">@Localizer["SavedFile"]:</span> @pdf.FileName</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") justify-end flex-shrink-0">
+                            <a asp-action="Preview" asp-route-id="@pdf.PdfId" target="_blank"
+                               class="w-9 h-8 rounded-lg bg-brand-blue/10 text-brand-blue flex items-center justify-center hover:bg-brand-blue hover:text-white transition-all border border-brand-blue/5" title="@Localizer["PreviewPdf"]">
+                                <i class="fas fa-eye text-xs"></i>
+                            </a>
+                            <button type="button" onclick="deletePdf(@pdf.PdfId)"
+                                    class="w-9 h-8 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all border border-rose-500/5" title="@Localizer["DeletePdf"]">
+                                <i class="fas fa-trash text-xs"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="p-12 rounded-3xl bg-white/[0.01] border border-white/[0.05] border-dashed text-center max-w-xl mx-auto mt-6 relative overflow-hidden">
+                <div class="w-16 h-16 mx-auto rounded-full bg-white/[0.02] border border-white/5 flex items-center justify-center mb-4">
+                    <i class="fas fa-file-pdf text-3xl text-slate-600 animate-pulse"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-1">@Localizer["NoPdfFiles"]</h3>
+                <p class="text-slate-500 text-xs max-w-xs mx-auto mb-6 font-medium">@Localizer["NoPdfFilesSub"]</p>
+                <a asp-action="Create" asp-route-courseId="@courseId"
+                   class="inline-flex px-5 py-2 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl font-extrabold hover:shadow-[0_0_12px_rgba(66,234,255,0.3)] transition-all text-xs">
+                    <i class="fas fa-plus @(isRtl ? "ml-1.5" : "mr-1.5") mt-0.5"></i> @Localizer["AddFirstPdf"]
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Delete PDF
+        async function deletePdf(pdfId) {
+            if (!confirm('Are you sure you want to delete this PDF file? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const tokenEl = document.querySelector('input[name="__RequestVerificationToken"]');
+                const antiforgeryToken = tokenEl ? tokenEl.value : '';
+
+                const response = await fetch('/Admin/CoursePdfs/Delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': antiforgeryToken
+                    },
+                    body: JSON.stringify({ id: pdfId })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.message || 'Failed to delete PDF.');
+                }
+            } catch {
+                alert('Connection error while deleting PDF.');
+            }
+        }
+    </script>
+}

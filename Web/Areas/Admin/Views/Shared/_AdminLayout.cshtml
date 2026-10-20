@@ -1,0 +1,501 @@
+@using Application.Interfaces
+@using System.Security.Claims
+@inject IPermissionService _permissionService
+@inject ISeoService _seoService
+
+@{
+    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+    var currentUserId = userIdClaim != null ? int.Parse(userIdClaim.Value) : 0;
+
+    var canViewUsers = await _permissionService.UserHasPermissionAsync(currentUserId, "Users.View");
+    var canViewStudents = await _permissionService.UserHasPermissionAsync(currentUserId, "Users.Students.View");
+    var canViewAdminUsers = await _permissionService.UserHasPermissionAsync(currentUserId, "Users.Admin.View");
+    var canViewRoles = await _permissionService.UserHasPermissionAsync(currentUserId, "Roles.View");
+    var canViewDashboard = await _permissionService.UserHasPermissionAsync(currentUserId, "Dashboard.View");
+    var canViewCourses = await _permissionService.UserHasPermissionAsync(currentUserId, "Courses.View");
+
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture.Name;
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+
+    bool isGlobalNoindexActive = false;
+    try
+    {
+        isGlobalNoindexActive = await _seoService.IsGlobalNoindexActiveAsync();
+    }
+    catch { }
+}
+
+<!DOCTYPE html>
+<html lang="@currentCulture" dir="@(isRtl ? "rtl" : "ltr")">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Pharmacists Admin</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+        theme: {
+        extend: {
+        colors: {
+        brand: {
+        yellow: '#FFB343',
+        cyan: '#42EAFF',
+        blue: '#4272FF',
+        orange: '#FF7E42'
+        },
+        dark: {
+        bg: '#05070A',
+        surface: 'rgba(15, 20, 31, 0.65)'
+        }
+        }
+        }
+        }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    @if (isRtl)
+    {
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <style>
+            body, h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, div {
+                font-family: 'Cairo', sans-serif !important;
+            }
+        </style>
+    }
+
+    <style>
+        * {
+        /* Changed to Plus Jakarta Sans for a more premium tech feel */
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+        background-color: #05070A;
+        color: #94a3b8;
+        overflow-x: hidden;
+        }
+
+        /* Animated Grid Background */
+        .ambient-grid {
+        position: fixed;
+        inset: 0;
+        background-size: 50px 50px;
+        background-image: linear-gradient(to right, rgba(66, 234, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(66, 234, 255, 0.03) 1px, transparent 1px);
+        mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+        -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+        z-index: -1;
+        pointer-events: none;
+        }
+
+        /* Premium Glass Panel */
+        .glass-panel {
+        background: var(--tw-colors-dark-surface);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(66, 234, 255, 0.08);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Menu Item Styling & Animations */
+        .menu-item {
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        }
+
+        .menu-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 3px;
+        background: linear-gradient(to bottom, #42EAFF, #4272FF);
+        transform: scaleY(0);
+        transform-origin: bottom;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 0 4px 4px 0;
+        }
+
+        .menu-item:hover {
+        background: linear-gradient(90deg, rgba(66, 234, 255, 0.1) 0%, transparent 100%);
+        color: #fff;
+        padding-left: 1.25rem;
+        }
+
+        .menu-item:hover::before {
+        transform: scaleY(1);
+        transform-origin: top;
+        }
+
+        .menu-item:hover i {
+        color: #42EAFF;
+        text-shadow: 0 0 12px rgba(66, 234, 255, 0.6);
+        }
+
+        /* Active State */
+        .sidebar-active {
+        background: linear-gradient(90deg, rgba(66, 114, 255, 0.15) 0%, rgba(66, 234, 255, 0.02) 100%);
+        color: #fff;
+        }
+
+        .sidebar-active::before {
+        transform: scaleY(1);
+        }
+
+        .sidebar-active i {
+        color: #42EAFF;
+        text-shadow: 0 0 15px rgba(66, 234, 255, 0.8);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+        background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+        background: rgba(66, 114, 255, 0.3);
+        border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+        background: #42EAFF;
+        }
+
+        /* Glowing Orbs */
+        .glow-orb-1 {
+        position: fixed;
+        top: -10%;
+        left: -5%;
+        width: 50vw;
+        height: 50vw;
+        background: radial-gradient(circle, rgba(66,114,255,0.15) 0%, transparent 60%);
+        z-index: -2;
+        pointer-events: none;
+        }
+
+        .glow-orb-2 {
+        position: fixed;
+        bottom: -20%;
+        right: -10%;
+        width: 60vw;
+        height: 60vw;
+        background: radial-gradient(circle, rgba(66,234,255,0.1) 0%, transparent 60%);
+        z-index: -2;
+        pointer-events: none;
+        }
+    </style>
+</head>
+<body class="antialiased font-sans">
+
+    <!-- Ambient Backgrounds -->
+    <div class="ambient-grid"></div>
+    <div class="glow-orb-1"></div>
+    <div class="glow-orb-2"></div>
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 left-0 right-0 z-40 glass-panel border-b-0">
+        <div class="flex items-center justify-between p-4">
+            <button id="mobile-menu-btn" class="text-slate-300 hover:text-brand-cyan transition-colors">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <h1 class="text-xl font-bold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent">
+                Pharmacists
+            </h1>
+            <div class="flex items-center gap-3">
+                <partial name="_LanguageSwitcher" />
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-dark-bg font-bold text-sm">
+                    @(User.Identity?.Name?.Substring(0, 1).ToUpper() ?? "A")
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex h-screen pt-16 lg:pt-0 overflow-hidden">
+
+        <!-- Floating Sidebar (Desktop) -->
+        <aside id="sidebar" class="fixed lg:relative inset-y-0 @(isRtl ? "right-0" : "left-0") z-50 w-72 transform @(isRtl ? "translate-x-full" : "-translate-x-full") lg:translate-x-0 transition-transform duration-300 ease-out flex flex-col lg:m-5 lg:h-[calc(100vh-2.5rem)] lg:rounded-3xl glass-panel">
+
+            <!-- Logo Section -->
+            <div class="hidden lg:flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") p-8">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-cyan to-brand-blue p-[1px] shadow-[0_0_20px_rgba(66,234,255,0.3)]">
+                    <div class="w-full h-full bg-dark-bg rounded-xl flex items-center justify-center">
+                        <i class="fas fa-cube text-brand-cyan text-lg"></i>
+                    </div>
+                </div>
+                <div class="text-start">
+                    <h1 class="text-xl font-bold text-white tracking-wide">Pharmacists <span class="text-brand-cyan">@Localizer["Admin"]</span></h1>
+                    <p class="text-[10px] text-brand-blue font-semibold uppercase tracking-[0.2em]">@Localizer["ControlCenter"]</p>
+                </div>
+            </div>
+
+            <!-- Admin Profile Card -->
+            <div class="px-6 pb-6">
+                <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center @(isRtl ? "space-x-reverse" : "space-x-4") group hover:border-brand-cyan/30 transition-colors cursor-pointer">
+                    <div class="relative">
+                        <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-dark-bg font-bold text-lg shadow-[0_0_15px_rgba(255,126,66,0.3)] group-hover:scale-105 transition-transform">
+                            @{
+                                var userName = User.Identity?.Name ?? "A";
+                                @userName.Substring(0, 1).ToUpper()
+                            }
+                        </div>
+                        <span class="absolute bottom-0 @(isRtl ? "left-0" : "right-0") w-3 h-3 bg-[#10B981] border-2 border-[#0B0F19] rounded-full"></span>
+                    </div>
+                    <div class="flex-1 min-w-0 text-start">
+                        <p class="font-semibold text-white text-sm truncate">
+                            @(User.FindFirst("FullName")?.Value?.Split(' ').FirstOrDefault() ?? User.Identity?.Name ?? "Admin")
+                        </p>
+                        <p class="text-xs text-slate-400 truncate">@Localizer["SystemManager"]</p>
+                    </div>
+                    <i class="fas fa-cog text-slate-500 group-hover:text-brand-cyan group-hover:rotate-90 transition-all duration-300"></i>
+                </div>
+            </div>
+
+            <!-- Navigation Scroll Area -->
+            <nav class="flex-1 px-4 pb-4 space-y-1 overflow-y-auto text-start">
+
+                <p class="text-[10px] font-bold text-slate-500/70 uppercase tracking-widest mb-2 px-4 mt-2">@Localizer["Overview"]</p>
+                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
+                   class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "sidebar-active" : "")">
+                    <i class="fas fa-layer-group w-5 text-center"></i>
+                    <span class="font-medium">@Localizer["Dashboard"]</span>
+                </a>
+
+                @if (canViewUsers || canViewRoles || canViewDashboard || canViewCourses)
+                {
+                    <div class="pt-4">
+                        <p class="text-[10px] font-bold text-slate-500/70 uppercase tracking-widest mb-2 px-4">@Localizer["Management"]</p>
+
+                        @if (canViewUsers && (canViewAdminUsers || canViewStudents))
+                        {
+                            <div class="mb-1">
+                                <button type="button" id="users-menu-toggle" class="menu-item w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm">
+                                    <span class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3")">
+                                        <i class="fas fa-users-rays w-5 text-center"></i>
+                                        <span class="font-medium">@Localizer["Users"]</span>
+                                    </span>
+                                    <i id="users-menu-chevron" class="fas fa-chevron-down text-[10px] transition-transform duration-300"></i>
+                                </button>
+
+                                <div id="users-submenu" class="@(isRtl ? "mr-5 pr-4 border-r" : "ml-5 pl-4 border-l") mt-1 border-brand-blue/20 space-y-1 overflow-hidden max-h-0 opacity-0 transition-all duration-300">
+                                    @if (canViewStudents)
+                                    {
+                                        <a asp-area="Admin" asp-controller="Users" asp-action="Students"
+                                           class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-2.5 rounded-lg text-slate-400 hover:text-brand-cyan text-sm transition-colors">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
+                                            <span>@Localizer["Students"]</span>
+                                        </a>
+                                    }
+                                    @if (canViewAdminUsers)
+                                    {
+                                        <a asp-area="Admin" asp-controller="Users" asp-action="AdminUsers"
+                                           class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-2.5 rounded-lg text-slate-400 hover:text-brand-cyan text-sm transition-colors">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
+                                            <span>@Localizer["AdminUsers"]</span>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        @if (canViewRoles)
+                        {
+                            <a asp-area="Admin" asp-controller="Roles" asp-action="Index"
+                               class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Roles" ? "sidebar-active" : "")">
+                                <i class="fas fa-shield-halved w-5 text-center"></i>
+                                <span class="font-medium">@Localizer["Permissions"]</span>
+                            </a>
+                        }
+
+                        @if (canViewCourses)
+                        {
+                            <a asp-area="Admin" asp-controller="Courses" asp-action="Index"
+                               class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Courses" ? "sidebar-active" : "")">
+                                <i class="fas fa-video w-5 text-center"></i>
+                                <span class="font-medium">@Localizer["Courses"]</span>
+                            </a>
+                        }
+
+                        @if (canViewCourses)
+                        {
+                            <a asp-area="Admin" asp-controller="Enrollment" asp-action="Index"
+                               class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Enrollment" ? "sidebar-active" : "")">
+                                <i class="fas fa-credit-card w-5 text-center"></i>
+                                <span class="font-medium">@Localizer["Enrollments"]</span>
+                            </a>
+                        }
+
+                        @if (canViewDashboard)
+                        {
+                            <a asp-area="Admin" asp-controller="Posts" asp-action="Index"
+                               class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Posts" ? "sidebar-active" : "")">
+                                <i class="fas fa-pen-nib w-5 text-center"></i>
+                                <span class="font-medium">@Localizer["Content"]</span>
+                            </a>
+                        }
+                    </div>
+                }
+
+                <div class="pt-4">
+                    <p class="text-[10px] font-bold text-slate-500/70 uppercase tracking-widest mb-2 px-4">@Localizer["System"]</p>
+
+                    <a asp-area="Admin" asp-controller="Security" asp-action="LockedAccounts"
+                       class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Security" ? "sidebar-active" : "")">
+                        <i class="fas fa-lock w-5 text-center"></i>
+                        <span class="font-medium">@Localizer["Security"]</span>
+                    </a>
+
+                    <a asp-area="Admin" asp-controller="Settings" asp-action="Index"
+                       class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Settings" ? "sidebar-active" : "")">
+                        <i class="fas fa-sliders w-5 text-center"></i>
+                        <span class="font-medium">@Localizer["Preferences"]</span>
+                    </a>
+
+                    <a asp-area="Admin" asp-controller="Seo" asp-action="Index"
+                       class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Seo" ? "sidebar-active" : "")">
+                        <i class="fas fa-chart-line w-5 text-center"></i>
+                        <span class="font-medium">SEO</span>
+                    </a>
+                    
+                    <a asp-area="Admin" asp-controller="Logs" asp-action="Index"
+                       class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Logs" ? "sidebar-active" : "")">
+                        <i class="fas fa-history w-5 text-center"></i>
+                        <span class="font-medium">@Localizer["Logs"]</span>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Bottom Actions -->
+            <div class="p-4 border-t border-white/[0.05]">
+                <a asp-area="" asp-controller="Account" asp-action="Logout"
+                   class="flex items-center justify-center @(isRtl ? "space-x-reverse" : "space-x-2") w-full py-3 rounded-xl bg-brand-orange/10 text-brand-orange hover:bg-brand-orange hover:text-dark-bg hover:shadow-[0_0_20px_rgba(255,126,66,0.4)] transition-all duration-300 font-bold text-sm">
+                    <i class="fas fa-power-off"></i>
+                    <span>@Localizer["Logout"]</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Backdrop for mobile -->
+        <div id="sidebar-backdrop" class="fixed inset-0 bg-dark-bg/90 backdrop-blur-md z-40 hidden lg:hidden"></div>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 h-full overflow-y-auto lg:p-6 p-4">
+            <div class="max-w-7xl mx-auto space-y-6">
+                @if (isGlobalNoindexActive)
+                {
+                    <div class="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center space-x-4 shadow-[0_4px_25px_rgba(244,63,94,0.3)] animate-pulse">
+                        <div class="p-2 bg-rose-500/20 rounded-lg"><i class="fas fa-triangle-exclamation text-xl"></i></div>
+                        <div>
+                            <strong class="font-bold text-sm block">Search Engine Indexing Blocked (Noindex Active)</strong>
+                            <span class="text-xs text-rose-300">Search engines are currently blocked from indexing this site. You can change this in <a asp-area="Admin" asp-controller="Seo" asp-action="Index" class="underline hover:text-white font-bold">SEO Management</a>.</span>
+                        </div>
+                    </div>
+                }
+
+                <!-- Topbar inside main content (Desktop only) -->
+                <header class="hidden lg:flex items-center justify-between glass-panel rounded-2xl px-6 py-4 mb-8">
+                    <div class="text-start">
+                        <h2 class="text-xl font-bold text-white">@ViewData["Title"]</h2>
+                        <p class="text-sm text-slate-400 mt-1">@Localizer["AdminLayoutSub"]</p>
+                    </div>
+                    <div class="flex items-center @(isRtl ? "space-x-reverse space-x-4" : "space-x-4")">
+                        <partial name="_LanguageSwitcher" />
+                        <a href="/" class="px-4 py-2 rounded-lg bg-white/5 hover:bg-brand-cyan/10 text-slate-300 hover:text-brand-cyan transition-colors text-sm font-medium border border-white/5 flex items-center @(isRtl ? "space-x-reverse space-x-2" : "space-x-2")">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span>@Localizer["LiveSite"]</span>
+                        </a>
+                    </div>
+                </header>
+
+                <!-- Modern Alerts -->
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center space-x-4 shadow-[0_4px_20px_rgba(16,185,129,0.1)]">
+                        <div class="p-2 bg-emerald-500/20 rounded-lg"><i class="fas fa-check text-lg"></i></div>
+                        <span class="font-medium text-sm">@TempData["SuccessMessage"]</span>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="p-4 rounded-2xl bg-brand-orange/10 border border-brand-orange/20 text-brand-orange flex items-center space-x-4 shadow-[0_4px_20px_rgba(255,126,66,0.1)]">
+                        <div class="p-2 bg-brand-orange/20 rounded-lg"><i class="fas fa-triangle-exclamation text-lg"></i></div>
+                        <span class="font-medium text-sm">@TempData["ErrorMessage"]</span>
+                    </div>
+                }
+
+                <!-- Body Content Container -->
+                <div class="glass-panel rounded-3xl p-1 shadow-2xl">
+                    <div class="bg-dark-bg/40 rounded-[22px] p-6 min-h-[500px]">
+                        @RenderBody()
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        // Mobile menu logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+
+        if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+        sidebarBackdrop.classList.toggle('hidden');
+        });
+        sidebarBackdrop.addEventListener('click', () => {
+        sidebar.classList.add('-translate-x-full');
+        sidebarBackdrop.classList.add('hidden');
+        });
+        }
+
+        // Submenu logic with elegant height transition
+        const usersMenuToggle = document.getElementById('users-menu-toggle');
+        const usersSubmenu = document.getElementById('users-submenu');
+        const usersMenuChevron = document.getElementById('users-menu-chevron');
+
+        if (usersMenuToggle && usersSubmenu) {
+        usersMenuToggle.addEventListener('click', () => {
+        const isOpen = usersSubmenu.classList.contains('max-h-[500px]');
+
+        // Toggle active styles on parent button
+        usersMenuToggle.classList.toggle('text-white');
+
+        if (isOpen) {
+        usersSubmenu.classList.remove('max-h-[500px]', 'opacity-100', 'mt-2');
+        usersSubmenu.classList.add('max-h-0', 'opacity-0');
+        if (usersMenuChevron) usersMenuChevron.classList.remove('rotate-180');
+        } else {
+        usersSubmenu.classList.remove('max-h-0', 'opacity-0');
+        usersSubmenu.classList.add('max-h-[500px]', 'opacity-100', 'mt-2');
+        if (usersMenuChevron) usersMenuChevron.classList.add('rotate-180');
+
+        // Add dots effect on open
+        const links = usersSubmenu.querySelectorAll('a span.w-1\\.5');
+        links.forEach(link => {
+        link.classList.remove('bg-slate-600');
+        link.classList.add('bg-brand-cyan', 'shadow-[0_0_8px_#42EAFF]');
+        });
+        }
+        });
+        }
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

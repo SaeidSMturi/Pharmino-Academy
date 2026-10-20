@@ -1,0 +1,334 @@
+@model List<Domain.Entities.Seo.SeoSitemapSetting>
+@{
+    ViewData["Title"] = "Sitemap Settings";
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full" dir="ltr">
+
+    <!-- Back to Dashboard -->
+    <a href="@Url.Action("Index", "Seo", new { area = "Admin" })" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-brand-cyan transition-colors uppercase tracking-wider mb-6">
+        <i class="fa fa-arrow-left text-[10px]"></i> Back to SEO Dashboard
+    </a>
+
+    <!-- Flash Messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center space-x-3 text-sm font-semibold shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+            <i class="fas fa-check-circle text-base"></i>
+            <span>@TempData["SuccessMessage"]</span>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center space-x-3 text-sm font-semibold shadow-[0_0_15px_rgba(244,63,94,0.1)]">
+            <i class="fas fa-exclamation-circle text-base"></i>
+            <span>@TempData["ErrorMessage"]</span>
+        </div>
+    }
+
+    <!-- 1. Section Configurations -->
+    <div class="w-full mb-10">
+        <div class="pb-2 border-b border-white/5 mb-6">
+            <h2 class="text-base font-bold text-white flex items-center gap-2.5 uppercase tracking-wider">
+                <i class="fas fa-sliders text-brand-cyan drop-shadow-[0_0_6px_#42EAFF]"></i>
+                Section Frequency & Priority
+            </h2>
+        </div>
+
+        @{
+            var postsPriority = Model.FirstOrDefault(s => s.Key == "Section.Posts.Priority")?.Value ?? "0.8";
+            var postsChangeFreq = Model.FirstOrDefault(s => s.Key == "Section.Posts.ChangeFreq")?.Value ?? "weekly";
+
+            var pagesPriority = Model.FirstOrDefault(s => s.Key == "Section.Pages.Priority")?.Value ?? "1.0";
+            var pagesChangeFreq = Model.FirstOrDefault(s => s.Key == "Section.Pages.ChangeFreq")?.Value ?? "daily";
+
+            var productsPriority = Model.FirstOrDefault(s => s.Key == "Section.Products.Priority")?.Value ?? "0.9";
+            var productsChangeFreq = Model.FirstOrDefault(s => s.Key == "Section.Products.ChangeFreq")?.Value ?? "weekly";
+
+            var categoriesPriority = Model.FirstOrDefault(s => s.Key == "Section.Categories.Priority")?.Value ?? "0.6";
+            var categoriesChangeFreq = Model.FirstOrDefault(s => s.Key == "Section.Categories.ChangeFreq")?.Value ?? "weekly";
+        }
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Posts Configuration -->
+            <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.03] hover:border-white/5 transition-all duration-200 flex flex-col justify-between">
+                <h5 class="text-xs font-extrabold text-brand-blue uppercase tracking-wider mb-4 flex items-center gap-2"><i class="fas fa-newspaper text-[10px]"></i> Posts & Articles</h5>
+                <div class="space-y-4">
+                    <form action="@Url.Action("AddSitemapSetting", "Seo", new { area = "Admin" })" method="post" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="key" value="Section.Posts.Priority" />
+                        <div class="flex items-center gap-2 border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                            <input type="number" step="0.1" min="0.0" max="1.0" name="value" value="@postsPriority" class="w-full bg-transparent py-1.5 text-xs text-white font-mono focus:outline-none" required />
+                            <button type="submit" class="text-[10px] font-bold text-brand-blue hover:text-brand-cyan transition-colors uppercase tracking-wide px-2 py-1">Priority</button>
+                        </div>
+                    </form>
+                    <form action="@Url.Action("AddSitemapSetting", "Seo", new { area = "Admin" })" method="post" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="key" value="Section.Posts.ChangeFreq" />
+                        <div class="flex items-center gap-2 border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                            <select name="value" class="w-full bg-transparent py-1.5 text-xs text-slate-300 focus:outline-none cursor-pointer">
+                                <option value="always" selected="@(postsChangeFreq == "always")" class="bg-[#0B0D14] text-white">Always</option>
+                                <option value="hourly" selected="@(postsChangeFreq == "hourly")" class="bg-[#0B0D14] text-white">Hourly</option>
+                                <option value="daily" selected="@(postsChangeFreq == "daily")" class="bg-[#0B0D14] text-white">Daily</option>
+                                <option value="weekly" selected="@(postsChangeFreq == "weekly")" class="bg-[#0B0D14] text-white">Weekly</option>
+                                <option value="monthly" selected="@(postsChangeFreq == "monthly")" class="bg-[#0B0D14] text-white">Monthly</option>
+                            </select>
+                            <button type="submit" class="text-[10px] font-bold text-brand-blue hover:text-brand-cyan transition-colors uppercase tracking-wide px-2 py-1">Frequency</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Pages Configuration -->
+            <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.03] hover:border-white/5 transition-all duration-200 flex flex-col justify-between">
+                <h5 class="text-xs font-extrabold text-emerald-400 uppercase tracking-wider mb-4 flex items-center gap-2"><i class="fas fa-file text-[10px]"></i> Pages</h5>
+                <div class="space-y-4">
+                    <form action="@Url.Action("AddSitemapSetting", "Seo", new { area = "Admin" })" method="post" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="key" value="Section.Pages.Priority" />
+                        <div class="flex items-center gap-2 border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                            <input type="number" step="0.1" min="0.0" max="1.0" name="value" value="@pagesPriority" class="w-full bg-transparent py-1.5 text-xs text-white font-mono focus:outline-none" required />
+                            <button type="submit" class="text-[10px] font-bold text-emerald-400 hover:text-brand-cyan transition-colors uppercase tracking-wide px-2 py-1">Priority</button>
+                        </div>
+                    </form>
+                    <form action="@Url.Action("AddSitemapSetting", "Seo", new { area = "Admin" })" method="post" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="key" value="Section.Pages.ChangeFreq" />
+                        <div class="flex items-center gap-2 border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                            <select name="value" class="w-full bg-transparent py-1.5 text-xs text-slate-300 focus:outline-none cursor-pointer">
+                                <option value="always" selected="@(pagesChangeFreq == "always")" class="bg-[#0B0D14] text-white">Always</option>
+                                <option value="hourly" selected="@(pagesChangeFreq == "hourly")" class="bg-[#0B0D14] text-white">Hourly</option>
+                                <option value="daily" selected="@(pagesChangeFreq == "daily")" class="bg-[#0B0D14] text-white">Daily</option>
+                                <option value="weekly" selected="@(pagesChangeFreq == "weekly")" class="bg-[#0B0D14] text-white">Weekly</option>
+                                <option value="monthly" selected="@(pagesChangeFreq == "monthly")" class="bg-[#0B0D14] text-white">Monthly</option>
+                            </select>
+                            <button type="submit" class="text-[10px] font-bold text-emerald-400 hover:text-brand-cyan transition-colors uppercase tracking-wide px-2 py-1">Frequency</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Products / Courses Configuration -->
+            <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.03] hover:border-white/5 transition-all duration-200 flex flex-col justify-between">
+                <h5 class="text-xs font-extrabold text-brand-yellow uppercase tracking-wider mb-4 flex items-center gap-2"><i class="fas fa-graduation-cap text-[10px]"></i> Courses</h5>
+                <div class="space-y-4">
+                    <form action="@Url.Action("AddSitemapSetting", "Seo", new { area = "Admin" })" method="post" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="key" value="Section.Products.Priority" />
+                        <div class="flex items-center gap-2 border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                            <input type="number" step="0.1" min="0.0" max="1.0" name="value" value="@productsPriority" class="w-full bg-transparent py-1.5 text-xs text-white font-mono focus:outline-none" required />
+                            <button type="submit" class="text-[10px] font-bold text-brand-yellow hover:text-brand-cyan transition-colors uppercase tracking-wide px-2 py-1">Priority</button>
+                        </div>
+                    </form>
+                    <form action="@Url.Action("AddSitemapSetting", "Seo", new { area = "Admin" })" method="post" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="key" value="Section.Products.ChangeFreq" />
+                        <div class="flex items-center gap-2 border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                            <select name="value" class="w-full bg-transparent py-1.5 text-xs text-slate-300 focus:outline-none cursor-pointer">
+                                <option value="always" selected="@(productsChangeFreq == "always")" class="bg-[#0B0D14] text-white">Always</option>
+                                <option value="hourly" selected="@(productsChangeFreq == "hourly")" class="bg-[#0B0D14] text-white">Hourly</option>
+                                <option value="daily" selected="@(productsChangeFreq == "daily")" class="bg-[#0B0D14] text-white">Daily</option>
+                                <option value="weekly" selected="@(productsChangeFreq == "weekly")" class="bg-[#0B0D14] text-white">Weekly</option>
+                                <option value="monthly" selected="@(productsChangeFreq == "monthly")" class="bg-[#0B0D14] text-white">Monthly</option>
+                            </select>
+                            <button type="submit" class="text-[10px] font-bold text-brand-yellow hover:text-brand-cyan transition-colors uppercase tracking-wide px-2 py-1">Frequency</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Categories Configuration -->
+            <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.03] hover:border-white/5 transition-all duration-200 flex flex-col justify-between">
+                <h5 class="text-xs font-extrabold text-brand-purple uppercase tracking-wider mb-4 flex items-center gap-2"><i class="fas fa-tags text-[10px]"></i> Categories</h5>
+                <div class="space-y-4">
+                    <form action="@Url.Action("AddSitemapSetting", "Seo", new { area = "Admin" })" method="post" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="key" value="Section.Categories.Priority" />
+                        <div class="flex items-center gap-2 border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                            <input type="number" step="0.1" min="0.0" max="1.0" name="value" value="@categoriesPriority" class="w-full bg-transparent py-1.5 text-xs text-white font-mono focus:outline-none" required />
+                            <button type="submit" class="text-[10px] font-bold text-brand-purple hover:text-brand-cyan transition-colors uppercase tracking-wide px-2 py-1">Priority</button>
+                        </div>
+                    </form>
+                    <form action="@Url.Action("AddSitemapSetting", "Seo", new { area = "Admin" })" method="post" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="key" value="Section.Categories.ChangeFreq" />
+                        <div class="flex items-center gap-2 border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                            <select name="value" class="w-full bg-transparent py-1.5 text-xs text-slate-300 focus:outline-none cursor-pointer">
+                                <option value="always" selected="@(categoriesChangeFreq == "always")" class="bg-[#0B0D14] text-white">Always</option>
+                                <option value="hourly" selected="@(categoriesChangeFreq == "hourly")" class="bg-[#0B0D14] text-white">Hourly</option>
+                                <option value="daily" selected="@(categoriesChangeFreq == "daily")" class="bg-[#0B0D14] text-white">Daily</option>
+                                <option value="weekly" selected="@(categoriesChangeFreq == "weekly")" class="bg-[#0B0D14] text-white">Weekly</option>
+                                <option value="monthly" selected="@(categoriesChangeFreq == "monthly")" class="bg-[#0B0D14] text-white">Monthly</option>
+                            </select>
+                            <button type="submit" class="text-[10px] font-bold text-brand-purple hover:text-brand-cyan transition-colors uppercase tracking-wide px-2 py-1">Frequency</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2 & 3. Custom Inclusions & Exclusions -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+
+        <!-- Custom Manual URL Inclusions -->
+        <div class="space-y-4">
+            <div class="pb-2 border-b border-white/5 mb-4">
+                <h3 class="text-base font-bold text-white uppercase tracking-wider">Custom URLs to Include</h3>
+            </div>
+
+            <form action="@Url.Action("AddSitemapSetting", "Seo", new { area = "Admin" })" method="post" class="space-y-4 bg-white/[0.01] p-5 rounded-2xl border border-white/[0.03]">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="key" value="CustomUrl" />
+                <input type="hidden" name="isCustomLink" value="true" />
+                <input type="hidden" name="isExcludedPath" value="false" />
+
+                <div class="space-y-4">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">URL Path</label>
+                        <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                            <input type="text" name="value" class="w-full bg-transparent py-2 text-white placeholder-slate-600 focus:outline-none text-xs font-mono font-bold" placeholder="e.g. /custom-landing-page" required />
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Priority</label>
+                            <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                                <input type="number" step="0.1" min="0.0" max="1.0" name="customPriority" value="0.5" class="w-full bg-transparent py-2 text-white font-mono focus:outline-none" required />
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Change Frequency</label>
+                            <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                                <select name="customChangeFreq" class="w-full bg-transparent py-2 text-slate-300 text-xs focus:outline-none cursor-pointer">
+                                    <option value="always" class="bg-[#0B0D14]">Always</option>
+                                    <option value="hourly" class="bg-[#0B0D14]">Hourly</option>
+                                    <option value="daily" class="bg-[#0B0D14]">Daily</option>
+                                    <option value="weekly" class="bg-[#0B0D14]" selected>Weekly</option>
+                                    <option value="monthly" class="bg-[#0B0D14]">Monthly</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex justify-end">
+                        <button type="submit" class="w-full sm:w-auto text-center px-4 py-2 bg-brand-blue/10 text-brand-blue border border-brand-blue/20 rounded-xl hover:bg-brand-blue hover:text-white text-xs font-bold transition-all uppercase tracking-wide flex items-center justify-center gap-1.5">
+                            <i class="fa fa-plus text-[10px]"></i> Add Custom Link
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Inclusions Table -->
+            <div class="w-full overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-white/5 text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/[0.01]">
+                            <th class="py-3 px-2 font-bold">URL Path</th>
+                            <th class="py-3 px-2 font-bold w-16">Priority</th>
+                            <th class="py-3 px-2 font-bold w-16">Frequency</th>
+                            <th class="py-3 px-2 font-bold text-right w-16">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/[0.02]">
+                        @{
+                            var customLinks = Model.Where(s => s.IsCustomLink).ToList();
+                        }
+                        @if (!customLinks.Any())
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-slate-600 text-xs font-medium py-6 italic">No custom URLs added yet.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var link in customLinks)
+                            {
+                                <tr class="hover:bg-white/[0.01] transition-colors duration-200">
+                                    <td class="py-3 px-2 text-xs font-bold text-white font-mono truncate max-w-[180px]" title="@link.Value">@link.Value</td>
+                                    <td class="py-3 px-2 font-mono text-xs text-slate-400">@(link.CustomPriority?.ToString("0.0") ?? "0.5")</td>
+                                    <td class="py-3 px-2 text-[10px] font-bold uppercase text-slate-500 font-mono">@link.CustomChangeFreq</td>
+                                    <td class="py-3 px-2 text-right">
+                                        <form action="@Url.Action("DeleteSitemapSetting", "Seo", new { area = "Admin", id = link.Id })" method="post" class="m-0">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="px-2 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded-lg hover:bg-rose-500 hover:text-white transition-all text-[10px] flex items-center justify-center"><i class="fa fa-trash-alt"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sitemap Path Exclusions -->
+        <div class="space-y-4">
+            <div class="pb-2 border-b border-white/5 mb-4">
+                <h3 class="text-base window-header text-white uppercase tracking-wider">URLs to Exclude</h3>
+            </div>
+
+            <form action="@Url.Action("AddSitemapSetting", "Seo", new { area = "Admin" })" method="post" class="space-y-4 bg-white/[0.01] p-5 rounded-2xl border border-white/[0.03]">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="key" value="ExcludedUrl" />
+                <input type="hidden" name="isCustomLink" value="false" />
+                <input type="hidden" name="isExcludedPath" value="true" />
+
+                <div class="space-y-4">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Path to Exclude</label>
+                        <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors flex items-center gap-4">
+                            <input type="text" name="value" class="w-full bg-transparent py-2 text-slate-200 placeholder-slate-600 focus:outline-none text-xs font-mono font-bold" placeholder="e.g. /Account/* or /Course/2" required />
+                            <button type="submit" class="px-3 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded-xl hover:bg-rose-500 hover:text-white text-[10px] font-bold transition-all uppercase tracking-wide whitespace-nowrap flex items-center gap-1"><i class="fa fa-minus-circle"></i> Exclude</button>
+                        </div>
+                    </div>
+                    <div class="text-[10px] text-slate-500 font-medium leading-relaxed">
+                        Use wildcards like <code>/Account/*</code> to exclude entire sections, or specific paths like <code>/Privacy</code>.
+                    </div>
+                </div>
+            </form>
+
+            <!-- Exclusions Table -->
+            <div class="w-full overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-white/5 text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/[0.01]">
+                            <th class="py-3 px-2 font-bold">Excluded Path</th>
+                            <th class="py-3 px-2 font-bold w-32">Date Added</th>
+                            <th class="py-3 px-2 font-bold text-right w-16">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/[0.02]">
+                        @{
+                            var excludedLinks = Model.Where(s => s.IsExcludedPath).ToList();
+                        }
+                        @if (!excludedLinks.Any())
+                        {
+                            <tr>
+                                <td colspan="3" class="text-center text-slate-600 text-xs font-medium py-6 italic">No URL exclusions added yet.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var excl in excludedLinks)
+                            {
+                                <tr class="hover:bg-white/[0.01] transition-colors duration-200">
+                                    <td class="py-3 px-2 text-xs font-bold text-rose-400 font-mono select-all">@excl.Value</td>
+                                    <td class="py-3 px-2 font-mono text-[11px] text-slate-500">@excl.UpdatedAt.ToLocalTime().ToString("yyyy/MM/dd HH:mm")</td>
+                                    <td class="py-3 px-2 text-right">
+                                        <form action="@Url.Action("DeleteSitemapSetting", "Seo", new { area = "Admin", id = excl.Id })" method="post" class="m-0">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="px-2 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded-lg hover:bg-rose-500 hover:text-white transition-all text-[10px] flex items-center justify-center"><i class="fa fa-trash-alt"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

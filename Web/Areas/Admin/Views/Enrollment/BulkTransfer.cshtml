@@ -1,0 +1,292 @@
+@model Web.Areas.Admin.ViewModels.BulkTransferViewModel
+
+@{
+    ViewData["Title"] = "Bulk Enrollment Transfer";
+}
+
+<div class="fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
+                Bulk Enrollment Transfer
+            </h1>
+            <p class="text-slate-400">Transfer students from one course to another</p>
+        </div>
+        <div class="flex gap-2">
+            <a asp-action="Index"
+               class="px-5 py-2.5 bg-slate-700/50 text-slate-300 rounded-lg hover:bg-slate-700 transition-all text-sm whitespace-nowrap">
+                <i class="fas fa-arrow-left mr-2"></i>Back to Enrollments
+            </a>
+        </div>
+    </div>
+
+    @if (Model.Result != null)
+    {
+        @if (Model.Result.IsSuccess)
+        {
+            <div class="mb-6 p-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10">
+                <h4 class="text-emerald-400 font-bold mb-3 flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i>Transfer Completed Successfully
+                </h4>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-800/50 rounded-lg p-3 text-center">
+                        <p class="text-2xl font-bold text-emerald-400">@Model.Result.Transferred</p>
+                        <p class="text-xs text-slate-400 mt-1">Transferred</p>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-lg p-3 text-center">
+                        <p class="text-2xl font-bold text-amber-400">@Model.Result.Skipped</p>
+                        <p class="text-xs text-slate-400 mt-1">Skipped (already enrolled)</p>
+                    </div>
+                    @if (Model.Result.Removed > 0)
+                    {
+                        <div class="bg-slate-800/50 rounded-lg p-3 text-center">
+                            <p class="text-2xl font-bold text-red-400">@Model.Result.Removed</p>
+                            <p class="text-xs text-slate-400 mt-1">Removed from source</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="mb-6 p-5 rounded-xl border border-red-500/30 bg-red-500/10">
+                <h4 class="text-red-400 font-bold mb-2 flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Transfer Errors
+                </h4>
+                <ul class="space-y-1">
+                    @foreach (var err in Model.Result.Errors)
+                    {
+                        <li class="text-red-300 text-sm"><i class="fas fa-circle-dot mr-1.5 text-xs"></i>@err</li>
+                    }
+                </ul>
+            </div>
+        }
+    }
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Transfer Form -->
+        <div class="lg:col-span-2">
+            <form asp-action="BulkTransfer" method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="All" class="mb-4 p-4 rounded-lg border border-red-500/30 bg-red-500/10 text-red-300 text-sm hidden [&:not(:empty)]:block"></div>
+
+                <!-- Source / Destination -->
+                <div class="glass-card rounded-xl p-6 mb-6">
+                    <h3 class="text-lg font-bold text-white mb-5 flex items-center">
+                        <i class="fas fa-route mr-3 text-purple-400"></i>
+                        Transfer Route
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+                        <!-- From -->
+                        <div>
+                            <label asp-for="FromCourseId" class="text-sm text-slate-400 mb-2 block">From Course (source)</label>
+                            <select asp-for="FromCourseId" id="fromCourse" onchange="updatePreview()"
+                                    class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-purple-500 text-sm">
+                                <option value="">— select source —</option>
+                                @foreach (var c in Model.AvailableCourses)
+                                {
+                                    <option value="@c.CourseId" data-count="@c.EnrollmentCount">
+                                        @c.Title (@c.EnrollmentCount enrolled)
+                                    </option>
+                                }
+                            </select>
+                            <span asp-validation-for="FromCourseId" class="text-red-400 text-xs mt-1 block"></span>
+                        </div>
+
+                        <!-- Arrow -->
+                        <div class="hidden md:flex items-center justify-center pt-8">
+                            <div class="flex flex-col items-center">
+                                <i class="fas fa-arrow-right text-3xl text-slate-600"></i>
+                                <span class="text-xs text-slate-600 mt-1" id="transferCountLabel">— users</span>
+                            </div>
+                        </div>
+
+                        <!-- To (spans full row on md) -->
+                        <div class="md:col-start-1">
+                            <label asp-for="ToCourseId" class="text-sm text-slate-400 mb-2 block">To Course (destination)</label>
+                            <select asp-for="ToCourseId"
+                                    class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-purple-500 text-sm">
+                                <option value="">— select destination —</option>
+                                @foreach (var c in Model.AvailableCourses)
+                                {
+                                    <option value="@c.CourseId">
+                                        @c.Title (@c.EnrollmentCount enrolled)
+                                    </option>
+                                }
+                            </select>
+                            <span asp-validation-for="ToCourseId" class="text-red-400 text-xs mt-1 block"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div class="glass-card rounded-xl p-6 mb-6">
+                    <h3 class="text-lg font-bold text-white mb-5 flex items-center">
+                        <i class="fas fa-sliders mr-3 text-blue-400"></i>
+                        Transfer Options
+                    </h3>
+                    <div class="space-y-4">
+                        <label class="flex items-start space-x-3 cursor-pointer p-3 rounded-lg hover:bg-slate-800/50 transition-colors">
+                            <input asp-for="OverrideExisting" type="checkbox"
+                                   class="mt-0.5 rounded text-blue-500 focus:ring-blue-500" />
+                            <div>
+                                <p class="text-white text-sm font-medium">Override existing enrollments</p>
+                                <p class="text-slate-500 text-xs mt-0.5">
+                                    If the user is already enrolled in the destination course, update their progress to match the source.
+                                    Otherwise, already-enrolled users are skipped.
+                                </p>
+                            </div>
+                        </label>
+                        <label class="flex items-start space-x-3 cursor-pointer p-3 rounded-lg hover:bg-slate-800/50 transition-colors">
+                            <input asp-for="CopyPaymentInfo" type="checkbox"
+                                   class="mt-0.5 rounded text-blue-500 focus:ring-blue-500" />
+                            <div>
+                                <p class="text-white text-sm font-medium">Copy payment information</p>
+                                <p class="text-slate-500 text-xs mt-0.5">
+                                    Preserve paid/free status and payment amount when creating enrollments in the destination course.
+                                </p>
+                            </div>
+                        </label>
+                        <label class="flex items-start space-x-3 cursor-pointer p-3 rounded-lg hover:bg-slate-800/50 transition-colors border border-red-500/20">
+                            <input asp-for="RemoveFromSource" type="checkbox"
+                                   class="mt-0.5 rounded text-red-500 focus:ring-red-500" />
+                            <div>
+                                <p class="text-red-400 text-sm font-medium">
+                                    <i class="fas fa-exclamation-triangle mr-1 text-xs"></i>
+                                    Remove from source course after transfer
+                                </p>
+                                <p class="text-slate-500 text-xs mt-0.5">
+                                    Users will be unenrolled from the source course and their video progress there will be permanently deleted.
+                                    <strong class="text-red-400">This cannot be undone.</strong>
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <div class="flex items-center justify-between gap-4">
+                    <a asp-action="Index" class="px-5 py-3 bg-slate-700/50 text-slate-300 rounded-lg hover:bg-slate-700 transition-all text-sm">
+                        Cancel
+                    </a>
+                    <button type="submit"
+                            onclick="return confirmTransfer()"
+                            class="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all text-sm font-bold">
+                        <i class="fas fa-exchange-alt mr-2"></i>Execute Transfer
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Info Sidebar -->
+        <div class="space-y-5">
+            <div class="glass-card rounded-xl p-5">
+                <h4 class="text-white font-bold mb-4 flex items-center">
+                    <i class="fas fa-info-circle mr-2 text-blue-400"></i>
+                    How It Works
+                </h4>
+                <ol class="space-y-3 text-sm text-slate-400">
+                    <li class="flex items-start space-x-2">
+                        <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">1</span>
+                        <span>All students enrolled in the <strong class="text-white">source</strong> course are identified.</span>
+                    </li>
+                    <li class="flex items-start space-x-2">
+                        <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">2</span>
+                        <span>New enrollments are created in the <strong class="text-white">destination</strong> course for each student (unless already enrolled and override is off).</span>
+                    </li>
+                    <li class="flex items-start space-x-2">
+                        <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">3</span>
+                        <span>New enrollments start at <strong class="text-white">0% progress</strong> in the destination. Only payment info is optionally copied.</span>
+                    </li>
+                    <li class="flex items-start space-x-2">
+                        <span class="w-5 h-5 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">4</span>
+                        <span>If <em>Remove from source</em> is enabled, the source enrollment and video progress are permanently deleted.</span>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="glass-card rounded-xl p-5">
+                <h4 class="text-white font-bold mb-4 flex items-center">
+                    <i class="fas fa-bomb mr-2 text-red-400"></i>
+                    Bulk Revoke
+                </h4>
+                <p class="text-slate-400 text-sm mb-4">
+                    Remove <strong class="text-white">all students</strong> from a course at once. This also deletes their video progress.
+                    Use with caution.
+                </p>
+                <div class="space-y-2">
+                    <select id="revokeSelect"
+                            class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-red-500 text-sm">
+                        <option value="">— select course —</option>
+                        @foreach (var c in Model.AvailableCourses)
+                        {
+                            <option value="@c.CourseId" data-count="@c.EnrollmentCount">
+                                @c.Title (@c.EnrollmentCount enrolled)
+                            </option>
+                        }
+                    </select>
+                    <button onclick="executeBulkRevoke()"
+                            class="w-full px-4 py-2.5 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors text-sm font-medium">
+                        <i class="fas fa-user-slash mr-2"></i>Revoke All Enrollments
+                    </button>
+                </div>
+                <div id="revokeResult" class="hidden mt-3 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-sm"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Update the transfer count hint when source course changes
+        function updatePreview() {
+            const sel = document.getElementById('fromCourse');
+            const opt = sel.options[sel.selectedIndex];
+            const count = opt?.dataset?.count ?? '0';
+            document.getElementById('transferCountLabel').textContent = count + ' users';
+        }
+
+        function confirmTransfer() {
+            const from = document.getElementById('fromCourse');
+            const removeCheck = document.querySelector('[name="RemoveFromSource"]');
+            const fromLabel = from.options[from.selectedIndex]?.text ?? 'source';
+            if (removeCheck?.checked) {
+                return confirm(
+                    `⚠️ WARNING: This will remove all enrollments from "${fromLabel}" permanently.\n\n` +
+                    `Their video progress in that course will be deleted and cannot be recovered.\n\nContinue?`
+                );
+            }
+            return confirm('Start bulk transfer? This may affect many users.');
+        }
+
+        async function executeBulkRevoke() {
+            const sel = document.getElementById('revokeSelect');
+            const courseId = parseInt(sel.value);
+            if (!courseId) { alert('Please select a course.'); return; }
+            const opt = sel.options[sel.selectedIndex];
+            const count = opt?.dataset?.count ?? '0';
+            const label = opt?.text ?? 'this course';
+            if (!confirm(`Remove ALL ${count} enrollment(s) from "${label}"?\n\nVideo progress will also be permanently deleted. This cannot be undone.`)) return;
+
+            try {
+                const r = await fetch('/Admin/Enrollment/BulkRevoke', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ courseId })
+                });
+                const result = await r.json();
+                const box = document.getElementById('revokeResult');
+                if (result.success) {
+                    box.textContent = `✓ ${result.message}`;
+                    box.className = 'mt-3 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-sm block';
+                    opt.text = opt.text.replace(/\(\d+ enrolled\)/, '(0 enrolled)');
+                    opt.dataset.count = '0';
+                } else {
+                    box.textContent = `✗ ${result.message}`;
+                    box.className = 'mt-3 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm block';
+                }
+            } catch { alert('An error occurred.'); }
+        }
+    </script>
+}

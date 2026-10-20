@@ -1,0 +1,232 @@
+@model Domain.Entities.Course.CourseVideo
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["VideoDetails"].Value;
+    var streamUrl = Url.Action("StreamVideo", "CourseVideos", new { Area = "Admin", id = Model.VideoId });
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start" dir="@(isRtl ? "rtl" : "ltr")">
+
+    <!-- Flash Messages -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="mb-4 p-4 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-300 flex items-center @(isRtl ? "space-x-reverse" : "space-x-2")">
+            <i class="fas fa-exclamation-triangle"></i><span>@TempData["ErrorMessage"]</span>
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="mb-4 p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 flex items-center @(isRtl ? "space-x-reverse" : "space-x-2")">
+            <i class="fas fa-check-circle"></i><span>@TempData["SuccessMessage"]</span>
+        </div>
+    }
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2">
+                @Localizer["VideoDetails"]
+            </h1>
+            <p class="text-slate-400">@Model.Course?.Title</p>
+        </div>
+        <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2")">
+            <a asp-action="Edit" asp-route-id="@Model.VideoId"
+               class="w-full sm:w-auto text-center px-5 py-2.5 bg-brand-blue/10 border border-brand-blue/20 text-brand-blue rounded-xl hover:bg-brand-blue hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg whitespace-nowrap">
+                <i class="fas fa-edit @(isRtl ? "ml-2" : "mr-2") text-xs"></i>@Localizer["Edit"]
+            </a>
+            <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId"
+               class="w-full sm:w-auto text-center px-5 py-2.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg whitespace-nowrap">
+                <i class="fas @(isRtl ? "fa-arrow-right ml-2" : "fa-arrow-left mr-2") text-xs"></i>@Localizer["Back"]
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Video Player -->
+        <div class="lg:col-span-2 space-y-6">
+            <div class="rounded-3xl bg-white/[0.02] border border-white/[0.05] overflow-hidden shadow-2xl backdrop-blur-xl">
+                <div class="p-4 border-b border-white/5 flex items-center justify-between">
+                    <h3 class="text-white font-bold flex items-center">
+                        <i class="fas fa-play-circle @(isRtl ? "ml-2" : "mr-2") text-brand-cyan"></i>
+                        @Model.Title
+                    </h3>
+                    <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2")">
+                        @if (Model.IsFree)
+                        {
+                            <span class="px-2 py-0.5 text-xs font-bold rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                <i class="fas fa-unlock @(isRtl ? "ml-1" : "mr-1")"></i>@Localizer["Free"]
+                            </span>
+                        }
+                        @if (!Model.IsActive)
+                        {
+                            <span class="px-2 py-0.5 text-xs font-bold rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                                <i class="fas fa-eye-slash @(isRtl ? "ml-1" : "mr-1")"></i>@Localizer["Inactive"]
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="px-2 py-0.5 text-xs font-bold rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                <i class="fas fa-eye @(isRtl ? "ml-1" : "mr-1")"></i>@Localizer["Active"]
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Video Element -->
+                <div class="bg-black relative">
+                    <video id="adminVideoPlayer"
+                           class="w-full max-h-[480px]"
+                           controls
+                           controlsList="nodownload"
+                           oncontextmenu="return false;"
+                           preload="metadata">
+                        <source src="@streamUrl" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    <div class="p-6">
+                        <p class="text-slate-300 text-sm leading-relaxed">@Model.Description</p>
+                    </div>
+                }
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center">
+                    <i class="fas fa-bolt @(isRtl ? "ml-2" : "mr-2") text-brand-yellow"></i>
+                    @Localizer["Actions"]
+                </h3>
+                <div class="flex flex-wrap gap-3">
+                    <a asp-action="Edit" asp-route-id="@Model.VideoId"
+                       class="px-4 py-2 bg-brand-blue/10 text-brand-blue rounded-xl hover:bg-brand-blue hover:text-white transition-all text-xs font-bold border border-brand-blue/10 flex items-center">
+                        <i class="fas fa-edit @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["Edit"]
+                    </a>
+                    <button onclick="toggleVideoActive(@Model.VideoId, @Model.IsActive.ToString().ToLower())"
+                            class="px-4 py-2 bg-brand-yellow/10 text-brand-yellow rounded-xl hover:bg-brand-yellow hover:text-dark-bg transition-all text-xs font-bold border border-brand-yellow/20 flex items-center">
+                        <i class="fas fa-@(Model.IsActive ? "eye-slash" : "eye") @(isRtl ? "ml-1.5" : "mr-1.5")"></i>
+                        @(Model.IsActive ? Localizer["Deactivate"] : Localizer["Activate"])
+                    </button>
+                    <button onclick="toggleVideoFree(@Model.VideoId, @Model.IsFree.ToString().ToLower())"
+                            class="px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-xl hover:bg-emerald-500 hover:text-dark-bg transition-all text-xs font-bold border border-emerald-500/20 flex items-center">
+                        <i class="fas fa-@(Model.IsFree ? "lock" : "unlock") @(isRtl ? "ml-1.5" : "mr-1.5")"></i>
+                        @Localizer["Free"]
+                    </button>
+                    <button onclick="deleteVideo(@Model.VideoId, @Model.CourseId)"
+                            class="px-4 py-2 bg-rose-500/10 text-rose-400 rounded-xl hover:bg-rose-500 hover:text-white transition-all text-xs font-bold border border-rose-500/20 flex items-center">
+                        <i class="fas fa-trash @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["Delete"]
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Info -->
+        <div class="space-y-6">
+            <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center">
+                    <i class="fas fa-info-circle @(isRtl ? "ml-2" : "mr-2") text-brand-cyan"></i>
+                    @Localizer["VideoInformation"]
+                </h3>
+                <div class="space-y-3 text-xs font-medium">
+                    <div class="flex items-center justify-between p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-400 flex items-center"><i class="fas fa-hashtag @(isRtl ? "ml-2" : "mr-2") text-slate-500"></i>@Localizer["OrderIndex"]</span>
+                        <span class="text-white font-bold font-mono">#@Model.OrderIndex</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-400 flex items-center"><i class="fas fa-clock @(isRtl ? "ml-2" : "mr-2") text-brand-blue"></i>@Localizer["Duration"]</span>
+                        <span class="text-white font-bold font-mono">
+                            @if (Model.DurationSeconds.HasValue)
+                            {
+                                var m = Model.DurationSeconds.Value / 60;
+                                var s = Model.DurationSeconds.Value % 60;
+                                <text>@m:@s.ToString("D2")</text>
+                            }
+                            else
+                            {
+                                <text>--:--</text>
+                            }
+                        </span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-400 flex items-center"><i class="fas fa-video @(isRtl ? "ml-2" : "mr-2") text-brand-cyan"></i>ID</span>
+                        <span class="text-white font-mono">#@Model.VideoId</span>
+                    </div>
+                    <div class="p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-500 block mb-1 uppercase tracking-wider text-[10px]"><i class="fas fa-file @(isRtl ? "ml-1.5" : "mr-1.5") text-slate-500"></i>@Localizer["VideoFile"]</span>
+                        <span class="text-white font-mono text-[11px] break-all">@Model.VideoFileName</span>
+                    </div>
+                    <div class="p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-500 block mb-1 uppercase tracking-wider text-[10px]"><i class="fas fa-calendar @(isRtl ? "ml-1.5" : "mr-1.5") text-slate-500"></i>@Localizer["CreatedDate"]</span>
+                        <span class="text-white font-mono" dir="ltr">@Model.CreateDate.ToString("yyyy/MM/dd HH:mm")</span>
+                    </div>
+                    @if (Model.LastUpdate.HasValue)
+                    {
+                        <div class="p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                            <span class="text-slate-500 block mb-1 uppercase tracking-wider text-[10px]"><i class="fas fa-edit @(isRtl ? "ml-1.5" : "mr-1.5") text-slate-500"></i>@Localizer["LastUpdated"]</span>
+                            <span class="text-brand-cyan font-mono" dir="ltr">@Model.LastUpdate.Value.ToString("yyyy/MM/dd HH:mm")</span>
+                        </div>
+                    }
+                    <div class="p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-500 block mb-1 uppercase tracking-wider text-[10px]"><i class="fas fa-book @(isRtl ? "ml-1.5" : "mr-1.5") text-slate-500"></i>@Localizer["CourseTitle"]</span>
+                        <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId"
+                           class="text-brand-cyan hover:underline transition-colors font-bold text-xs">
+                            @Model.Course?.Title
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function toggleVideoActive(videoId, isActive) {
+            const action = isActive ? 'deactivate' : 'activate';
+            if (!confirm(`Do you want to ${action} this video?`)) return;
+
+            try {
+                const res = await fetch('/Admin/CourseVideos/ToggleActive', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                    body: JSON.stringify({ id: videoId })
+                });
+                const data = await res.json();
+                if (data.success) location.reload();
+                else alert(data.message || 'Error occurred');
+            } catch { alert('An error occurred'); }
+        }
+
+        async function toggleVideoFree(videoId, isFree) {
+            try {
+                const res = await fetch('/Admin/CourseVideos/ToggleFree', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                    body: JSON.stringify({ id: videoId })
+                });
+                const data = await res.json();
+                if (data.success) location.reload();
+                else alert(data.message || 'Error occurred');
+            } catch { alert('An error occurred'); }
+        }
+
+        async function deleteVideo(videoId, courseId) {
+            if (!confirm('Are you sure you want to delete this video?')) return;
+
+            try {
+                const res = await fetch('/Admin/CourseVideos/Delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                    body: JSON.stringify({ id: videoId })
+                });
+                const data = await res.json();
+                if (data.success) window.location.href = `/Admin/Courses/Details/${courseId}`;
+                else alert(data.message || 'Error occurred');
+            } catch { alert('An error occurred'); }
+        }
+    </script>
+}

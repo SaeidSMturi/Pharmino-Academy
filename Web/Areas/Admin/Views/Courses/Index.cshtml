@@ -1,0 +1,227 @@
+@model List<Domain.Entities.Course.Course>
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["CourseManagement"].Value;
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start" dir="@(isRtl ? "rtl" : "ltr")">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+        <div>
+            <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide">
+                @Localizer["CourseManagement"]
+            </h1>
+            <p class="text-slate-400 text-sm font-medium">@Localizer["CourseManagementSub"]</p>
+        </div>
+        <a asp-area="Admin" asp-controller="Courses" asp-action="Create" class="w-full md:w-auto text-center px-6 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue rounded-xl text-dark-bg font-extrabold hover:shadow-[0_0_20px_rgba(66,234,255,0.4)] hover:scale-[1.02] transition-all duration-300 whitespace-nowrap text-sm flex items-center justify-center">
+            <i class="fas fa-plus @(isRtl ? "ml-2" : "mr-2") text-lg"></i>
+            @Localizer["CreateNewCourse"]
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-brand-blue/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-brand-blue/10 rounded-full blur-2xl group-hover:bg-brand-blue/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">@Localizer["TotalCourses"]</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.Count</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-brand-blue/10 border border-brand-blue/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(66,114,255,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-graduation-cap text-brand-blue text-lg"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-emerald-500/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">@Localizer["ActiveCourses"]</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.Count(c => c.IsActive)</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(16,185,129,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-circle-check text-emerald-400 text-lg"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-brand-cyan/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-brand-cyan/10 rounded-full blur-2xl group-hover:bg-brand-cyan/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">@Localizer["TotalVideos"]</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.Sum(c => c.Videos?.Count ?? 0)</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(66,234,255,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-video text-brand-cyan text-lg"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-brand-yellow/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-brand-yellow/10 rounded-full blur-2xl group-hover:bg-brand-yellow/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">@Localizer["TotalEnrollments"]</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.Sum(c => c.Enrollments?.Count ?? 0)</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-brand-yellow/10 border border-brand-yellow/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(255,179,67,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-users text-brand-yellow text-lg"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        @foreach (var course in Model)
+        {
+            <div class="rounded-3xl bg-white/[0.02] border border-white/[0.05] overflow-hidden hover:border-brand-blue/20 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300 flex flex-col group course-card" data-course-id="@course.CourseId">
+
+                <div class="h-48 bg-dark-bg relative overflow-hidden flex-shrink-0 border-b border-white/5">
+                    @if (!string.IsNullOrEmpty(course.ImageName))
+                    {
+                        @if (course.ImageName != "default.jpg")
+                        {
+                            <img src="~/uploads/courses/@course.ImageName" alt="@course.Title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        }
+                        else
+                        {
+                            <div class="w-full h-full bg-gradient-to-br from-brand-blue/10 to-brand-cyan/5 flex items-center justify-center">
+                                <i class="fas fa-graduation-cap text-5xl text-brand-cyan/30 drop-shadow-[0_0_10px_rgba(66,234,255,0.2)]"></i>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="w-full h-full bg-gradient-to-br from-brand-blue/10 to-brand-cyan/5 flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-5xl text-brand-cyan/30"></i>
+                        </div>
+                    }
+
+                    <div class="absolute top-4 @(isRtl ? "right-4" : "left-4") z-10">
+                        @if (course.IsActive)
+                        {
+                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wide rounded-lg bg-emerald-500/90 text-dark-bg backdrop-blur-md shadow-md uppercase">
+                                <i class="fas fa-circle-check @(isRtl ? "ml-1" : "mr-1") text-[9px]"></i>@Localizer["Active"]
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wide rounded-lg bg-rose-500/90 text-white backdrop-blur-md shadow-md uppercase">
+                                <i class="fas fa-circle-xmark @(isRtl ? "ml-1" : "mr-1") text-[9px]"></i>@Localizer["Inactive"]
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <div class="p-6 flex flex-col flex-1">
+                    <h3 class="text-base font-bold text-white mb-2 truncate group-hover:text-brand-cyan transition-colors">@course.Title</h3>
+                    <p class="text-slate-400 text-xs font-medium line-clamp-2 mb-6 flex-1 leading-relaxed">@course.Description</p>
+
+                    <div class="flex items-center justify-between text-xs font-semibold text-slate-400 mb-6 pb-4 border-b border-white/5 gap-2">
+                        <div class="flex items-center bg-white/[0.02] px-2.5 py-1.5 rounded-lg border border-white/[0.02]">
+                            <i class="fas fa-video text-brand-cyan @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i>
+                            <span>@(course.Videos?.Count ?? 0) @Localizer["VideosAbbr"]</span>
+                        </div>
+                        <div class="flex items-center bg-white/[0.02] px-2.5 py-1.5 rounded-lg border border-white/[0.02]">
+                            <i class="far fa-clock text-brand-blue @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i>
+                            <span>@(course.DurationHours ?? 0) @Localizer["Hours"]</span>
+                        </div>
+                        <div class="flex items-center bg-brand-yellow/10 text-brand-yellow px-2.5 py-1.5 rounded-lg border border-brand-yellow/10">
+                            <i class="fas fa-tag @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i>
+                            <span class="font-mono font-bold">$@course.Price.ToString("N0")</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 mt-auto">
+                        <a asp-area="Admin" asp-controller="Courses" asp-action="Details" asp-route-id="@course.CourseId"
+                           class="px-3 py-2 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white text-xs font-bold transition-all text-center flex items-center justify-center gap-1.5">
+                            <i class="fas fa-eye text-[11px]"></i>@Localizer["Details"]
+                        </a>
+                        <a asp-area="Admin" asp-controller="Courses" asp-action="Edit" asp-route-id="@course.CourseId"
+                           class="px-3 py-2 bg-brand-blue/10 text-brand-blue border border-brand-blue/10 rounded-xl hover:bg-brand-blue hover:text-white text-xs font-bold transition-all text-center flex items-center justify-center gap-1.5">
+                            <i class="fas fa-edit text-[11px]"></i>@Localizer["Edit"]
+                        </a>
+                        <button onclick="toggleActive(@course.CourseId, @course.IsActive.ToString().ToLower())"
+                                class="px-3 py-2 bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded-xl hover:bg-brand-yellow hover:text-dark-bg text-xs font-bold transition-all flex items-center justify-center gap-1.5">
+                            <i class="fas fa-@(course.IsActive ? "eye-slash" : "eye") text-[11px]"></i>@(course.IsActive ? Localizer["Deactivate"] : Localizer["Activate"])
+                        </button>
+                        <button onclick="deleteCourse(@course.CourseId)"
+                                class="px-3 py-2 bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded-xl hover:bg-rose-500 hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5">
+                            <i class="fas fa-trash text-[11px]"></i>@Localizer["Delete"]
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="p-12 rounded-3xl bg-white/[0.01] border border-white/[0.05] border-dashed text-center max-w-xl mx-auto mt-12 relative overflow-hidden">
+            <div class="w-20 h-20 mx-auto rounded-full bg-white/[0.02] border border-white/5 flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+                <i class="fas fa-graduation-cap text-4xl text-slate-600 animate-pulse"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">@Localizer["NoCoursesAvailable"]</h3>
+            <p class="text-slate-500 text-sm max-w-xs mx-auto mb-6 font-medium">@Localizer["NoCoursesAvailableSub"]</p>
+            <a asp-area="Admin" asp-controller="Courses" asp-action="Create"
+               class="inline-flex px-6 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl font-extrabold hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] transition-all text-sm">
+                <i class="fas fa-plus @(isRtl ? "ml-2" : "mr-2") mt-0.5"></i> @Localizer["CreateNewCourse"]
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Toggle course status
+        async function toggleActive(courseId, isActive) {
+            const action = isActive ? 'deactivate' : 'activate';
+            if (!confirm(`Are you sure you want to ${action} this course?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/Admin/Courses/ToggleActive', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: courseId })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.message || 'Operation failed.');
+                }
+            } catch (error) {
+                alert('Connection error while updating course status.');
+            }
+        }
+
+        // Delete course
+        async function deleteCourse(courseId) {
+            if (!confirm('WARNING: Are you sure you want to delete this course? All associated data and enrollment records will be lost.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/Admin/Courses/Delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: courseId })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.message || 'Deletion failed.');
+                }
+            } catch (error) {
+                alert('Connection error while deleting course.');
+            }
+        }
+    </script>
+}

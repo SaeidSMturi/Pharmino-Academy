@@ -1,0 +1,612 @@
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\web.config
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\AppData\VideoEngine\version.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\appsettings.Development.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\appsettings.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\dotnet-tools.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Web.staticwebassets.runtime.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Web.staticwebassets.endpoints.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Web.exe
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Web.deps.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Web.runtimeconfig.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Web.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Web.pdb
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ar\Web.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\en\Web.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\AdvancedStringBuilder.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\AWSSDK.Core.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\AWSSDK.S3.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Azure.Core.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Azure.Identity.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Humanizer.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.Bcl.Cryptography.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.Build.Framework.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.CodeAnalysis.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.Data.SqlClient.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.Identity.Client.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.Identity.Client.Extensions.Msal.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.SqlServer.Server.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Microsoft.VisualStudio.SolutionPersistence.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Mono.TextTemplating.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Newtonsoft.Json.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\NUglify.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\PdfSharpCore.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Serilog.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Serilog.AspNetCore.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Serilog.Extensions.Hosting.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Serilog.Extensions.Logging.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Serilog.Formatting.Compact.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Serilog.Settings.Configuration.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Serilog.Sinks.Console.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Serilog.Sinks.Debug.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Serilog.Sinks.File.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ICSharpCode.SharpZipLib.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\SixLabors.Fonts.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\SixLabors.ImageSharp.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\System.ClientModel.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\System.CodeDom.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\System.Composition.AttributedModel.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\System.Composition.Convention.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\System.Composition.Hosting.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\System.Composition.Runtime.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\System.Composition.TypedParts.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\System.Configuration.ConfigurationManager.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\System.Memory.Data.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\WebMarkupMin.AspNet.Common.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\WebMarkupMin.AspNetCoreLatest.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\WebMarkupMin.Core.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\WebMarkupMin.NUglify.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Xabe.FFmpeg.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Xabe.FFmpeg.Downloader.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\cs\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\de\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\es\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\fr\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\it\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ja\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ko\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\pl\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\pt-BR\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\ru\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\tr\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\de\PdfSharpCore.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\unix\lib\net9.0\Microsoft.Data.SqlClient.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\win\lib\net9.0\Microsoft.Data.SqlClient.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Application.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Domain.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Infrastructure.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Application.pdb
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Infrastructure.pdb
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Domain.pdb
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\rpswa.dswa.cache.json
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.Resources.SharedResource.ar.resources
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.Resources.SharedResource.en.resources
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.Resources.Views.Home.Index.ar.resources
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.Resources.Views.Home.Index.en.resources
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.Resources.Views.Shared._Layout.ar.resources
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.Resources.Views.Shared._Layout.en.resources
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.csproj.GenerateResource.cache
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.AssemblyInfo.cs
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.RazorAssemblyInfo.cache
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.RazorAssemblyInfo.cs
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\ar\Web.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\en\Web.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\rjimswa.dswa.cache.json
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\rjsmrazor.dswa.cache.json
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\rjsmcshtml.dswa.cache.json
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\scopedcss\bundle\Web.styles.css
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\scopedcss\projectbundle\Web.bundle.scp.css
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\6lpa2tr6ex-{0}-cymw47bwax-cymw47bwax.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\rj1i4o2db1-{0}-qogyj6ishk-qogyj6ishk.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\1ayw5voaa5-{0}-d9t0ry3mjf-d9t0ry3mjf.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\704jwtt7bs-{0}-s62qkxfvkf-s62qkxfvkf.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\bdfeud9h6e-{0}-1ieaimc0zs-1ieaimc0zs.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\mo5xe3o7ip-{0}-61n19gt1b8-61n19gt1b8.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\xuph0orury-{0}-kao2ds4qcg-kao2ds4qcg.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\15c8sfbgbu-{0}-jcn93gq2k0-jcn93gq2k0.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\rqkye4xa2r-{0}-umktlogxv0-umktlogxv0.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\c7c8xhpwka-{0}-24tr4vdcjn-24tr4vdcjn.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\qxtltq3tzw-{0}-gtxjp1wxkm-gtxjp1wxkm.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\62j3x091fd-{0}-5byfkmhimr-5byfkmhimr.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\opb8szq0ka-{0}-93wqrk750r-93wqrk750r.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\czcm2eovn5-{0}-3f6ah0a671-3f6ah0a671.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\nk8dogfvvt-{0}-smxqa5gqq0-smxqa5gqq0.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\2s28s4nlbv-{0}-c6cczd3u2l-c6cczd3u2l.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\3rgcb30j84-{0}-hj9fzf3fdj-hj9fzf3fdj.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\jrbsexuqkk-{0}-2kmti0wmlm-2kmti0wmlm.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\ezcmgm95k5-{0}-u9e2av2m7w-u9e2av2m7w.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\d0xy4joxk5-{0}-19n73lt4vc-19n73lt4vc.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\iykz3ia9fw-{0}-qujhvtfwd4-qujhvtfwd4.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\l3wkktrrp2-{0}-gz82qzyp2e-gz82qzyp2e.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\95wzysxikh-{0}-2upq22cokd-2upq22cokd.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\5lp9u1qguk-{0}-agp80tu62r-agp80tu62r.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\sebiwq06kw-{0}-st1cbwfwo5-st1cbwfwo5.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\ygaj0afh2p-{0}-unj9p35syc-unj9p35syc.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\m6ajdsb6hs-{0}-5vj65cig9w-5vj65cig9w.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\tl03ntfuky-{0}-q2ku51ktnl-q2ku51ktnl.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\r5ozwrtngo-{0}-2q4vfeazbq-2q4vfeazbq.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\ewlg2te6hk-{0}-n1oizzvkh6-n1oizzvkh6.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\9g4jflszgh-{0}-o371a8zbv2-o371a8zbv2.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\t2g0diafuh-{0}-7na4sro3qu-7na4sro3qu.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\qjw2ri2xdq-{0}-jeal3x0ldm-jeal3x0ldm.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\t8qdiehg31-{0}-f8imaxxbri-f8imaxxbri.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\jmalte5wbw-{0}-okkk44j0xs-okkk44j0xs.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\5cspbjnos3-{0}-0wve5yxp74-0wve5yxp74.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\29axwcrjx4-{0}-cwzlr5n8x4-cwzlr5n8x4.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\j9cmymcrbz-{0}-npxfuf8dg6-npxfuf8dg6.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\h0jfjhif1h-{0}-wmug9u23qg-wmug9u23qg.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\letmhf5dbq-{0}-tey0rigmnh-tey0rigmnh.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\m7aiskilvd-{0}-j75batdsum-j75batdsum.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\enodqgnu8t-{0}-16095smhkz-16095smhkz.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\di2qhw9l3y-{0}-vy0bq9ydhf-vy0bq9ydhf.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\qiahdq6qfl-{0}-b4skse8du6-b4skse8du6.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\lmpa8c3xxs-{0}-ab1c3rmv7g-ab1c3rmv7g.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\i3g7uflyrb-{0}-u3xrusw2ol-u3xrusw2ol.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\lhwc56jguw-{0}-56d2bn4wt9-56d2bn4wt9.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\fujrd4lf62-{0}-mpyigms19s-mpyigms19s.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\pf4vdtfd9r-{0}-73kdqttayv-73kdqttayv.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\ow6vfbb9y6-{0}-bpk8xqwxhs-bpk8xqwxhs.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\ykfnshpca0-{0}-8inm30yfxf-8inm30yfxf.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\w7zkz5rprv-{0}-ve6x09088i-ve6x09088i.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\vynxjj9ftm-{0}-4gxs3k148c-4gxs3k148c.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\5lxd8cl5lu-{0}-9b9oa1qrmt-9b9oa1qrmt.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\vwg0sz3f32-{0}-fctod5rc9n-fctod5rc9n.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\8f8ja5bp9c-{0}-l2av4jpuoj-l2av4jpuoj.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\f38ioh72nl-{0}-kbynt5jhd9-kbynt5jhd9.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\kdjinrto24-{0}-25iw1kog22-25iw1kog22.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\fnoeufk7jd-{0}-c2nslu3uf3-c2nslu3uf3.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\mmb9f1gdgq-{0}-m39kt2b5c9-m39kt2b5c9.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\elqsf28grz-{0}-2lgwfvgpvi-2lgwfvgpvi.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\nx06ajebgz-{0}-um2aeqy4ik-um2aeqy4ik.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\n040zw2oq3-{0}-wsezl0heh6-wsezl0heh6.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\ilry5ogafm-{0}-o4kw7cc6tf-o4kw7cc6tf.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\ujgrw219mk-{0}-6ukhryfubh-6ukhryfubh.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\prox3i9mme-{0}-zwph15dxgs-zwph15dxgs.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\uxr18qbbpx-{0}-u33ctipx7g-u33ctipx7g.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\y0znmy1nky-{0}-47otxtyo56-47otxtyo56.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\9s6p9cdjw5-{0}-4v8eqarkd7-4v8eqarkd7.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\s3q6eiv0lx-{0}-l3n5xuwxn8-l3n5xuwxn8.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\y8hxjiwuoy-{0}-gcjdx5jb8l-gcjdx5jb8l.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\6f9i2vcovt-{0}-35gxhxa0gh-35gxhxa0gh.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\gf1drodvl2-{0}-pzqfkb6aqo-pzqfkb6aqo.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\qsxm61pz4v-{0}-b7iojwaux1-b7iojwaux1.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\abr4z9302y-{0}-xzw0cte36n-xzw0cte36n.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\kdm1e2ngal-{0}-fwhahm2icz-fwhahm2icz.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\r780ho896z-{0}-dd6z7egasc-dd6z7egasc.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\7cljfwuokg-{0}-5pze98is44-5pze98is44.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\rvmhz06d5q-{0}-jfsiqqwiad-jfsiqqwiad.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\h17n9u99l6-{0}-bjiy49vox1-bjiy49vox1.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\lo6n28mvtn-{0}-veu91iv6pb-veu91iv6pb.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\rg7bgf1ufq-{0}-mhlh8e8eij-mhlh8e8eij.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\y14q88xnnp-{0}-m2us3sbowa-m2us3sbowa.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\y8udwlfqjs-{0}-prquytlyl3-prquytlyl3.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\unab4o49kd-{0}-vv0jx0plzd-vv0jx0plzd.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\o8ost6uint-{0}-thxmus1gst-thxmus1gst.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\h0row30em1-{0}-2dc79dwtnj-2dc79dwtnj.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\rez9t65d34-{0}-vv0jx0plzd-vv0jx0plzd.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\vq61vlamw0-{0}-vv0jx0plzd-vv0jx0plzd.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\w0u4xjpyxz-{0}-wh8a0zcouj-wh8a0zcouj.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\k89rhi3gy1-{0}-wh8a0zcouj-wh8a0zcouj.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\staticwebassets.build.json
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\staticwebassets.build.json.cache
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\staticwebassets.development.json
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\staticwebassets.build.endpoints.json
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\swae.build.ex.cache
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.csproj.Up2Date
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.dll
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\refint\Web.dll
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.pdb
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.genruntimeconfig.cache
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\ref\Web.dll
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\staticwebassets.upToDateCheck.txt
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\web.config
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\AppData\VideoEngine\version.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\appsettings.Development.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\appsettings.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\dotnet-tools.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Web.staticwebassets.runtime.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Web.staticwebassets.endpoints.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Web.exe
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Web.deps.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Web.runtimeconfig.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Web.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Web.pdb
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ar\Web.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\en\Web.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\AdvancedStringBuilder.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\AWSSDK.Core.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\AWSSDK.S3.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Azure.Core.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Azure.Identity.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Humanizer.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.Bcl.Cryptography.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.Build.Framework.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.CodeAnalysis.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.Data.SqlClient.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.Identity.Client.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.Identity.Client.Extensions.Msal.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.SqlServer.Server.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Microsoft.VisualStudio.SolutionPersistence.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Mono.TextTemplating.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Newtonsoft.Json.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\NUglify.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\PdfSharpCore.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Serilog.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Serilog.AspNetCore.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Serilog.Extensions.Hosting.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Serilog.Extensions.Logging.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Serilog.Formatting.Compact.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Serilog.Settings.Configuration.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Serilog.Sinks.Console.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Serilog.Sinks.Debug.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Serilog.Sinks.File.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ICSharpCode.SharpZipLib.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\SixLabors.Fonts.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\SixLabors.ImageSharp.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\System.ClientModel.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\System.CodeDom.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\System.Composition.AttributedModel.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\System.Composition.Convention.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\System.Composition.Hosting.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\System.Composition.Runtime.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\System.Composition.TypedParts.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\System.Configuration.ConfigurationManager.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\System.Memory.Data.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\WebMarkupMin.AspNet.Common.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\WebMarkupMin.AspNetCoreLatest.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\WebMarkupMin.Core.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\WebMarkupMin.NUglify.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Xabe.FFmpeg.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Xabe.FFmpeg.Downloader.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\cs\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\de\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\es\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\fr\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\it\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ja\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ko\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\pl\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\pt-BR\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\ru\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\tr\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\de\PdfSharpCore.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\unix\lib\net9.0\Microsoft.Data.SqlClient.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\win\lib\net9.0\Microsoft.Data.SqlClient.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Application.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Domain.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Infrastructure.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Application.pdb
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Infrastructure.pdb
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Domain.pdb
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\rpswa.dswa.cache.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.Resources.SharedResource.ar.resources
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.Resources.SharedResource.en.resources
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.Resources.Views.Home.Index.ar.resources
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.Resources.Views.Home.Index.en.resources
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.Resources.Views.Shared._Layout.ar.resources
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.Resources.Views.Shared._Layout.en.resources
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.csproj.GenerateResource.cache
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.AssemblyInfo.cs
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.RazorAssemblyInfo.cache
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.RazorAssemblyInfo.cs
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\ar\Web.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\en\Web.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\rjimswa.dswa.cache.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\rjsmrazor.dswa.cache.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\rjsmcshtml.dswa.cache.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\scopedcss\bundle\Web.styles.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\scopedcss\projectbundle\Web.bundle.scp.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\6lpa2tr6ex-{0}-cymw47bwax-cymw47bwax.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\rj1i4o2db1-{0}-qogyj6ishk-qogyj6ishk.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\1ayw5voaa5-{0}-d9t0ry3mjf-d9t0ry3mjf.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\704jwtt7bs-{0}-s62qkxfvkf-s62qkxfvkf.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\bdfeud9h6e-{0}-1ieaimc0zs-1ieaimc0zs.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\b2msq9thvz-{0}-dwvehyt1bp-dwvehyt1bp.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\mo5xe3o7ip-{0}-61n19gt1b8-61n19gt1b8.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\xuph0orury-{0}-kao2ds4qcg-kao2ds4qcg.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\15c8sfbgbu-{0}-jcn93gq2k0-jcn93gq2k0.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\rqkye4xa2r-{0}-umktlogxv0-umktlogxv0.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\c7c8xhpwka-{0}-24tr4vdcjn-24tr4vdcjn.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\qxtltq3tzw-{0}-gtxjp1wxkm-gtxjp1wxkm.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\62j3x091fd-{0}-5byfkmhimr-5byfkmhimr.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\opb8szq0ka-{0}-93wqrk750r-93wqrk750r.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\czcm2eovn5-{0}-3f6ah0a671-3f6ah0a671.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\nk8dogfvvt-{0}-smxqa5gqq0-smxqa5gqq0.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\2s28s4nlbv-{0}-c6cczd3u2l-c6cczd3u2l.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\3rgcb30j84-{0}-hj9fzf3fdj-hj9fzf3fdj.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\jrbsexuqkk-{0}-2kmti0wmlm-2kmti0wmlm.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\ezcmgm95k5-{0}-u9e2av2m7w-u9e2av2m7w.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\d0xy4joxk5-{0}-19n73lt4vc-19n73lt4vc.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\iykz3ia9fw-{0}-qujhvtfwd4-qujhvtfwd4.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\l3wkktrrp2-{0}-gz82qzyp2e-gz82qzyp2e.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\95wzysxikh-{0}-2upq22cokd-2upq22cokd.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\x2a1khw7i6-{0}-0v4nk7ihdf-0v4nk7ihdf.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\5lp9u1qguk-{0}-agp80tu62r-agp80tu62r.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\sebiwq06kw-{0}-st1cbwfwo5-st1cbwfwo5.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\ygaj0afh2p-{0}-unj9p35syc-unj9p35syc.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\m6ajdsb6hs-{0}-5vj65cig9w-5vj65cig9w.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\tl03ntfuky-{0}-q2ku51ktnl-q2ku51ktnl.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\r5ozwrtngo-{0}-2q4vfeazbq-2q4vfeazbq.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\ewlg2te6hk-{0}-n1oizzvkh6-n1oizzvkh6.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\9g4jflszgh-{0}-o371a8zbv2-o371a8zbv2.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\t2g0diafuh-{0}-7na4sro3qu-7na4sro3qu.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\qjw2ri2xdq-{0}-jeal3x0ldm-jeal3x0ldm.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\t8qdiehg31-{0}-f8imaxxbri-f8imaxxbri.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\jmalte5wbw-{0}-okkk44j0xs-okkk44j0xs.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\5cspbjnos3-{0}-0wve5yxp74-0wve5yxp74.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\29axwcrjx4-{0}-cwzlr5n8x4-cwzlr5n8x4.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\j9cmymcrbz-{0}-npxfuf8dg6-npxfuf8dg6.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\h0jfjhif1h-{0}-wmug9u23qg-wmug9u23qg.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\letmhf5dbq-{0}-tey0rigmnh-tey0rigmnh.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\m7aiskilvd-{0}-j75batdsum-j75batdsum.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\enodqgnu8t-{0}-16095smhkz-16095smhkz.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\di2qhw9l3y-{0}-vy0bq9ydhf-vy0bq9ydhf.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\qiahdq6qfl-{0}-b4skse8du6-b4skse8du6.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\lmpa8c3xxs-{0}-ab1c3rmv7g-ab1c3rmv7g.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\i3g7uflyrb-{0}-u3xrusw2ol-u3xrusw2ol.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\lhwc56jguw-{0}-56d2bn4wt9-56d2bn4wt9.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\fujrd4lf62-{0}-mpyigms19s-mpyigms19s.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\pf4vdtfd9r-{0}-73kdqttayv-73kdqttayv.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\ow6vfbb9y6-{0}-bpk8xqwxhs-bpk8xqwxhs.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\ykfnshpca0-{0}-8inm30yfxf-8inm30yfxf.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\w7zkz5rprv-{0}-ve6x09088i-ve6x09088i.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\vynxjj9ftm-{0}-4gxs3k148c-4gxs3k148c.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\5lxd8cl5lu-{0}-9b9oa1qrmt-9b9oa1qrmt.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\vwg0sz3f32-{0}-fctod5rc9n-fctod5rc9n.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\8f8ja5bp9c-{0}-l2av4jpuoj-l2av4jpuoj.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\f38ioh72nl-{0}-kbynt5jhd9-kbynt5jhd9.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\kdjinrto24-{0}-25iw1kog22-25iw1kog22.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\fnoeufk7jd-{0}-c2nslu3uf3-c2nslu3uf3.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\mmb9f1gdgq-{0}-m39kt2b5c9-m39kt2b5c9.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\elqsf28grz-{0}-2lgwfvgpvi-2lgwfvgpvi.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\nx06ajebgz-{0}-um2aeqy4ik-um2aeqy4ik.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\n040zw2oq3-{0}-wsezl0heh6-wsezl0heh6.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\ilry5ogafm-{0}-o4kw7cc6tf-o4kw7cc6tf.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\ujgrw219mk-{0}-6ukhryfubh-6ukhryfubh.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\prox3i9mme-{0}-zwph15dxgs-zwph15dxgs.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\uxr18qbbpx-{0}-u33ctipx7g-u33ctipx7g.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\y0znmy1nky-{0}-47otxtyo56-47otxtyo56.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\9s6p9cdjw5-{0}-4v8eqarkd7-4v8eqarkd7.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\s3q6eiv0lx-{0}-l3n5xuwxn8-l3n5xuwxn8.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\y8hxjiwuoy-{0}-gcjdx5jb8l-gcjdx5jb8l.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\6f9i2vcovt-{0}-35gxhxa0gh-35gxhxa0gh.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\gf1drodvl2-{0}-pzqfkb6aqo-pzqfkb6aqo.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\qsxm61pz4v-{0}-b7iojwaux1-b7iojwaux1.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\abr4z9302y-{0}-xzw0cte36n-xzw0cte36n.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\kdm1e2ngal-{0}-fwhahm2icz-fwhahm2icz.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\r780ho896z-{0}-dd6z7egasc-dd6z7egasc.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\7cljfwuokg-{0}-5pze98is44-5pze98is44.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\rvmhz06d5q-{0}-jfsiqqwiad-jfsiqqwiad.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\h17n9u99l6-{0}-bjiy49vox1-bjiy49vox1.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\lo6n28mvtn-{0}-veu91iv6pb-veu91iv6pb.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\rg7bgf1ufq-{0}-mhlh8e8eij-mhlh8e8eij.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\y14q88xnnp-{0}-m2us3sbowa-m2us3sbowa.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\y8udwlfqjs-{0}-prquytlyl3-prquytlyl3.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\unab4o49kd-{0}-vv0jx0plzd-vv0jx0plzd.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\o8ost6uint-{0}-thxmus1gst-thxmus1gst.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\h0row30em1-{0}-2dc79dwtnj-2dc79dwtnj.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\rez9t65d34-{0}-vv0jx0plzd-vv0jx0plzd.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\vq61vlamw0-{0}-vv0jx0plzd-vv0jx0plzd.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\w0u4xjpyxz-{0}-wh8a0zcouj-wh8a0zcouj.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\k89rhi3gy1-{0}-wh8a0zcouj-wh8a0zcouj.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\staticwebassets.build.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\staticwebassets.build.json.cache
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\staticwebassets.development.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\staticwebassets.build.endpoints.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\swae.build.ex.cache
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\staticwebassets.upToDateCheck.txt
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.csproj.Up2Date
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\refint\Web.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.pdb
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.genruntimeconfig.cache
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\ref\Web.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Assets\Fonts\DejaVuSans-Bold.ttf
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Assets\Fonts\DejaVuSansMono.ttf
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\Docnet.Core.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\SixLabors.ImageSharp.Drawing.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\linux-arm\native\LICENSE
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\linux-arm\native\pdfium.so
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\linux-arm64\native\LICENSE
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\linux-arm64\native\pdfium.so
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\linux\native\LICENSE
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\linux\native\pdfium.so
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\osx-arm64\native\LICENSE
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\osx-arm64\native\pdfium.dylib
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\osx-x64\native\LICENSE
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\osx-x64\native\pdfium.dylib
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\win-x64\native\LICENSE
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\win-x64\native\pdfium.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\win-x86\native\LICENSE
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\win-x86\native\pdfium.dll

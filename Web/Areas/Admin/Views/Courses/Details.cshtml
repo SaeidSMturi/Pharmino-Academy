@@ -1,0 +1,874 @@
+@model Domain.Entities.Course.Course
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["CourseDetailsTitle"].Value;
+    var videos = Model.Videos?.OrderBy(v => v.OrderIndex).ToList() ?? new List<Domain.Entities.Course.CourseVideo>();
+    var pdfs = Model.Pdfs?.OrderByDescending(p => p.CreateDate).ToList() ?? new List<Domain.Entities.Course.CoursePdf>();
+    var videoFileSizes = ViewBag.VideoFileSizes as Dictionary<int, long> ?? new Dictionary<int, long>();
+    var videoFileExists = ViewBag.VideoFileExists as Dictionary<int, bool> ?? new Dictionary<int, bool>();
+    var hlsExists = ViewBag.HlsExists as Dictionary<int, bool> ?? new Dictionary<int, bool>();
+    var enrolledUserIds = Model.Enrollments?.Select(e => e.UserId).ToHashSet() ?? new HashSet<int>();
+    var allUsersRaw = ViewBag.AllUsers as System.Collections.IEnumerable;
+}
+
+@functions {
+    static string FormatFileSize(long bytes)
+    {
+        if (bytes <= 0) return "N/A";
+        if (bytes >= 1073741824) return $"{bytes / 1073741824.0:F1} GB";
+        if (bytes >= 1048576) return $"{bytes / 1048576.0:F1} MB";
+        if (bytes >= 1024) return $"{bytes / 1024.0:F1} KB";
+        return $"{bytes} B";
+    }
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start" dir="@(isRtl ? "rtl" : "ltr")">
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-brand-orange/10 border border-brand-orange/20 text-brand-orange flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") shadow-[0_0_20px_rgba(255,126,66,0.1)]">
+            <i class="fas fa-exclamation-triangle text-lg"></i>
+            <span class="font-medium text-sm">@TempData["ErrorMessage"]</span>
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+            <i class="fas fa-check-circle text-lg"></i>
+            <span class="font-medium text-sm">@TempData["SuccessMessage"]</span>
+        </div>
+    }
+
+    <div id="hlsToast" class="fixed bottom-6 @(isRtl ? "left-6" : "right-6") z-50 hidden w-80 rounded-2xl bg-[#0B0D14]/90 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] text-white overflow-hidden backdrop-blur-xl transition-all duration-300">
+        <div class="flex items-center justify-between px-4 py-3.5 bg-white/[0.02] border-b border-white/5">
+            <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2.5")">
+                <i id="hlsToastIcon" class="fas fa-film text-brand-cyan shadow-[0_0_8px_#42EAFF]"></i>
+                <span class="font-bold text-xs uppercase tracking-wider" id="hlsToastTitle">HLS Encoding</span>
+            </div>
+            <button onclick="hlsToastHide()" class="text-slate-400 hover:text-white transition-colors" title="Hide — runs in background">
+                <i class="fas fa-times text-xs"></i>
+            </button>
+        </div>
+        <div class="px-4 py-5 space-y-4">
+            <p class="text-xs font-medium text-slate-400 leading-relaxed" id="hlsToastMsg">Starting conversion…</p>
+            <div class="w-full bg-white/5 rounded-full h-2 overflow-hidden shadow-inner">
+                <div id="hlsToastBar" class="h-full rounded-full bg-gradient-to-r from-brand-cyan to-brand-blue transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <div class="flex items-center justify-between text-[10px] font-bold">
+                <span id="hlsToastPct" class="text-brand-cyan font-mono text-sm">0%</span>
+                <button onclick="hlsToastHide()" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 text-slate-300 transition-colors">Run in Background</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+        <div>
+            <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide">
+                @Localizer["CourseDetailsTitle"]
+            </h1>
+            <p class="text-slate-400 text-sm font-medium">@Localizer["CourseDetailsSub"]</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <a asp-action="Edit" asp-route-id="@Model.CourseId" class="w-full sm:w-auto text-center px-5 py-2.5 bg-brand-blue/10 border border-brand-blue/20 text-brand-blue rounded-xl hover:bg-brand-blue hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg">
+                <i class="fas fa-edit @(isRtl ? "ml-2" : "mr-2") text-xs"></i> @Localizer["EditCourse"]
+            </a>
+            <a asp-action="Index" class="w-full sm:w-auto text-center px-5 py-2.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg">
+                <i class="fas @(isRtl ? "fa-arrow-right ml-2" : "fa-arrow-left mr-2") text-xs"></i> @Localizer["BackToCourses"]
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+        <div class="lg:col-span-2 space-y-6">
+
+            <div class="rounded-3xl bg-white/[0.02] border border-white/[0.05] overflow-hidden relative shadow-2xl backdrop-blur-xl">
+                @if (!string.IsNullOrEmpty(Model.ImageName))
+                {
+                    if (Model.ImageName != "default.jpg")
+                    {
+                        <div class="w-full h-80 bg-dark-bg border-b border-white/5">
+                            <img src="~/uploads/courses/@Model.ImageName" alt="@Model.Title" class="w-full h-full object-cover" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="w-full h-80 bg-gradient-to-br from-brand-blue/10 to-brand-cyan/5 flex items-center justify-center border-b border-white/5">
+                            <i class="fas fa-graduation-cap text-7xl text-brand-cyan/30 drop-shadow-[0_0_15px_rgba(66,234,255,0.2)]"></i>
+                        </div>
+                    }
+                }
+
+                <div class="p-6 md:p-8">
+                    <div class="mb-4">
+                        @if (Model.IsActive)
+                        {
+                            <span class="px-3 py-1.5 text-[10px] font-bold tracking-wide rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">
+                                <i class="fas fa-circle-check @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["Active"]
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="px-3 py-1.5 text-[10px] font-bold tracking-wide rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 uppercase">
+                                <i class="fas fa-circle-xmark @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["Inactive"]
+                            </span>
+                        }
+                    </div>
+
+                    <h2 class="text-2xl font-bold text-white mb-4">@Model.Title</h2>
+                    <p class="text-sm font-medium text-slate-400 mb-6 leading-relaxed">@Model.Description</p>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-white/5 text-xs font-semibold">
+                        <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") bg-white/[0.01] border border-white/[0.02] p-3 rounded-xl">
+                            <i class="fas fa-tag text-brand-yellow text-sm"></i>
+                            <div>
+                                <span class="text-[10px] text-slate-500 block uppercase font-bold">@Localizer["CoursePricing"]</span>
+                                <span class="text-white font-mono font-bold">$@Model.Price.ToString("N0")</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") bg-white/[0.01] border border-white/[0.02] p-3 rounded-xl">
+                            <i class="fas fa-clock text-brand-blue text-sm"></i>
+                            <div>
+                                <span class="text-[10px] text-slate-500 block uppercase font-bold">@Localizer["Duration"]</span>
+                                <span class="text-white">@(Model.DurationHours ?? 0) @Localizer["Hours"]</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") bg-white/[0.01] border border-white/[0.02] p-3 rounded-xl">
+                            <i class="fas fa-video text-brand-cyan text-sm"></i>
+                            <div>
+                                <span class="text-[10px] text-slate-500 block uppercase font-bold">@Localizer["CourseVideos"]</span>
+                                <span class="text-white">@videos.Count @Localizer["VideosAbbr"]</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") bg-white/[0.01] border border-white/[0.02] p-3 rounded-xl">
+                            <i class="fas fa-users text-brand-orange text-sm"></i>
+                            <div>
+                                <span class="text-[10px] text-slate-500 block uppercase font-bold">@Localizer["EnrolledStudents"]</span>
+                                <span class="text-white">@(Model.Enrollments?.Count ?? 0)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <h3 class="text-base font-bold text-white flex items-center">
+                        <i class="fas fa-video @(isRtl ? "ml-3" : "mr-3") text-brand-cyan text-lg"></i> @Localizer["CourseVideos"] (@videos.Count)
+                    </h3>
+                    <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                        <button type="button" onclick="createTestVideo()"
+                                class="w-full sm:w-auto text-center px-4 py-2 bg-amber-500/20 border border-amber-500/30 text-amber-400 rounded-xl font-extrabold hover:bg-amber-500 hover:text-dark-bg transition-all text-xs flex items-center justify-center">
+                            <i class="fas fa-flask @(isRtl ? "ml-1.5" : "mr-1.5") text-sm"></i> @Localizer["AddTestVideo"]
+                        </button>
+
+                        <a asp-controller="CourseVideos" asp-action="Create" asp-route-courseId="@Model.CourseId"
+                           class="w-full sm:w-auto text-center px-4 py-2 bg-gradient-to-r from-brand-cyan to-brand-blue rounded-xl text-dark-bg font-extrabold hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] transition-all text-xs flex items-center justify-center">
+                            <i class="fas fa-plus @(isRtl ? "ml-1.5" : "mr-1.5") text-sm"></i> @Localizer["AddVideo"]
+                        </a>
+                    </div>
+                </div>
+
+                @if (videos.Any())
+                {
+                    <div class="space-y-3">
+                        @foreach (var video in videos)
+                        {
+                            <div class="p-4 rounded-2xl bg-white/[0.01] border border-white/[0.03] hover:bg-white/[0.02] hover:border-white/10 transition-all duration-200 video-item" data-video-id="@video.VideoId">
+                                <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+
+                                     <div class="flex items-start @(isRtl ? "space-x-reverse" : "space-x-4") flex-1 min-w-0">
+                                        <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center flex-shrink-0 text-brand-cyan font-mono font-bold text-sm">
+                                            @video.OrderIndex
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
+                                                <h4 class="text-white font-bold text-sm truncate max-w-[180px] sm:max-w-xs group-hover:text-brand-cyan">@video.Title</h4>
+                                                @if (video.IsFree)
+                                                {
+                                                    <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">@Localizer["Free"]</span>
+                                                }
+                                                @if (!video.IsActive)
+                                                {
+                                                    <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">@Localizer["Inactive"]</span>
+                                                }
+                                                @{
+                                                    var isHls = hlsExists.TryGetValue(video.VideoId, out var hls) && hls;
+                                                }
+                                                @if (isHls)
+                                                {
+                                                    <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/10 rounded uppercase" title="HLS Stream Ready">
+                                                        <i class="fas fa-circle-check @(isRtl ? "ml-1" : "mr-1") text-[8px]"></i>HLS Ready
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide bg-brand-orange/10 text-brand-orange border border-brand-orange/10 rounded uppercase" title="No HLS Stream Found">
+                                                        <i class="fas fa-triangle-exclamation @(isRtl ? "ml-1" : "mr-1") text-[8px]"></i>No HLS
+                                                    </span>
+                                                }
+                                            </div>
+
+                                            @if (!string.IsNullOrEmpty(video.Description))
+                                            {
+                                                <p class="text-slate-400 text-xs font-medium line-clamp-1 mb-2">@video.Description</p>
+                                            }
+
+                                            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] font-mono font-semibold text-slate-500">
+                                                <span>
+                                                    <i class="far fa-clock @(isRtl ? "ml-1" : "mr-1") text-slate-600"></i>
+                                                    @if (video.DurationSeconds.HasValue)
+                                                    {
+                                                        var minutes = video.DurationSeconds.Value / 60;
+                                                        var seconds = video.DurationSeconds.Value % 60;
+                                                        <text>@minutes:@seconds.ToString("D2")</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        <text>--:--</text>
+                                                    }
+                                                </span>
+                                                <span>
+                                                    <i class="fas fa-server @(isRtl ? "ml-1" : "mr-1") text-slate-600"></i>
+                                                    @(videoFileSizes.TryGetValue(video.VideoId, out var size) ? FormatFileSize(size) : "N/A")
+                                                </span>
+                                                @{
+                                                    var fileExists = videoFileExists.TryGetValue(video.VideoId, out var exists) && exists;
+                                                }
+                                                <span class="@(fileExists ? "text-emerald-400" : "text-rose-400")">
+                                                    <i class="fas fa-@(fileExists ? "circle-check" : "circle-exclamation") @(isRtl ? "ml-1" : "mr-1")"></i>
+                                                    @(fileExists ? Localizer["FileAvailable"] : Localizer["FileMissing"])
+                                                </span>
+                                                <span class="text-slate-600 truncate max-w-[150px]" title="@video.VideoFileName">
+                                                    <i class="fas fa-file-video @(isRtl ? "ml-1" : "mr-1")"></i>@video.VideoFileName
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-wrap items-center gap-1.5 self-end xl:self-center">
+                                        <a asp-controller="CourseVideos" asp-action="Details" asp-route-id="@video.VideoId" class="w-8 h-8 rounded-lg bg-brand-cyan/10 text-brand-cyan flex items-center justify-center hover:bg-brand-cyan hover:text-dark-bg hover:shadow-[0_0_12px_#42EAFF] transition-all" title="Watch Video"><i class="fas fa-play text-xs"></i></a>
+                                        <a asp-controller="CourseVideos" asp-action="Edit" asp-route-id="@video.VideoId" class="w-8 h-8 rounded-lg bg-brand-blue/10 text-brand-blue flex items-center justify-center hover:bg-brand-blue hover:text-white transition-all" title="Edit Video"><i class="fas fa-edit text-xs"></i></a>
+
+                                        @if (!(hlsExists.TryGetValue(video.VideoId, out var hlsReady) && hlsReady))
+                                        {
+                                            <button type="button" onclick="convertToHls(@video.VideoId, this)" class="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/10 flex items-center justify-center hover:bg-purple-500 hover:text-white transition-all" title="Convert to HLS"><i class="fas fa-film text-xs"></i></button>
+                                        }
+
+                                        <button type="button" onclick="toggleVideoActive(@video.VideoId, @video.IsActive.ToString().ToLower())" class="w-8 h-8 rounded-lg bg-brand-yellow/10 text-brand-yellow flex items-center justify-center hover:bg-brand-yellow hover:text-dark-bg transition-all" title="Toggle Active Status"><i class="fas fa-@(video.IsActive ? "eye-slash" : "eye") text-xs"></i></button>
+                                        <button type="button" onclick="toggleVideoFree(@video.VideoId, @video.IsFree.ToString().ToLower())" class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center hover:bg-emerald-500 hover:text-dark-bg transition-all" title="Toggle Free Preview"><i class="fas fa-@(video.IsFree ? "lock" : "unlock") text-xs"></i></button>
+                                        <button type="button" onclick="deleteVideo(@video.VideoId)" class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all" title="Delete Video"><i class="fas fa-trash text-xs"></i></button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="bg-white/[0.01] border border-white/5 border-dashed rounded-2xl p-8 text-center">
+                        <i class="fas fa-video text-4xl text-slate-600 mb-3 block"></i>
+                        <h4 class="text-white text-sm font-bold mb-1">No Videos Available</h4>
+                        <p class="text-slate-500 text-xs font-medium mb-4">There are currently no videos uploaded to this course.</p>
+                        <a asp-controller="CourseVideos" asp-action="Create" asp-route-courseId="@Model.CourseId" class="inline-flex px-4 py-2 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl text-xs font-extrabold hover:shadow-[0_0_12px_rgba(66,234,255,0.3)] transition-all">
+                            <i class="fas fa-plus mr-1.5"></i> Add First Video
+                        </a>
+                    </div>
+                }
+            </div>
+
+            <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <h3 class="text-base font-bold text-white flex items-center">
+                        <i class="fas fa-file-pdf @(isRtl ? "ml-3" : "mr-3") text-rose-400"></i> @Localizer["CoursePdfFiles"] (@pdfs.Count)
+                    </h3>
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                        <a asp-controller="CoursePdfs" asp-action="Index" asp-route-courseId="@Model.CourseId" class="px-3 py-1.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 text-xs font-bold transition-all"><i class="fas fa-list @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["AllPdfs"]</a>
+                        <a asp-controller="CoursePdfs" asp-action="Create" asp-route-courseId="@Model.CourseId" class="px-4 py-1.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl font-extrabold hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] text-xs transition-all flex items-center"><i class="fas fa-plus @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["AddPdf"]</a>
+                    </div>
+                </div>
+
+                @if (pdfs.Any())
+                {
+                    <div class="space-y-3">
+                        @foreach (var pdf in pdfs)
+                        {
+                            <div class="p-4 rounded-2xl bg-white/[0.01] border border-white/[0.03] hover:bg-white/[0.02] transition-colors" data-pdf-id="@pdf.PdfId">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+
+                                    <div class="flex items-start @(isRtl ? "space-x-reverse" : "space-x-3") flex-1 min-w-0">
+                                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 flex-shrink-0 text-sm"><i class="fas fa-file-pdf"></i></div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                                                <h4 class="text-white font-bold text-sm truncate max-w-[200px] sm:max-w-md">@(string.IsNullOrWhiteSpace(pdf.Title) ? System.IO.Path.GetFileNameWithoutExtension(pdf.OriginalFileName) : pdf.Title)</h4>
+                                                @if (!pdf.IsActive)
+                                                {
+                                                    <span class="px-2 py-0.5 text-[9px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded uppercase">@Localizer["Inactive"]</span>
+                                                }
+                                                @if (pdf.Price <= 0)
+                                                {
+                                                    <span class="px-2 py-0.5 text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded uppercase">@Localizer["Free"]</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="px-2 py-0.5 text-[9px] font-bold bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded font-mono">$@pdf.Price.ToString("N2")</span>
+                                                }
+                                            </div>
+                                            <div class="text-[10px] text-slate-500 font-mono font-semibold flex items-center"><i class="fas fa-file @(isRtl ? "ml-1.5" : "mr-1.5") text-slate-600"></i>@(string.IsNullOrWhiteSpace(pdf.OriginalFileName) ? pdf.FileName : pdf.OriginalFileName)</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") justify-end flex-shrink-0">
+                                        <a asp-controller="CoursePdfs" asp-action="Preview" asp-route-id="@pdf.PdfId" target="_blank" class="w-8 h-8 rounded-lg bg-brand-blue/10 text-brand-blue flex items-center justify-center hover:bg-brand-blue hover:text-white transition-all border border-brand-blue/5" title="@Localizer["PreviewPdf"]"><i class="fas fa-eye text-xs"></i></a>
+                                        <button type="button" onclick="deletePdf(@pdf.PdfId)" class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all border border-rose-500/5" title="@Localizer["DeletePdf"]"><i class="fas fa-trash text-xs"></i></button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="bg-white/[0.01] border border-white/5 border-dashed rounded-2xl p-8 text-center">
+                        <i class="fas fa-file-invoice text-4xl text-slate-600 mb-3 block"></i>
+                        <h4 class="text-white text-sm font-bold mb-1">@Localizer["NoPdfFiles"]</h4>
+                        <p class="text-slate-500 text-xs font-medium">@Localizer["NoPdfFilesSub"]</p>
+                    </div>
+                }
+            </div>
+
+            <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05] shadow-2xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <h3 class="text-base font-bold text-white flex items-center">
+                        <i class="fas fa-users @(isRtl ? "ml-3" : "mr-3") text-brand-blue text-lg"></i> @Localizer["EnrolledStudents"]
+                        <span class="@(isRtl ? "mr-3" : "ml-3") px-2 py-0.5 text-xs font-bold rounded-lg bg-brand-blue/10 text-brand-blue border border-brand-blue/10">@(Model.Enrollments?.Count ?? 0)</span>
+                    </h3>
+                    <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") w-full sm:w-auto justify-end">
+                        <a asp-area="Admin" asp-controller="Enrollment" asp-action="Index" asp-route-courseId="@Model.CourseId" class="px-3 py-1.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 text-xs font-bold transition-all"><i class="fas fa-list @(isRtl ? "ml-1" : "mr-1")"></i>@Localizer["AllEnrollments"]</a>
+                        <button type="button" onclick="openStudentEnrollModal()" class="px-4 py-1.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl font-extrabold hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] text-xs transition-all"><i class="fas fa-user-plus @(isRtl ? "ml-1" : "mr-1")"></i>@Localizer["EnrollStudent"]</button>
+                    </div>
+                </div>
+
+                @if (Model.Enrollments != null && Model.Enrollments.Any())
+                {
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-start border-collapse">
+                            <thead>
+                                <tr class="border-b border-white/5 text-slate-500 text-[10px] font-bold uppercase tracking-wider">
+                                    <th class="pb-3 px-4 text-start">@Localizer["Student"]</th>
+                                    <th class="pb-3 px-4 text-start">@Localizer["EnrollmentDate"]</th>
+                                    <th class="pb-3 px-4 text-start">@Localizer["Progress"]</th>
+                                    <th class="pb-3 px-4 text-start">@Localizer["PaymentStatus"]</th>
+                                    <th class="pb-3 px-4 text-end">@Localizer["Actions"]</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/[0.02]">
+                                @foreach (var enrollment in Model.Enrollments.OrderByDescending(e => e.EnrollmentDate))
+                                {
+                                    var safeEnrollmentUserName = (enrollment.User?.UserName ?? string.Empty).Replace("'", "\\'");
+                                    <tr class="hover:bg-white/[0.01] transition-colors group">
+                                        <td class="py-4 px-4 whitespace-nowrap">
+                                            <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3")">
+                                                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-dark-bg font-bold text-sm flex-shrink-0 shadow-[0_0_10px_rgba(255,126,66,0.2)]">
+                                                    @(enrollment.User?.FirstName?.FirstOrDefault().ToString().ToUpper() ?? "U")
+                                                </div>
+                                                <div>
+                                                    <a asp-area="Admin" asp-controller="Users" asp-action="Details" asp-route-id="@enrollment.UserId" class="text-white text-xs font-bold hover:text-brand-cyan transition-colors">@enrollment.User?.FirstName @enrollment.User?.LastName</a>
+                                                    <div class="text-[10px] text-slate-500 font-medium mt-0.5">@enrollment.User?.Email</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4 whitespace-nowrap text-slate-400 text-xs font-semibold">
+                                            @enrollment.EnrollmentDate.ToString("yyyy/MM/dd")
+                                        </td>
+                                        <td class="py-4 px-4 whitespace-nowrap">
+                                            <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3")">
+                                                <span class="text-xs font-bold @(enrollment.IsCompleted ? "text-emerald-400" : "text-brand-blue") w-8 text-end">@enrollment.ProgressPercentage%</span>
+                                                <div class="w-16 h-1 bg-white/5 rounded-full overflow-hidden shadow-inner">
+                                                    <div class="h-full @(enrollment.IsCompleted ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" : "bg-brand-blue shadow-[0_0_8px_rgba(66,114,255,0.5)]") rounded-full" style="width: @enrollment.ProgressPercentage%"></div>
+                                                </div>
+                                                @if (enrollment.IsCompleted)
+                                                {
+                                                    <span class="px-1.5 py-0.5 text-[9px] font-bold rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 uppercase tracking-wide">Done</span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4 whitespace-nowrap">
+                                            @if (enrollment.IsPaid)
+                                            {
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/10">
+                                                    <i class="fas fa-check-circle @(isRtl ? "ml-1.5" : "mr-1.5")"></i> @Localizer["Paid"] ($@enrollment.PaymentAmount.Value.ToString("N0"))
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 uppercase tracking-wider">
+                                                    <i class="fas fa-clock @(isRtl ? "ml-1" : "mr-1")"></i> @Localizer["Free"] / @Localizer["Pending"]
+                                                </span>
+                                            }
+                                        </td>
+                                        <td class="py-4 px-4 whitespace-nowrap text-end">
+                                            <button type="button" onclick="removeCourseStudent(@enrollment.EnrollmentId, '@safeEnrollmentUserName')" class="px-2 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded-lg hover:bg-rose-500 hover:text-white transition-all text-[10px] font-bold" title="@Localizer["Remove"]"><i class="fas fa-user-minus @(isRtl ? "ml-1" : "mr-1")"></i> @Localizer["Remove"]</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="bg-white/[0.01] border border-white/5 border-dashed rounded-2xl p-10 text-center">
+                        <i class="fas fa-users-slash text-4xl text-slate-600 mb-3 block"></i>
+                        <h4 class="text-white text-sm font-bold mb-1">@Localizer["NoEnrolledStudents"]</h4>
+                        <p class="text-slate-500 text-xs font-medium mb-4">@Localizer["NoEnrolledStudentsSub"]</p>
+                        <button type="button" onclick="openStudentEnrollModal()" class="px-4 py-2 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg font-extrabold rounded-xl text-xs hover:shadow-[0_0_12px_rgba(66,234,255,0.3)] transition-all"><i class="fas fa-user-plus @(isRtl ? "ml-1" : "mr-1")"></i> @Localizer["EnrollFirstStudent"]</button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="space-y-6 sticky top-6">
+
+            <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center"><i class="fas fa-chart-bar text-brand-cyan @(isRtl ? "ml-2" : "mr-2")"></i> @Localizer["CourseMetrics"]</h3>
+                <div class="space-y-2.5 font-medium text-xs">
+                    <div class="flex items-center justify-between p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-400 flex items-center"><i class="fas fa-video text-brand-cyan w-4 @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["CourseVideos"]</span>
+                        <span class="text-white font-bold font-mono text-sm">@videos.Count</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-400 flex items-center"><i class="fas fa-users text-brand-blue w-4 @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["EnrolledStudents"]</span>
+                        <span class="text-white font-bold font-mono text-sm">@(Model.Enrollments?.Count ?? 0)</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-400 flex items-center"><i class="fas fa-clock text-brand-purple w-4 @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["TotalDuration"]</span>
+                        <span class="text-white font-bold text-xs font-mono">@(Model.DurationHours ?? 0) @Localizer["Hours"]</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-400 flex items-center"><i class="fas fa-tag text-brand-yellow w-4 @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["CoursePricing"]</span>
+                        <span class="text-brand-yellow font-bold text-xs font-mono">$@Model.Price.ToString("N0")</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center"><i class="fas fa-fingerprint text-brand-blue @(isRtl ? "ml-2" : "mr-2")"></i> @Localizer["Metadata"]</h3>
+                <div class="space-y-4 text-xs font-semibold">
+                    <div>
+                        <span class="text-slate-500 block mb-1 uppercase tracking-wider text-[10px]">@Localizer["CourseId"]</span>
+                        <span class="text-white font-mono bg-white/5 px-2 py-0.5 rounded">#@Model.CourseId</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block mb-1 uppercase tracking-wider text-[10px]">@Localizer["CreatedDate"]</span>
+                        <span class="text-white font-mono" dir="ltr">@Model.CreateDate.ToString("yyyy/MM/dd HH:mm")</span>
+                    </div>
+                    @if (Model.LastUpdate.HasValue)
+                    {
+                        <div>
+                            <span class="text-slate-500 block mb-1 uppercase tracking-wider text-[10px]">@Localizer["LastUpdated"]</span>
+                            <span class="text-brand-cyan font-mono" dir="ltr">@Model.LastUpdate.Value.ToString("yyyy/MM/dd HH:mm")</span>
+                        </div>
+                    }
+                    <div>
+                        <span class="text-slate-500 block mb-1 uppercase tracking-wider text-[10px]">@Localizer["CoverImageName"]</span>
+                        <span class="text-slate-400 font-mono text-[11px] break-all">@Model.ImageName</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center"><i class="fas fa-bolt text-brand-yellow @(isRtl ? "ml-2" : "mr-2")"></i> @Localizer["Actions"]</h3>
+                <div class="space-y-2">
+                    <a asp-controller="CourseVideos" asp-action="Create" asp-route-courseId="@Model.CourseId" class="flex items-center justify-center space-x-2 w-full py-2.5 bg-white/5 border border-white/5 text-slate-300 font-bold text-xs rounded-xl hover:bg-white/10 transition-all">
+                        <i class="fas fa-plus text-emerald-400 @(isRtl ? "ml-1.5" : "mr-1.5")"></i>
+                        <span>@Localizer["AddNewVideo"]</span>
+                    </a>
+                    <button type="button" onclick="toggleActive(@Model.CourseId, @Model.IsActive.ToString().ToLower())" class="flex items-center justify-center space-x-2 w-full py-2.5 bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/20 text-xs font-bold rounded-xl hover:bg-brand-yellow hover:text-dark-bg transition-all">
+                        <i class="fas fa-@(Model.IsActive ? "eye-slash" : "eye") @(isRtl ? "ml-1.5" : "mr-1.5")"></i>
+                        <span>@(Model.IsActive ? Localizer["DeactivateCourse"] : Localizer["ActivateCourse"])</span>
+                    </button>
+                    <a asp-action="Edit" asp-route-id="@Model.CourseId" class="flex items-center justify-center space-x-2 w-full py-2.5 bg-brand-blue/10 text-brand-blue border border-brand-blue/10 text-xs font-bold rounded-xl hover:bg-brand-blue hover:text-white transition-all">
+                        <i class="fas fa-edit @(isRtl ? "ml-1.5" : "mr-1.5")"></i>
+                        <span>@Localizer["EditCourseDetails"]</span>
+                    </a>
+                    <button type="button" onclick="deleteCourse(@Model.CourseId)" class="flex items-center justify-center space-x-2 w-full py-2.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs font-bold rounded-xl hover:bg-rose-500 hover:text-white transition-all">
+                        <i class="fas fa-trash @(isRtl ? "ml-1.5" : "mr-1.5")"></i>
+                        <span>@Localizer["DeleteCourse"]</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="studentEnrollModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-dark-bg/80 backdrop-blur-md transition-all p-4" dir="@(isRtl ? "rtl" : "ltr")">
+    <div class="bg-[#0B0D14]/90 border border-white/10 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-[fadeIn_0.3s_ease_forwards] text-start">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/[0.01]">
+            <h4 class="text-white font-bold text-base flex items-center">
+                <i class="fas fa-user-plus @(isRtl ? "ml-2" : "mr-2") text-brand-blue shadow-[0_0_8px_rgba(66,114,255,0.4)]"></i>
+                @Localizer["EnrollStudent"]
+            </h4>
+            <button onclick="closeStudentEnrollModal()" class="text-slate-400 hover:text-white transition-colors">
+                <i class="fas fa-times text-sm"></i>
+            </button>
+        </div>
+        <div class="p-6 space-y-4">
+            <div>
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">@Localizer["SearchStudent"]</label>
+                <input type="text" id="studentSearch" placeholder="@Localizer["Search"]..." oninput="filterStudents()" class="w-full px-4 py-2.5 bg-dark-bg/60 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-brand-cyan/40 text-sm font-medium" />
+            </div>
+            <div>
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">@Localizer["SelectStudent"]</label>
+                <div id="studentList" class="max-h-48 overflow-y-auto space-y-1.5 @(isRtl ? "pl-1" : "pr-1") custom-scrollbar">
+                    @{
+                        var allUsersForModal = ViewBag.AllUsers as System.Collections.IEnumerable;
+                        var enrolledUserIdsForModal = Model.Enrollments?.Select(e => e.UserId).ToHashSet() ?? new HashSet<int>();
+                    }
+                    @if (allUsersForModal != null)
+                    {
+                        @foreach (dynamic user in allUsersForModal)
+                        {
+                            var isEnrolled = enrolledUserIdsForModal.Contains((int)user.UserId);
+                            <label class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") p-3 rounded-xl border border-white/[0.02] bg-white/[0.01] hover:bg-white/5 cursor-pointer student-option transition-colors @(isEnrolled ? "opacity-40 cursor-not-allowed border-none bg-transparent" : "")">
+                                <input type="radio" name="selectedStudent" value="@user.UserId" @(isEnrolled ? "disabled" : "") class="text-brand-cyan focus:ring-brand-cyan/20 bg-dark-bg border-white/10" />
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-xs font-bold text-white truncate" data-student-name="@((string)(user.FirstName ?? "") + " " + (string)(user.LastName ?? "") + " " + (string)(user.Email ?? ""))">@user.FirstName @user.LastName</p>
+                                    <p class="text-[10px] text-slate-500 font-semibold mt-0.5 truncate">
+                                        @user.Email &nbsp;·&nbsp; @(isEnrolled ? Localizer["AlreadyEnrolled"] : Localizer["Available"])
+                                    </p>
+                                </div>
+                            </label>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="pt-2">
+                <label class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") cursor-pointer group">
+                    <input type="checkbox" id="studentMarkAsPaid" class="rounded text-brand-cyan focus:ring-brand-cyan/20 bg-dark-bg border-white/10" />
+                    <span class="text-xs font-bold text-slate-400 group-hover:text-slate-300 transition-colors">@Localizer["MarkAsPaid"]</span>
+                </label>
+            </div>
+        </div>
+        <div class="px-6 py-4 border-t border-white/5 flex justify-end @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01]">
+            <button onclick="closeStudentEnrollModal()" class="px-4 py-2 bg-white/5 text-slate-300 rounded-xl hover:bg-white/10 transition-colors text-xs font-bold">@Localizer["Cancel"]</button>
+            <button onclick="submitStudentEnrollment()" class="px-5 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] transition-all text-xs font-black"><i class="fas fa-user-plus @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["ConfirmEnrollment"]</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Toggle course status
+        async function toggleActive(courseId, isActive) {
+            if (!confirm(isActive ? 'Are you sure you want to deactivate this course?' : 'Are you sure you want to activate this course?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/Admin/Courses/ToggleActive', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: courseId })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.message || 'Operation failed.');
+                }
+            } catch (error) {
+                alert('Connection error while updating status.');
+            }
+        }
+
+        // Delete course
+        async function deleteCourse(courseId) {
+            if (!confirm('Are you sure you want to delete this course? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/Admin/Courses/Delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: courseId })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = '/Admin/Courses';
+                } else {
+                    alert(result.message || 'Deletion failed.');
+                }
+            } catch (error) {
+                alert('Connection error while deleting course.');
+            }
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // HLS Async Progress Tracking Operations (Toast Framework)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        let _hlsPollInterval = null;
+        let _hlsActiveVideoId = null;
+
+        function hlsToastShow() {
+            document.getElementById('hlsToast').classList.remove('hidden');
+        }
+        function hlsToastHide() {
+            document.getElementById('hlsToast').classList.add('hidden');
+        }
+        function hlsToastUpdate(percent, status, error) {
+            const bar = document.getElementById('hlsToastBar');
+            const pct = document.getElementById('hlsToastPct');
+            const msg = document.getElementById('hlsToastMsg');
+            const icon = document.getElementById('hlsToastIcon');
+            const title = document.getElementById('hlsToastTitle');
+
+            if (status === 'completed') {
+                bar.style.width = '100%';
+                bar.className = 'h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 shadow-[0_0_10px_#10B981]';
+                pct.textContent = '100%';
+                msg.textContent = 'Encoding complete! Refreshing page...';
+                icon.className = 'fas fa-check-circle text-emerald-400 shadow-[0_0_8px_#10B981]';
+                title.textContent = 'HLS Conversion Ready';
+                hlsPollStop();
+                setTimeout(() => location.reload(), 1800);
+            } else if (status === 'failed') {
+                bar.style.width = '100%';
+                bar.className = 'h-full rounded-full bg-rose-500';
+                msg.textContent = 'Encoding failed: ' + (error || 'Unknown error occurred');
+                icon.className = 'fas fa-exclamation-circle text-rose-500';
+                title.textContent = 'Conversion Failed';
+                pct.textContent = '!';
+                hlsPollStop();
+            } else {
+                const p = Math.min(percent ?? 0, 99);
+                bar.style.width = p + '%';
+                pct.textContent = p + '%';
+                msg.textContent = status === 'queued' ? 'Queued — waiting to start...' : 'Converting video to HLS...';
+            }
+        }
+        function hlsPollStart(videoId) {
+            hlsPollStop();
+            _hlsActiveVideoId = videoId;
+            _hlsPollInterval = setInterval(async () => {
+                try {
+                    const r = await fetch('/Admin/CourseVideos/GetConversionProgress?videoId=' + videoId);
+                    const d = await r.json();
+                    if (!d.found) { hlsPollStop(); return; }
+                    hlsToastUpdate(d.percent, d.status, d.error);
+                } catch { /* connection fault mitigation drop */ }
+            }, 2000);
+        }
+        function hlsPollStop() {
+            if (_hlsPollInterval) { clearInterval(_hlsPollInterval); _hlsPollInterval = null; }
+        }
+
+        // Trigger background ffmpeg conversion
+        async function convertToHls(videoId, btn) {
+            if (!confirm('Start HLS conversion for this video?')) return;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i>';
+
+            try {
+                const response = await fetch('/Admin/CourseVideos/ProcessHls', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                    body: JSON.stringify({ id: videoId })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    btn.innerHTML = '<i class="fas fa-film fa-spin text-xs text-brand-cyan"></i>';
+                    btn.title = 'Processing video in background...';
+
+                    document.getElementById('hlsToastBar').style.width = '0%';
+                    document.getElementById('hlsToastPct').textContent = '0%';
+                    document.getElementById('hlsToastMsg').textContent = 'Initializing conversion...';
+                    document.getElementById('hlsToastIcon').className = 'fas fa-film text-brand-cyan';
+                    document.getElementById('hlsToastTitle').textContent = 'HLS Conversion';
+                    hlsToastShow();
+                    hlsPollStart(videoId);
+                } else {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-film text-xs"></i>';
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-film text-xs"></i>';
+                alert('Connection error: ' + error.message);
+            }
+        }
+
+        // Toggle video visibility & status
+        async function toggleVideoActive(videoId, isActive) {
+            const action = isActive ? 'deactivate' : 'activate';
+            if (!confirm(`Are you sure you want to ${action} this video?`)) return;
+            try {
+                const response = await fetch('/Admin/CourseVideos/ToggleActive', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                    body: JSON.stringify({ id: videoId })
+                });
+                const result = await response.json();
+                if (result.success) location.reload();
+                else alert('Error: ' + result.message);
+            } catch (error) { alert('Connection error: ' + error.message); }
+        }
+
+        async function toggleVideoFree(videoId, isFree) {
+            try {
+                const response = await fetch('/Admin/CourseVideos/ToggleFree', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                    body: JSON.stringify({ id: videoId })
+                });
+                const result = await response.json();
+                if (result.success) location.reload();
+                else alert('Error: ' + result.message);
+            } catch (error) { alert('Connection error: ' + error.message); }
+        }
+
+        async function deleteVideo(videoId) {
+            if (!confirm('Are you sure you want to delete this video?')) return;
+            try {
+                const response = await fetch('/Admin/CourseVideos/Delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                    body: JSON.stringify({ id: videoId })
+                });
+                const result = await response.json();
+                if (result.success) location.reload();
+                else alert('Error: ' + result.message);
+            } catch (error) { alert('Connection error: ' + error.message); }
+        }
+
+        async function deletePdf(pdfId) {
+            if (!confirm('Are you sure you want to delete this PDF file?')) return;
+            try {
+                const response = await fetch('/Admin/CoursePdfs/Delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: pdfId })
+                });
+                const result = await response.json();
+                if (result.success) { location.reload(); }
+                else { alert(result.message); }
+            } catch (error) { alert('Connection error while deleting PDF.'); }
+        }
+
+        // ── Student Enrollment Modal Controls ──────────────────────────────────
+        if (document.getElementById('studentEnrollModal')) {
+            document.getElementById('studentEnrollModal').addEventListener('click', function(e) {
+                if (e.target === this) closeStudentEnrollModal();
+            });
+        }
+
+        function openStudentEnrollModal() {
+            document.getElementById('studentEnrollModal').classList.remove('hidden');
+            document.getElementById('studentEnrollModal').classList.add('flex');
+            document.getElementById('studentSearch').value = '';
+            filterStudents();
+        }
+        function closeStudentEnrollModal() {
+            document.getElementById('studentEnrollModal').classList.add('hidden');
+            document.getElementById('studentEnrollModal').classList.remove('flex');
+            document.querySelectorAll('input[name="selectedStudent"]').forEach(r => r.checked = false);
+        }
+        function filterStudents() {
+            const q = document.getElementById('studentSearch').value.toLowerCase();
+            document.querySelectorAll('.student-option').forEach(el => {
+                const name = (el.querySelector('[data-student-name]')?.dataset.studentName ?? '').toLowerCase();
+                el.style.display = name.includes(q) ? '' : 'none';
+            });
+        }
+        async function submitStudentEnrollment() {
+            const selected = document.querySelector('input[name="selectedStudent"]:checked');
+            if (!selected) { alert('Please select a student.'); return; }
+            const isPaid = document.getElementById('studentMarkAsPaid').checked;
+            try {
+                const response = await fetch('/Admin/Enrollment/AddEnrollment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: parseInt(selected.value), courseId: @Model.CourseId, isPaid: isPaid })
+                });
+                const result = await response.json();
+                if (result.success) { closeStudentEnrollModal(); location.reload(); }
+                else { alert('Error: ' + result.message); }
+            } catch (e) { alert('Connection error while enrolling student.'); }
+        }
+        async function removeCourseStudent(enrollmentId, userName) {
+            if (!confirm(`Are you sure you want to remove student "${userName}" from this course?`)) return;
+            try {
+                const response = await fetch('/Admin/Enrollment/RemoveEnrollment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ enrollmentId: enrollmentId })
+                });
+                const result = await response.json();
+                if (result.success) { location.reload(); }
+                else { alert('Error: ' + result.message); }
+            } catch (e) { alert('Connection error while removing student.'); }
+        }
+
+        // Test Method Execution
+        async function createTestVideo() {
+            const videoUrl = prompt('Enter a valid video URL (mp4) to download as a Test Mock:', 'https://www.w3schools.com/html/mov_bbb.mp4');
+
+            if (!videoUrl) return;
+
+            if (!confirm('This will trigger a backend download and HLS conversion. Proceed?')) return;
+
+            const btn = document.querySelector('button[onclick="createTestVideo()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1.5"></i> Processing...';
+            btn.disabled = true;
+
+            try {
+                const formData = new URLSearchParams({
+                    courseId: '@Model.CourseId',
+                    videoUrl: videoUrl
+                });
+
+                const response = await fetch('/Admin/CourseVideos/TestOnly_DownloadVideoFromUrl', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errText = await response.text();
+                    console.error("Server Error:", errText);
+                    alert(`Server Error (${response.status}): Operation failed.`);
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    return;
+                }
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Test video downloaded successfully! Refreshing...');
+                    location.reload();
+                } else {
+                    alert('Test failed: ' + result.message);
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                alert('Connection error: ' + error.message);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+}

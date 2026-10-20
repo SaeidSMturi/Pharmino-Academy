@@ -1,0 +1,184 @@
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-player\controls.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\site.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-protection\index.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-protection\network.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-player\ui.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-validation\dist\additional-methods.min.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\admin.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\Style.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery\dist\jquery.min.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\site.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-validation\LICENSE.md
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\theme.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\tailwind.min.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-player\index.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-protection\detectors.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\hls-secure-player.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-protection\utils.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-validation\dist\jquery.validate.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\sitemap_pages.xml
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\pdfjs\pdf.min.mjs
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\marked.min.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-protection\protectors.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery\dist\jquery.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\secure-video-loader.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\pdfjs\pdf.worker.min.mjs
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\favicon.ico
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-protection\fingerprint.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\sitemap_index.xml
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-protection.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-player\progress.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery\dist\jquery.min.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\sitemap_posts.xml
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\pdfjs\README.txt
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\advanced-video-player.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-player\events.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery\LICENSE.txt
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\sitemap_custom.xml
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\sitemap_products.xml
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\theme.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-player.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\robots.txt
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-validation\dist\additional-methods.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\sitemap_categories.xml
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+wwwroot\css\Style.css
+wwwroot\css\admin.css
+wwwroot\css\advanced-video-player.css
+wwwroot\css\site.css
+wwwroot\css\tailwind.min.css
+wwwroot\css\theme.css
+wwwroot\favicon.ico
+wwwroot\js\advanced-video-player.js
+wwwroot\js\advanced-video-player\controls.js
+wwwroot\js\advanced-video-player\events.js
+wwwroot\js\advanced-video-player\index.js
+wwwroot\js\advanced-video-player\progress.js
+wwwroot\js\advanced-video-player\ui.js
+wwwroot\js\advanced-video-protection.js
+wwwroot\js\advanced-video-protection\detectors.js
+wwwroot\js\advanced-video-protection\fingerprint.js
+wwwroot\js\advanced-video-protection\index.js
+wwwroot\js\advanced-video-protection\network.js
+wwwroot\js\advanced-video-protection\protectors.js
+wwwroot\js\advanced-video-protection\utils.js
+wwwroot\js\hls-secure-player.js
+wwwroot\js\marked.min.js
+wwwroot\js\secure-video-loader.js
+wwwroot\js\site.js
+wwwroot\js\theme.js
+wwwroot\lib\bootstrap\LICENSE
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
+wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
+wwwroot\lib\jquery-validation\LICENSE.md
+wwwroot\lib\jquery-validation\dist\additional-methods.js
+wwwroot\lib\jquery-validation\dist\additional-methods.min.js
+wwwroot\lib\jquery-validation\dist\jquery.validate.js
+wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
+wwwroot\lib\jquery\LICENSE.txt
+wwwroot\lib\jquery\dist\jquery.js
+wwwroot\lib\jquery\dist\jquery.min.js
+wwwroot\lib\jquery\dist\jquery.min.map
+wwwroot\lib\pdfjs\.gitkeep
+wwwroot\lib\pdfjs\README.txt
+wwwroot\lib\pdfjs\pdf.min.mjs
+wwwroot\lib\pdfjs\pdf.worker.min.mjs
+wwwroot\robots.txt
+wwwroot\sitemap_categories.xml
+wwwroot\sitemap_custom.xml
+wwwroot\sitemap_index.xml
+wwwroot\sitemap_pages.xml
+wwwroot\sitemap_posts.xml
+wwwroot\sitemap_products.xml

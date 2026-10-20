@@ -1,0 +1,535 @@
+@using System.Security.Claims
+@using Application.Interfaces
+@using Microsoft.AspNetCore.Mvc.Localization
+@model Web.Models.HomeIndexViewModel
+@inject IPermissionService _permissionService
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = null;
+
+    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+    var currentUserId = userIdClaim != null ? int.Parse(userIdClaim.Value) : 0;
+    var canViewDashboard = await _permissionService.UserHasPermissionAsync(currentUserId, "Dashboard.View");
+
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture.Name;
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+}
+
+<!DOCTYPE html>
+<html lang="@currentCulture" dir="@(isRtl ? "rtl" : "ltr")">
+<head>
+    <script>
+        (function () {
+            try {
+                var theme = localStorage.getItem('pharmino_theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+                if (theme === 'light') {
+                    document.documentElement.classList.add('light', 'light-theme');
+                } else {
+                    document.documentElement.classList.add('dark', 'dark-theme');
+                }
+            } catch (e) { }
+        })();
+    </script>
+    <partial name="_SeoHead" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="~/css/tailwind.min.css"></script>
+    <script src="~/js/marked.min.js"></script>
+
+    <link rel="stylesheet" href="~/css/Style.css" />
+    <link rel="stylesheet" href="~/css/theme.css" />
+    @if (isRtl)
+    {
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <style>
+            body, h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, div {
+                font-family: 'Cairo', sans-serif !important;
+            }
+        </style>
+    }
+</head>
+<body class="antialiased font-sans overflow-x-hidden">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="header-wrapper" class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 transition-all duration-500 ease-in-out">
+    
+        <div id="header-container" class="w-full max-w-6xl px-5 py-3 rounded-full shadow-[0_8px_32px_rgba(18,60,118,0.3)] flex justify-between items-center transition-all duration-500 ease-in-out border border-custom-gold/20 relative">
+
+            <div class="absolute inset-0 w-full h-full rounded-full bg-custom-dark/60 backdrop-blur-xl -z-10"></div>
+
+            <div class="text-xl font-extrabold tracking-tight z-10">
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="relative w-10 h-10 flex items-center justify-center">
+                        <div class="absolute inset-0 rounded-full bg-custom-navy blur-md opacity-50 group-hover:opacity-80 transition-opacity duration-300"></div>
+                        <div class="relative w-full h-full rounded-full bg-gradient-to-br from-custom-navy to-[#1a5099] border border-custom-gold/30 flex items-center justify-center text-custom-gold group-hover:scale-105 transition-transform duration-300 shadow-inner">
+                            <i class="fas fa-prescription-bottle-medical text-sm"></i>
+                        </div>
+                    </div>
+                    <span class="text-custom-snow text-lg font-black tracking-wide group-hover:text-custom-gold transition-colors duration-300"><setting key="Site Name"></setting></span>
+                </a>
+            </div>
+
+            <nav class="hidden lg:flex items-center space-x-2 text-sm font-medium z-10">
+                <a href="#courses" class="relative group px-5 py-2 text-custom-snow/80 hover:text-custom-gold transition-colors duration-300 rounded-full">
+                    <span class="relative z-10">@Localizer["Courses"]</span>
+                    <div class="absolute inset-0 h-full w-full bg-custom-navy/40 rounded-full scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300"></div>
+                </a>
+                <a href="#features" class="relative group px-5 py-2 text-custom-snow/80 hover:text-custom-gold transition-colors duration-300 rounded-full">
+                    <span class="relative z-10">@Localizer["Features"]</span>
+                    <div class="absolute inset-0 h-full w-full bg-custom-navy/40 rounded-full scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300"></div>
+                </a>
+                <a href="#testimonials" class="relative group px-5 py-2 text-custom-snow/80 hover:text-custom-gold transition-colors duration-300 rounded-full">
+                    <span class="relative z-10">@Localizer["Testimonials"]</span>
+                    <div class="absolute inset-0 h-full w-full bg-custom-navy/40 rounded-full scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300"></div>
+                </a>
+                <a href="#contact" class="relative group px-5 py-2 text-custom-snow/80 hover:text-custom-gold transition-colors duration-300 rounded-full">
+                    <span class="relative z-10">@Localizer["Contact"]</span>
+                    <div class="absolute inset-0 h-full w-full bg-custom-navy/40 rounded-full scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300"></div>
+                </a>
+            </nav>
+
+            <div class="hidden lg:flex items-center gap-3 z-10">
+                <partial name="_ThemeToggle" />
+                <partial name="_LanguageSwitcher" />
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="relative">
+                        <button id="user-menu-button" class="flex items-center gap-3 font-semibold bg-custom-navy/20 hover:bg-custom-navy/40 px-4 py-2 rounded-full transition-all duration-300 border border-custom-gold/20 hover:border-custom-gold/50">
+                            <div class="w-8 h-8 rounded-full bg-custom-gold text-custom-navy flex items-center justify-center font-bold text-sm shadow-[0_0_10px_rgba(225,215,136,0.3)]">
+                                @(User.FindFirst("FirstName")?.Value?.FirstOrDefault() ?? 'U')
+                            </div>
+                            <span class="text-custom-snow text-sm">@User.FindFirst("FirstName")?.Value</span>
+                            <i class="fas fa-chevron-down text-custom-gold/70 text-[10px] transition-transform duration-300" id="user-arrow"></i>
+                        </button>
+
+                        <div id="user-menu" class="absolute right-0 mt-4 w-64 rounded-2xl bg-black/20 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-custom-gold/20 hidden z-50 overflow-hidden transform opacity-0 scale-95 transition-all duration-300 origin-top-right">
+                            <div class="absolute inset-0 bg-custom-dark/60 backdrop-blur-2xl rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-custom-gold/20"></div>
+
+                            <div class="relative z-10 rounded-2xl overflow-hidden flex flex-col">
+                                <div class="p-5 border-b border-white/5 bg-gradient-to-br from-custom-navy/30 to-transparent relative z-10">
+                                    <p class="text-base text-custom-snow font-bold">@User.FindFirst("FirstName")?.Value</p>
+                                    <p class="text-xs text-custom-gold mt-1 truncate tracking-wider uppercase">@Localizer["StudentAccount"]</p>
+                                </div>
+
+                                <div class="py-2">
+                                    <a asp-area="User" asp-controller="Dashboard" asp-action="Index" class="flex items-center gap-3 px-5 py-3 text-sm text-custom-snow hover:bg-custom-navy/30 hover:text-custom-gold transition-colors duration-200">
+                                        <i class="fas fa-chart-pie w-4"></i> @Localizer["Dashboard"]
+                                    </a>
+                                    <a asp-area="User" asp-controller="Courses" asp-action="Index" class="flex items-center gap-3 px-5 py-3 text-sm text-custom-snow hover:bg-custom-navy/30 hover:text-custom-gold transition-colors duration-200">
+                                        <i class="fas fa-book-open w-4"></i> @Localizer["MyCourses"]
+                                    </a>
+
+                                    @if (canViewDashboard)
+                                    {
+                                        <div class="h-px bg-white/5 my-1 mx-4"></div>
+                                        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="flex items-center gap-3 px-5 py-3 text-sm text-custom-snow hover:bg-custom-navy/30 hover:text-custom-gold transition-colors duration-200">
+                                            <i class="fas fa-shield-halved w-4"></i> @Localizer["AdminPanel"]
+                                        </a>
+                                    }
+
+                                    <div class="h-px bg-white/5 my-1 mx-4"></div>
+
+                                    <a asp-area="User" asp-controller="Profile" asp-action="EditProfile" class="flex items-center gap-3 px-5 py-3 text-sm text-custom-snow hover:bg-custom-navy/30 hover:text-custom-gold transition-colors duration-200">
+                                        <i class="fas fa-user-pen w-4"></i> @Localizer["ProfileSettings"]
+                                    </a>
+                                    <a asp-area="User" asp-controller="Settings" asp-action="Index" class="flex items-center gap-3 px-5 py-3 text-sm text-custom-snow hover:bg-custom-navy/30 hover:text-custom-gold transition-colors duration-200">
+                                        <i class="fas fa-cog w-4"></i> @Localizer["AccountSettings"]
+                                    </a>
+
+                                    <div class="h-px bg-white/5 my-1 mx-4"></div>
+
+                                    <a asp-area="" asp-controller="Account" asp-action="Logout" class="flex items-center gap-3 px-5 py-3 text-sm text-[#ff6b6b] hover:bg-[#ff6b6b]/10 transition-colors duration-200 group">
+                                        <i class="fas fa-right-from-bracket w-4 group-hover:-translate-x-1 transition-transform"></i> @Localizer["Logout"]
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a asp-area="" asp-controller="Account" asp-action="Login" class="font-semibold text-sm text-custom-snow hover:text-custom-gold transition-all duration-300 px-2">
+                        @Localizer["Login"]
+                    </a>
+                    <a asp-area="" asp-controller="Account" asp-action="Register" class="relative group px-6 py-2.5 rounded-full overflow-hidden font-bold text-sm text-custom-navy bg-custom-gold transition-all duration-300 shadow-[0_0_15px_rgba(225,215,136,0.2)] hover:shadow-[0_0_25px_rgba(225,215,136,0.4)] transform hover:-translate-y-0.5 border border-custom-gold">
+                        <span class="relative z-10">@Localizer["SignUp"]</span>
+                        <div class="absolute inset-0 w-full h-full bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                    </a>
+                }
+            </div>
+
+            <div class="lg:hidden z-10">
+                <button id="mobile-menu-button" class="w-10 h-10 rounded-full bg-custom-navy/20 border border-custom-gold/20 text-custom-gold hover:bg-custom-navy hover:text-white transition-all duration-300 flex items-center justify-center">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>    <!-- Advanced Offcanvas Menu -->
+    <div id="offcanvas-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-500"></div>
+    <div id="offcanvas-menu" class="fixed top-0 right-0 h-full w-[85vw] max-w-sm z-50 transform translate-x-full transition-transform duration-500 ease-out bg-custom-dark/90 backdrop-blur-2xl border-l border-white/10 shadow-[-20px_0_50px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden">
+
+        <!-- Atmospheric Orbs inside menu -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-custom-cyan/10 rounded-full blur-[80px] pointer-events-none"></div>
+        <div class="absolute bottom-20 left-0 w-64 h-64 bg-custom-blue/10 rounded-full blur-[80px] pointer-events-none"></div>
+
+        <div class="flex justify-between items-center p-6 border-b border-white/5 relative z-10">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="text-xl font-bold text-custom-snow flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-custom-cyan to-custom-blue flex items-center justify-center text-white shadow-[0_0_15px_rgba(66,234,255,0.4)] group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-prescription-bottle-medical text-sm"></i>
+                </div>
+                <setting key="Site Name"></setting>
+            </a>
+            <div class="flex items-center gap-3">
+                <partial name="_ThemeToggle" />
+                <partial name="_LanguageSwitcher" />
+                <button id="offcanvas-close-button" class="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-custom-snow hover:bg-custom-orange/20 hover:text-custom-orange hover:border-custom-orange/50 transition-all duration-300 group">
+                    <i class="fas fa-times group-hover:rotate-90 transition-transform duration-300"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex-grow overflow-y-auto px-4 py-6 relative z-10 scrollbar-hide">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="offcanvas-item mb-8">
+                    <div class="p-4 rounded-2xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-custom-orange to-custom-yellow text-custom-dark flex items-center justify-center font-bold text-xl shadow-[0_0_15px_rgba(255,179,67,0.3)]">
+                            @(User.FindFirst("FirstName")?.Value?.FirstOrDefault() ?? 'U')
+                        </div>
+                        <div>
+                            <p class="text-xs text-custom-cyan font-semibold tracking-wider uppercase mb-0.5">@Localizer["Welcome"]</p>
+                            <a asp-area="User" asp-controller="Dashboard" asp-action="Index" class="text-base font-bold text-custom-snow hover:text-custom-cyan transition-colors">@User.FindFirst("FirstName")?.Value</a>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <nav class="flex flex-col space-y-2">
+                <a href="#courses" class="offcanvas-item group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all duration-300">
+                    <div class="w-10 h-10 rounded-xl bg-custom-cyan/10 text-custom-cyan flex items-center justify-center group-hover:bg-custom-cyan group-hover:text-custom-dark group-hover:shadow-[0_0_15px_rgba(66,234,255,0.4)] transition-all duration-300">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-custom-snow group-hover:text-custom-cyan transition-colors">@Localizer["Courses"]</h4>
+                        <p class="text-xs text-custom-snow/40 mt-0.5">Explore our latest materials</p>
+                    </div>
+                </a>
+
+                <a href="#features" class="offcanvas-item group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all duration-300">
+                    <div class="w-10 h-10 rounded-xl bg-custom-blue/10 text-custom-blue flex items-center justify-center group-hover:bg-custom-blue group-hover:text-white group-hover:shadow-[0_0_15px_rgba(66,114,255,0.4)] transition-all duration-300">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-custom-snow group-hover:text-custom-blue transition-colors">@Localizer["Features"]</h4>
+                        <p class="text-xs text-custom-snow/40 mt-0.5">Why choose our platform</p>
+                    </div>
+                </a>
+
+                <a href="#testimonials" class="offcanvas-item group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all duration-300">
+                    <div class="w-10 h-10 rounded-xl bg-custom-yellow/10 text-custom-yellow flex items-center justify-center group-hover:bg-custom-yellow group-hover:text-custom-dark group-hover:shadow-[0_0_15px_rgba(255,179,67,0.4)] transition-all duration-300">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-custom-snow group-hover:text-custom-yellow transition-colors">@Localizer["Testimonials"]</h4>
+                        <p class="text-xs text-custom-snow/40 mt-0.5">Student success stories</p>
+                    </div>
+                </a>
+
+                <a href="#contact" class="offcanvas-item group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all duration-300">
+                    <div class="w-10 h-10 rounded-xl bg-custom-orange/10 text-custom-orange flex items-center justify-center group-hover:bg-custom-orange group-hover:text-custom-dark group-hover:shadow-[0_0_15px_rgba(255,126,66,0.4)] transition-all duration-300">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-custom-snow group-hover:text-custom-orange transition-colors">@Localizer["Contact"]</h4>
+                        <p class="text-xs text-custom-snow/40 mt-0.5">Get in touch with us</p>
+                    </div>
+                </a>
+            </nav>
+        </div>
+
+        <div class="p-6 border-t border-white/5 bg-custom-dark/50 relative z-10 backdrop-blur-md">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="flex flex-col gap-3">
+                    <a asp-area="User" asp-controller="Dashboard" asp-action="Index" class="offcanvas-item w-full flex justify-center items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-custom-snow font-bold py-3.5 px-6 rounded-xl transition-colors duration-300">
+                        <i class="fas fa-chart-pie text-custom-cyan"></i> @Localizer["Dashboard"]
+                    </a>
+                    @if (canViewDashboard)
+                    {
+                        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="offcanvas-item w-full flex justify-center items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-custom-snow font-bold py-3.5 px-6 rounded-xl transition-colors duration-300">
+                            <i class="fas fa-shield-halved text-custom-blue"></i> @Localizer["AdminPanel"]
+                        </a>
+                    }
+                    <a asp-area="" asp-controller="Account" asp-action="Logout" class="offcanvas-item w-full flex justify-center items-center gap-2 bg-custom-orange/10 hover:bg-custom-orange/20 border border-custom-orange/30 text-custom-orange font-bold py-3.5 px-6 rounded-xl transition-colors duration-300">
+                        <i class="fas fa-right-from-bracket"></i> @Localizer["Logout"]
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="flex flex-col gap-3">
+                    <a asp-area="" asp-controller="Account" asp-action="Login" class="offcanvas-item w-full flex justify-center items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-custom-snow font-bold py-3.5 px-6 rounded-xl transition-colors duration-300">
+                        <i class="fas fa-user text-custom-gold"></i> @Localizer["Login"]
+                    </a>
+                    <a asp-area="" asp-controller="Account" asp-action="Register" class="offcanvas-item w-full flex justify-center items-center gap-2 bg-gradient-to-r from-custom-navy to-[#1a5099] border border-custom-gold/30 text-custom-gold font-bold py-3.5 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-[0_0_20px_rgba(18,60,118,0.3)]">
+                        <i class="fas fa-user-plus"></i> @Localizer["CreateAccount"]
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="min-h-screen flex items-center pt-24 pb-12 relative overflow-hidden">
+            <div class="absolute top-1/4 left-5 w-80 h-80 bg-custom-cyan/15 rounded-full mix-blend-screen filter blur-[120px] animate-blob-1"></div>
+            <div class="absolute top-1/3 right-5 w-96 h-96 bg-custom-blue/20 rounded-full mix-blend-screen filter blur-[140px] animate-blob-2"></div>
+            <div class="absolute bottom-1/4 left-1/4 w-[450px] h-[450px] bg-custom-orange/10 rounded-full mix-blend-screen filter blur-[150px] animate-blob-1" style="animation-duration: 28s;"></div>
+
+            <div class="container mx-auto px-4 text-center relative z-10">
+                <div class="inline-flex items-center gap-2 mb-8 px-5 py-2 rounded-full glass-panel border border-custom-cyan/30 text-custom-cyan text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(66,234,255,0.15)] transform hover:scale-105 transition-transform duration-300">
+                    <span class="w-2 h-2 rounded-full bg-custom-cyan animate-ping"></span>
+                    @Localizer["PlatformTitle"]
+                </div>
+
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-custom-snow mb-6 leading-tight tracking-tight">
+                    @Localizer["MainHeroHeading1"] <br class="md:hidden" />
+                    <span class="text-glow-cool">@Localizer["PearsonVue"]</span><br />
+                    @Localizer["MainHeroHeading2"]
+                </h1>
+
+                <p class="text-lg md:text-xl text-custom-snow/70 max-w-3xl mx-auto mb-10 leading-relaxed font-light">
+                    @Localizer["MainHeroDescription"]
+                </p>
+
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-5">
+                    <a href="#courses" class="bg-gradient-to-r from-custom-orange to-custom-yellow hover:from-custom-yellow hover:to-custom-orange text-custom-dark font-black py-4 px-10 rounded-full text-lg transition-all cubic-bezier(0.4, 0, 0.2, 1) transform hover:scale-105 hover:-translate-y-0.5 shadow-[0_0,30px_rgba(255,179,67,0.3)] hover:shadow-[0_0_45px_rgba(255,179,67,0.6)] w-full sm:w-auto">
+                        @Localizer["StartJourney"] <i class="fas fa-arrow-right ml-2 animate-pulse"></i>
+                    </a>
+                    <a href="#features" class="glass-panel hover:bg-custom-blue/10 border border-custom-cyan/30 text-custom-snow font-bold py-4 px-10 rounded-full text-lg transition-all duration-300 w-full sm:w-auto flex items-center justify-center gap-2 hover:shadow-[0_0_25px_rgba(66,234,255,0.25)]">
+                        <i class="fas fa-play text-custom-cyan text-sm"></i> @Localizer["LearnMore"]
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="courses" class="py-24 relative">
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="text-center mb-20">
+                    <h2 class="text-4xl md:text-6xl font-black text-custom-snow">@Html.Raw(Localizer["LatestCourses"].Value)</h2>
+                    <p class="text-custom-snow/60 mt-6 max-w-2xl mx-auto text-lg">@Localizer["LatestCoursesSub"]</p>
+                </div>
+
+                @if (Model?.LatestCourses?.Any() == true)
+                {
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        @foreach (var course in Model.LatestCourses)
+                        {
+                            <div class="group rounded-3xl overflow-hidden glass-panel transform transition-all duration-500 hover:shadow-[0_20px_50px_rgba(66,234,255,0.2)] flex flex-col h-full border border-custom-cyan/10 hover:border-custom-cyan/40 relative">
+                                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-custom-cyan to-custom-blue transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 z-20"></div>
+
+                                <div class="h-56 bg-custom-card relative overflow-hidden">
+                                    <div class="absolute inset-0 bg-custom-dark/40 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
+                                    @if (!string.IsNullOrEmpty(course.ImageName) && course.ImageName != "default.jpg")
+                                    {
+                                        @* <img src="~/uploads/courses/@course.ImageName" alt="@course.Title" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" /> *@
+                                        <optimized-img src="~/uploads/courses/@course.ImageName" width="500" alt="@course.Title" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"></optimized-img>
+                                    }
+                                    else
+                                    {
+                                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-custom-card to-[#0d1527]">
+                                            <i class="fas fa-graduation-cap text-7xl text-custom-cyan/20 transform group-hover:scale-110 group-hover:text-custom-cyan/40 transition-all duration-500"></i>
+                                        </div>
+                                    }
+                                    <span class="absolute top-4 right-4 px-4 py-1.5 text-xs font-black uppercase tracking-wider rounded-full bg-gradient-to-r from-custom-orange to-custom-yellow text-custom-dark z-20 shadow-lg">New</span>
+                                </div>
+
+                                <div class="p-8 flex flex-col flex-grow">
+                                    <div class="flex items-center justify-between text-xs text-custom-cyan mb-4 font-bold tracking-widest uppercase">
+                                        <span class="flex items-center gap-1.5 bg-custom-cyan/10 px-3 py-1 rounded-full"><i class="far fa-clock"></i> @course.DurationHours hr</span>
+                                        <span class="flex items-center gap-1.5 bg-custom-cyan/10 px-3 py-1 rounded-full"><i class="fas fa-video"></i> @course.VideoCount vids</span>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-custom-snow mb-3 group-hover:text-custom-cyan transition-colors duration-300">@course.Title</h3>
+                                    <p class="text-custom-snow/60 text-sm line-clamp-3 mb-8 flex-grow leading-relaxed">@course.Description</p>
+
+                                    <div class="flex items-center justify-between mt-auto pt-6 border-t border-custom-cyan/10">
+                                        <div class="text-3xl font-black text-custom-snow">$@course.Price.ToString("N0")</div>
+                                        <a asp-area="" asp-controller="Courses" asp-action="Details" asp-route-id="@course.CourseId"
+                                           class="px-6 py-2.5 rounded-full bg-custom-blue/20 hover:bg-custom-blue text-custom-cyan hover:text-white text-sm font-bold transition-all duration-300 border border-custom-blue/50 hover:shadow-[0_0_25px_rgba(66,114,255,0.5)] transform hover:scale-105">
+                                            @Localizer["ViewCourse"]
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- View All Courses Button -->
+                    <div class="mt-16 text-center">
+                        <a asp-area="" asp-controller="Courses" asp-action="Index" class="inline-flex items-center gap-3 px-8 py-4 rounded-full glass-panel border border-custom-cyan/30 text-custom-cyan font-bold hover:bg-custom-cyan/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(66,234,255,0.2)] transform hover:-translate-y-1">
+                            @Html.Raw(Localizer["ExploreAll"].Value)
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="glass-panel rounded-3xl p-16 text-center max-w-2xl mx-auto border border-custom-cyan/20 border-dashed animate-pulse">
+                        <div class="w-24 h-24 mx-auto mb-8 rounded-full bg-custom-cyan/10 flex items-center justify-center border border-custom-cyan/30 shadow-[0_0_30px_rgba(66,234,255,0.15)]">
+                            <i class="fas fa-box-open text-custom-cyan text-4xl"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-custom-snow mb-4">No courses available yet</h3>
+                        <p class="text-custom-snow/60 text-lg">New educational content will appear here as soon as it is published by the instructors.</p>
+                    </div>
+                }
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-24 relative">
+            <div class="absolute inset-0 bg-custom-card/30 skew-y-2 transform origin-top-left -z-10 border-y border-custom-cyan/5"></div>
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-20">
+                    <h2 class="text-4xl md:text-5xl font-black text-custom-snow">@Html.Raw(Localizer["ModernPlatform"].Value)</h2>
+                    <p class="text-custom-snow/60 mt-6 max-w-2xl mx-auto text-lg">@Localizer["ModernPlatformSub"]</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="rounded-3xl p-8 glass-panel border border-custom-cyan/10 hover:border-custom-cyan/40 hover:shadow-[0_15px_35px_rgba(66,234,255,0.15)] group transition-all duration-500 animate-float">
+                        <div class="w-16 h-16 bg-gradient-to-br from-custom-blue to-custom-cyan rounded-2xl flex items-center justify-center mb-6 text-2xl text-white shadow-[0_0_25px_rgba(66,234,255,0.3)] group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                            <i class="fas fa-shield-halved"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-custom-snow mb-3 group-hover:text-custom-cyan transition-colors duration-300">@Localizer["SecureContent"]</h3>
+                        <p class="text-sm text-custom-snow/60 leading-relaxed">@Localizer["SecureContentText"]</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="rounded-3xl p-8 glass-panel border border-custom-cyan/10 hover:border-custom-yellow/40 hover:shadow-[0_15px_35px_rgba(255,179,67,0.15)] group transition-all duration-500 animate-float delay-1">
+                        <div class="w-16 h-16 bg-gradient-to-br from-custom-orange to-custom-yellow rounded-2xl flex items-center justify-center mb-6 text-2xl text-white shadow-[0_0_25px_rgba(255,179,67,0.3)] group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-custom-snow mb-3 group-hover:text-custom-yellow transition-colors duration-300">@Localizer["GlobalAccess"]</h3>
+                        <p class="text-sm text-custom-snow/60 leading-relaxed">@Localizer["GlobalAccessText"]</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="rounded-3xl p-8 glass-panel border border-custom-cyan/10 hover:border-custom-cyan/40 hover:shadow-[0_15px_35px_rgba(66,234,255,0.15)] group transition-all duration-500 animate-float delay-2">
+                        <div class="w-16 h-16 bg-gradient-to-br from-custom-blue to-custom-cyan rounded-2xl flex items-center justify-center mb-6 text-2xl text-white shadow-[0_0_25px_rgba(66,234,255,0.3)] group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-custom-snow mb-3 group-hover:text-custom-cyan transition-colors duration-300">@Localizer["ProgressTracking"]</h3>
+                        <p class="text-sm text-custom-snow/60 leading-relaxed">@Localizer["ProgressTrackingText"]</p>
+                    </div>
+                    <!-- Feature 4 -->
+                    <div class="rounded-3xl p-8 glass-panel border border-custom-cyan/10 hover:border-custom-orange/40 hover:shadow-[0_15px_35px_rgba(255,126,66,0.15)] group transition-all duration-500 animate-float delay-3">
+                        <div class="w-16 h-16 bg-gradient-to-br from-custom-orange to-custom-yellow rounded-2xl flex items-center justify-center mb-6 text-2xl text-white shadow-[0_0_25px_rgba(255,126,66,0.3)] group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-custom-snow mb-3 group-hover:text-custom-orange transition-colors duration-300">@Localizer["ExpertInstructors"]</h3>
+                        <p class="text-sm text-custom-snow/60 leading-relaxed">@Localizer["ExpertInstructorsText"]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section (3D Effect) -->
+        <section id="testimonials" class="py-24 relative overflow-hidden">
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="text-center mb-20">
+                    <h2 class="text-4xl md:text-5xl font-black text-custom-snow">@Localizer["Student"] <span class="text-glow-warm">@Localizer["SuccessStories"]</span></h2>
+                    <p class="text-custom-snow/60 mt-6 max-w-2xl mx-auto text-lg">@Localizer["StudentSuccessStoriesText"]</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="glass-panel p-8 rounded-3xl border border-custom-cyan/10 relative hover:border-custom-cyan/50 hover:shadow-[0_20px_50px_rgba(66,234,255,0.15)] transition-colors duration-300 tilt-card cursor-pointer">
+                        <div class="tilt-content">
+                            <i class="fas fa-quote-right text-5xl text-custom-cyan/10 absolute top-2 right-2 rtl:left-2 rtl:right-auto tilt-icon"></i>
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-custom-blue to-custom-cyan flex items-center justify-center text-white font-bold text-xl shadow-lg">@Localizer["Testimonial1Initial"]</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-custom-snow">@Localizer["Testimonial1Name"]</h4>
+                                    <p class="text-sm text-custom-cyan">@Localizer["Testimonial1Title"]</p>
+                                </div>
+                            </div>
+                            <p class="text-custom-snow/70 leading-relaxed italic relative z-10">"@Localizer["Testimonial1Quote"]"</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-3xl border border-custom-cyan/10 relative hover:border-custom-yellow/50 hover:shadow-[0_20px_50px_rgba(255,179,67,0.15)] transition-colors duration-300 tilt-card cursor-pointer">
+                        <div class="tilt-content">
+                            <i class="fas fa-quote-right text-5xl text-custom-yellow/10 absolute top-2 right-2 rtl:left-2 rtl:right-auto tilt-icon"></i>
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-custom-orange to-custom-yellow flex items-center justify-center text-custom-dark font-bold text-xl shadow-lg">@Localizer["Testimonial2Initial"]</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-custom-snow">@Localizer["Testimonial2Name"]</h4>
+                                    <p class="text-sm text-custom-yellow">@Localizer["Testimonial2Title"]</p>
+                                </div>
+                            </div>
+                            <p class="text-custom-snow/70 leading-relaxed italic relative z-10">"@Localizer["Testimonial2Quote"]"</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-3xl border border-custom-cyan/10 relative hover:border-custom-orange/50 hover:shadow-[0_20px_50px_rgba(255,126,66,0.15)] transition-colors duration-300 tilt-card cursor-pointer">
+                        <div class="tilt-content">
+                            <i class="fas fa-quote-right text-5xl text-custom-orange/10 absolute top-2 right-2 rtl:left-2 rtl:right-auto tilt-icon"></i>
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-custom-orange to-custom-orange flex items-center justify-center text-white font-bold text-xl shadow-lg">@Localizer["Testimonial3Initial"]</div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-custom-snow">@Localizer["Testimonial3Name"]</h4>
+                                    <p class="text-sm text-custom-orange">@Localizer["Testimonial3Title"]</p>
+                                </div>
+                            </div>
+                            <p class="text-custom-snow/70 leading-relaxed italic relative z-10">"@Localizer["Testimonial3Quote"]"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- CTA Section -->
+        <section id="contact" class="py-24 relative overflow-hidden">
+            <div class="container mx-auto px-4">
+                <div class="rounded-[2.5rem] p-12 md:p-20 text-center relative overflow-hidden bg-gradient-to-b from-custom-card to-custom-dark border border-custom-cyan/20 shadow-[0_25px_60px_rgba(0,0,0,0.6)] group">
+                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 rounded-full bg-gradient-to-br from-custom-blue to-custom-cyan opacity-25 filter blur-3xl group-hover:opacity-40 transition-opacity duration-700"></div>
+                    <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-gradient-to-tr from-custom-orange to-custom-yellow opacity-15 filter blur-3xl group-hover:opacity-30 transition-opacity duration-700"></div>
+
+                    <div class="relative z-10">
+                        <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-custom-snow mb-6 tracking-tight">
+                            @Localizer["ReadyToStart"] <span class="text-glow-warm">@Localizer["SuccessJourney"]</span>
+                        </h2>
+                        <p class="text-custom-snow/70 text-lg md:text-xl mt-4 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                            @Localizer["JoinPharmacistsDescription"]
+                        </p>
+                        <a href="#courses" class="bg-gradient-to-r from-custom-cyan to-custom-blue hover:from-custom-blue hover:to-custom-cyan text-white font-black py-4 px-12 rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-[0_0_30px_rgba(66,234,255,0.3)] hover:shadow-[0_0_50px_rgba(66,234,255,0.6)] inline-block">
+                            @Localizer["EnrollNow"] <i class="fas fa-rocket ml-2 rtl:mr-2 rtl:ml-0 animate-bounce"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-12 border-t border-custom-cyan/10 bg-custom-dark relative z-10">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-3 mb-6 text-custom-snow text-2xl font-black">
+                <i class="fas fa-prescription-bottle-medical text-custom-cyan drop-shadow-[0_0_12px_rgba(66,234,255,0.6)]"></i>
+                <setting key="Site Name"></setting>
+            </div>
+            <p class="text-custom-snow/40 text-sm font-medium">&copy; @DateTime.Now.Year <setting key="Site Name"></setting>. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="~/js/site.js"></script>
+    <script src="~/js/theme.js"></script>
+</body>
+</html>

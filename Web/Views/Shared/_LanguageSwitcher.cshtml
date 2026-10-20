@@ -1,0 +1,20 @@
+﻿@using System.Globalization
+
+@{
+    var currentCulture = CultureInfo.CurrentUICulture;
+    var isArabic = currentCulture.TwoLetterISOLanguageName.Equals("ar", StringComparison.OrdinalIgnoreCase);
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+    var encodedReturnUrl = System.Net.WebUtility.UrlEncode(returnUrl);
+
+    // تعیین زبان هدف و متن دکمه بر اساس زبان فعلی سیستم
+    var targetCulture = isArabic ? "en" : "ar";
+    var buttonText = isArabic ? "English" : "العربية";
+}
+
+<div class="relative inline-block text-left text-sm font-semibold z-[100] lang-switcher-container">
+    <a href="/Language/SetLanguage?culture=@targetCulture&returnUrl=@encodedReturnUrl" 
+       class="flex items-center gap-2 px-4 py-2 rounded-full border border-custom-gold/20 bg-custom-navy/20 hover:bg-custom-navy/40 hover:border-custom-gold/50 text-custom-snow transition-all duration-300 shadow-md">
+        <i class="fas fa-globe text-custom-gold text-sm animate-pulse-slow"></i>
+        <span class="text-xs tracking-wide font-bold mt-0.5">@buttonText</span>
+    </a>
+</div>

@@ -1,0 +1,531 @@
+@model List<Domain.Entities.Seo.SeoErrorLog>
+@{
+    ViewData["Title"] = "SEO Errors & Diagnostics";
+
+    var unresolvedErrors = Model.Where(e => !e.IsResolved).ToList();
+    var resolvedErrors = Model.Where(e => e.IsResolved).ToList();
+
+    var missingAlts = (ViewBag.MissingAlts as List<Domain.Entities.Seo.SeoImage> ?? new List<Domain.Entities.Seo.SeoImage>())
+        .Where(i => string.IsNullOrWhiteSpace(i.AltText)).ToList();
+    var missingAltsCount = missingAlts.Count;
+
+    var pageScans = ViewBag.PageScans as List<Domain.Entities.Seo.SeoPageScan> ?? new List<Domain.Entities.Seo.SeoPageScan>();
+
+    var metaIssues = pageScans.Where(s =>
+            string.IsNullOrWhiteSpace(s.MetaDescription) ||
+            s.MetaDescription.Length < 120 ||
+            s.MetaDescription.Length > 160).ToList();
+    var metaIssuesCount = metaIssues.Count;
+
+    var h1Issues = pageScans.Where(s => s.H1Count != 1).ToList();
+    var h1IssuesCount = h1Issues.Count;
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full" dir="ltr">
+
+    <!-- Back to Dashboard -->
+    <a href="@Url.Action("Index", "Seo", new { area = "Admin" })" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-brand-cyan transition-colors uppercase tracking-wider mb-6">
+        <i class="fa fa-arrow-left text-[10px]"></i> Back to SEO Dashboard
+    </a>
+
+    <!-- Flash Messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center space-x-3 text-sm font-semibold shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+            <i class="fas fa-check-circle text-base"></i>
+            <span>@TempData["SuccessMessage"]</span>
+        </div>
+    }
+
+    <div class="pb-2 border-b border-white/5 mb-8">
+        <h2 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide">SEO Errors & Issues</h2>
+        <p class="text-slate-500 text-xs font-medium">Review and fix technical errors, missing alt text, meta description issues, and heading problems.</p>
+    </div>
+
+    <!-- Tab Buttons -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <!-- Technical Errors Tab -->
+        <button onclick="switchTab('technical')" id="btn-technical" class="tab-btn active w-full p-4 rounded-2xl bg-white/[0.01] border border-white/5 text-left flex flex-col justify-between min-h-[110px] transition-all duration-200 group focus:outline-none">
+            <div class="flex justify-between items-center w-full">
+                <strong class="text-[11px] font-bold uppercase tracking-widest text-slate-400 group-hover:text-white transition-colors">Technical Errors</strong>
+                <span class="px-2 py-0.5 font-mono text-xs font-black rounded bg-rose-500/10 text-rose-400 border border-rose-500/10 shadow-[0_0_10px_rgba(244,63,94,0.2)]">@unresolvedErrors.Count</span>
+            </div>
+            <p class="text-slate-500 font-medium text-[10px] leading-relaxed mt-3">Broken 404 links and server 500 errors.</p>
+        </button>
+
+        <!-- Missing Alt Tab -->
+        <button onclick="switchTab('imagealt')" id="btn-imagealt" class="tab-btn w-full p-4 rounded-2xl bg-white/[0.01] border border-white/5 text-left flex flex-col justify-between min-h-[110px] transition-all duration-200 group focus:outline-none">
+            <div class="flex justify-between items-center w-full">
+                <strong class="text-[11px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors">Missing Alt Text</strong>
+                <span class="px-2 py-0.5 font-mono text-xs font-black rounded bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10">@missingAltsCount</span>
+            </div>
+            <p class="text-slate-500 font-medium text-[10px] leading-relaxed mt-3">Images missing alternative descriptive text.</p>
+        </button>
+
+        <!-- Meta Descriptions Tab -->
+        <button onclick="switchTab('metadesc')" id="btn-metadesc" class="tab-btn w-full p-4 rounded-2xl bg-white/[0.01] border border-white/5 text-left flex flex-col justify-between min-h-[110px] transition-all duration-200 group focus:outline-none">
+            <div class="flex justify-between items-center w-full">
+                <strong class="text-[11px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors">Meta Descriptions</strong>
+                <span class="px-2 py-0.5 font-mono text-xs font-black rounded bg-brand-blue/10 text-brand-blue border border-brand-blue/10">@metaIssuesCount</span>
+            </div>
+            <p class="text-slate-500 font-medium text-[10px] leading-relaxed mt-3">Pages missing meta descriptions or with improper lengths.</p>
+        </button>
+
+        <!-- H1 Headings Tab -->
+        <button onclick="switchTab('h1header')" id="btn-h1header" class="tab-btn w-full p-4 rounded-2xl bg-white/[0.01] border border-white/5 text-left flex flex-col justify-between min-h-[110px] transition-all duration-200 group focus:outline-none">
+            <div class="flex justify-between items-center w-full">
+                <strong class="text-[11px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-white transition-colors">H1 Heading Issues</strong>
+                <span class="px-2 py-0.5 font-mono text-xs font-black rounded bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/10">@h1IssuesCount</span>
+            </div>
+            <p class="text-slate-500 font-medium text-[10px] leading-relaxed mt-3">Pages missing an H1 heading or having multiple H1s.</p>
+        </button>
+    </div>
+
+    <!-- 1. Technical Errors Tab Content -->
+    <div id="tab-technical" class="tab-content space-y-8">
+        <div class="w-full">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider">Unresolved Errors</h3>
+                <div class="flex items-center gap-2">
+                    <form action="@Url.Action("PurgeBotErrors", "Seo", new { area = "Admin" })" method="post" onsubmit="return confirm('Are you sure you want to clear all errors caused by bots and web crawlers?');" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500 hover:text-slate-950 text-xs font-bold transition-all flex items-center gap-1.5 shadow-[0_0_10px_rgba(245,158,11,0.1)]">
+                            <i class="fas fa-robot text-xs"></i> Clear Bot & Crawler Errors
+                        </button>
+                    </form>
+                    <form action="@Url.Action("PurgeResolvedErrors", "Seo", new { area = "Admin" })" method="post" onsubmit="return confirm('Are you sure you want to delete all resolved error logs?');" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="px-3 py-1.5 rounded-xl bg-white/5 text-slate-400 border border-white/10 hover:bg-rose-500/20 hover:text-rose-400 hover:border-rose-500/20 text-xs font-bold transition-all flex items-center gap-1.5">
+                            <i class="fas fa-trash-alt text-xs"></i> Clear Resolved Errors
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="w-full overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-white/5 text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/[0.01]">
+                            <th class="py-4 px-3 font-bold">Error Path (URL)</th>
+                            <th class="py-4 px-3 font-bold w-28">Status</th>
+                            <th class="py-4 px-3 font-bold text-center w-24">Count</th>
+                            <th class="py-4 px-3 font-bold">Last Occurred</th>
+                            <th class="py-4 px-3 font-bold">Referrer Page</th>
+                            <th class="py-4 px-3 font-bold text-right w-64">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/[0.02]">
+                        @if (!unresolvedErrors.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-slate-500 text-xs font-medium py-10">
+                                    No unresolved errors found. All routes are healthy!
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var log in unresolvedErrors)
+                            {
+                                <tr class="hover:bg-white/[0.01] transition-colors duration-200 group">
+                                    <td class="py-4 px-3 text-xs font-bold text-rose-400 font-mono break-all select-all">@log.Url</td>
+                                    <td class="py-4 px-3 whitespace-nowrap">
+                                        @if (log.StatusCode == 404)
+                                        {
+                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded">404 Not Found</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">@log.StatusCode Error</span>
+                                        }
+                                    </td>
+                                    <td class="py-4 px-3 text-center font-mono font-black text-white text-xs">@log.OccurrenceCount</td>
+                                    <td class="py-4 px-3 text-slate-400 text-xs font-mono whitespace-nowrap">@log.LastOccurred.ToLocalTime().ToString("yyyy/MM/dd HH:mm")</td>
+                                    <td class="py-4 px-3 whitespace-nowrap">
+                                        @if (string.IsNullOrWhiteSpace(log.Referrer))
+                                        {
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-medium bg-slate-800/80 text-slate-400 border border-slate-700/50" title="Direct entry or automated bot">
+                                                <i class="fas fa-robot text-[10px] mr-1.5 text-amber-400"></i> Direct / Bot
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <a href="@log.Referrer" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20 hover:bg-brand-cyan hover:text-slate-950 transition-all max-w-[220px] truncate" title="@log.Referrer">
+                                                <i class="fas fa-link text-[10px]"></i>
+                                                <span>@log.Referrer</span>
+                                            </a>
+                                        }
+                                    </td>
+                                    <td class="py-4 px-3 text-right whitespace-nowrap">
+                                        <div class="flex items-center gap-2 justify-end">
+                                            @if (log.StatusCode == 404)
+                                            {
+                                                <a href="@Url.Action("Redirects", "Seo", new { area = "Admin", oldUrl = log.Url })" class="px-3 py-1.5 bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded-xl hover:bg-brand-yellow hover:text-dark-bg text-[10px] font-bold transition-all uppercase tracking-wide">
+                                                    <i class="fa fa-random text-[9px] mr-1"></i> Redirect
+                                                </a>
+                                            }
+                                            <form action="@Url.Action("ResolveError", "Seo", new { area = "Admin", id = log.Id })" method="post" class="m-0">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="px-3 py-1.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded-xl hover:bg-emerald-500 hover:text-white text-[10px] font-bold transition-all uppercase tracking-wide">
+                                                    <i class="fa fa-check text-[9px] mr-1"></i> Resolve
+                                                </button>
+                                            </form>
+                                            <form action="@Url.Action("DeleteError", "Seo", new { area = "Admin", id = log.Id })" method="post" class="m-0" onsubmit="return confirm('Delete this error log?');">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="w-8 h-8 bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded-xl hover:bg-rose-500 hover:text-white transition-all text-xs flex items-center justify-center" title="Delete Record">
+                                                    <i class="fa fa-trash text-[10px]"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Resolved History -->
+        <div class="pt-6 border-t border-white/5 opacity-60 hover:opacity-100 transition-opacity duration-300">
+            <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Resolved Errors History</h4>
+            <div class="w-full overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-white/5 text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/[0.01]">
+                            <th class="py-4 px-3 font-bold">Path URL</th>
+                            <th class="py-4 px-3 font-bold w-24">Code</th>
+                            <th class="py-4 px-3 font-bold text-center w-24">Count</th>
+                            <th class="py-4 px-3 font-bold">Resolved Date</th>
+                            <th class="py-4 px-3 font-bold text-right w-28">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/[0.02]">
+                        @if (!resolvedErrors.Any())
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-slate-600 text-xs font-medium py-8 italic">No resolved error records found.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var log in resolvedErrors)
+                            {
+                                <tr class="hover:bg-white/[0.01] transition-colors duration-200 text-slate-400 font-mono text-xs">
+                                    <td class="py-4 px-3 break-all select-all">@log.Url</td>
+                                    <td class="py-4 px-3 whitespace-nowrap"><span class="px-2 py-0.5 text-[9px] font-bold bg-white/5 text-slate-400 border border-white/5 rounded">@log.StatusCode</span></td>
+                                    <td class="py-4 px-3 text-center font-bold">@log.OccurrenceCount</td>
+                                    <td class="py-4 px-3 text-slate-500 whitespace-nowrap">@log.LastOccurred.ToLocalTime().ToString("yyyy/MM/dd HH:mm")</td>
+                                    <td class="py-4 px-3 text-right whitespace-nowrap">
+                                        <form action="@Url.Action("DeleteError", "Seo", new { area = "Admin", id = log.Id })" method="post" class="m-0">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="px-2.5 py-1 bg-white/5 border border-white/5 hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/10 text-slate-400 rounded-lg text-[10px] font-bold transition-all uppercase tracking-wide">
+                                                <i class="fa fa-trash-alt mr-1"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Missing Alt Tab Content -->
+    <div id="tab-imagealt" class="tab-content d-none space-y-4">
+        <div class="w-full">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">Missing Image Alt Text</h3>
+            <p class="text-slate-500 text-xs font-medium mb-5">Images without descriptive alt text. Add alt tags directly to improve SEO and accessibility.</p>
+            <div class="w-full overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-white/5 text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/[0.01]">
+                            <th class="py-4 px-3 font-bold w-20">Preview</th>
+                            <th class="py-4 px-3 font-bold">Image URL</th>
+                            <th class="py-4 px-3 font-bold">Found on Page</th>
+                            <th class="py-4 px-3 font-bold text-right w-40">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/[0.02]">
+                        @if (!missingAlts.Any())
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-slate-500 text-xs font-medium py-10">No images missing Alt text. Run a site scan to check again.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var img in missingAlts)
+                            {
+                                <tr id="row-@img.Id" class="hover:bg-white/[0.01] transition-colors duration-200">
+                                    <td class="py-4 px-3">
+                                        <img src="@img.ImageUrl" class="w-12 h-12 rounded-xl object-cover border border-white/5 bg-black/20" onerror="this.src='/images/placeholder.png';" />
+                                    </td>
+                                    <td class="py-4 px-3 text-xs font-mono text-slate-400 max-w-[280px] truncate select-all" title="@img.ImageUrl">@img.ImageUrl</td>
+                                    <td class="py-4 px-3 text-xs whitespace-nowrap">
+                                        <a href="@img.FoundOnPage" target="_blank" class="text-brand-blue font-bold hover:text-brand-cyan transition-colors flex items-center gap-1">
+                                            @img.FoundOnPage <i class="fa fa-external-link text-[10px]"></i>
+                                        </a>
+                                    </td>
+                                    <td class="py-4 px-3 text-right whitespace-nowrap">
+                                        <button class="px-3 py-1.5 bg-brand-blue/10 text-brand-blue border border-brand-blue/10 rounded-xl hover:bg-brand-blue hover:text-white text-[10px] font-bold transition-all uppercase tracking-wide" onclick="openOptimizeModal(@img.Id, '@img.ImageUrl', '@img.FoundOnPage', '')">
+                                            <i class="fa fa-edit mr-1"></i> Add Alt Text
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Meta Description Warnings Tab Content -->
+    <div id="tab-metadesc" class="tab-content d-none space-y-4">
+        <div class="w-full">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">Meta Description Issues</h3>
+            <p class="text-slate-500 text-xs font-medium mb-5">Pages missing a meta description or with lengths outside the recommended range (120–160 characters).</p>
+            <div class="w-full overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-white/5 text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/[0.01]">
+                            <th class="py-4 px-3 font-bold">Page URL</th>
+                            <th class="py-4 px-3 font-bold">Title</th>
+                            <th class="py-4 px-3 font-bold">Description</th>
+                            <th class="py-4 px-3 font-bold text-center w-24">Length</th>
+                            <th class="py-4 px-3 font-bold w-32">Status</th>
+                            <th class="py-4 px-3 font-bold text-right w-36">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/[0.02]">
+                        @if (!metaIssues.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-slate-500 text-xs font-medium py-10">All scanned pages have optimal meta descriptions.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var scan in metaIssues)
+                            {
+                                <tr class="hover:bg-white/[0.01] transition-colors duration-200">
+                                    <td class="py-4 px-3 text-xs font-bold text-white font-mono">@scan.Url</td>
+                                    <td class="py-4 px-3 text-slate-400 text-xs font-medium max-w-[160px] truncate" title="@scan.Title">@scan.Title</td>
+                                    <td class="py-4 px-3 text-slate-300 text-xs font-medium max-w-[240px] truncate" title="@scan.MetaDescription">
+                                        @(string.IsNullOrWhiteSpace(scan.MetaDescription) ? "Missing Meta Description" : scan.MetaDescription)
+                                    </td>
+                                    <td class="py-4 px-3 text-center font-mono font-black text-white text-xs">@(scan.MetaDescription?.Length ?? 0)</td>
+                                    <td class="py-4 px-3 whitespace-nowrap">
+                                        @if (string.IsNullOrWhiteSpace(scan.MetaDescription))
+                                        {
+                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">Missing</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded">Length (@(scan.MetaDescription.Length))</span>
+                                        }
+                                    </td>
+                                    <td class="py-4 px-3 text-right whitespace-nowrap">
+                                        <a href="@Url.Action("Analyzer", "Seo", new { area = "Admin", url = scan.Url })" class="px-3 py-1.5 bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/10 rounded-xl hover:bg-brand-cyan hover:text-dark-bg text-[10px] font-bold transition-all uppercase tracking-wide">
+                                            <i class="fa fa-chart-line text-[9px] mr-1"></i> Analyze Page
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. H1 Headings Tab Content -->
+    <div id="tab-h1header" class="tab-content d-none space-y-4">
+        <div class="w-full">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">H1 Heading Issues</h3>
+            <p class="text-slate-500 text-xs font-medium mb-5">Pages with multiple H1 headings or missing an H1 heading entirely.</p>
+            <div class="w-full overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-white/5 text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/[0.01]">
+                            <th class="py-4 px-3 font-bold">Page URL</th>
+                            <th class="py-4 px-3 font-bold">Page Title</th>
+                            <th class="py-4 px-3 font-bold text-center w-24">H1 Count</th>
+                            <th class="py-4 px-3 font-bold w-36">Status</th>
+                            <th class="py-4 px-3 font-bold text-right w-36">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/[0.02]">
+                        @if (!h1Issues.Any())
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-slate-500 text-xs font-medium py-10">All scanned pages have exactly one H1 heading.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var scan in h1Issues)
+                            {
+                                <tr class="hover:bg-white/[0.01] transition-colors duration-200">
+                                    <td class="py-4 px-3 text-xs font-bold text-white font-mono">@scan.Url</td>
+                                    <td class="py-4 px-3 text-slate-400 text-xs font-medium max-w-[200px] truncate" title="@scan.Title">@scan.Title</td>
+                                    <td class="py-4 px-3 text-center font-mono font-black text-rose-400 text-xs">@scan.H1Count</td>
+                                    <td class="py-4 px-3 whitespace-nowrap">
+                                        @if (scan.H1Count == 0)
+                                        {
+                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">Missing H1</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded">Multiple (@scan.H1Count)</span>
+                                        }
+                                    </td>
+                                    <td class="py-4 px-3 text-right whitespace-nowrap">
+                                        <a href="@Url.Action("Analyzer", "Seo", new { area = "Admin", url = scan.Url })" class="px-3 py-1.5 bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/10 rounded-xl hover:bg-brand-cyan hover:text-dark-bg text-[10px] font-bold transition-all uppercase tracking-wide">
+                                            <i class="fa fa-chart-line text-[9px] mr-1"></i> Analyze Page
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Edit Alt Text -->
+<div class="modal fade" id="optimizeAltModal" tabindex="-1" aria-labelledby="optimizeAltModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-[#0B0D14]/95 border border-white/10 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl">
+            <div class="px-6 py-4 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
+                <h5 class="modal-title text-white font-bold text-sm uppercase tracking-wider" id="optimizeAltModalLabel">
+                    <i class="fa fa-image text-brand-cyan shadow-[0_0_8px_#42EAFF] mr-2"></i> Edit Alt Text
+                </h5>
+                <button type="button" class="btn-close btn-close-white focus:outline-none text-xs" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="p-6 space-y-5">
+                <input type="hidden" id="modalImageId" />
+
+                <img id="modalImagePreview" class="w-full max-h-48 object-contain rounded-2xl border border-white/5 bg-black/30 mx-auto block mb-6 shadow-inner" src="" onerror="this.src='/images/placeholder.png';" />
+
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide block">Image URL</label>
+                    <div class="border-b border-white/5">
+                        <input type="text" id="modalImageUrl" class="w-full bg-transparent py-2 text-slate-400 focus:outline-none text-xs font-mono truncate select-all" readonly style="opacity: 0.6;" />
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide block">Found on Page</label>
+                    <div class="border-b border-white/5">
+                        <input type="text" id="modalFoundOnPage" class="w-full bg-transparent py-2 text-brand-blue focus:outline-none text-xs font-mono truncate select-all" readonly style="opacity: 0.6;" />
+                    </div>
+                </div>
+
+                <div class="space-y-2 pt-2">
+                    <label class="block text-xs font-bold text-brand-cyan uppercase tracking-wide">Alt Text <span class="text-brand-orange">*</span></label>
+                    <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                        <input type="text" id="modalAltText" class="w-full bg-transparent py-2.5 text-white placeholder-slate-600 focus:outline-none text-sm font-medium" placeholder="Describe the image content clearly..." required />
+                    </div>
+                    <div class="text-[10px] text-slate-500 font-medium mt-1">Describe the image clearly and concisely for search engines and screen readers.</div>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-white/5 flex justify-end space-x-3 bg-white/[0.01]">
+                <button type="button" class="px-4 py-2 bg-white/5 text-slate-300 rounded-xl hover:bg-white/10 text-xs font-bold transition-all" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="px-5 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] text-xs font-black uppercase tracking-wide transition-all" onclick="saveAltText()">Save Alt Text</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let bootstrapModal;
+
+    document.addEventListener("DOMContentLoaded", function() {
+        if (window.bootstrap) {
+            bootstrapModal = new bootstrap.Modal(document.getElementById('optimizeAltModal'));
+        }
+    });
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(element => {
+            element.classList.add('d-none');
+        });
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active', 'text-brand-cyan', 'border-brand-cyan');
+            btn.classList.add('text-slate-500', 'border-transparent');
+        });
+
+        const targetContent = document.getElementById('tab-' + tabId);
+        if (targetContent) {
+            targetContent.classList.remove('d-none');
+        }
+
+        const targetBtn = document.getElementById('btn-' + tabId);
+        if (targetBtn) {
+            targetBtn.classList.add('active', 'text-brand-cyan', 'border-brand-cyan');
+            targetBtn.classList.remove('text-slate-500', 'border-transparent');
+        }
+    }
+
+    function openOptimizeModal(id, url, foundPage, currentAlt) {
+        document.getElementById('modalImageId').value = id;
+        document.getElementById('modalImagePreview').src = url;
+        document.getElementById('modalImageUrl').value = url;
+        document.getElementById('modalFoundOnPage').value = foundPage;
+        document.getElementById('modalAltText').value = currentAlt;
+
+        if (bootstrapModal) {
+            bootstrapModal.show();
+        } else {
+            bootstrapModal = new bootstrap.Modal(document.getElementById('optimizeAltModal'));
+            bootstrapModal.show();
+        }
+    }
+
+    function saveAltText() {
+        const id = document.getElementById('modalImageId').value;
+        const altText = document.getElementById('modalAltText').value;
+
+        if (!altText.trim()) {
+            alert("Please enter alt text for the image.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("id", id);
+        formData.append("altText", altText);
+
+        fetch('@Url.Action("UpdateImageAlt", "Seo", new { area = "Admin" })', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const row = document.getElementById('row-' + id);
+                    if (row) {
+                        row.style.opacity = '0.4';
+                        row.querySelector('button').disabled = true;
+                        row.querySelector('button').innerHTML = '<i class="fa fa-check"></i> Saved';
+                    }
+
+                    bootstrapModal.hide();
+                    alert(data.message || 'Alt text updated successfully.');
+                } else {
+                    alert(data.message || 'Error updating alt text.');
+                }
+            })
+            .catch(error => {
+                alert("An error occurred: " + error);
+            });
+    }
+</script>

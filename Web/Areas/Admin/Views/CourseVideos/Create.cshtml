@@ -1,0 +1,319 @@
+@model Domain.Entities.Course.CourseVideo
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["AddVideo"].Value;
+    var courseId = ViewBag.CourseId;
+    var courseTitle = ViewBag.CourseTitle;
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full max-w-4xl mx-auto text-start" dir="@(isRtl ? "rtl" : "ltr")">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-brand-orange/10 border border-brand-orange/20 text-brand-orange flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") shadow-[0_0_20px_rgba(255,126,66,0.1)]">
+            <i class="fas fa-exclamation-triangle text-lg"></i>
+            <span class="font-medium text-sm">@TempData["ErrorMessage"]</span>
+        </div>
+    }
+
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10">
+        <div>
+            <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide">
+                @Localizer["AddVideo"]
+            </h1>
+            <p class="text-slate-400 text-sm font-medium">@string.Format(Localizer["AddVideoSub"].Value, courseTitle)</p>
+        </div>
+        <a asp-controller="Courses" asp-action="Details" asp-route-id="@courseId" class="w-full sm:w-auto text-center px-5 py-2.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg whitespace-nowrap">
+            <i class="fas @(isRtl ? "fa-arrow-right ml-2" : "fa-arrow-left mr-2") text-xs"></i> @Localizer["BackToCourses"]
+        </a>
+    </div>
+
+    <div class="w-full">
+        <form id="videoForm" asp-action="Create" method="post" enctype="multipart/form-data" class="space-y-10">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="CourseId" value="@courseId" />
+            <input type="hidden" asp-for="DurationSeconds" />
+            <input type="hidden" name="UploadedVideoToken" id="uploadedVideoToken" />
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div asp-validation-summary="All" class="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 text-rose-400 text-sm font-semibold flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") shadow-[0_0_15px_rgba(244,63,94,0.1)] mb-6">
+                    <i class="fas fa-triangle-exclamation text-lg"></i>
+                    <span>@Localizer["PleaseFixErrors"]</span>
+                </div>
+            }
+
+            <div id="uploadStatus" class="hidden mb-8">
+                <div class="bg-white/[0.01] border border-white/5 rounded-2xl p-5 backdrop-blur-md shadow-2xl relative overflow-hidden">
+                    <div class="absolute @(isRtl ? "-left-10" : "-right-10") -top-10 w-24 h-24 bg-brand-cyan/5 rounded-full blur-xl"></div>
+                    <div class="flex items-center justify-between mb-2.5 relative z-10">
+                        <div class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center" id="uploadLabel">
+                            <i class="fas fa-circle-notch fa-spin text-brand-cyan @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["VideoUploadInProgress"]
+                        </div>
+                        <div class="text-sm font-black text-brand-cyan font-mono" id="uploadPercent">0%</div>
+                    </div>
+                    <div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden shadow-inner">
+                        <div id="uploadBar" class="h-full bg-gradient-to-r from-brand-cyan to-brand-blue shadow-[0_0_10px_#42EAFF] rounded-full transition-all duration-300" style="width:0%"></div>
+                    </div>
+                    <div class="text-[10px] font-mono font-semibold text-slate-500 mt-2" id="uploadMeta"></div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-sm font-bold text-brand-cyan uppercase tracking-widest mb-6 flex items-center">
+                    <i class="fas fa-heading @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["VideoInformation"]
+                </h3>
+
+                <div class="space-y-2">
+                    <label asp-for="Title" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                        @Localizer["VideoTitle"] <span class="text-brand-orange">*</span>
+                    </label>
+                    <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                        <input asp-for="Title" class="w-full bg-transparent px-4 py-3.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-medium" placeholder="@Localizer["VideoTitle"]" />
+                        <i class="fas fa-heading absolute @(isRtl ? "right-2" : "left-2") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-brand-cyan transition-colors text-sm"></i>
+                    </div>
+                    <span asp-validation-for="Title" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                </div>
+
+                <div class="space-y-2">
+                    <label asp-for="Description" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">@Localizer["VideoDescription"]</label>
+                    <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                        <textarea asp-for="Description" rows="3" class="w-full bg-transparent py-3 text-white placeholder-slate-600 focus:outline-none text-sm font-medium leading-relaxed resize-none" placeholder="@Localizer["VideoDescription"]..."></textarea>
+                    </div>
+                    <span asp-validation-for="Description" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                </div>
+            </div>
+
+            <div class="pt-6">
+                <h3 class="text-sm font-bold text-brand-blue uppercase tracking-widest mb-6 flex items-center">
+                    <i class="fas fa-video @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["VideoFile"]
+                </h3>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide">
+                        @Localizer["SelectVideoFile"] <span class="text-brand-orange">*</span>
+                    </label>
+                    <input type="file" id="videoFile" name="VideoFile" accept="video/*" required
+                           class="w-full bg-white/[0.01] border border-white/5 rounded-xl px-4 py-3 text-white text-xs font-medium file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-brand-blue/20 file:text-brand-blue hover:file:bg-brand-blue/30 file:transition-colors" />
+                    <p class="text-[10px] text-slate-500 font-semibold leading-relaxed mt-2 flex items-center">
+                        <i class="fas fa-info-circle @(isRtl ? "ml-1.5" : "mr-1.5") text-brand-cyan"></i> @Localizer["VideoUploadAutoNotice"]
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-6">
+                <h3 class="text-sm font-bold text-brand-yellow uppercase tracking-widest mb-6 flex items-center">
+                    <i class="fas fa-sort-numeric-down @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["DisplayOrder"]
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label asp-for="OrderIndex" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                            @Localizer["OrderIndex"] <span class="text-brand-orange">*</span>
+                        </label>
+                        <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                            <input asp-for="OrderIndex" type="number" min="0" class="w-full bg-transparent px-4 py-3.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-bold font-mono" placeholder="0" />
+                            <i class="fas fa-list-ol absolute @(isRtl ? "right-2" : "left-2") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-brand-cyan transition-colors text-sm"></i>
+                        </div>
+                        <span asp-validation-for="OrderIndex" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                        <p class="text-[10px] text-slate-500 font-medium mt-2">@Localizer["DisplayOrderHelp"]</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-6">
+                <h3 class="text-sm font-bold text-brand-orange uppercase tracking-widest mb-6 flex items-center">
+                    <i class="fas fa-sliders @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["AccessAndStatus"]
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01] border border-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/[0.03] transition-colors group">
+                        <input asp-for="IsFree" type="checkbox" class="w-4 h-4 rounded border-white/10 bg-dark-bg text-brand-cyan focus:ring-brand-cyan/20 focus:ring-offset-0" />
+                        <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition-colors flex items-center">
+                            <i class="fas fa-unlock @(isRtl ? "ml-2" : "mr-2") text-slate-500 text-sm group-hover:text-brand-cyan transition-colors"></i>
+                            @Localizer["FreePreviewOption"]
+                        </span>
+                    </label>
+
+                    <label class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01] border border-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/[0.03] transition-colors group">
+                        <input asp-for="IsActive" type="checkbox" checked class="w-4 h-4 rounded border-white/10 bg-dark-bg text-brand-cyan focus:ring-brand-cyan/20 focus:ring-offset-0" />
+                        <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition-colors flex items-center">
+                            <i class="fas fa-circle-check @(isRtl ? "ml-2" : "mr-2") text-slate-500 text-sm group-hover:text-brand-cyan transition-colors"></i>
+                            @Localizer["PublishImmediatelyActive"]
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="bg-brand-cyan/5 border border-brand-cyan/10 rounded-2xl p-4 flex items-start @(isRtl ? "space-x-reverse" : "space-x-3") shadow-sm">
+                <i class="fas fa-info-circle text-brand-cyan text-sm mt-0.5"></i>
+                <div class="text-xs text-slate-400 font-medium leading-relaxed">
+                    @Localizer["RequiredFieldsNote"]
+                </div>
+            </div>
+
+            <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-4 pt-6 border-t border-white/5">
+                <a asp-controller="Courses" asp-action="Details" asp-route-id="@courseId" class="w-full sm:w-auto text-center px-5 py-2.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-xs font-bold flex items-center justify-center">
+                    @Localizer["Cancel"]
+                </a>
+                <button type="submit" id="submitBtn" class="w-full sm:w-auto text-center px-6 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg font-black text-xs rounded-xl hover:shadow-[0_0_20px_rgba(66,234,255,0.3)] hover:scale-[1.01] transition-all flex items-center justify-center">
+                    <i class="fas fa-plus @(isRtl ? "ml-1.5" : "mr-1.5") text-sm"></i> @Localizer["AddVideo"]
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        const form = document.getElementById('videoForm');
+        const videoInput = document.getElementById('videoFile');
+        const durationInput = document.querySelector('input[name="DurationSeconds"]');
+        const tokenInput = document.getElementById('uploadedVideoToken');
+        const submitBtn = document.getElementById('submitBtn');
+        const uploadStatus = document.getElementById('uploadStatus');
+        const uploadBar = document.getElementById('uploadBar');
+        const uploadPercent = document.getElementById('uploadPercent');
+        const uploadLabel = document.getElementById('uploadLabel');
+        const uploadMeta = document.getElementById('uploadMeta');
+
+        let uploadInProgress = false;
+        let uploadCompleted = false;
+
+        function setUploadUI(visible, percent, label, meta) {
+            if (!uploadStatus) return;
+            uploadStatus.classList.toggle('hidden', !visible);
+            if (typeof percent === 'number' && uploadBar && uploadPercent) {
+                const p = Math.max(0, Math.min(100, percent));
+                uploadBar.style.width = p + '%';
+                uploadPercent.textContent = p + '%';
+            }
+            if (uploadLabel && typeof label === 'string') uploadLabel.textContent = label;
+            if (uploadMeta && typeof meta === 'string') uploadMeta.textContent = meta;
+        }
+
+        function formatBytes(bytes) {
+            if (!bytes || bytes <= 0) return '0 B';
+            const units = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.min(units.length - 1, Math.floor(Math.log(bytes) / Math.log(1024)));
+            const v = bytes / Math.pow(1024, i);
+            return (i === 0 ? v.toFixed(0) : v.toFixed(1)) + ' ' + units[i];
+        }
+
+        async function detectDurationSeconds(file) {
+            return await new Promise(resolve => {
+                try {
+                    const url = URL.createObjectURL(file);
+                    const videoEl = document.createElement('video');
+                    videoEl.preload = 'metadata';
+                    videoEl.onloadedmetadata = function () {
+                        URL.revokeObjectURL(url);
+                        resolve(Math.round(videoEl.duration || 0));
+                    };
+                    videoEl.onerror = function () {
+                        URL.revokeObjectURL(url);
+                        resolve(0);
+                    };
+                    videoEl.src = url;
+                } catch {
+                    resolve(0);
+                }
+            });
+        }
+
+        function getAntiForgeryToken() {
+            const el = document.querySelector('input[name="__RequestVerificationToken"]');
+            return el ? el.value : '';
+        }
+
+        function uploadVideoOnly(file) {
+            if (!form) return;
+            if (uploadInProgress) return;
+
+            uploadInProgress = true;
+            uploadCompleted = false;
+            if (tokenInput) tokenInput.value = '';
+
+            const fd = new FormData();
+            fd.append('VideoFile', file);
+            fd.append('CourseId', String(@courseId));
+            fd.append('__RequestVerificationToken', getAntiForgeryToken());
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Admin/CourseVideos/UploadVideo');
+            xhr.responseType = 'json';
+            setUploadUI(true, 0, 'Uploading video...', `${formatBytes(0)} / ${formatBytes(file.size)}`);
+
+            xhr.upload.onprogress = function (e) {
+                if (e.lengthComputable) {
+                    const p = Math.floor((e.loaded / e.total) * 100);
+                    setUploadUI(true, p, 'Uploading video...', `${formatBytes(e.loaded)} / ${formatBytes(e.total)}`);
+                }
+            };
+            xhr.onload = function () {
+                uploadInProgress = false;
+                if (xhr.status >= 200 && xhr.status < 300 && xhr.response && xhr.response.success) {
+                    uploadCompleted = true;
+                    if (tokenInput) tokenInput.value = xhr.response.token || '';
+                    setUploadUI(true, 100, 'Upload complete', xhr.response.fileName ? `Uploaded file: ${xhr.response.fileName}` : '');
+                    return;
+                }
+
+                const msg = (xhr.response && xhr.response.message) ? xhr.response.message : `Upload failed (HTTP ${xhr.status})`;
+                setUploadUI(true, 0, 'Error uploading video', msg);
+            };
+            xhr.onerror = function () {
+                uploadInProgress = false;
+                setUploadUI(true, 0, 'Error uploading video', 'Network error during upload.');
+            };
+
+            xhr.send(fd);
+        }
+
+        videoInput?.addEventListener('change', async function (e) {
+            const file = e.target.files?.[0];
+            if (!file) return;
+
+            if (durationInput) {
+                durationInput.value = String(await detectDurationSeconds(file));
+            }
+
+            uploadVideoOnly(file);
+        });
+
+        form?.addEventListener('submit', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (uploadInProgress) {
+                alert('Video upload is currently in progress. Please wait.');
+                return;
+            }
+
+            if (!uploadCompleted || !tokenInput?.value) {
+                alert('Please select a video file and wait for the upload to complete.');
+                return;
+            }
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving Video...';
+            }
+
+            if (videoInput) {
+                videoInput.removeAttribute('name');
+            }
+
+            HTMLFormElement.prototype.submit.call(form);
+        });
+    </script>
+}

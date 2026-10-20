@@ -1,0 +1,409 @@
+﻿@model Domain.Entities.Course.CoursePdf
+
+@{
+    ViewData["Title"] = ViewBag.PdfTitle;
+    var courseTitle = ViewBag.CourseTitle as string;
+    var courseId = (int)ViewBag.CourseId;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="space-y-4 select-none antialiased animate-fade-in-up" oncontextmenu="return false;" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+
+    <!-- Top Action Bar -->
+    <div class="flex items-center justify-between px-1">
+        <a asp-area="User" asp-controller="Courses" asp-action="MyCourseDetails" asp-route-id="@courseId" class="group inline-flex items-center px-4 py-2 rounded-xl bg-white/5 text-slate-400 hover:text-brand-cyan border border-white/5 hover:border-brand-cyan/20 transition-all duration-300">
+            <i class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-0.5 transition-transform"></i>
+            <span class="text-xs font-bold uppercase tracking-wider">Back to <span class="text-slate-300 group-hover:text-brand-cyan transition-colors ml-1">@courseTitle</span></span>
+        </a>
+        <div class="flex items-center gap-2 text-[10px] bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan px-3 py-1.5 rounded-xl font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(66,234,255,0.1)]">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse"></span>
+            Cryptographic Node Stream
+        </div>
+    </div>
+
+    <!-- Main PDF Viewer Frame -->
+    <div id="pdf-container" class="flex flex-col bg-brand-dark/40 rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl backdrop-blur-xl transition-all duration-300 relative" style="height: 820px;">
+
+        <!-- Premium Neon Glass Toolbar -->
+        <div class="bg-gradient-to-r from-white/[0.03] to-white/[0.01] border-b border-white/5 p-3.5 flex flex-wrap items-center justify-between gap-4 text-slate-200 z-10 shadow-sm backdrop-blur-md">
+
+            <!-- Pagination Controls -->
+            <div class="flex items-center gap-0.5 bg-black/40 p-1 rounded-xl border border-white/5">
+                <button id="first-page" class="p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all disabled:opacity-20 disabled:hover:bg-transparent" title="First Page">
+                    <i class="fas fa-angle-double-left text-xs"></i>
+                </button>
+                <button id="prev-page" class="p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all disabled:opacity-20 disabled:hover:bg-transparent" title="Previous Page">
+                    <i class="fas fa-angle-left text-xs"></i>
+                </button>
+
+                <div class="flex items-center gap-2 px-3 text-xs font-bold text-slate-400 border-x border-white/5 mx-1">
+                    <span>Page</span>
+                    <input type="number" id="page-idx-input" class="w-12 text-center bg-brand-dark border border-white/10 rounded-lg py-1 px-0.5 text-brand-cyan font-extrabold focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/30 transition-all" value="1" min="1" />
+                    <span>of</span>
+                    <span id="page-count" class="font-extrabold text-slate-200">...</span>
+                </div>
+
+                <button id="next-page" class="p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all disabled:opacity-20 disabled:hover:bg-transparent" title="Next Page">
+                    <i class="fas fa-angle-right text-xs"></i>
+                </button>
+                <button id="last-page" class="p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all disabled:opacity-20 disabled:hover:bg-transparent" title="Last Page">
+                    <i class="fas fa-angle-double-right text-xs"></i>
+                </button>
+            </div>
+
+            <!-- Zoom Controls -->
+            <div class="flex items-center gap-0.5 bg-black/40 p-1 rounded-xl border border-white/5">
+                <button id="zoom-out" class="p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all" title="Zoom Out">
+                    <i class="fas fa-minus text-[10px]"></i>
+                </button>
+                <span id="zoom-percent" class="px-2 text-xs font-extrabold font-mono w-14 text-center text-slate-200">100%</span>
+                <button id="zoom-in" class="p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all" title="Zoom In">
+                    <i class="fas fa-plus text-[10px]"></i>
+                </button>
+                <div class="w-px h-4 bg-white/5 mx-1"></div>
+                <button id="zoom-fit" class="px-3 py-1.5 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all text-xs font-bold flex items-center gap-1.5" title="Fit to Width">
+                    <i class="fas fa-arrows-left-right text-[11px]"></i> Fit Width
+                </button>
+            </div>
+
+            <!-- Utility Action Buttons -->
+            <div class="flex items-center gap-2">
+                <button id="rotate-pdf" class="p-2.5 text-slate-400 hover:text-brand-cyan bg-black/40 hover:bg-white/5 border border-white/5 rounded-xl transition-all" title="Rotate 90°">
+                    <i class="fas fa-rotate text-xs"></i>
+                </button>
+                <button id="fullscreen-toggle" class="p-2.5 text-slate-400 hover:text-brand-cyan bg-black/40 hover:bg-white/5 border border-white/5 rounded-xl transition-all" title="Toggle Fullscreen">
+                    <i class="fas fa-expand text-xs"></i>
+                </button>
+                <button id="dark-mode-toggle" class="p-2.5 text-slate-400 hover:text-brand-yellow bg-black/40 hover:bg-white/5 border border-white/5 rounded-xl transition-all" title="Toggle Inversion Mode">
+                    <i class="fas fa-moon text-xs"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Viewport Workspace Wrapper -->
+        <div id="viewport-wrapper" class="relative flex-1 bg-brand-dark/20 p-6 flex justify-center overflow-auto custom-scrollbar">
+
+            <!-- Elegant Micro-Loading State -->
+            <div id="pdf-loading" class="absolute inset-0 bg-brand-dark/95 flex flex-col justify-center items-center z-50 transition-opacity duration-300">
+                <div class="relative w-10 h-10 mb-4">
+                    <div class="absolute inset-0 rounded-full border-2 border-brand-cyan/10"></div>
+                    <div class="absolute inset-0 rounded-full border-2 border-t-brand-cyan animate-spin"></div>
+                </div>
+                <p class="text-slate-400 text-xs font-bold tracking-wide uppercase">Securing Virtual Reader...</p>
+            </div>
+
+            <!-- Canvas Container Matrix -->
+            <div id="page-frame" class="relative shadow-[0_40px_80px_rgba(0,0,0,0.7)] rounded-2xl overflow-hidden my-auto border border-white/5 bg-white">
+                <canvas id="pdf-canvas" class="block transition-transform duration-150 ease-out"></canvas>
+                <!-- Live moving overlay: identifies the viewer on any screenshot or screen recording -->
+                <div id="live-mark" class="pointer-events-none absolute z-10 select-none whitespace-nowrap font-mono text-[11px] font-bold px-2 py-1 rounded-md"
+                     style="color: rgba(20,30,80,0.38); background: rgba(255,255,255,0.18); transition: left 1.2s ease, top 1.2s ease; left: 10%; top: 10%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* Precision Custom Scrollbars */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+        }
+
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                background: #42EAFF;
+            }
+
+        /* Responsive Fullscreen Fix Matrix Override */
+        #pdf-container:fullscreen {
+            width: 100vw !important;
+            height: 100vh !important;
+            max-height: 100vh !important;
+            border-radius: 0px !important;
+            border: none !important;
+            background-color: #030712 !important;
+        }
+
+            #pdf-container:fullscreen #viewport-wrapper {
+                max-height: none !important;
+                height: calc(100vh - 65px) !important;
+                background-color: #030712;
+            }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // 🔒 Secure viewer: the browser never receives the PDF file. Each page arrives as a JPEG
+        //    rendered on the server with this student's forensic watermark burned into the pixels.
+        const streamToken = encodeURIComponent('@ViewBag.StreamToken');
+        const infoUrl = '@Url.Action("PdfInfo")' + '?token=' + streamToken;
+        const pageUrl = n => '@Url.Action("PdfPage")' + '?token=' + streamToken + '&page=' + n;
+        const backUrl = '@Url.Action("MyCourseDetails", new { id = Model.CourseId })';
+
+        // Pages are rendered at 2x PDF points, so natural CSS size = bitmap size / 2.
+        const SERVER_SCALE = 2;
+
+        let numPages = 0,
+        pageNum = 1,
+        scale = 1.25,
+        rotation = 0,
+        renderSeq = 0,
+        currentBitmap = null;
+
+        const maxScale = 3.0, minScale = 0.5;
+
+        const canvas = document.getElementById('pdf-canvas'),
+        ctx = canvas.getContext('2d'),
+        loadingEl = document.getElementById('pdf-loading'),
+        pageCountEl = document.getElementById('page-count'),
+        pageInputEl = document.getElementById('page-idx-input'),
+        zoomPercentEl = document.getElementById('zoom-percent'),
+        wrapperEl = document.getElementById('viewport-wrapper'),
+        containerEl = document.getElementById('pdf-container'),
+        liveMarkEl = document.getElementById('live-mark'),
+        fsIcon = document.querySelector('#fullscreen-toggle i');
+
+        // Small in-memory cache of decoded pages (kept tiny on purpose).
+        const bitmapCache = new Map();
+        const MAX_CACHED = 4;
+
+        const showError = msg => {
+        loadingEl.style.opacity = '1';
+        loadingEl.style.pointerEvents = 'all';
+        loadingEl.innerHTML = '<div class="glass-panel p-6 rounded-2xl border border-brand-orange/30 text-brand-orange text-center max-w-xs font-bold text-xs leading-relaxed uppercase tracking-wide"><i class="fas fa-triangle-exclamation text-lg mb-2 block"></i>' + msg + '</div>';
+        };
+
+        const fetchPage = async n => {
+        if (bitmapCache.has(n)) return bitmapCache.get(n);
+        const res = await fetch(pageUrl(n), { credentials: 'same-origin', cache: 'no-store' });
+        if (res.status === 401 || res.status === 403) throw new Error('auth');
+        if (res.status === 429) throw new Error('rate');
+        if (res.status === 404) throw new Error('notfound');
+        if (!res.ok) throw new Error('http ' + res.status);
+        const bmp = await createImageBitmap(await res.blob());
+        bitmapCache.set(n, bmp);
+        while (bitmapCache.size > MAX_CACHED) {
+        const oldest = bitmapCache.keys().next().value;
+        if (oldest === pageNum) break;
+        const old = bitmapCache.get(oldest);
+        bitmapCache.delete(oldest);
+        if (old !== currentBitmap && old.close) old.close();
+        }
+        return bmp;
+        };
+
+        const drawBitmap = bmp => {
+        currentBitmap = bmp;
+        const swap = rotation % 180 !== 0;
+        const naturalW = (swap ? bmp.height : bmp.width) / SERVER_SCALE;
+        const naturalH = (swap ? bmp.width : bmp.height) / SERVER_SCALE;
+
+        // Full-resolution backing store; CSS size controls zoom.
+        canvas.width = swap ? bmp.height : bmp.width;
+        canvas.height = swap ? bmp.width : bmp.height;
+        canvas.style.width = Math.floor(naturalW * scale) + 'px';
+        canvas.style.height = Math.floor(naturalH * scale) + 'px';
+
+        ctx.save();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate(rotation * Math.PI / 180);
+        ctx.drawImage(bmp, -bmp.width / 2, -bmp.height / 2);
+        ctx.restore();
+        };
+
+        const updateControls = num => {
+        pageInputEl.value = num;
+        zoomPercentEl.textContent = `${Math.round(scale * 100)}%`;
+        document.getElementById('prev-page').disabled = num <= 1;
+        document.getElementById('first-page').disabled = num <= 1;
+        document.getElementById('next-page').disabled = num >= numPages;
+        document.getElementById('last-page').disabled = num >= numPages;
+        };
+
+        const renderPage = async num => {
+        const seq = ++renderSeq;
+        updateControls(num);
+        if (!bitmapCache.has(num)) {
+        loadingEl.style.opacity = '1';
+        loadingEl.style.pointerEvents = 'all';
+        }
+        try {
+        const bmp = await fetchPage(num);
+        if (seq !== renderSeq) return; // a newer request superseded this one
+        drawBitmap(bmp);
+        loadingEl.style.opacity = '0';
+        loadingEl.style.pointerEvents = 'none';
+        // Prefetch the next page so turning pages feels instant.
+        if (num < numPages) fetchPage(num + 1).catch(() => {});
+        } catch (err) {
+        if (seq !== renderSeq) return;
+        console.error('Secure page error:', err);
+        if (err.message === 'auth') showError('Session token expired.<br/>Please reload page.');
+        else if (err.message === 'notfound') showError('Page not found.');
+        else if (err.message === 'rate') showError('Too many page requests.<br/>Please wait a minute.');
+        else showError('Could not load this page.<br/>Please reload page.');
+        }
+        };
+
+        // Redraw only (zoom/rotate) without refetching.
+        const queueRenderPage = num => {
+        if (num === pageNum && currentBitmap && bitmapCache.get(num) === currentBitmap) {
+        drawBitmap(currentBitmap);
+        updateControls(num);
+        } else {
+        renderPage(num);
+        }
+        };
+
+        const changePage = modifier => {
+        if (!numPages) return;
+        if (modifier === 'first') pageNum = 1;
+        else if (modifier === 'last') pageNum = numPages;
+        else if (modifier === 'next' && pageNum < numPages) pageNum++;
+        else if (modifier === 'prev' && pageNum > 1) pageNum--;
+        renderPage(pageNum);
+        };
+
+        const changeZoom = (zoomType) => {
+        if (zoomType === 'in' && scale < maxScale) scale += 0.25;
+        else if (zoomType === 'out' && scale > minScale) scale -= 0.25;
+        else if (zoomType === 'fit' && currentBitmap) {
+        const swap = rotation % 180 !== 0;
+        const naturalW = (swap ? currentBitmap.height : currentBitmap.width) / SERVER_SCALE;
+        scale = Math.min(maxScale, Math.max(minScale, (wrapperEl.clientWidth - 48) / naturalW));
+        }
+        queueRenderPage(pageNum);
+        };
+
+        // Live overlay: viewer code + masked email + clock, jumping to a new spot every few seconds.
+        const startLiveMark = (code, who) => {
+        const tick = () => {
+        const now = new Date();
+        liveMarkEl.textContent = `${code} · ${who} · ${now.toISOString().slice(0, 16).replace('T', ' ')} UTC`;
+        liveMarkEl.style.left = (5 + Math.random() * 55) + '%';
+        liveMarkEl.style.top = (5 + Math.random() * 85) + '%';
+        };
+        tick();
+        setInterval(tick, 4000);
+        };
+
+        fetch(infoUrl, { credentials: 'same-origin', cache: 'no-store' })
+        .then(res => {
+        if (!res.ok) throw new Error(String(res.status));
+        return res.json();
+        })
+        .then(info => {
+        numPages = info.pageCount;
+        pageCountEl.textContent = numPages;
+        pageInputEl.max = numPages;
+        startLiveMark(info.code, info.who);
+        renderPage(pageNum);
+        })
+        .catch(err => {
+        console.error('Secure PDF Fetch Error: ', err);
+        const status = err.message;
+        if (status === '404') showError('Document file not found on server.<br/>Please contact support.');
+        else if (status === '401' || status === '403') showError('Session token expired.<br/>Please reload page.');
+        else showError('Could not open document.<br/>Please reload page.');
+        });
+
+        document.getElementById('first-page').addEventListener('click', () => changePage('first'));
+        document.getElementById('last-page').addEventListener('click', () => changePage('last'));
+        document.getElementById('next-page').addEventListener('click', () => changePage('next'));
+        document.getElementById('prev-page').addEventListener('click', () => changePage('prev'));
+        document.getElementById('zoom-in').addEventListener('click', () => changeZoom('in'));
+        document.getElementById('zoom-out').addEventListener('click', () => changeZoom('out'));
+        document.getElementById('zoom-fit').addEventListener('click', () => changeZoom('fit'));
+
+        document.getElementById('rotate-pdf').addEventListener('click', () => {
+        rotation = (rotation + 90) % 360;
+        queueRenderPage(pageNum);
+        });
+
+        pageInputEl.addEventListener('change', (e) => {
+        let val = parseInt(e.target.value);
+        if (val >= 1 && val <= numPages) {
+        pageNum = val;
+        renderPage(pageNum);
+        } else {
+        e.target.value = pageNum;
+        }
+        });
+
+        document.getElementById('fullscreen-toggle').addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+        containerEl.requestFullscreen().then(() => {
+        fsIcon.classList.replace('fa-expand', 'fa-compress');
+        }).catch(err => alert('Fullscreen interface block.'));
+        } else {
+        document.exitFullscreen();
+        }
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement) fsIcon.classList.replace('fa-compress', 'fa-expand');
+        setTimeout(() => { if (currentBitmap) queueRenderPage(pageNum); }, 150);
+        });
+
+        let isInversionMode = false;
+        document.getElementById('dark-mode-toggle').addEventListener('click', function() {
+        isInversionMode = !isInversionMode;
+        const icon = this.querySelector('i');
+
+        if (isInversionMode) {
+        canvas.style.filter = 'invert(0.88) hue-rotate(180deg) brightness(1.1) contrast(1.1)';
+        icon.classList.replace('fa-moon', 'fa-sun');
+        icon.classList.add('text-brand-yellow');
+        } else {
+        canvas.style.filter = 'none';
+        icon.classList.replace('fa-sun', 'fa-moon');
+        icon.classList.remove('text-brand-yellow');
+        }
+        });
+
+        // Anti-Exploit Security Engine hooks
+        document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') changePage('prev');
+        if (e.key === 'ArrowLeft') changePage('next');
+        if (e.key === '+' || e.key === '=') changeZoom('in');
+        if (e.key === '-') changeZoom('out');
+
+        if (e.ctrlKey && ['p', 'P', 's', 'S', 'c', 'C', 'u', 'U'].includes(e.key)) {
+        e.preventDefault();
+        }
+        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase()))) {
+        e.preventDefault();
+        window.location.replace(backUrl);
+        }
+        });
+
+        setInterval(function() {
+        if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
+        window.location.replace(backUrl);
+        }
+        }, 1000);
+
+        setInterval(function() {
+        const before = new Date().getTime();
+        debugger;
+        const after = new Date().getTime();
+        if (after - before > 100) {
+        window.location.replace(backUrl);
+        }
+        }, 1500);
+    </script>
+}

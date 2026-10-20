@@ -1,0 +1,167 @@
+@model List<Domain.Entities.RecentActivity.RecentActivity>
+
+@{
+    ViewData["Title"] = "Recent Activities";
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+        <div>
+            <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide flex items-center gap-3">
+                <i class="fas fa-history text-brand-cyan drop-shadow-[0_0_8px_#42EAFF]"></i>
+                System Activities
+            </h1>
+            <p class="text-slate-400 text-sm font-medium">View and monitor recent system activities and events.</p>
+        </div>
+        <button onclick="clearAllActivities()" class="w-full sm:w-auto text-center px-5 py-2.5 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl hover:bg-rose-500 hover:text-white transition-all text-xs font-extrabold flex items-center justify-center gap-2 shadow-md whitespace-nowrap">
+            <i class="fas fa-trash-alt text-sm"></i>
+            Clear All Activities
+        </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-rose-500/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute -right-6 -top-6 w-24 h-24 bg-rose-500/10 rounded-full blur-2xl group-hover:bg-rose-500/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">High Priority</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.Count(a => a.PriorityId == 1)</p>
+                </div>
+                <div class="w-11 h-11 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 text-lg shadow-[inset_0_0_12px_rgba(244,63,94,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-brand-yellow/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute -right-6 -top-6 w-24 h-24 bg-brand-yellow/10 rounded-full blur-2xl group-hover:bg-brand-yellow/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Medium Priority</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.Count(a => a.PriorityId == 2)</p>
+                </div>
+                <div class="w-11 h-11 rounded-2xl bg-brand-yellow/10 border border-brand-yellow/20 flex items-center justify-center text-brand-yellow text-lg shadow-[inset_0_0_12px_rgba(255,179,67,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-emerald-500/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Low Priority</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.Count(a => a.PriorityId == 3)</p>
+                </div>
+                <div class="w-11 h-11 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-lg shadow-[inset_0_0_12px_rgba(16,185,129,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full space-y-3">
+        @if (Model.Any())
+        {
+            @foreach (var activity in Model)
+            {
+                <div class="activity-item p-4 rounded-2xl bg-white/[0.01] border border-white/[0.03] hover:bg-white/[0.02] hover:border-white/10 transition-all duration-200 group flex items-start gap-4 min-w-0" data-activity-id="@activity.Id">
+
+                    <div class="flex-shrink-0 mt-1.5">
+                        <div class="w-3.5 h-3.5 rounded-full border-2 @(activity.PriorityId == 1 ? "border-rose-500 bg-rose-500/30 shadow-[0_0_8px_#f43f5e]" : activity.PriorityId == 2 ? "border-brand-yellow bg-brand-yellow/30 shadow-[0_0_8px_#FFB343]" : "border-emerald-500 bg-emerald-500/30 shadow-[0_0_8px_#10B981]")"></div>
+                    </div>
+
+                    <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="min-w-0 flex-1">
+                            <p class="text-white text-sm font-semibold break-words leading-relaxed group-hover:text-brand-cyan transition-colors">@activity.Message</p>
+
+                            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2.5 text-[10px] font-semibold text-slate-500 font-mono">
+                                <span class="flex items-center bg-white/[0.02] px-2 py-0.5 rounded border border-white/[0.01]">
+                                    <i class="far fa-clock mr-1.5 text-slate-600"></i>@activity.CreateDate.ToString("yyyy/MM/dd HH:mm:ss")
+                                </span>
+
+                                <span class="px-2 py-0.5 rounded border uppercase tracking-wider text-[9px] font-bold
+                                    @(activity.PriorityId == 1 ? "bg-rose-500/10 text-rose-400 border-rose-500/10" :
+                                        activity.PriorityId == 2 ? "bg-brand-yellow/10 text-brand-yellow border-brand-yellow/10" :
+                                        "bg-emerald-500/10 text-emerald-400 border-emerald-500/10")">
+                                    @activity.RecentActivityPriority.Title
+                                </span>
+                            </div>
+                        </div>
+
+                        <button onclick="deleteActivity(@activity.Id)" class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/5 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all self-end sm:self-center opacity-40 group-hover:opacity-100 flex-shrink-0" title="Delete Activity">
+                            <i class="fas fa-trash-alt text-xs"></i>
+                        </button>
+                    </div>
+
+                </div>
+            }
+        }
+        else
+        {
+            <div class="p-12 rounded-3xl bg-white/[0.01] border border-white/[0.05] border-dashed text-center max-w-xl mx-auto mt-12 relative overflow-hidden">
+                <div class="w-16 h-16 bg-white/[0.02] border border-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-history text-slate-600 text-2xl animate-pulse"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">No Activities Logged</h3>
+                <p class="text-slate-500 text-xs font-medium max-w-xs mx-auto leading-relaxed">No system activities have been recorded recently.</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function deleteActivity(activityId) {
+            if (!confirm('Are you sure you want to delete this activity?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/Admin/Activities/Delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: activityId })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    const activityElement = document.querySelector(`[data-activity-id="${activityId}"]`);
+                    if (activityElement) {
+                        activityElement.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                        activityElement.style.opacity = '0';
+                        activityElement.style.transform = 'translateY(8px)';
+                        setTimeout(() => activityElement.remove(), 300);
+                    }
+                } else {
+                    alert(result.message || 'Error deleting activity.');
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            }
+        }
+
+        async function clearAllActivities() {
+            if (!confirm('Are you sure you want to delete all activity logs? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/Admin/Activities/ClearAll', {
+                    method: 'POST'
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.message || 'Error clearing activities.');
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            }
+        }
+    </script>
+}

@@ -1,0 +1,362 @@
+@model List<Domain.Entities.Setting>
+@using System.Text.Json
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["SettingsManagement"].Value;
+    var jsonDoc = ViewBag.ParsedJson as JsonDocument;
+    var groupedSettings = Model?.GroupBy(s => s.Category).OrderBy(g => g.Key).ToList() ?? new List<IGrouping<string, Domain.Entities.Setting>>();
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full space-y-6 text-start" dir="@(isRtl ? "rtl" : "ltr")">
+
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+        <div class="text-start">
+            <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide flex items-center gap-3 @(isRtl ? "space-x-reverse" : "")">
+                <i class="fas fa-sliders text-brand-cyan drop-shadow-[0_0_8px_#42EAFF]"></i>
+                @Localizer["SettingsGovernanceHub"]
+            </h1>
+            <p class="text-slate-400 text-sm font-medium">@Localizer["SettingsGovernanceHubSub"]</p>
+        </div>
+    </div>
+
+    <div class="p-5 rounded-3xl bg-brand-blue/5 border border-brand-blue/10 text-slate-200 shadow-xl flex items-start gap-4 backdrop-blur-xl @(isRtl ? "space-x-reverse" : "")">
+        <div class="w-12 h-12 rounded-2xl bg-brand-blue/10 border border-brand-blue/20 flex items-center justify-center flex-shrink-0 text-brand-blue shadow-[inset_0_0_12px_rgba(66,114,255,0.2)]">
+            <i class="fas fa-bolt text-xl drop-shadow-[0_0_6px_#4272FF]"></i>
+        </div>
+        <div class="space-y-1 text-start">
+            <h3 class="text-sm font-bold text-brand-blue uppercase tracking-widest font-mono">@Localizer["RealTimeSettingsParameters"]</h3>
+            <p class="text-xs text-slate-400 leading-relaxed font-medium">
+                @Localizer["RealTimeSettingsParametersSub"]
+            </p>
+        </div>
+    </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="p-4 rounded-2xl bg-brand-orange/10 border border-brand-orange/20 text-brand-orange flex items-center gap-3 text-sm animate-pulse @(isRtl ? "space-x-reverse" : "")">
+            <i class="fas fa-exclamation-triangle text-base"></i>
+            <span class="font-semibold text-xs">@TempData["ErrorMessage"]</span>
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-3 text-sm @(isRtl ? "space-x-reverse" : "")">
+            <i class="fas fa-check-circle text-base"></i>
+            <span class="font-semibold text-xs">@TempData["SuccessMessage"]</span>
+        </div>
+    }
+
+    <div class="flex border-b border-white/5 gap-2 overflow-x-auto pb-px justify-start custom-scrollbar @(isRtl ? "space-x-reverse" : "")">
+        @{
+            var categories = groupedSettings.Select(g => g.Key).ToList();
+            for (int i = 0; i < categories.Count; i++)
+            {
+                var category = categories[i];
+                var tabId = $"category-{category.ToLower().Replace(" ", "-")}";
+                var btnId = $"btn-{tabId}";
+                var isActive = i == 0;
+
+                <button onclick="switchTab('@tabId')" id="@btnId"
+                        class="tab-btn @(isActive ? "active text-brand-cyan border-brand-cyan" : "text-slate-500 border-transparent hover:text-slate-300")
+                    px-5 py-3 text-xs font-bold border-b-2 transition-all duration-200 flex items-center gap-2 uppercase tracking-wider focus:outline-none whitespace-nowrap @(isRtl ? "space-x-reverse" : "")">
+                    <i class="fas fa-cog text-[11px]"></i> @category
+                </button>
+            }
+        }
+        <button onclick="switchTab('json-settings')" id="btn-json-settings"
+                class="tab-btn px-5 py-3 text-xs font-bold border-b-2 transition-all duration-200 text-slate-500 border-transparent hover:text-slate-300 flex items-center gap-2 uppercase tracking-wider focus:outline-none whitespace-nowrap @(isRtl ? "space-x-reverse" : "")">
+            <i class="fas fa-file-code text-[11px]"></i> @Localizer["AppSettingsMatrix"]
+        </button>
+    </div>
+
+    <div class="mt-6 w-full">
+        @{
+            for (int i = 0; i < categories.Count; i++)
+            {
+                var category = categories[i];
+                var categorySettings = groupedSettings.FirstOrDefault(g => g.Key == category);
+                var tabId = $"category-{category.ToLower().Replace(" ", "-")}";
+                var isActive = i == 0;
+
+                <div id="tab-@tabId" class="tab-content @(isActive ? "block" : "hidden") space-y-4">
+                    <div class="space-y-4 w-full">
+
+                        <div class="pb-3 mb-2 flex items-center gap-2 @(isRtl ? "space-x-reverse" : "")">
+                            <h2 class="text-base font-bold text-white flex items-center gap-2.5 uppercase tracking-wider">
+                                <i class="fas fa-sliders-h text-brand-cyan text-sm"></i> @category @Localizer["ParametersBlock"]
+                            </h2>
+                        </div>
+
+                        @if (categorySettings != null)
+                        {
+                            @foreach (var setting in categorySettings.OrderBy(s => s.DisplayOrder))
+                            {
+                                <div class="py-4 px-2 rounded-2xl bg-white/[0.01] border border-white/[0.02] hover:bg-white/[0.02] hover:border-white/5 transition-all duration-200">
+                                    <form asp-area="Admin" asp-controller="Settings" asp-action="UpdateSetting" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@setting.Id" />
+
+                                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 @(isRtl ? "space-x-reverse" : "")">
+
+                                            <div class="space-y-1 flex-1 min-w-0 text-start">
+                                                <div class="flex items-center gap-2.5 @(isRtl ? "space-x-reverse" : "")">
+                                                    <h4 class="font-bold text-slate-200 text-sm tracking-wide">@setting.Title</h4>
+                                                    @if (!setting.Changeable)
+                                                    {
+                                                        <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/10 tracking-wider">READ-ONLY</span>
+                                                    }
+                                                </div>
+                                                @if (!string.IsNullOrEmpty(setting.Description))
+                                                {
+                                                    <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-2xl">@setting.Description</p>
+                                                }
+                                            </div>
+
+                                            <div class="flex items-center gap-4 min-w-[320px] justify-end self-end lg:self-center w-full lg:w-auto @(isRtl ? "space-x-reverse" : "")">
+                                                <div class="flex-1 lg:flex-initial min-w-[200px]">
+
+                                                    @if (setting.DataBool != null)
+                                                    {
+                                                        <div class="flex items-center justify-between h-9 bg-dark-bg/40 px-3 rounded-xl border border-white/5 @(isRtl ? "space-x-reverse" : "")">
+                                                            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">@Localizer["StateOption"]</span>
+                                                            <label class="relative inline-flex items-center cursor-pointer select-none">
+                                                                <input type="checkbox" name="dataBool" value="true" class="sr-only peer" @(setting.DataBool == true ? "checked" : "") @(setting.Changeable ? "" : "disabled")>
+                                                                <div class="w-9 h-5 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-dark-bg after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-slate-300 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-brand-cyan"></div>
+                                                            </label>
+                                                        </div>
+                                                    }
+
+                                                    @if (setting.DataString != null)
+                                                    {
+                                                        <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                                                            <input type="text" name="dataString" value="@setting.DataString" dir="ltr" class="w-full h-9 px-2 text-xs bg-transparent text-slate-200 focus:outline-none font-mono tracking-wide text-left" @(setting.Changeable ? "" : "disabled") />
+                                                        </div>
+                                                    }
+
+                                                    @if (setting.DataInt != null)
+                                                    {
+                                                        <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                                                            <input type="number" name="dataInt" value="@setting.DataInt" dir="ltr" class="w-full h-9 px-2 text-xs bg-transparent text-slate-200 focus:outline-none font-mono tracking-wide text-left" @(setting.Changeable ? "" : "disabled") />
+                                                        </div>
+                                                    }
+
+                                                    @if (setting.DataDecimal != null)
+                                                    {
+                                                        <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                                                            <input type="number" name="dataDecimal" value="@setting.DataDecimal" step="0.01" dir="ltr" class="w-full h-9 px-2 text-xs bg-transparent text-slate-200 focus:outline-none font-mono tracking-wide text-left" @(setting.Changeable ? "" : "disabled") />
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                                @if (setting.Changeable)
+                                                {
+                                                    <button type="submit" class="h-9 px-4 text-xs font-bold bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20 hover:bg-brand-cyan hover:text-dark-bg hover:shadow-[0_0_12px_#42EAFF] rounded-xl transition-all flex items-center justify-center">
+                                                        @Localizer["Save"]
+                                                    </button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        }
+
+        <div id="tab-json-settings" class="tab-content hidden space-y-6">
+            <div class="w-full">
+                <div class="pb-1 border-b border-white/5 mb-6 text-start">
+                    <h2 class="text-base font-bold text-white mb-1.5 flex items-center gap-2.5 uppercase tracking-wider @(isRtl ? "space-x-reverse" : "")">
+                        <i class="fas fa-project-diagram text-brand-blue"></i> @Localizer["AppSettingsConfigurationRegistry"]
+                    </h2>
+                    <p class="text-xs text-slate-500 font-medium">@Localizer["AppSettingsConfigurationRegistrySub"]</p>
+                </div>
+
+                @if (jsonDoc != null)
+                {
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                        @foreach (var configNode in jsonDoc.RootElement.EnumerateObject())
+                        {
+                            <div class="p-5 rounded-2xl bg-white/[0.01] border border-white/[0.03] hover:border-white/5 transition-all flex flex-col justify-between min-h-[160px]">
+                                <div>
+                                    <div class="flex items-center justify-between text-xs font-bold border-b border-white/[0.03] pb-2 mb-4 select-none @(isRtl ? "space-x-reverse" : "")">
+                                        <span class="text-brand-cyan font-mono text-sm tracking-wide" dir="ltr">@configNode.Name</span>
+                                        <i class="fas fa-cubes text-slate-600 text-xs"></i>
+                                    </div>
+
+                                    <div class="space-y-4 font-mono text-[11px]" dir="ltr">
+                                        @if (configNode.Value.ValueKind == JsonValueKind.Object)
+                                        {
+                                            @foreach (var subProp in configNode.Value.EnumerateObject())
+                                            {
+                                                @if (subProp.Value.ValueKind == JsonValueKind.Object)
+                                                {
+                                                    <div class="text-brand-blue font-black mt-2 pt-1 border-t border-white/[0.01] uppercase text-[10px] tracking-wider text-left">@subProp.Name:</div>
+                                                    <div class="pl-3 border-l border-white/5 space-y-3 my-1">
+                                                        @foreach (var deepProp in subProp.Value.EnumerateObject())
+                                                        {
+                                                            <form asp-area="Admin" asp-controller="Settings" asp-action="UpdateJsonField" method="post" class="flex items-center justify-between gap-4 py-0.5 group/json">
+                                                                @Html.AntiForgeryToken()
+                                                                <input type="hidden" name="jsonPath" value="@(configNode.Name):@(subProp.Name):@(deepProp.Name)" />
+                                                                <span class="text-slate-500 truncate max-w-[130px] font-semibold text-left" title="@deepProp.Name">@deepProp.Name</span>
+
+                                                                <div class="flex items-center gap-2 flex-1 justify-end">
+                                                                    <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors w-full max-w-[160px]">
+                                                                        <input type="text" name="newValue" value="@deepProp.Value.ToString()" class="w-full bg-transparent text-emerald-400 font-bold focus:outline-none text-right font-mono text-[11px] py-1" />
+                                                                    </div>
+                                                                    <button type="submit" title="Save" class="text-slate-600 hover:text-brand-cyan p-1 transition-colors"><i class="fas fa-save text-xs"></i></button>
+                                                                </div>
+                                                            </form>
+                                                        }
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <form asp-area="Admin" asp-controller="Settings" asp-action="UpdateJsonField" method="post" class="flex items-center justify-between gap-4 py-1 border-b border-white/[0.01] group/json">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="jsonPath" value="@(configNode.Name):@(subProp.Name)" />
+                                                        <span class="text-slate-400 truncate max-w-[150px] font-semibold text-left" title="@subProp.Name">@subProp.Name</span>
+
+                                                        <div class="flex items-center gap-2 flex-1 justify-end">
+                                                            <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors w-full max-w-[180px]">
+                                                                <input type="text" name="newValue" value="@subProp.Value.ToString()" class="w-full bg-transparent text-slate-200 font-bold focus:outline-none text-right font-mono text-[11px] py-1" />
+                                                            </div>
+                                                            <button type="submit" title="Save" class="text-slate-600 hover:text-brand-cyan p-1 transition-colors"><i class="fas fa-save text-xs"></i></button>
+                                                        </div>
+                                                    </form>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <form asp-area="Admin" asp-controller="Settings" asp-action="UpdateJsonField" method="post" class="flex items-center justify-between gap-4 py-1.5 bg-white/[0.01] px-2 rounded-xl border border-white/[0.02]">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="jsonPath" value="@configNode.Name" />
+                                                <span class="text-slate-500 text-[10px] font-bold uppercase tracking-wider text-left">Root Value</span>
+
+                                                <div class="flex items-center gap-2 flex-1 justify-end">
+                                                    <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors w-full max-w-[200px]">
+                                                        <input type="text" name="newValue" value="@configNode.Value.ToString()" class="w-full bg-transparent text-brand-yellow font-bold focus:outline-none text-right font-mono text-[11px] py-1" />
+                                                    </div>
+                                                    <button type="submit" title="Save" class="text-slate-600 hover:text-brand-cyan p-1 transition-colors"><i class="fas fa-save text-xs"></i></button>
+                                                </div>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                @if (isRtl) {
+                    <style>
+                        #tab-json-settings form, #tab-json-settings div[dir="ltr"] {
+                            direction: ltr !important;
+                            text-align: left !important;
+                        }
+                    </style>
+                }
+                }
+                else
+                {
+                    <div class="p-6 text-center text-rose-400 bg-rose-500/5 rounded-2xl border border-rose-500/20 text-xs font-semibold font-mono animate-pulse">
+                        <i class="fas fa-triangle-exclamation mr-2"></i> Unable to load or parse appsettings.json.
+                    </div>
+                }
+
+                <div class="mt-8 flex justify-center border-t border-white/5 pt-6">
+                    <button type="button" onclick="toggleManualEditor()" class="px-6 py-3 text-xs font-extrabold bg-rose-600/10 border border-rose-500/20 text-rose-400 hover:bg-rose-600 hover:text-white shadow-lg shadow-rose-600/5 rounded-xl transition-all flex items-center gap-2 uppercase tracking-wider @(isRtl ? "space-x-reverse" : "")">
+                        <i class="fas fa-terminal"></i> @Localizer["EditRawJsonBlock"]
+                    </button>
+                </div>
+            </div>
+
+            <div id="raw-editor-container" class="hidden transform transition-all duration-300">
+                <div class="py-6 border-t border-white/5 text-start">
+                    <div class="flex items-start gap-4 mb-4 @(isRtl ? "space-x-reverse" : "")">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center flex-shrink-0 border border-rose-500/20 text-rose-400">
+                            <i class="fas fa-code-commit text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-0.5">@Localizer["RawJsonSystemMutator"]</h3>
+                            <p class="text-xs text-slate-500 font-medium">@Localizer["RawJsonSystemMutatorSub"]</p>
+                        </div>
+                    </div>
+
+                    <form asp-area="Admin" asp-controller="Settings" asp-action="SaveAppSettings" method="post" class="space-y-4">
+                        @Html.AntiForgeryToken()
+                        <div class="relative rounded-2xl overflow-hidden border border-white/10 focus-within:border-rose-500/40 transition-colors bg-black/40 backdrop-blur-xl">
+                            <div class="flex items-center justify-between px-4 py-2 bg-white/[0.02] border-b border-white/5 select-none @(isRtl ? "space-x-reverse" : "")">
+                                <div class="flex items-center gap-1.5 @(isRtl ? "space-x-reverse" : "")">
+                                    <span class="w-2 h-2 rounded-full bg-rose-500/60 inline-block shadow-[0_0_6px_#f43f5e]"></span>
+                                    <span class="w-2 h-2 rounded-full bg-brand-yellow/60 inline-block"></span>
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500/60 inline-block"></span>
+                                    <span class="text-[10px] font-mono font-bold text-slate-500 pl-2 uppercase tracking-wide">appsettings.json</span>
+                                </div>
+                            </div>
+
+                            <textarea name="jsonContent" rows="18" dir="ltr"
+                                      class="w-full p-4 bg-transparent font-mono text-xs text-emerald-400 focus:outline-none resize-y leading-relaxed selection:bg-rose-500/20 custom-scrollbar text-left"
+                                      spellcheck="false">@ViewBag.AppSettingsContent</textarea>
+                        </div>
+
+                        <div class="flex justify-end gap-3 @(isRtl ? "space-x-reverse" : "")">
+                            <button type="button" onclick="toggleManualEditor()" class="px-4 py-2 bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white rounded-xl text-xs font-bold transition-colors">
+                                @Localizer["Cancel"]
+                            </button>
+                            <button type="submit" onclick="return confirm('@(isRtl ? "هل تريد حفظ التغييرات مباشرة في appsettings.json؟" : "Save changes directly to appsettings.json?")')"
+                                    class="px-5 py-2.5 text-xs font-black bg-gradient-to-r from-rose-600 to-brand-orange text-white rounded-xl shadow-md flex items-center gap-1.5 uppercase tracking-wide @(isRtl ? "space-x-reverse" : "")">
+                                <i class="fas fa-save text-sm"></i> @Localizer["CommitJsonModifications"]
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        if (window.switchTab === undefined) {
+            window.switchTab = function(tabId) {
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('block');
+                });
+
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('text-brand-cyan', 'border-brand-cyan', 'active');
+                    btn.classList.add('text-slate-500', 'border-transparent');
+                });
+
+                const targetContent = document.getElementById('tab-' + tabId);
+                if (targetContent) {
+                    targetContent.classList.remove('hidden');
+                    targetContent.classList.add('block');
+                }
+
+                const targetBtn = document.getElementById('btn-' + tabId);
+                if (targetBtn) {
+                    targetBtn.classList.add('text-brand-cyan', 'border-brand-cyan', 'active');
+                    targetBtn.classList.remove('text-slate-500', 'border-transparent');
+                }
+            };
+        }
+
+        if (window.toggleManualEditor === undefined) {
+            window.toggleManualEditor = function() {
+                const container = document.getElementById('raw-editor-container');
+                if (container.classList.contains('hidden')) {
+                    container.classList.remove('hidden');
+                    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    container.classList.add('hidden');
+                }
+            };
+        }
+    </script>
+}

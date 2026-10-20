@@ -1,0 +1,281 @@
+@model List<Domain.Entities.Seo.PageSeo>
+@{
+    ViewData["Title"] = "Page SEO Management";
+}
+
+<!-- Main Page Container -->
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full" dir="ltr">
+
+    <!-- Back to Dashboard -->
+    <a href="@Url.Action("Index", "Seo", new { area = "Admin" })" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-brand-cyan transition-colors uppercase tracking-wider mb-6">
+        <i class="fa fa-arrow-left text-[10px]"></i> Back to SEO Dashboard
+    </a>
+
+    <!-- Flash Messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center space-x-3 text-sm font-semibold shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+            <i class="fas fa-check-circle text-base"></i>
+            <span>@TempData["SuccessMessage"]</span>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center space-x-3 text-sm font-semibold shadow-[0_0_15px_rgba(244,63,94,0.1)]">
+            <i class="fas fa-exclamation-circle text-base"></i>
+            <span>@TempData["ErrorMessage"]</span>
+        </div>
+    }
+
+    <!-- Header Title -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-white/10 pb-6">
+        <div>
+            <h1 class="text-2xl font-black text-white flex items-center gap-3">
+                <i class="fas fa-tags text-brand-cyan drop-shadow-[0_0_8px_#42EAFF]"></i>
+                Page SEO Settings
+            </h1>
+            <p class="text-slate-400 text-xs mt-1">Customize title tags, meta descriptions, robots directives, social tags, and structured data for specific pages.</p>
+        </div>
+        <button onclick="openPageSeoModal(0, '', '', '', '', 'index, follow', '', '', '', '', 'website', '')" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-blue text-slate-950 font-black text-sm flex items-center gap-2 hover:shadow-[0_0_20px_rgba(66,234,255,0.4)] transition-all transform hover:scale-105">
+            <i class="fas fa-plus"></i> Add Page SEO
+        </button>
+    </div>
+
+    <!-- Quick Setup Shortcuts -->
+    <div class="mb-8 p-5 rounded-2xl bg-white/[0.02] border border-white/5">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+            <i class="fas fa-bolt text-brand-gold"></i> Quick Shortcuts for Common Pages:
+        </h3>
+        <div class="flex flex-wrap gap-2">
+            <button onclick="fillPreset('/')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-cyan/20 border border-white/10 text-xs font-semibold text-slate-300 hover:text-brand-cyan transition-all">Home (/)</button>
+            <button onclick="fillPreset('/Courses')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-cyan/20 border border-white/10 text-xs font-semibold text-slate-300 hover:text-brand-cyan transition-all">Courses (/Courses)</button>
+            <button onclick="fillPreset('/Account/Login')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-cyan/20 border border-white/10 text-xs font-semibold text-slate-300 hover:text-brand-cyan transition-all">Login (/Account/Login)</button>
+            <button onclick="fillPreset('/Account/Register')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-cyan/20 border border-white/10 text-xs font-semibold text-slate-300 hover:text-brand-cyan transition-all">Register (/Account/Register)</button>
+            <button onclick="fillPreset('/Home/Privacy')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-cyan/20 border border-white/10 text-xs font-semibold text-slate-300 hover:text-brand-cyan transition-all">Privacy Policy (/Home/Privacy)</button>
+        </div>
+    </div>
+
+    <!-- Table of Configured Page Rules -->
+    <div class="rounded-3xl bg-white/[0.01] border border-white/5 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-300">
+                <thead class="bg-white/5 text-xs font-bold text-slate-400 uppercase border-b border-white/10">
+                    <tr>
+                        <th class="py-4 px-6">Page Path</th>
+                        <th class="py-4 px-6">Page Title</th>
+                        <th class="py-4 px-6">Meta Description</th>
+                        <th class="py-4 px-6">Robots</th>
+                        <th class="py-4 px-6">Status</th>
+                        <th class="py-4 px-6 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    @if (Model == null || !Model.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="py-12 text-center text-slate-500 font-medium">
+                                No custom SEO rules added yet. Click "Add Page SEO" to get started.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr class="hover:bg-white/[0.02] transition-colors">
+                                <td class="py-4 px-6 font-mono text-xs text-brand-cyan font-bold dir-ltr text-left">
+                                    @item.PagePath
+                                </td>
+                                <td class="py-4 px-6 font-semibold text-white max-w-xs truncate">
+                                    @(string.IsNullOrWhiteSpace(item.Title) ? "—" : item.Title)
+                                </td>
+                                <td class="py-4 px-6 max-w-sm truncate text-slate-400 text-xs">
+                                    @(string.IsNullOrWhiteSpace(item.MetaDescription) ? "—" : item.MetaDescription)
+                                </td>
+                                <td class="py-4 px-6">
+                                    @if (item.MetaRobots?.Contains("noindex") == true)
+                                    {
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-500/10 border border-rose-500/20 text-rose-400">@item.MetaRobots</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">@(item.MetaRobots ?? "index, follow")</span>
+                                    }
+                                </td>
+                                <td class="py-4 px-6">
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="inline-flex items-center gap-1.5 text-xs text-emerald-400"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="inline-flex items-center gap-1.5 text-xs text-slate-500"><span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span> Inactive</span>
+                                    }
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button onclick='openPageSeoModal(@item.Id, @Html.Raw(Json.Serialize(item.PagePath)), @Html.Raw(Json.Serialize(item.Title ?? "")), @Html.Raw(Json.Serialize(item.MetaDescription ?? "")), @Html.Raw(Json.Serialize(item.MetaKeywords ?? "")), @Html.Raw(Json.Serialize(item.MetaRobots ?? "index, follow")), @Html.Raw(Json.Serialize(item.CanonicalUrl ?? "")), @Html.Raw(Json.Serialize(item.OgTitle ?? "")), @Html.Raw(Json.Serialize(item.OgDescription ?? "")), @Html.Raw(Json.Serialize(item.OgImage ?? "")), @Html.Raw(Json.Serialize(item.OgType ?? "website")), @Html.Raw(Json.Serialize(item.JsonLd ?? "")), @item.IsActive.ToString().ToLower())'
+                                                class="w-8 h-8 rounded-lg bg-brand-blue/10 hover:bg-brand-blue/30 border border-brand-blue/20 text-brand-cyan flex items-center justify-center transition-all" title="Edit">
+                                            <i class="fas fa-edit text-xs"></i>
+                                        </button>
+                                        <form action="@Url.Action("DeletePageSeo", "Seo", new { area = "Admin" })" method="post" onsubmit="return confirm('Are you sure you want to delete the SEO settings for this page?');" class="m-0">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button type="submit" class="w-8 h-8 rounded-lg bg-rose-500/10 hover:bg-rose-500/30 border border-rose-500/20 text-rose-400 flex items-center justify-center transition-all" title="Delete">
+                                                <i class="fas fa-trash text-xs"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Form -->
+<div id="pageSeoModal" class="fixed inset-0 z-[9999] hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto" dir="ltr">
+    <div class="relative w-full max-w-3xl max-h-[90vh] flex flex-col rounded-3xl bg-slate-900 border border-white/10 shadow-2xl overflow-hidden my-auto">
+        <div class="flex items-center justify-between p-6 border-b border-white/10 bg-white/[0.02] shrink-0">
+            <h3 id="modalTitle" class="text-lg font-black text-white flex items-center gap-2">
+                <i class="fas fa-sliders-h text-brand-cyan"></i> Page SEO Settings
+            </h3>
+            <button type="button" onclick="closePageSeoModal()" class="text-slate-400 hover:text-white transition-colors">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <form action="@Url.Action("SavePageSeo", "Seo", new { area = "Admin" })" method="post" class="p-6 space-y-6 overflow-y-auto custom-scrollbar">
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="seo_Id" name="Id" value="0" />
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Page Path -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Page Path <span class="text-rose-400">*</span></label>
+                    <input type="text" id="seo_PagePath" name="PagePath" required placeholder="/Courses or /Account/Login or /" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-sm focus:border-brand-cyan focus:outline-none transition-colors dir-ltr text-left" />
+                    <p class="text-[11px] text-slate-500 mt-1">Exact page URL path (e.g. / or /Courses).</p>
+                </div>
+
+                <!-- Page Title -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Page Title</label>
+                    <input type="text" id="seo_Title" name="Title" placeholder="e.g. Specialized Pharmacy Courses" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-brand-cyan focus:outline-none transition-colors" />
+                </div>
+            </div>
+
+            <!-- Meta Description -->
+            <div>
+                <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Meta Description</label>
+                <textarea id="seo_MetaDescription" name="MetaDescription" rows="3" placeholder="Summary for search results (recommended 120–160 characters)" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-brand-cyan focus:outline-none transition-colors leading-relaxed"></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Meta Keywords -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Meta Keywords</label>
+                    <input type="text" id="seo_MetaKeywords" name="MetaKeywords" placeholder="Comma-separated keywords" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-brand-cyan focus:outline-none transition-colors" />
+                </div>
+
+                <!-- Meta Robots -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Search Engine Robots Directive</label>
+                    <select id="seo_MetaRobots" name="MetaRobots" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-white/10 text-white text-sm focus:border-brand-cyan focus:outline-none transition-colors">
+                        <option value="index, follow">index, follow (Index page and follow links)</option>
+                        <option value="noindex, follow">noindex, follow (Do not index, follow links)</option>
+                        <option value="noindex, nofollow">noindex, nofollow (Complete search engine block)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Canonical URL -->
+            <div>
+                <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Canonical URL</label>
+                <input type="url" id="seo_CanonicalUrl" name="CanonicalUrl" placeholder="https://example.com/canonical-page" class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:border-brand-cyan focus:outline-none transition-colors dir-ltr text-left" />
+            </div>
+
+            <!-- Open Graph Section -->
+            <div class="p-5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-4">
+                <h4 class="text-xs font-black text-brand-cyan uppercase tracking-wider flex items-center gap-2">
+                    <i class="fab fa-facebook text-sm"></i> Social Media Tags (Open Graph)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1">OG Title</label>
+                        <input type="text" id="seo_OgTitle" name="OgTitle" class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:border-brand-cyan focus:outline-none" />
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1">OG Type</label>
+                        <select id="seo_OgType" name="OgType" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-white/10 text-white text-xs focus:border-brand-cyan focus:outline-none">
+                            <option value="website">website</option>
+                            <option value="article">article</option>
+                            <option value="course">course</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1">OG Image URL</label>
+                    <input type="text" id="seo_OgImage" name="OgImage" placeholder="/images/share.jpg or full URL" class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:border-brand-cyan focus:outline-none dir-ltr text-left" />
+                </div>
+            </div>
+
+            <!-- Custom JSON-LD Schema.org Block -->
+            <div>
+                <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Structured Data (JSON-LD / Schema)</label>
+                <textarea id="seo_JsonLd" name="JsonLd" rows="4" placeholder='{"@@context": "https://schema.org", "@@type": "WebPage", ...}' class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-brand-cyan font-mono text-xs focus:border-brand-cyan focus:outline-none transition-colors dir-ltr leading-relaxed"></textarea>
+            </div>
+
+            <!-- Active Checkbox -->
+            <div class="flex items-center gap-3">
+                <input type="checkbox" id="seo_IsActive" name="IsActive" value="true" checked class="w-4 h-4 rounded bg-white/5 border-white/20 text-brand-cyan focus:ring-0" />
+                <label for="seo_IsActive" class="text-xs font-bold text-slate-300 cursor-pointer">Enable SEO settings for this page</label>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/10 shrink-0">
+                <button type="button" onclick="closePageSeoModal()" class="px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-bold transition-all">Cancel</button>
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-blue text-slate-950 font-black text-xs hover:shadow-[0_0_20px_rgba(66,234,255,0.4)] transition-all transform hover:scale-105">Save Page SEO</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function fillPreset(path) {
+        openPageSeoModal(0, path, '', '', '', 'index, follow', '', '', '', '', 'website', '', true);
+    }
+
+    function openPageSeoModal(id, path, title, desc, keywords, robots, canonical, ogTitle, ogDesc, ogImage, ogType, jsonLd, isActive) {
+        var modal = document.getElementById('pageSeoModal');
+
+        // انتقال مودال مستقیم به body برای رها شدن از کانتینر Layout
+        if (modal.parentElement !== document.body) {
+            document.body.appendChild(modal);
+        }
+
+        document.getElementById('seo_Id').value = id || 0;
+        document.getElementById('seo_PagePath').value = path || '';
+        document.getElementById('seo_Title').value = title || '';
+        document.getElementById('seo_MetaDescription').value = desc || '';
+        document.getElementById('seo_MetaKeywords').value = keywords || '';
+        document.getElementById('seo_MetaRobots').value = robots || 'index, follow';
+        document.getElementById('seo_CanonicalUrl').value = canonical || '';
+        document.getElementById('seo_OgTitle').value = ogTitle || '';
+        document.getElementById('seo_OgImage').value = ogImage || '';
+        document.getElementById('seo_OgType').value = ogType || 'website';
+        document.getElementById('seo_JsonLd').value = jsonLd || '';
+        document.getElementById('seo_IsActive').checked = isActive === undefined ? true : (isActive === true || isActive === 'true');
+
+        document.getElementById('modalTitle').innerText = id > 0 ? 'Edit Page SEO: ' + path : 'Define SEO for New Page';
+
+        modal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden'); // جلوگیری از اسکرول خوردن پشت مودال
+    }
+
+    function closePageSeoModal() {
+        var modal = document.getElementById('pageSeoModal');
+        modal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+</script>

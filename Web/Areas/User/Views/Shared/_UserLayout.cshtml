@@ -1,0 +1,414 @@
+@{
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture.Name;
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+}
+<!DOCTYPE html>
+<html lang="@currentCulture" dir="@(isRtl ? "rtl" : "ltr")">
+<head>
+    <script>
+        (function () {
+            try {
+                var theme = localStorage.getItem('pharmino_theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+                if (theme === 'light') {
+                    document.documentElement.classList.add('light', 'light-theme');
+                } else {
+                    document.documentElement.classList.add('dark', 'dark-theme');
+                }
+            } catch (e) { }
+        })();
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - @User.Identity?.Name</title>
+
+    <!-- Tailwind CSS with Advanced Config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+        theme: {
+        extend: {
+        colors: {
+        brand: {
+        cyan: '#42EAFF',
+        blue: '#4272FF',
+        orange: '#FF7E42',
+        yellow: '#FFB343',
+        dark: '#030712', /* Ultra dark slate */
+        surface: 'rgba(255, 255, 255, 0.03)',
+        surfaceHover: 'rgba(255, 255, 255, 0.08)'
+        },
+        /* رنگ‌های اختصاصی برند - برای بخش‌های امنیتی مانند داشبورد نشست‌های فعال */
+        /* Primary brand accent colors - used by security-focused views like the Active Sessions dashboard */
+        navy: '#123C76',
+        gold: '#E1D788'
+        },
+        animation: {
+        'fade-in-up': 'fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        },
+        keyframes: {
+        fadeInUp: {
+        '0%': { opacity: '0', transform: 'translateY(20px)' },
+        '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        float: {
+        '0%, 100%': { transform: 'translateY(0)' },
+        '50%': { transform: 'translateY(-10px)' },
+        }
+        }
+        }
+        }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    @if (isRtl)
+    {
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <style>
+            body, h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, div {
+                font-family: 'Cairo', sans-serif !important;
+            }
+        </style>
+    }
+
+    <style>
+        body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: #030712;
+        color: #f8fafc;
+        overflow-x: hidden;
+        }
+
+        /* --- Premium Preloader Styles using New Palette --- */
+        #preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #030712;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s;
+        }
+
+        .loader-ring {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        border-top-color: #42EAFF; /* brand-cyan */
+        border-bottom-color: #FF7E42; /* brand-orange */
+        animation: spin 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
+        }
+
+        @@keyframes spin {
+        0% {
+        transform: rotate(0deg);
+        }
+
+        100% {
+        transform: rotate(360deg);
+        }
+        }
+
+        /* Advanced Glassmorphism */
+        .glass-panel {
+        background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        /* Active Menu Item with Neon Glow */
+        .nav-item-active {
+        background: linear-gradient(90deg, rgba(66,234,255,0.1) 0%, transparent 100%);
+        border-left: 3px solid #42EAFF;
+        box-shadow: inset 10px 0 20px -10px rgba(66,234,255,0.3);
+        }
+
+        .nav-item-active i {
+        color: #42EAFF !important;
+        filter: drop-shadow(0 0 8px rgba(66,234,255,0.6));
+        }
+
+        .nav-item-active span {
+        color: #fff !important;
+        font-weight: 600;
+        }
+
+        /* Ambient Glow Orbs */
+        .glow-orb-1 {
+        position: fixed;
+        top: -10%;
+        left: -10%;
+        width: 50vw;
+        height: 50vw;
+        background: radial-gradient(circle, rgba(66,114,255,0.15) 0%, transparent 70%);
+        z-index: -1;
+        filter: blur(90px);
+        }
+
+        .glow-orb-2 {
+        position: fixed;
+        bottom: -10%;
+        right: -10%;
+        width: 50vw;
+        height: 50vw;
+        background: radial-gradient(circle, rgba(255,126,66,0.15) 0%, transparent 70%);
+        z-index: -1;
+        filter: blur(90px);
+        }
+
+        /* Sleek Scrollbar */
+        ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+        background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.1);
+        border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+        background: #42EAFF;
+        }
+    </style>
+    <link rel="stylesheet" href="~/css/theme.css" />
+    @await RenderSectionAsync("Styles", false)
+</head>
+<body class="antialiased selection:bg-brand-cyan selection:text-brand-dark min-h-screen flex flex-col lg:flex-row relative">
+
+    <!-- ⏳ Micro-interaction Preloader Block[cite: 9] -->
+    <div id="preloader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <!-- Ambient Background Effects -->
+    <div class="glow-orb-1 animate-pulse-slow pointer-events-none"></div>
+    <div class="glow-orb-2 animate-pulse-slow pointer-events-none" style="animation-delay: 2s;"></div>
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden sticky top-0 z-40 glass-panel border-b-0 border-x-0 rounded-b-2xl">
+        <div class="flex items-center justify-between p-5">
+            <button id="mobile-menu-btn" class="text-slate-300 hover:text-brand-cyan transition-colors">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+            <h1 class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-brand-cyan to-brand-blue">
+                Pharmino Academy
+            </h1>
+            <div class="flex items-center gap-3">
+                <partial name="_ThemeToggle" />
+                <partial name="_LanguageSwitcher" />
+                <a href="/" class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-slate-300 hover:text-brand-yellow hover:scale-110 transition-all">
+                    <i class="fas fa-arrow-right-to-bracket"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Floating Sidebar -->
+    <aside id="sidebar" class="fixed lg:sticky top-0 lg:top-6 left-0 z-50 w-[280px] h-screen lg:h-[calc(100vh-3rem)] lg:ml-6 transform -translate-x-full lg:translate-x-0 transition-all duration-400 ease-out glass-panel rounded-none lg:rounded-[2rem] flex flex-col shadow-2xl">
+
+        <!-- Logo Section -->
+        <div class="hidden lg:flex items-center justify-center pt-10 pb-6">
+            <h1 class="text-3xl font-extrabold tracking-tighter">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-cyan via-brand-blue to-brand-orange">
+                    Pharmino
+                </span>
+                <span class="text-brand-cyan text-4xl leading-none">.</span>
+            </h1>
+        </div>
+
+        <!-- User Profile Card -->
+        <div class="px-6 py-4">
+            <div class="p-4 rounded-2xl bg-brand-surface border border-white/5 flex items-center space-x-4 group cursor-pointer hover:bg-brand-surfaceHover transition-colors">
+                <div class="relative">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange to-brand-yellow p-[2px] transform group-hover:rotate-6 transition-transform duration-300">
+                        <div class="w-full h-full rounded-[10px] bg-brand-dark flex items-center justify-center text-brand-yellow font-bold text-lg shadow-inner">
+                            @(User.FindFirst("FullName")?.Value?.FirstOrDefault() ?? 'U')
+                        </div>
+                    </div>
+                    <!-- Status dot -->
+                    <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-400 border-2 border-brand-dark shadow-[0_0_10px_rgba(74,222,128,0.5)]"></div>
+                </div>
+                <div class="flex-grow min-w-0">
+                    <p class="font-bold text-slate-100 truncate text-sm">
+                        @(User.FindFirst("FullName")?.Value ?? "User")
+                    </p>
+                    <p class="text-[11px] text-slate-400 truncate mt-1 font-medium tracking-wide">
+                        @(User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "user@example.com")
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto overflow-x-hidden">
+            <p class="px-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase mb-4">@Localizer["MainMenu"]</p>
+
+            <a asp-area="User" asp-controller="Dashboard" asp-action="Index"
+               class="flex items-center space-x-4 px-4 py-3.5 rounded-xl text-slate-400 hover:bg-brand-surface hover:text-white transition-all duration-300 group relative @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "nav-item-active" : "")">
+                <i class="fas fa-grip-vertical w-5 text-lg transition-transform duration-300 group-hover:scale-110"></i>
+                <span class="font-medium text-sm transition-transform duration-300 group-hover:translate-x-1">@Localizer["Dashboard"]</span>
+            </a>
+
+            <a asp-area="User" asp-controller="Courses" asp-action="Index"
+               class="flex items-center space-x-4 px-4 py-3.5 rounded-xl text-slate-400 hover:bg-brand-surface hover:text-white transition-all duration-300 group @(ViewContext.RouteData.Values["controller"]?.ToString() == "Courses" ? "nav-item-active" : "")">
+                <i class="fas fa-layer-group w-5 text-lg transition-transform duration-300 group-hover:scale-110"></i>
+                <span class="font-medium text-sm transition-transform duration-300 group-hover:translate-x-1">@Localizer["MyCourses"]</span>
+            </a>
+
+            <p class="px-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase mt-8 mb-4">@Localizer["Settings"]</p>
+
+            <a asp-area="User" asp-controller="Profile" asp-action="EditProfile"
+               class="flex items-center space-x-4 px-4 py-3.5 rounded-xl text-slate-400 hover:bg-brand-surface hover:text-white transition-all duration-300 group @(ViewContext.RouteData.Values["controller"]?.ToString() == "Profile" && ViewContext.RouteData.Values["action"]?.ToString() == "EditProfile" ? "nav-item-active" : "")">
+                <i class="fas fa-user-astronaut w-5 text-lg transition-transform duration-300 group-hover:scale-110"></i>
+                <span class="font-medium text-sm transition-transform duration-300 group-hover:translate-x-1">@Localizer["EditProfile"]</span>
+            </a>
+
+            <a asp-area="User" asp-controller="Profile" asp-action="ChangePassword"
+               class="flex items-center space-x-4 px-4 py-3.5 rounded-xl text-slate-400 hover:bg-brand-surface hover:text-white transition-all duration-300 group @(ViewContext.RouteData.Values["controller"]?.ToString() == "Profile" && ViewContext.RouteData.Values["action"]?.ToString() == "ChangePassword" ? "nav-item-active" : "")">
+                <i class="fas fa-shield-halved w-5 text-lg transition-transform duration-300 group-hover:scale-110"></i>
+                <span class="font-medium text-sm transition-transform duration-300 group-hover:translate-x-1">@Localizer["ChangePassword"]</span>
+            </a>
+
+            <a asp-area="User" asp-controller="Sessions" asp-action="Index"
+               class="flex items-center space-x-4 px-4 py-3.5 rounded-xl text-slate-400 hover:bg-brand-surface hover:text-white transition-all duration-300 group @(ViewContext.RouteData.Values["controller"]?.ToString() == "Sessions" ? "nav-item-active" : "")">
+                <i class="fas fa-display w-5 text-lg transition-transform duration-300 group-hover:scale-110"></i>
+                <span class="font-medium text-sm transition-transform duration-300 group-hover:translate-x-1">@Localizer["ActiveSessions"]</span>
+            </a>
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div class="p-6 mt-auto">
+            <div class="glass-panel p-4 rounded-2xl flex flex-col gap-3">
+                <a href="/" class="flex items-center justify-between text-slate-300 hover:text-brand-cyan transition-colors group text-sm font-medium">
+                    <span>@Localizer["LiveSite"]</span>
+                    <i class="fas fa-arrow-up-right-from-square text-xs transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                </a>
+                <div class="h-[1px] w-full bg-white/10"></div>
+                <a asp-area="" asp-controller="Account" asp-action="Logout" class="flex items-center justify-between text-brand-orange hover:text-red-400 transition-colors group text-sm font-medium">
+                    <span>@Localizer["Logout"]</span>
+                    <i class="fas fa-power-off text-xs transform group-hover:scale-110 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Backdrop -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-brand-dark/90 backdrop-blur-md z-40 hidden lg:hidden transition-opacity"></div>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 w-full max-w-7xl mx-auto p-4 lg:p-10 flex flex-col min-h-screen z-10">
+
+        <!-- Top Bar -->
+        <div class="hidden lg:flex items-center justify-between mb-10 animate-fade-in-up">
+            <div>
+                <h2 class="text-2xl font-bold text-white tracking-tight">@ViewData["Title"]</h2>
+                <p class="text-slate-400 text-sm mt-1">@Localizer["UserLayoutSub"]</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <partial name="_ThemeToggle" />
+                <partial name="_LanguageSwitcher" />
+            </div>
+        </div>
+
+        <!-- Alerts Container -->
+        <div class="animate-fade-in-up" style="animation-delay: 0.1s;">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="mb-8 p-4 rounded-2xl bg-[#031A14] border-l-4 border-l-brand-cyan border-y border-r border-white/5 text-slate-200 flex items-center shadow-lg relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-brand-cyan/5 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
+                    <div class="w-10 h-10 rounded-full bg-brand-cyan/10 flex items-center justify-center mr-4 shrink-0">
+                        <i class="fas fa-check text-brand-cyan"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h4 class="font-bold text-brand-cyan text-sm">Success</h4>
+                        <span class="text-sm">@TempData["SuccessMessage"]</span>
+                    </div>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="mb-8 p-4 rounded-2xl bg-[#1A0B0B] border-l-4 border-l-brand-orange border-y border-r border-white/5 text-slate-200 flex items-center shadow-lg relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-brand-orange/5 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
+                    <div class="w-10 h-10 rounded-full bg-brand-orange/10 flex items-center justify-center mr-4 shrink-0">
+                        <i class="fas fa-triangle-exclamation text-brand-orange"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <h4 class="font-bold text-brand-orange text-sm">Error</h4>
+                        <span class="text-sm">@TempData["ErrorMessage"]</span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Render Body Container -->
+        <div class="flex-1 animate-fade-in-up" style="animation-delay: 0.2s;">
+            <div class="glass-panel rounded-[2rem] p-6 lg:p-10 h-full relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-yellow/5 rounded-full blur-[80px] pointer-events-none"></div>
+                <div class="relative z-10">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Preloader Automation Logic[cite: 9]
+        window.addEventListener('load', () => {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+        setTimeout(() => {
+        preloader.style.opacity = '0';
+        preloader.style.visibility = 'hidden';
+        }, 300); // 300ms smooth delay after full engine initialization[cite: 9]
+        }
+        });
+
+        // Advanced Mobile menu logic with smooth backdrop
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+
+        if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+        if (sidebarBackdrop.classList.contains('hidden')) {
+        sidebarBackdrop.classList.remove('hidden');
+        setTimeout(() => sidebarBackdrop.classList.remove('opacity-0'), 10);
+        } else {
+        sidebarBackdrop.classList.add('opacity-0');
+        setTimeout(() => sidebarBackdrop.classList.add('hidden'), 300);
+        }
+        });
+
+        sidebarBackdrop.addEventListener('click', () => {
+        sidebar.classList.add('-translate-x-full');
+        sidebarBackdrop.classList.add('opacity-0');
+        setTimeout(() => sidebarBackdrop.classList.add('hidden'), 300);
+        });
+        }
+    </script>
+
+    <script src="~/js/theme.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

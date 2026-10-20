@@ -1,0 +1,151 @@
+@model List<Domain.Entities.Seo.SeoRedirect>
+@{
+    ViewData["Title"] = "URL Redirects";
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full" dir="ltr">
+
+    <!-- Back to Dashboard -->
+    <a href="@Url.Action("Index", "Seo", new { area = "Admin" })" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-brand-cyan transition-colors uppercase tracking-wider mb-6">
+        <i class="fa fa-arrow-left text-[10px]"></i> Back to SEO Dashboard
+    </a>
+
+    <!-- Flash Messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center space-x-3 text-sm font-semibold shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+            <i class="fas fa-check-circle text-base"></i>
+            <span>@TempData["SuccessMessage"]</span>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="mb-6 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center space-x-3 text-sm font-semibold shadow-[0_0_15px_rgba(244,63,94,0.1)]">
+            <i class="fas fa-exclamation-circle text-base"></i>
+            <span>@TempData["ErrorMessage"]</span>
+        </div>
+    }
+
+    <!-- Main Two-Column Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- Left Column: Add Redirect Form -->
+        <div class="lg:col-span-4 space-y-6">
+            <div class="pb-2 border-b border-white/5 mb-4">
+                <h3 class="text-base font-bold text-white uppercase tracking-wider">Add Redirect Rule</h3>
+                <p class="text-slate-500 text-[11px] font-medium mt-1">Create a 301 or 302 redirect from an old URL to a new page.</p>
+            </div>
+
+            <form action="@Url.Action("AddRedirect", "Seo", new { area = "Admin" })" method="post" class="space-y-6">
+                @Html.AntiForgeryToken()
+
+                <!-- Source URL Input -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Source URL (Old Path)</label>
+                    <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                        <input type="text" name="OldUrl" value="@ViewBag.PreFilledOldUrl" class="w-full bg-transparent py-2.5 text-white placeholder-slate-600 focus:outline-none text-sm font-medium font-mono" placeholder="/old-page" required>
+                    </div>
+                    <div class="text-[10px] text-slate-500 font-medium">Path on this site (e.g. <code>/about-old</code>) or absolute URL.</div>
+                </div>
+
+                <!-- Destination URL Input -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Destination URL (New Path)</label>
+                    <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                        <input type="text" name="NewUrl" class="w-full bg-transparent py-2.5 text-white placeholder-slate-600 focus:outline-none text-sm font-medium font-mono" placeholder="/new-page" required>
+                    </div>
+                    <div class="text-[10px] text-slate-500 font-medium">Target destination path (e.g. <code>/about</code>) or external URL.</div>
+                </div>
+
+                <!-- Type Selector Dropdown -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Redirect Type</label>
+                    <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                        <select name="IsPermanent" class="w-full bg-transparent py-2.5 text-slate-300 focus:outline-none text-sm font-medium cursor-pointer">
+                            <option value="true" class="bg-[#0B0D14] text-white">301 - Permanent Redirect (Recommended)</option>
+                            <option value="false" class="bg-[#0B0D14] text-white">302 - Temporary Redirect</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full text-center px-6 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg font-black text-xs uppercase tracking-wider rounded-xl hover:shadow-[0_0_20px_rgba(66,234,255,0.3)] hover:scale-[1.01] transition-all flex items-center justify-center gap-1.5 h-9">
+                    <i class="fa fa-plus-circle text-sm"></i> Add Redirect
+                </button>
+            </form>
+        </div>
+
+        <!-- Right Column: Active Redirects Table -->
+        <div class="lg:col-span-8 space-y-4">
+            <div class="pb-2 border-b border-white/5 mb-4">
+                <h3 class="text-base font-bold text-white uppercase tracking-wider">Active Redirect Rules</h3>
+                <p class="text-slate-500 text-[11px] font-medium mt-1">Currently active URL redirection rules.</p>
+            </div>
+
+            <div class="w-full overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-white/5 text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/[0.01]">
+                            <th class="py-4 px-3 font-bold">Source URL (From)</th>
+                            <th class="py-4 px-3 font-bold">Destination URL (To)</th>
+                            <th class="py-4 px-3 font-bold w-24">Type</th>
+                            <th class="py-4 px-3 font-bold w-36">Created At</th>
+                            <th class="py-4 px-3 font-bold text-right w-24">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/[0.02]">
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-slate-500 text-xs font-medium py-12">
+                                    No active redirect rules found. Add one on the left panel to get started.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var redirect in Model)
+                            {
+                                <tr class="hover:bg-white/[0.01] transition-colors duration-200 group">
+                                    <!-- Old Path -->
+                                    <td class="py-4 px-3 text-xs font-bold text-white font-mono break-all select-all">@redirect.OldUrl</td>
+
+                                    <!-- Target Path -->
+                                    <td class="py-4 px-3 text-xs font-bold text-brand-blue font-mono break-all select-all group-hover:text-brand-cyan transition-colors">@redirect.NewUrl</td>
+
+                                    <!-- Badge Type -->
+                                    <td class="py-4 px-3 whitespace-nowrap">
+                                        @if (redirect.IsPermanent)
+                                        {
+                                            <span class="px-2 py-0.5 text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded uppercase tracking-wide">301 Perm</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="px-2 py-0.5 text-[9px] font-bold bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded uppercase tracking-wide">302 Temp</span>
+                                        }
+                                    </td>
+
+                                    <!-- Created Timestamp -->
+                                    <td class="py-4 px-3 text-slate-400 text-xs font-mono whitespace-nowrap">
+                                        @redirect.CreatedAt.ToLocalTime().ToString("yyyy/MM/dd HH:mm")
+                                    </td>
+
+                                    <!-- Delete Button -->
+                                    <td class="py-4 px-3 text-right whitespace-nowrap">
+                                        <form action="@Url.Action("DeleteRedirect", "Seo", new { area = "Admin", id = redirect.Id })" method="post" onsubmit="return confirm('Are you sure you want to delete this redirect rule?');" class="m-0">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="px-2.5 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded-xl hover:bg-rose-500 hover:text-white transition-all text-[10px] font-bold uppercase tracking-wide flex items-center justify-center gap-1 ml-auto">
+                                                <i class="fa fa-trash-alt text-[9px]"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

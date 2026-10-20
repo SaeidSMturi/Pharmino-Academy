@@ -1,0 +1,286 @@
+@model Domain.Entities.Permission.Role
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["RoleDetails"].Value + " - " + Model.DisplayName;
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start" dir="@(isRtl ? "rtl" : "ltr")">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+        <div>
+            <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide">
+                @Localizer["RoleDetails"]
+            </h1>
+            <p class="text-slate-400 text-sm font-medium">@Localizer["RoleDetailsSub"]</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            @if (Model.RoleName != "SuperAdmin")
+            {
+                <a asp-action="Edit" asp-route-id="@Model.RoleId" class="w-full sm:w-auto text-center px-5 py-2.5 bg-brand-blue/10 border border-brand-blue/20 text-brand-blue rounded-xl hover:bg-brand-blue hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg">
+                    <i class="fas fa-edit @(isRtl ? "ml-2" : "mr-2") text-xs"></i> @Localizer["EditRole"]
+                </a>
+            }
+            <a asp-action="Index" class="w-full sm:w-auto text-center px-5 py-2.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg">
+                <i class="fas @(isRtl ? "fa-arrow-right ml-2" : "fa-arrow-left mr-2") text-xs"></i> @Localizer["BackToRoles"]
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+        <div class="lg:col-span-2 space-y-6">
+
+            <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05] backdrop-blur-xl relative overflow-hidden">
+                <div class="absolute @(isRtl ? "-left-10" : "-right-10") -top-10 w-32 h-32 bg-brand-cyan/5 rounded-full blur-3xl"></div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-cyan/20 to-brand-blue/20 border border-brand-cyan/30 flex items-center justify-center text-brand-cyan shadow-[inset_0_0_15px_rgba(66,234,255,0.1)]">
+                            <i class="fas fa-user-shield text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-extrabold text-white">@Model.DisplayName</h2>
+                            <p class="text-xs font-mono font-bold text-brand-blue mt-0.5" dir="ltr">@Model.RoleName</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        @if (Model.IsActive)
+                        {
+                            <span class="px-3 py-1.5 inline-flex items-center text-[10px] font-bold tracking-wide rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">
+                                <i class="fas fa-circle-check @(isRtl ? "ml-1.5" : "mr-1.5")"></i> @Localizer["Active"]
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="px-3 py-1.5 inline-flex items-center text-[10px] font-bold tracking-wide rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 uppercase">
+                                <i class="fas fa-circle-xmark @(isRtl ? "ml-1.5" : "mr-1.5")"></i> @Localizer["Inactive"]
+                            </span>
+                        }
+                    </div>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    <div class="mt-6 pt-4 border-t border-white/5">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">@Localizer["RoleDescription"]</label>
+                        <p class="text-slate-300 text-sm font-medium leading-relaxed">@Model.Description</p>
+                    </div>
+                }
+            </div>
+
+            <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-base font-bold text-white flex items-center">
+                        <i class="fas fa-key @(isRtl ? "ml-3" : "mr-3") text-brand-cyan text-lg"></i> @Localizer["AssignPermissions"]
+                    </h3>
+                    <span class="text-xs font-bold text-brand-cyan bg-brand-cyan/10 border border-brand-cyan/10 px-2.5 py-1 rounded-lg uppercase">
+                        @Model.RolePermissions.Count() @Localizer["Permissions"]
+                    </span>
+                </div>
+
+                @if (Model.RolePermissions.Any())
+                {
+                    var permissionsByCategory = Model.RolePermissions
+                        .Select(rp => rp.Permission)
+                        .GroupBy(p => p.Category ?? "General")
+                        .OrderBy(g => g.Key);
+
+                    <div class="space-y-6">
+                        @foreach (var category in permissionsByCategory)
+                        {
+                            <div class="bg-white/[0.01] border border-white/[0.02] p-4 rounded-2xl">
+                                <h4 class="text-[10px] font-bold text-brand-cyan uppercase tracking-widest mb-3 border-b border-white/5 pb-2">@category.Key</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    @foreach (var permission in category.OrderBy(p => p.DisplayName))
+                                    {
+                                        <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2.5") bg-dark-bg/40 rounded-xl px-3 py-2 border border-white/[0.02]">
+                                            <i class="fas fa-check text-emerald-400 text-xs shadow-[0_0_8px_rgba(16,185,129,0.3)]"></i>
+                                            <span class="text-slate-300 text-xs font-semibold">@permission.DisplayName</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-12 bg-white/[0.01] border border-white/5 border-dashed rounded-2xl">
+                        <i class="fas fa-key text-4xl text-slate-600 mb-3 block"></i>
+                        <h4 class="text-white text-sm font-bold mb-1">@Localizer["NoPermissionsAssigned"]</h4>
+                        <p class="text-slate-500 text-xs font-medium">@Localizer["NoPermissionsAssignedSub"]</p>
+                    </div>
+                }
+            </div>
+
+            <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-base font-bold text-white flex items-center">
+                        <i class="fas fa-users @(isRtl ? "ml-3" : "mr-3") text-brand-blue text-lg"></i> @Localizer["AssignedUsers"]
+                    </h3>
+                    <span class="text-xs font-semibold text-slate-400 bg-white/5 border border-white/5 px-2.5 py-1 rounded-lg">
+                        @Model.UserRoles.Count() @Localizer["Users"]
+                    </span>
+                </div>
+
+                @if (Model.UserRoles.Any())
+                {
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        @foreach (var userRole in Model.UserRoles.OrderBy(ur => ur.User.UserName))
+                        {
+                            <div class="flex items-center justify-between bg-white/[0.01] border border-white/[0.03] rounded-2xl p-4 hover:bg-white/[0.02] transition-colors group">
+                                <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") min-w-0">
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-dark-bg font-bold text-base shadow-[0_0_12px_rgba(255,126,66,0.2)]">
+                                        @userRole.User.UserName.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-white text-xs font-bold truncate group-hover:text-brand-cyan transition-colors">@(userRole.User.FirstName + " " + userRole.User.LastName)</p>
+                                        <p class="text-[10px] text-slate-500 font-medium truncate mt-0.5" dir="ltr">@@@userRole.User.UserName</p>
+                                    </div>
+                                </div>
+                                <div class="@(isRtl ? "text-left pr-2" : "text-right pl-2") flex-shrink-0">
+                                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">@Localizer["Assigned"]</p>
+                                    <p class="text-xs text-slate-400 font-mono mt-0.5 font-semibold" dir="ltr">@userRole.AssignedDate.ToString("yyyy/MM/dd")</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-12 bg-white/[0.01] border border-white/5 border-dashed rounded-2xl">
+                        <i class="fas fa-users-slash text-4xl text-slate-600 mb-3 block"></i>
+                        <h4 class="text-white text-sm font-bold mb-1">@Localizer["NoUsersAssigned"]</h4>
+                        <p class="text-slate-500 text-xs font-medium">@Localizer["NoUsersAssignedSub"]</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="space-y-6">
+
+            <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">@Localizer["Summary"]</h3>
+                <div class="space-y-2 font-medium text-xs">
+
+                    <div class="flex items-center justify-between p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-400 flex items-center"><i class="fas fa-key text-brand-cyan w-4 @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["Permissions"]</span>
+                        <span class="text-white font-bold font-mono text-sm">@Model.RolePermissions.Count()</span>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-400 flex items-center"><i class="fas fa-users text-brand-blue w-4 @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["AssignedUsers"]</span>
+                        <span class="text-white font-bold font-mono text-sm">@Model.UserRoles.Count()</span>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-400 flex items-center"><i class="fas fa-calendar text-brand-yellow w-4 @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["CreatedDate"]</span>
+                        <span class="text-white font-bold text-xs font-mono" dir="ltr">@Model.CreateDate.ToString("yyyy/MM")</span>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
+                        <span class="text-slate-400 flex items-center"><i class="fas fa-power-off text-brand-orange w-4 @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["Status"]</span>
+                        <span class="@(Model.IsActive ? "text-emerald-400" : "text-rose-400") font-bold font-mono">
+                            @(Model.IsActive ? Localizer["Active"] : Localizer["Inactive"])
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">@Localizer["Actions"]</h3>
+                <div class="space-y-2">
+                    @if (Model.RoleName != "SuperAdmin")
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.RoleId"
+                           class="flex items-center justify-center @(isRtl ? "space-x-reverse" : "space-x-2") w-full py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg font-extrabold text-xs rounded-xl hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] transition-all">
+                            <i class="fas fa-edit"></i>
+                            <span>@Localizer["EditRole"]</span>
+                        </a>
+
+                        <button onclick="toggleActive(@Model.RoleId, '@Model.RoleName', @Model.IsActive.ToString().ToLower())"
+                                class="flex items-center justify-center @(isRtl ? "space-x-reverse" : "space-x-2") w-full py-2.5 bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/20 rounded-xl hover:bg-brand-yellow hover:text-dark-bg text-xs font-bold transition-all">
+                            <i class="fas fa-power-off"></i>
+                            <span>@(Model.IsActive ? Localizer["Deactivate"] : Localizer["Activate"])</span>
+                        </button>
+
+                        @if (!Model.UserRoles.Any())
+                        {
+                            <button onclick="deleteRole(@Model.RoleId, '@Model.RoleName')"
+                                    class="flex items-center justify-center @(isRtl ? "space-x-reverse" : "space-x-2") w-full py-2.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 rounded-xl hover:bg-rose-500 hover:text-white text-xs font-bold transition-all">
+                                <i class="fas fa-trash"></i>
+                                <span>@Localizer["Delete"]</span>
+                            </button>
+                        }
+                    }
+                    else
+                    {
+                        <div class="p-4 bg-white/[0.01] border border-white/5 border-dashed rounded-2xl text-center">
+                            <i class="fas fa-shield-halved text-2xl text-slate-600 mb-2 block"></i>
+                            <p class="text-[11px] text-slate-500 font-semibold leading-relaxed">@Localizer["DefaultSystemRoleNotice"]</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @if (Model.RoleName == "SuperAdmin")
+            {
+                <div class="bg-brand-cyan/5 border border-brand-cyan/20 rounded-2xl p-4 flex items-start @(isRtl ? "space-x-reverse" : "space-x-3")">
+                    <i class="fas fa-info-circle text-brand-cyan text-sm mt-0.5"></i>
+                    <p class="text-[11px] text-slate-400 font-medium leading-relaxed">
+                        @Localizer["DefaultSystemRoleNotice"]
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Toggle Active Status
+        async function toggleActive(roleId, roleName, isActive) {
+            const action = isActive ? 'deactivate' : 'activate';
+            if (!confirm(`Are you sure you want to ${action} the role "${roleName}"?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/Admin/Roles/ToggleActive', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: roleId })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.message || 'Operation failed.');
+                }
+            } catch (error) {
+                alert('Connection error while updating status.');
+            }
+        }
+
+        // Delete Role
+        async function deleteRole(roleId, roleName) {
+            if (!confirm(`Are you sure you want to delete the role "${roleName}"? This action cannot be undone.`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/Admin/Roles/Delete?id=' + roleId, { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = '/Admin/Roles';
+                } else {
+                    alert(result.message || 'Deletion failed.');
+                }
+            } catch (error) {
+                alert('Connection error while deleting role.');
+            }
+        }
+    </script>
+}

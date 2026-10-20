@@ -1,0 +1,295 @@
+@model Domain.Entities.Course.Course
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Model.Title;
+    var videos = ViewBag.Videos as List<Domain.Entities.Course.CourseVideo>;
+    var pdfs = ViewBag.Pdfs as List<Domain.Entities.Course.CoursePdf>;
+    var enrollment = ViewBag.Enrollment as Domain.Entities.Course.CourseEnrollment;
+    var videoProgress = ViewBag.VideoProgress as Dictionary<int, Domain.Entities.Course.VideoProgress>;
+}
+
+<div class="space-y-8 pb-12 animate-fade-in-up">
+    <div>
+        <a href="@Url.Action("Index")" class="group inline-flex items-center px-5 py-2.5 rounded-xl bg-white/5 text-slate-300 hover:text-brand-cyan border border-white/5 hover:border-brand-cyan/30 transition-all duration-300 shadow-lg backdrop-blur-md">
+            <i class="fas @(isRtl ? "fa-arrow-right ml-2.5" : "fa-arrow-left mr-2.5") transform @(isRtl ? "group-hover:translate-x-1" : "group-hover:-translate-x-1") transition-transform"></i>
+            <span class="font-semibold text-sm">@Localizer["BackToMyCourses"]</span>
+        </a>
+    </div>
+
+    <div class="glass-panel rounded-[2rem] p-6 lg:p-8 relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-blue/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
+            <div class="lg:col-span-4">
+                <div class="relative w-full aspect-video lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl group border border-white/5">
+                    @if (!string.IsNullOrEmpty(Model.ImageName))
+                    {
+                        <img src="~/uploads/courses/@Model.ImageName" alt="@Model.Title" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-transparent to-transparent"></div>
+                    }
+                    else
+                    {
+                        <div class="w-full h-full bg-gradient-to-br from-brand-blue/10 to-brand-cyan/10 flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-slate-600 text-6xl drop-shadow-lg"></i>
+                        </div>
+                    }
+                    <div class="absolute top-4 @(isRtl ? "right-4" : "left-4") bg-brand-cyan text-brand-dark px-3 py-1.5 rounded-xl text-xs font-extrabold flex items-center shadow-lg shadow-brand-cyan/20">
+                        <i class="fas fa-check-circle @(isRtl ? "ml-1.5" : "mr-1.5")"></i> @Localizer["Enrolled"]
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8 flex flex-col justify-center">
+                <h1 class="text-2xl md:text-4xl font-extrabold text-white mb-4 tracking-tight leading-tight">
+                    @Model.Title
+                </h1>
+
+                <p class="text-slate-400 text-sm md:text-base mb-8 leading-relaxed max-w-3xl">
+                    @Model.Description
+                </p>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    @if (Model.DurationHours.HasValue && Model.DurationHours.Value > 0)
+                    {
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors flex flex-col items-center justify-center text-center group">
+                            <div class="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                <i class="far fa-clock text-brand-blue text-base"></i>
+                            </div>
+                            <div class="text-white font-bold text-lg">@Model.DurationHours</div>
+                            <div class="text-slate-500 text-[10px] font-bold uppercase tracking-wider">@(isRtl ? "ساعة" : "Hours")</div>
+                        </div>
+                    }
+
+                    @if (videos != null)
+                    {
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors flex flex-col items-center justify-center text-center group">
+                            <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-video text-brand-cyan text-base"></i>
+                            </div>
+                            <div class="text-white font-bold text-lg">@videos.Count</div>
+                            <div class="text-slate-500 text-[10px] font-bold uppercase tracking-wider">@Localizer["Videos"]</div>
+                        </div>
+                    }
+
+                    @if (pdfs != null)
+                    {
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors flex flex-col items-center justify-center text-center group">
+                            <div class="w-10 h-10 rounded-xl bg-brand-orange/10 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-file-pdf text-brand-orange text-base"></i>
+                            </div>
+                            <div class="text-white font-bold text-lg">@pdfs.Count</div>
+                            <div class="text-slate-500 text-[10px] font-bold uppercase tracking-wider">@Localizer["PDFs"]</div>
+                        </div>
+                    }
+
+                    <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors flex flex-col items-center justify-center text-center group">
+                        <div class="w-10 h-10 rounded-xl bg-brand-yellow/10 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-tag text-brand-yellow text-base"></i>
+                        </div>
+                        <div class="text-brand-yellow font-extrabold text-lg">
+                            @(Model.Price == 0 ? Localizer["Free"].Value : $"${Model.Price:N0}")
+                        </div>
+                        <div class="text-slate-500 text-[10px] font-bold uppercase tracking-wider">@Localizer["Price"]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-4") border-b border-white/5 pb-px">
+        <button id="tab-videos" class="relative px-6 py-4 text-sm font-bold uppercase tracking-wider transition-all text-brand-cyan focus:outline-none">
+            <i class="fas fa-play-circle @(isRtl ? "ml-2" : "mr-2")"></i> @Localizer["CourseContent"]
+            <div id="tab-indicator-videos" class="absolute bottom-0 left-0 w-full h-0.5 bg-brand-cyan rounded-t-full shadow-[0_0_10px_rgba(66,234,255,0.8)]"></div>
+        </button>
+        <button id="tab-pdfs" class="relative px-6 py-4 text-sm font-bold uppercase tracking-wider transition-all text-slate-500 hover:text-slate-200 focus:outline-none">
+            <i class="fas fa-file-pdf @(isRtl ? "ml-2" : "mr-2")"></i> @Localizer["Resources"]
+            <div id="tab-indicator-pdfs" class="absolute bottom-0 left-0 w-full h-0.5 bg-brand-cyan rounded-t-full shadow-[0_0_10px_rgba(66,234,255,0.8)] hidden"></div>
+        </button>
+    </div>
+
+    <div id="content-videos" class="space-y-4 tab-content-active">
+        @if (videos == null || !videos.Any())
+        {
+            <div class="py-16 rounded-[2rem] border border-dashed border-white/10 bg-white/[0.01] text-center">
+                <div class="w-16 h-16 mx-auto bg-white/5 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-video-slash text-slate-500 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-300 mb-1">@Localizer["NoContentYet"]</h3>
+                <p class="text-slate-500 text-sm">@Localizer["VideosSoon"]</p>
+            </div>
+        }
+        else
+        {
+            int index = 1;
+            @foreach (var video in videos)
+            {
+                <div class="group relative rounded-2xl bg-white/5 border border-white/5 hover:border-brand-cyan/30 hover:bg-white/[0.08] p-4 md:p-6 transition-all duration-300 shadow-xl">
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
+
+                        <a href="@Url.Action("Watch", new { videoId = video.VideoId })"
+                           class="relative flex-shrink-0 w-12 h-12 bg-brand-dark border border-white/10 flex items-center justify-center transition-all duration-300 ease-out rounded-xl group-hover:rounded-full group-hover:bg-brand-cyan group-hover:border-brand-cyan group-hover:scale-105 group-hover:shadow-[0_0_20px_rgba(66,234,255,0.4)] cursor-pointer z-10">
+
+                            <div class="absolute inset-0 rounded-full border-2 border-white/30 opacity-0 group-hover:animate-ping pointer-events-none"></div>
+
+                            <span class="absolute text-slate-400 font-extrabold text-sm transition-all duration-300 ease-out transform scale-100 opacity-100 group-hover:scale-0 group-hover:opacity-0">
+                                @index.ToString("D2")
+                            </span>
+                            <i class="fas fa-play absolute text-brand-dark text-base @(isRtl ? "pr-0.5" : "pl-0.5") transition-all duration-300 ease-out transform scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100"></i>
+                        </a>
+
+                        <div class="flex-1 w-full text-start">
+                            <div class="flex flex-wrap items-center gap-3 mb-1.5">
+                                <h3 class="text-lg font-bold text-slate-100 group-hover:text-brand-cyan transition-colors">@video.Title</h3>
+
+                                @if (videoProgress != null && videoProgress.TryGetValue(video.VideoId, out var progress) && progress.WatchedPercent > 0)
+                                {
+                                    if (progress.Completed)
+                                    {
+                                        <div class="relative group/tooltip flex items-center cursor-help">
+                                            <i class="fas fa-check-circle text-green-400 text-sm"></i>
+                                            <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2.5 py-1 bg-brand-dark border border-green-500/30 text-green-400 text-[11px] font-bold rounded-lg shadow-xl opacity-0 group-hover/tooltip:opacity-100 transition-all duration-200 whitespace-nowrap pointer-events-none z-20">
+                                                @Localizer["Completed"]
+                                                <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-brand-dark"></div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="relative group/tooltip flex items-center cursor-help">
+                                            <i class="fas fa-circle-dot text-brand-yellow text-sm"></i>
+                                            <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2.5 py-1 bg-brand-dark border border-brand-yellow/30 text-brand-yellow text-[11px] font-bold rounded-lg shadow-xl opacity-0 group-hover/tooltip:opacity-100 transition-all duration-200 whitespace-nowrap pointer-events-none z-20">
+                                                @Localizer["InProgress"] (@Math.Round(progress.WatchedPercent)%)
+                                                <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-brand-dark"></div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+
+                                @if (video.IsFree)
+                                {
+                                    <span class="px-2 py-0.5 rounded-lg text-[10px] font-extrabold bg-green-500/15 text-green-400 uppercase border border-green-500/20 tracking-wider">@Localizer["Free"]</span>
+                                }
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(video.Description))
+                            {
+                                <p class="text-slate-400 text-sm mb-2 line-clamp-1">@video.Description</p>
+                            }
+
+                            <div class="flex items-center text-xs text-slate-500 font-bold">
+                                @if (video.DurationSeconds.HasValue)
+                                {
+                                    <span class="flex items-center">
+                                        <i class="far fa-clock @(isRtl ? "ml-1.5" : "mr-1.5") text-slate-600"></i>
+                                        @TimeSpan.FromSeconds(video.DurationSeconds.Value).ToString(@"hh\:mm\:ss")
+                                    </span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="w-full md:w-auto mt-4 md:mt-0 flex-shrink-0">
+                            <a href="@Url.Action("Watch", new { videoId = video.VideoId })" class="block w-full md:w-auto px-5 py-2.5 rounded-xl bg-brand-blue hover:bg-brand-blue/80 text-white font-bold text-sm text-center transition-all shadow-lg shadow-brand-blue/10 hover:shadow-brand-blue/30">
+                                @Localizer["WatchVideo"]
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                index++;
+            }
+        }
+    </div>
+
+    <div id="content-pdfs" class="space-y-4 hidden">
+        @if (pdfs == null || !pdfs.Any())
+        {
+            <div class="py-16 rounded-[2rem] border border-dashed border-white/10 bg-white/[0.01] text-center">
+                <div class="w-16 h-16 mx-auto bg-white/5 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-folder-open text-slate-500 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-300 mb-1">@Localizer["NoResourcesFound"]</h3>
+                <p class="text-slate-500 text-sm">@Localizer["ResourcesSoon"]</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var pdf in pdfs)
+            {
+                <div class="group rounded-2xl bg-white/5 border border-white/5 hover:border-brand-orange/30 hover:bg-white/[0.08] p-4 md:p-6 transition-all duration-300">
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-brand-orange/10 border border-brand-orange/10 flex items-center justify-center">
+                            <i class="fas fa-file-pdf text-brand-orange text-lg"></i>
+                        </div>
+
+                        <div class="flex-1 w-full text-start">
+                            <h3 class="text-base font-bold text-slate-200 mb-1 group-hover:text-brand-orange transition-colors">@(pdf.Title ?? pdf.OriginalFileName)</h3>
+                            <div class="flex items-center text-xs text-slate-500 font-medium">
+                                <i class="fas fa-download @(isRtl ? "ml-1.5" : "mr-1.5") text-slate-600"></i> <span class="truncate max-w-[200px] md:max-w-md">@pdf.OriginalFileName</span>
+
+                                @if (pdf.Price == 0)
+                                {
+                                    <span class="@(isRtl ? "mr-3" : "ml-3") px-2 py-0.5 rounded-lg bg-green-500/10 text-green-400 font-extrabold text-[10px] border border-green-500/10 tracking-wider">@Localizer["Free"]</span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="w-full md:w-auto mt-4 md:mt-0">
+                            <a asp-area="User" asp-controller="Courses" asp-action="ViewPdf" asp-route-pdfId="@pdf.PdfId" class="block w-full md:w-auto px-5 py-2.5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 text-slate-200 text-sm font-bold transition-all text-center">
+                                <i class="fas fa-eye @(isRtl ? "ml-1.5" : "mr-1.5") text-slate-400"></i> @Localizer["ViewDocument"]
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<style>
+    /* Smooth CSS Tab Transition */
+    .tab-content-active {
+        animation: tabFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @@keyframes tabFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+@section Scripts {
+    <script>
+        const tabVideos = document.getElementById('tab-videos');
+        const tabPdfs = document.getElementById('tab-pdfs');
+        const contentVideos = document.getElementById('content-videos');
+        const contentPdfs = document.getElementById('content-pdfs');
+        const indVideos = document.getElementById('tab-indicator-videos');
+        const indPdfs = document.getElementById('tab-indicator-pdfs');
+
+        function switchTab(activeTab, activeContent, activeInd, inactiveTab, inactiveContent, inactiveInd) {
+            // Setup active tab styles
+            activeTab.classList.add('text-brand-cyan');
+            activeTab.classList.remove('text-slate-500', 'hover:text-slate-200');
+            activeInd.classList.remove('hidden');
+            activeContent.classList.remove('hidden');
+            activeContent.classList.add('tab-content-active');
+
+            // Setup inactive tab styles
+            inactiveTab.classList.remove('text-brand-cyan');
+            inactiveTab.classList.add('text-slate-500', 'hover:text-slate-200');
+            inactiveInd.classList.add('hidden');
+            inactiveContent.classList.add('hidden');
+            inactiveContent.classList.remove('tab-content-active');
+        }
+
+        tabVideos.addEventListener('click', () => switchTab(tabVideos, contentVideos, indVideos, tabPdfs, contentPdfs, indPdfs));
+        tabPdfs.addEventListener('click', () => switchTab(tabPdfs, contentPdfs, indPdfs, tabVideos, contentVideos, indVideos));
+    </script>
+}

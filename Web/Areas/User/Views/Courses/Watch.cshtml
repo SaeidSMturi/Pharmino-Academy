@@ -1,0 +1,424 @@
+﻿@model Domain.Entities.Course.CourseVideo
+
+@{
+    ViewData["Title"] = Model.Title;
+    var courseTitle = ViewBag.CourseTitle as string;
+    var courseId = (int)ViewBag.CourseId;
+    var videoToken = ViewBag.VideoToken as string;
+    var sessionId = ViewBag.SessionId as string;
+    var userId = (int)ViewBag.UserId;
+    var hlsAvailable = (bool)(ViewBag.HlsAvailable ?? false);
+    var videoGuid = ViewBag.VideoGuid as string;
+}
+
+<!-- 🎬 Advanced Video Player CSS & Fonts -->
+<link rel="stylesheet" href="~/css/advanced-video-player.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    /* Theater Mode Transitions */
+    body.theater-mode-active .page-content {
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+
+    body.theater-mode-active .avp-player {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        border-radius: 0;
+        height: 80vh;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+
+    body.theater-mode-active .video-info-section {
+        margin-top: 80vh;
+        padding-top: 2rem;
+    }
+
+    /* Cyberpunk Styled Terminal Scrollbar */
+    #dev-debug-logs::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    #dev-debug-logs::-webkit-scrollbar-track {
+        background: rgba(3, 7, 18, 0.5);
+    }
+
+    #dev-debug-logs::-webkit-scrollbar-thumb {
+        background: rgba(66, 234, 255, 0.2);
+        border-radius: 4px;
+    }
+
+        #dev-debug-logs::-webkit-scrollbar-thumb:hover {
+            background: #42EAFF;
+        }
+</style>
+
+<div class="space-y-6 animate-fade-in-up">
+
+    <!-- 🐛 Cyberpunk Security Debugger Panel -->
+    <div id="dev-debug-panel" class="border border-brand-orange/30 bg-brand-dark/95 rounded-2xl p-5 shadow-[0_0_25px_rgba(255,126,66,0.1)] relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-brand-orange via-brand-cyan to-brand-blue"></div>
+
+        <div class="flex justify-between items-center mb-4 border-b border-white/5 pb-3">
+            <h3 class="text-brand-orange font-extrabold font-mono text-sm tracking-wider uppercase flex items-center">
+                <span class="w-2 h-2 rounded-full bg-brand-orange animate-ping mr-2.5"></span>
+                <i class="fas fa-terminal mr-2"></i> Live Security Operations Center
+            </h3>
+            <button onclick="document.getElementById('dev-debug-logs').innerHTML=''" class="text-xs font-bold text-slate-400 hover:text-white px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl transition-all">
+                <i class="fas fa-trash-can mr-1.5 text-slate-500"></i> Clear Console
+            </button>
+        </div>
+
+        <div id="dev-server-sync" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 p-4 bg-white/[0.02] border border-white/5 rounded-xl text-xs font-mono">
+            <div class="bg-brand-dark/50 p-2.5 rounded-lg border border-white/5">Suspicion Score: <span id="dbg-score" class="text-white font-extrabold text-sm block mt-1 text-brand-orange">0</span></div>
+            <div class="bg-brand-dark/50 p-2.5 rounded-lg border border-white/5">Firewall Status: <span id="dbg-status" class="text-green-400 font-extrabold text-sm block mt-1">SECURE</span></div>
+            <div class="bg-brand-dark/50 p-2.5 rounded-lg border border-white/5" title="تعداد کل درخواست‌ها">
+                Total Payload: <span id="dbg-total-req" class="text-brand-cyan font-extrabold text-sm block mt-1">0</span>
+            </div>
+            <div class="bg-brand-dark/50 p-2.5 rounded-lg border border-white/5" title="سرعت دانلود">
+                Sync Rate: <div class="mt-1 flex items-baseline gap-1"><span id="dbg-speed" class="text-brand-yellow font-extrabold text-sm">0</span> <span class="text-[9px] text-slate-500 font-bold uppercase">KB/s</span></div>
+            </div>
+        </div>
+
+        <div id="dev-debug-logs" class="h-44 overflow-y-auto font-mono text-[11px] space-y-1.5 p-3 bg-black/60 rounded-xl border border-white/5 shadow-inner">
+            <div class="text-slate-500 flex items-center gap-2"><i class="fas fa-circle-info text-brand-cyan text-[9px]"></i> Core agent initialized. Securing pipeline...</div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar / Breadcrumb Layout -->
+    <div class="flex items-center justify-between">
+        <a href="@Url.Action("MyCourseDetails", new { id = courseId })" class="group inline-flex items-center px-4 py-2 rounded-xl bg-white/5 text-slate-400 hover:text-brand-cyan border border-white/5 hover:border-brand-cyan/20 transition-all duration-300">
+            <i class="fas fa-chevron-left mr-2 text-xs transform group-hover:-translate-x-0.5 transition-transform"></i>
+            <span class="text-xs font-bold uppercase tracking-wider">Back to Module</span>
+        </a>
+        <span class="text-xs font-bold text-slate-500 uppercase tracking-widest hidden md:inline-block">HLS Core Interface v1.5</span>
+    </div>
+
+    <!-- DRM / Security Banner Warning -->
+    <div class="rounded-2xl p-4 bg-brand-orange/5 border border-brand-orange/20 shadow-lg relative overflow-hidden">
+        <div class="absolute -right-8 -bottom-8 w-24 h-24 bg-brand-orange/5 rounded-full blur-xl"></div>
+        <div class="flex items-center gap-4 relative z-10">
+            <div class="w-10 h-10 rounded-xl bg-brand-orange/10 flex items-center justify-center border border-brand-orange/20 shrink-0">
+                <i class="fas fa-user-shield text-brand-orange text-base"></i>
+            </div>
+            <div>
+                <p class="text-brand-orange font-extrabold text-sm tracking-tight">DRM Cryptography Protected</p>
+                <p class="text-slate-400 text-xs mt-0.5">Screen recording, unauthorized downloading, and external asset capture hooks are strictly blocked.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🎬 Premium Floating Video Player Viewport Container -->
+    <div class="glass-panel rounded-[2rem] overflow-hidden shadow-2xl relative">
+        <div id="player-container" class="bg-black aspect-video w-full">
+            <!-- Inject dynamic video element securely via scripts -->
+        </div>
+
+        <!-- Video Structural Info -->
+        <div class="p-6 lg:p-8 video-info-section">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-white/5 pb-6">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-extrabold text-white tracking-tight mb-1.5">@Model.Title</h1>
+                    <p class="text-slate-400 text-xs font-bold uppercase tracking-wider flex items-center">
+                        <i class="fas fa-folder-open text-brand-blue mr-2 text-sm"></i> @courseTitle
+                    </p>
+                </div>
+                @if (Model.DurationSeconds.HasValue)
+                {
+                    <div class="inline-flex items-center px-4 py-2 rounded-xl bg-white/5 border border-white/5 text-brand-cyan text-xs font-extrabold tracking-wider shrink-0 self-start md:self-center">
+                        <i class="far fa-clock mr-2 text-sm"></i>
+                        @TimeSpan.FromSeconds(Model.DurationSeconds.Value).ToString(@"hh\:mm\:ss")
+                    </div>
+                }
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <div class="p-5 bg-white/[0.01] border border-white/5 rounded-2xl relative overflow-hidden">
+                    <h3 class="text-sm font-bold text-white mb-2 flex items-center">
+                        <i class="fas fa-align-left mr-2.5 text-brand-blue"></i> About Module Lecture
+                    </h3>
+                    <p class="text-slate-400 text-xs md:text-sm leading-relaxed">@Model.Description</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Info Widgets Grid Structure -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Keyboard Shortcuts Panel -->
+        <div class="glass-panel rounded-2xl p-6">
+            <h3 class="text-sm font-bold text-white tracking-wider uppercase mb-5 flex items-center">
+                <i class="fas fa-keyboard mr-2.5 text-brand-cyan"></i> Console Hotkeys
+            </h3>
+            <div class="grid grid-cols-2 gap-y-3.5 gap-x-4 text-xs font-medium">
+                <div class="flex items-center justify-between p-2 rounded-xl bg-white/[0.01] border border-white/5">
+                    <span class="text-slate-400">Play / Pause</span>
+                    <kbd class="px-2 py-1 bg-white/10 border border-white/10 rounded-lg text-brand-cyan font-mono text-[10px] font-bold">Space</kbd>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-xl bg-white/[0.01] border border-white/5">
+                    <span class="text-slate-400">Skip 10s</span>
+                    <kbd class="px-2 py-1 bg-white/10 border border-white/10 rounded-lg text-brand-cyan font-mono text-[10px] font-bold">← / →</kbd>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-xl bg-white/[0.01] border border-white/5">
+                    <span class="text-slate-400">Fullscreen</span>
+                    <kbd class="px-2 py-1 bg-white/10 border border-white/10 rounded-lg text-brand-cyan font-mono text-[10px] font-bold">F</kbd>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-xl bg-white/[0.01] border border-white/5">
+                    <span class="text-slate-400">Mute Toggle</span>
+                    <kbd class="px-2 py-1 bg-white/10 border border-white/10 rounded-lg text-brand-cyan font-mono text-[10px] font-bold">M</kbd>
+                </div>
+            </div>
+        </div>
+
+        <!-- DRM Policies Guard Overview -->
+        <div class="glass-panel rounded-2xl p-6">
+            <h3 class="text-sm font-bold text-white tracking-wider uppercase mb-5 flex items-center">
+                <i class="fas fa-shield-halved mr-2.5 text-brand-blue"></i> Cryptography Matrix
+            </h3>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] font-bold text-slate-400">
+                <li class="flex items-center gap-2 p-1.5 rounded-xl bg-white/[0.01] border border-white/5"><i class="fas fa-shield text-brand-cyan text-xs"></i> <span>AES-128 Encryption</span></li>
+                <li class="flex items-center gap-2 p-1.5 rounded-xl bg-white/[0.01] border border-white/5"><i class="fas fa-eye-slash text-brand-cyan text-xs"></i> <span>Anti-Capture Engine</span></li>
+                <li class="flex items-center gap-2 p-1.5 rounded-xl bg-white/[0.01] border border-white/5"><i class="fas fa-ban-smoke text-brand-cyan text-xs"></i> <span>Hooking Defenses</span></li>
+                <li class="flex items-center gap-2 p-1.5 rounded-xl bg-white/[0.01] border border-white/5"><i class="fas fa-fingerprint text-brand-cyan text-xs"></i> <span>Dynamic Overlays</span></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @* --- hls.js via CDN --- *@
+    @if (hlsAvailable)
+    {
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+        <script src="~/js/hls-secure-player.js"></script>
+    }
+
+    <script type="module" src="~/js/advanced-video-player/index.js"></script>
+    <script type="module" src="~/js/advanced-video-protection/index.js"></script>
+    <script src="~/js/secure-video-loader.js"></script>
+
+    <script type="module">
+        const VIDEO_ID    = @Model.VideoId;
+        const TOKEN       = '@videoToken';
+        const SESSION_ID  = '@sessionId';
+        const USER_ID     = @userId;
+        const HLS_AVAILABLE = @(hlsAvailable ? "true" : "false");
+
+        let MANIFEST_URL = '';
+        @if (hlsAvailable)
+        {
+            <text>
+                MANIFEST_URL = `@Url.Action("Manifest", "Hls", new { Area = "User" })?videoId=${VIDEO_ID}&sid=${encodeURIComponent(SESSION_ID)}&ct=${encodeURIComponent(TOKEN)}`;
+            </text>
+        }
+
+        const MP4_URL = `@Url.Action("StreamVideo", "Courses", new { Area = "User" })?videoId=${VIDEO_ID}&token=${encodeURIComponent(TOKEN)}&sid=${encodeURIComponent(SESSION_ID)}`;
+
+        const player = new window.AdvancedVideoPlayer({
+        containerId:     'player-container',
+        videoId:         'secureVideoPlayer',
+        videoSrc:        HLS_AVAILABLE ? '' : MP4_URL,
+        sessionId:       SESSION_ID,
+        userId:          USER_ID,
+        courseVideoId:   VIDEO_ID,
+        title:           '@Model.Title.Replace("'", "\\'")',
+        watermarkText:   `User: ${USER_ID}`,
+        saveProgressUrl: '@Url.Action("SaveVideoProgress", "Courses", new { Area = "User" })',
+        getProgressUrl:  '@Url.Action("GetVideoProgress", "Courses", new { Area = "User" })',
+        chapters:        []
+        });
+
+        let hlsStreamer;
+
+        if (HLS_AVAILABLE && typeof HlsSecurePlayer !== 'undefined') {
+        hlsStreamer = new HlsSecurePlayer({
+        videoId:        'secureVideoPlayer',
+        sessionId:      SESSION_ID,
+        contentToken:   TOKEN,
+        manifestUrl:    MANIFEST_URL
+        });
+        }
+
+        const protection = new window.AdvancedVideoProtection({
+        videoElementId:  'secureVideoPlayer',
+        sessionId:       SESSION_ID,
+        userId:          USER_ID,
+        videoId:         VIDEO_ID,
+        heartbeatUrl:    '@Url.Action("PlayerHeartbeat", "Courses", new { Area = "User" })',
+        fingerprintUrl:  '@Url.Action("ValidateFingerprint", "Courses", new { Area = "User" })',
+        reportUrl:       '@Url.Action("ReportSuspiciousActivity", "Courses", new { Area = "User" })',
+        heartbeatInterval: 3000,
+        debug: true
+        });
+
+        // Hide URLs in logs console hooks
+        (function () {
+        const originalLog = console.log;
+        console.log = function (...args) {
+        const filtered = args.map(a =>
+        typeof a === 'string' && (a.includes('StreamVideo') || a.includes('/Hls/'))
+        ? '[Protected URL Hidden]'
+        : a
+        );
+        originalLog.apply(console, filtered);
+        };
+        })();
+
+        // Theater Mode Integration
+        window.addEventListener('theaterModeChanged', (e) => {
+        document.body.classList.toggle('theater-mode-active', e.detail.isTheaterMode);
+        });
+
+        // Memory Leak Cleanup Guard
+        window.addEventListener('beforeunload', () => {
+        if (hlsStreamer) hlsStreamer.destroy();
+        if (player) player.destroy();
+        });
+
+        console.log('%c🛑 STOP!', 'color:red;font-size:50px;font-weight:bold;');
+        console.log(
+        HLS_AVAILABLE
+        ? '%c✅ HLS Encrypted Stream Active (AES-128)'
+        : '%c✅ Secure MP4 Stream Active',
+        'color:green;font-size:14px;'
+        );
+    </script>
+
+    <script>
+        // 🐛 Dev Logger UI Adapter System
+        window.DevLogger = {
+        log: function(message, type = 'info', data = null) {
+        const logsDiv = document.getElementById('dev-debug-logs');
+        if (!logsDiv) return;
+
+        const time = new Date().toLocaleTimeString();
+        let color = 'text-slate-400';
+        let icon = '<i class="fas fa-circle-info text-brand-cyan text-[9px]"></i>';
+
+        if (type === 'warn') {
+        color = 'text-brand-yellow';
+        icon = '<i class="fas fa-triangle-exclamation text-brand-yellow text-[9px]"></i>';
+        }
+        if (type === 'error' || type === 'block') {
+        color = 'text-brand-orange font-bold';
+        icon = '<i class="fas fa-circle-radiation text-brand-orange text-[9px]"></i>';
+        }
+
+        let dataStr = '';
+        if (data) {
+        try {
+        dataStr = typeof data === 'object' ? JSON.stringify(data) : data;
+        } catch(e) {}
+        }
+
+        const html = `<div class="${color} flex items-start gap-2 border-b border-white/[0.02] pb-1">
+        <span class="text-slate-600 shrink-0">[${time}]</span>
+        <span class="shrink-0">${icon}</span>
+        <div class="flex-1 break-all">
+        ${message}
+        ${dataStr ? `<span class="text-slate-500 block text-[10px] mt-0.5 bg-black/20 p-1 rounded font-sans">${dataStr}</span>` : ''}
+        </div>
+        </div>`;
+
+        logsDiv.insertAdjacentHTML('afterbegin', html);
+        },
+
+        updateServerSync: function(data) {
+        if(!data) return;
+
+        document.getElementById('dbg-score').innerText = data.suspicionScore || 0;
+
+        const statusEl = document.getElementById('dbg-status');
+        if (data.isBlocked) {
+        statusEl.innerText = 'BLOCKED / CRITICAL';
+        statusEl.className = 'text-brand-orange font-extrabold animate-pulse';
+        } else if (data.isThrottled) {
+        statusEl.innerText = 'THROTTLED';
+        statusEl.className = 'text-brand-yellow font-extrabold';
+        } else {
+        statusEl.innerText = 'SECURE';
+        statusEl.className = 'text-green-400 font-extrabold';
+        }
+
+        if(data.debugInfo) {
+        document.getElementById('dbg-total-req').innerText = data.debugInfo.totalRequests || 0;
+
+        const kbps = data.debugInfo.currentSpeedKBps || 0;
+        let speedText = "0";
+        let unitText = "KB/s";
+
+        if (kbps >= 1024 * 1024) {
+        speedText = (kbps / (1024 * 1024)).toFixed(2);
+        unitText = "GB/s";
+        } else if (kbps >= 1024) {
+        speedText = (kbps / 1024).toFixed(2);
+        unitText = "MB/s";
+        } else {
+        speedText = Math.round(kbps).toString();
+        unitText = "KB/s";
+        }
+
+        const speedEl = document.getElementById('dbg-speed');
+        if (speedEl) {
+        speedEl.innerText = speedText;
+        if (speedEl.nextElementSibling) {
+        speedEl.nextElementSibling.innerText = unitText;
+        }
+        }
+
+        if(data.debugInfo.reasons && Object.keys(data.debugInfo.reasons).length > 0) {
+        this.log('Server flagged reasons:', 'warn', data.debugInfo.reasons);
+        }
+        }
+        }
+        };
+
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+
+        console.log = function(...args) {
+        if(args[0] && typeof args[0] === 'string' && args[0].includes('[VideoProtection]')) {
+        window.DevLogger.log(args[1] || args[0], 'info', args[2]);
+        }
+        originalLog.apply(console, args);
+        };
+
+        console.warn = function(...args) {
+        window.DevLogger.log(args[0], 'warn', args[1]);
+        originalWarn.apply(console, args);
+        };
+
+        console.error = function(...args) {
+        window.DevLogger.log(args[0], 'error', args[1]);
+        originalError.apply(console, args);
+        };
+
+        const originalFetch = window.fetch;
+        window.fetch = async function(...args) {
+        const response = await originalFetch.apply(this, args);
+
+        if (response.ok) {
+        const clone = response.clone();
+        clone.json().then(data => {
+        if(args[0] && (args[0].includes('PlayerHeartbeat') || args[0].includes('ValidateFingerprint'))) {
+        window.DevLogger.updateServerSync(data);
+
+        if (data.flags && data.flags.length > 0) {
+        window.DevLogger.log('Fingerprint Flags:', 'warn', data.flags);
+        }
+        }
+        }).catch(e => {});
+        }
+
+        return response;
+        };
+    </script>
+}

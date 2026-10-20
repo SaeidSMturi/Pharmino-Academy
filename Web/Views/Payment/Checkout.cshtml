@@ -1,0 +1,138 @@
+﻿@model Domain.Entities.Course.Course
+@{
+    ViewData["Title"] = "Confirm Purchase and Course Payment";
+}
+
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[450px] h-[450px] bg-[#4272FF] rounded-full mix-blend-screen filter blur-[130px] opacity-20 animate-pulse"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[450px] h-[450px] bg-[#42EAFF] rounded-full mix-blend-screen filter blur-[130px] opacity-15 animate-pulse"></div>
+    </div>
+
+    <!-- Changed dir="rtl" to dir="ltr" -->
+    <div class="max-w-xl w-full space-y-8 bg-white/5 backdrop-blur-xl border border-white/10 p-8 md:p-10 rounded-3xl shadow-2xl relative z-10" dir="ltr">
+
+        <div class="text-center">
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Confirm Purchase and Course Payment</h2>
+            <p class="mt-2 text-sm text-slate-400">Please review and confirm your order details</p>
+        </div>
+
+        <!-- Changed text-right to text-left -->
+        <div class="mt-8 space-y-6 text-left">
+            <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-5 flex flex-col sm:flex-row gap-5 items-center backdrop-blur-sm">
+                @if (!string.IsNullOrEmpty(Model.ImageName))
+                {
+                    <img src="/uploads/courses/@Model.ImageName" alt="@Model.Title" class="w-24 h-24 rounded-xl object-cover border border-slate-700/50 shadow-md" />
+                }
+                else
+                {
+                    <div class="w-24 h-24 rounded-xl bg-slate-800/50 border border-slate-700/50 flex items-center justify-center text-slate-500">
+                        <i class="fas fa-book text-3xl"></i>
+                    </div>
+                }
+                <!-- Changed sm:text-right to sm:text-left -->
+                <div class="flex-1 space-y-2 text-center sm:text-left">
+                    <h3 class="text-white font-bold text-lg">@Model.Title</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed line-clamp-2">@Model.Description</p>
+                    @if (Model.DurationHours.HasValue)
+                    {
+                        <!-- Changed sm:justify-start to sm:justify-start (retains correct behavior for LTR) -->
+                        <div class="text-[#FFB343] text-xs font-medium flex items-center justify-center sm:justify-start gap-1">
+                            <i class="far fa-clock"></i>
+                            <span>@Model.DurationHours.Value hours of educational content</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <form asp-controller="Payment" asp-action="ProcessPayment" method="post" class="space-y-6">
+                <input type="hidden" name="courseId" value="@Model.CourseId" />
+                @Html.AntiForgeryToken()
+
+                <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-5">
+                    <div class="flex flex-col gap-2">
+                        <label for="currencySelector" class="text-slate-300 text-sm font-semibold">Select Currency (All Arab Countries and USD):</label>
+                        <select id="currencySelector" name="selectedCurrency" class="w-full bg-slate-950 border border-slate-800 text-white rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-[#42EAFF]/50 focus:border-[#42EAFF] text-sm transition-all cursor-pointer">
+                            @foreach (var curr in (List<Application.DTOs.Payment.CurrencyInfo>)ViewBag.Currencies)
+                            {
+                                if (curr.Code == ViewBag.DetectedCurrency)
+                                {
+                                    <option value="@curr.Code" selected>@curr.Name (@curr.Symbol - @curr.Code)</option>
+                                }
+                                else
+                                {
+                                    <option value="@curr.Code">@curr.Name (@curr.Symbol - @curr.Code)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-4 border-t border-slate-800">
+                        <span class="text-slate-400 text-sm font-medium">Payable Amount:</span>
+                        <div class="text-white font-black text-2xl flex items-center gap-1.5">
+                            <span id="displayAmount" class="tracking-tight">@Model.Price.ToString("N2")</span>
+                            <span id="displaySymbol" class="text-[#FFB343] text-lg font-bold">@ViewBag.DetectedCurrency</span>
+                        </div>
+                    </div>
+
+                    <div id="conversionInfo" class="bg-[#FF7E42]/10 border border-[#FF7E42]/20 text-[#FFB343] rounded-xl p-4 text-xs leading-relaxed hidden transition-all duration-300">
+                        <div class="flex gap-2 items-start">
+                            <i class="fas fa-info-circle mt-0.5 text-sm flex-shrink-0"></i>
+                            <span id="conversionText"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-3.5 pt-2">
+                    <!-- Changed ml-2 (margin-left) to mr-2 (margin-right) for the button icon in LTR -->
+                    <button type="submit" class="flex items-center justify-center w-full px-6 py-4 rounded-xl bg-gradient-to-r from-[#FFB343] to-[#FF7E42] hover:from-[#FF7E42] hover:to-[#FFB343] text-slate-950 font-extrabold text-base transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-[#FF7E42]/10">
+                        <i class="fas fa-credit-card mr-2 text-sm"></i>
+                        Confirm and Proceed to Payment Gateway
+                    </button>
+
+                    <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId"
+                       class="flex items-center justify-center w-full px-6 py-4 rounded-xl bg-slate-900/30 border border-slate-800 hover:bg-slate-800/50 text-slate-400 hover:text-white font-semibold text-sm transition-all duration-300">
+                        Back to Course Details
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const rates = {
+        @foreach (var curr in (List<Application.DTOs.Payment.CurrencyInfo>)ViewBag.Currencies)
+        {
+                    <text>"@curr.Code": { rate: @curr.RateToUsd.ToString(System.Globalization.CultureInfo.InvariantCulture), symbol: "@curr.Symbol" },</text>
+        }
+    };
+    const basePrice = @Model.Price.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
+    document.getElementById("currencySelector").addEventListener("change", function () {
+        const selected = this.value;
+        const info = rates[selected];
+        if (info) {
+            const converted = basePrice * info.rate;
+            // Changed locale from 'fa-IR' to 'en-US' for standard English digit formatting
+            const formatted = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(converted);
+
+            document.getElementById("displayAmount").innerText = formatted;
+            document.getElementById("displaySymbol").innerText = info.symbol;
+
+            const conversionInfo = document.getElementById("conversionInfo");
+            if (selected !== "USD") {
+                conversionInfo.classList.remove("hidden");
+                const usdAmount = basePrice.toFixed(2);
+                // Translated the Persian alert text to English
+                document.getElementById("conversionText").innerText = `Approximately equivalent to $${usdAmount} USD (Note: Due to technical limitations of the international PayPal system, the final deduction from your account will be calculated and processed in USD equivalent).`;
+            } else {
+                conversionInfo.classList.add("hidden");
+            }
+        }
+    });
+
+    // Initial trigger for currency change event
+    document.getElementById("currencySelector").dispatchEvent(new Event("change"));
+</script>

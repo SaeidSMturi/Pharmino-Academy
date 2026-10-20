@@ -1,0 +1,286 @@
+@using System.Globalization
+@{
+    var currentCulture = CultureInfo.CurrentCulture.Name;
+    var isRtl = CultureInfo.CurrentCulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = isRtl ? "الحساب مغلق" : "Account Locked";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="@currentCulture" dir="@(isRtl ? "rtl" : "ltr")">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - @(isRtl ? "أكاديمية عمان للصيدلة" : "OmanPharmaAcademy")</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-yellow': '#FFB343',
+                        'brand-cyan': '#42EAFF',
+                        'brand-blue': '#4272FF',
+                        'brand-orange': '#FF7E42',
+                        'dark-bg': '#0B0F19'
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0F19;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+    </style>
+    @if (isRtl)
+    {
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <style>
+            body, h1, h2, h3, h4, h5, h6, p, span, a, input, button, label, select, option {
+                font-family: 'Cairo', sans-serif !important;
+            }
+        </style>
+    }
+</head>
+<body class="antialiased relative min-h-screen">
+
+    <!-- Floating Language Switcher -->
+    <div class="absolute top-4 right-4 z-50">
+        <div class="glass-panel p-1 rounded-full bg-slate-900/40 border border-white/10 shadow-lg">
+            <partial name="_LanguageSwitcher" />
+        </div>
+    </div>
+
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-[5%] left-[-10%] w-[450px] h-[450px] bg-brand-orange rounded-full mix-blend-screen filter blur-[130px] opacity-15 animate-blob"></div>
+        <div class="absolute bottom-[5%] right-[-10%] w-[450px] h-[450px] bg-brand-blue rounded-full mix-blend-screen filter blur-[130px] opacity-15 animate-blob animation-delay-2000"></div>
+    </div>
+
+    <div class="relative z-10 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl w-full">
+            <div class="flex justify-center mb-8">
+                <div class="relative">
+                    <div class="w-24 h-24 bg-gradient-to-br from-brand-orange to-brand-yellow rounded-full flex items-center justify-center animate-pulse shadow-lg shadow-brand-orange/20">
+                        <i class="fas fa-lock text-slate-900 text-3xl"></i>
+                    </div>
+                    <div class="absolute inset-0 w-24 h-24 bg-brand-orange rounded-full animate-ping opacity-20"></div>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-3xl overflow-hidden shadow-2xl">
+                <div class="border-b border-slate-800/60 bg-slate-900/40 px-8 py-6 text-center">
+                    <h1 class="text-3xl font-extrabold text-white tracking-tight">
+                        @(isRtl ? "الحساب مغلق" : "Account Locked")
+                    </h1>
+                    <p class="text-slate-400 text-sm mt-1">
+                        @(isRtl ? "تم تقييد الوصول إلى حسابك" : "Access to your account has been restricted")
+                    </p>
+                </div>
+
+                <div class="p-6 md:p-10 space-y-8">
+                    <div class="bg-brand-orange/5 border border-brand-orange/20 rounded-2xl p-6">
+                        <div class="flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:@(isRtl ? "space-x-reverse sm:mr-4" : "space-x-4")">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-brand-orange/10 rounded-xl flex items-center justify-center border border-brand-orange/20">
+                                    <i class="fas fa-exclamation-triangle text-brand-orange text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-lg font-bold text-white mb-1.5">
+                                    @(isRtl ? "تقييد الوصول" : "Access Restricted")
+                                </h4>
+                                <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                                    @(isRtl 
+                                        ? "تم إغلاق حسابك تلقائيًا بسبب أنشطة مشبوهة تم اكتشافها بواسطة نظام الأمان لدينا." 
+                                        : "Your account has been automatically locked due to suspicious activities detected by our security system.")
+                                </p>
+                                <div class="flex items-center space-x-3 p-3.5 bg-slate-900/50 rounded-xl border border-slate-800 @(isRtl ? "space-x-reverse" : "")">
+                                    <i class="fas fa-clock text-brand-cyan text-lg"></i>
+                                    <p class="text-sm text-slate-300">
+                                        <strong class="text-brand-cyan font-semibold">
+                                            @(isRtl ? "فتح تلقائي خلال 24 ساعة" : "Auto-unlock in 24 hours")
+                                        </strong> - @(isRtl ? "سيتم فتح حسابك تلقائيًا بعد هذه الفترة." : "Your account will be automatically unlocked after this period.")
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4 @(isRtl ? "space-x-reverse" : "")">
+                            <div class="w-10 h-10 bg-brand-orange/10 rounded-xl flex items-center justify-center border border-brand-orange/20">
+                                <i class="fas fa-question-circle text-brand-orange"></i>
+                            </div>
+                            <h2 class="text-xl font-bold text-white tracking-tight">
+                                @(isRtl ? "لماذا تم قفل حسابي؟" : "Why Was My Account Locked?")
+                            </h2>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-4">
+                            @(isRtl 
+                                ? "اكتشف نظام الأمان لدينا سلوكيات مشبوهة في حسابك، والتي قد تشمل:" 
+                                : "Our security system has detected suspicious behavior in your account, which may include:")
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="flex items-start space-x-3 p-4 bg-slate-900/30 rounded-xl border border-slate-800/60 hover:border-brand-orange/20 transition-colors @(isRtl ? "space-x-reverse" : "")">
+                                <i class="fas fa-circle-xmark text-brand-orange mt-0.5 text-base"></i>
+                                <div>
+                                    <p class="text-slate-200 font-semibold text-sm">
+                                        @(isRtl ? "تحميلات غير مصرح بها" : "Unauthorized Downloads")
+                                    </p>
+                                    <p class="text-slate-500 text-xs mt-0.5">
+                                        @(isRtl ? "محاولة تنزيل مقاطع الفيديو دون إذن" : "Trying to download videos without permission")
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-3 p-4 bg-slate-900/30 rounded-xl border border-slate-800/60 hover:border-brand-orange/20 transition-colors @(isRtl ? "space-x-reverse" : "")">
+                                <i class="fas fa-circle-xmark text-brand-orange mt-0.5 text-base"></i>
+                                <div>
+                                    <p class="text-slate-200 font-semibold text-sm">
+                                        @(isRtl ? "برامج تنزيل خارجية" : "Download Managers")
+                                    </p>
+                                    <p class="text-slate-500 text-xs mt-0.5">
+                                        @(isRtl ? "استخدام برامج تنزيل تابعة لجهات خارجية" : "Using third-party download software")
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-3 p-4 bg-slate-900/30 rounded-xl border border-slate-800/60 hover:border-brand-orange/20 transition-colors @(isRtl ? "space-x-reverse" : "")">
+                                <i class="fas fa-circle-xmark text-brand-orange mt-0.5 text-base"></i>
+                                <div>
+                                    <p class="text-slate-200 font-semibold text-sm">
+                                        @(isRtl ? "سلوك غير طبيعي" : "Abnormal Behavior")
+                                    </p>
+                                    <p class="text-slate-500 text-xs mt-0.5">
+                                        @(isRtl ? "أنماط غير معتادة في استهلاك المحتوى" : "Unusual patterns in content consumption")
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-3 p-4 bg-slate-900/30 rounded-xl border border-slate-800/60 hover:border-brand-orange/20 transition-colors @(isRtl ? "space-x-reverse" : "")">
+                                <i class="fas fa-circle-xmark text-brand-orange mt-0.5 text-base"></i>
+                                <div>
+                                    <p class="text-slate-200 font-semibold text-sm">
+                                        @(isRtl ? "الوصول من أجهزة متعددة" : "Multiple Device Access")
+                                    </p>
+                                    <p class="text-slate-500 text-xs mt-0.5">
+                                        @(isRtl ? "وصول متزامن من أجهزة مختلفة" : "Simultaneous access from different devices")
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4 @(isRtl ? "space-x-reverse" : "")">
+                            <div class="w-10 h-10 bg-brand-blue/10 rounded-xl flex items-center justify-center border border-brand-blue/20">
+                                <i class="fas fa-unlock-keyhole text-brand-blue"></i>
+                            </div>
+                            <h2 class="text-xl font-bold text-white tracking-tight">
+                                @(isRtl ? "كيف يمكنني فتح حسابي؟" : "How Can I Unlock My Account?")
+                            </h2>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-5">
+                            @(isRtl ? "لإلغاء قفل حسابك فورًا، يرجى الاتصال بفريق الدعم لدينا عبر الخيارات التالية:" : "To unlock your account immediately, please contact our support team through the following options:")
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <a href="mailto:support@omanpharmaacademy.com"
+                               class="flex items-center justify-between p-5 bg-slate-900/40 rounded-2xl border border-slate-800/60 hover:border-brand-blue/40 transition-all duration-300 group">
+                                <div class="flex items-center space-x-4 @(isRtl ? "space-x-reverse" : "")">
+                                    <div class="w-12 h-12 bg-brand-blue/10 rounded-xl flex items-center justify-center border border-brand-blue/20 group-hover:scale-105 transition-transform">
+                                        <i class="fas fa-envelope text-brand-blue text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold text-sm">
+                                            @(isRtl ? "الدعم عبر البريد الإلكتروني" : "Email Support")
+                                        </p>
+                                        <p class="text-slate-500 text-xs mt-0.5 truncate max-w-[160px] md:max-w-none">support@omanpharmaacademy.com</p>
+                                    </div>
+                                </div>
+                                <i class="fas @(isRtl ? "fa-chevron-left" : "fa-chevron-right") text-slate-600 group-hover:text-brand-blue group-hover:translate-x-1 transition-all text-sm"></i>
+                            </a>
+
+                            <div class="flex items-center p-5 bg-slate-900/40 rounded-2xl border border-slate-800/60">
+                                <div class="flex items-center space-x-4 @(isRtl ? "space-x-reverse" : "")">
+                                    <div class="w-12 h-12 bg-brand-cyan/10 rounded-xl flex items-center justify-center border border-brand-cyan/20">
+                                        <i class="fas fa-phone text-brand-cyan text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-bold text-sm">
+                                            @(isRtl ? "الدعم الهاتفي" : "Phone Support")
+                                        </p>
+                                        <p class="text-slate-500 text-xs mt-0.5" dir="ltr">+968-XXXX-XXXX</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-brand-blue/5 border border-brand-blue/20 rounded-2xl p-5">
+                        <div class="flex items-start space-x-3 @(isRtl ? "space-x-reverse" : "")">
+                            <i class="fas fa-info-circle text-brand-blue text-lg mt-0.5"></i>
+                            <div>
+                                <p class="text-slate-300 text-sm leading-relaxed">
+                                    <strong class="text-white font-semibold">
+                                        @(isRtl ? "هام:" : "Important:")
+                                    </strong> @(isRtl ? "يرجى إرفاق بريدك الإلكتروني المسجل في طلب الدعم الخاص بك حتى يتمكن فريقنا من التحقق من هويتك ومساعدتك بشكل أسرع." : "Please include your registered account email in your support request so our team can verify your ownership and assist you much faster.")
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:@(isRtl ? "space-x-reverse sm:space-x-4" : "space-x-4") pt-2">
+                        <a href="/Account/Logout"
+                           class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-slate-700/50 bg-slate-800/40 text-slate-300 rounded-xl hover:bg-slate-800 hover:text-white transition-all text-sm font-semibold">
+                            <i class="fas fa-sign-out-alt @(isRtl ? "ml-2" : "mr-2") text-xs"></i>
+                            @(isRtl ? "تسجيل الخروج" : "Logout")
+                        </a>
+                        <a href="/"
+                           class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-brand-blue to-brand-cyan text-slate-900 rounded-xl shadow-lg shadow-brand-blue/10 hover:from-brand-cyan hover:to-brand-blue transition-all duration-300 transform hover:-translate-y-0.5 text-sm font-bold">
+                            <i class="fas fa-house @(isRtl ? "ml-2" : "mr-2") text-xs"></i>
+                            @(isRtl ? "العودة إلى الرئيسية" : "Back to Home")
+                        </a>
+                    </div>
+                </div>
+
+                <div class="px-8 py-4 border-t border-slate-800/60 bg-slate-900/30 text-center">
+                    <p class="text-slate-500 text-xs flex items-center justify-center">
+                        <i class="fas fa-shield-halved text-slate-600 mr-2 text-sm"></i>
+                        @(isRtl ? "نحن ملتزمون تمامًا بضمان الأمان والخصوصية لمجتمعنا العالمي." : "We are fully committed to ensuring the advanced security and privacy of our global community.")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

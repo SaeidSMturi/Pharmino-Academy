@@ -1,0 +1,399 @@
+@model Application.DTOs.SeoOnPageResult
+@{
+    ViewData["Title"] = "On-Page SEO Analyzer";
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full" dir="ltr">
+
+    <!-- Back Action Control Trigger -->
+    <a href="@Url.Action("Index", "Seo", new { area = "Admin" })" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-brand-cyan transition-colors uppercase tracking-wider mb-6">
+        <i class="fa fa-arrow-left text-[10px]"></i> Back to SEO Dashboard
+    </a>
+
+    <!-- Top Search bar -->
+    <div class="pb-8 mb-8 border-b border-white/5">
+        <h3 class="text-xl font-extrabold text-white mb-2 tracking-wide">On-Page SEO Analyzer</h3>
+        <p class="text-slate-500 text-xs font-medium mb-6">Analyze page titles, meta tags, headings, keywords, and structured data.</p>
+
+        <form action="@Url.Action("Analyzer", "Seo", new { area = "Admin" })" method="get" class="flex flex-wrap gap-6 items-end">
+
+            <div class="flex-1 min-w-[260px] space-y-2">
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Page URL</label>
+                <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                    <input type="text" name="url" value="@ViewBag.AnalyzedUrl" class="w-full bg-transparent py-2.5 text-white placeholder-slate-600 focus:outline-none text-sm font-medium font-mono" placeholder="e.g. /Courses or https://example.com/page" required />
+                </div>
+            </div>
+
+            <div class="min-w-[200px] space-y-2">
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Target Keyword <span class="text-slate-600 font-normal">(Optional)</span></label>
+                <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                    <input type="text" name="keyword" value="@ViewBag.Keyword" class="w-full bg-transparent py-2.5 text-white placeholder-slate-600 focus:outline-none text-sm font-medium" placeholder="e.g. pharmacy" />
+                </div>
+            </div>
+
+            <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue rounded-xl text-dark-bg font-black text-xs uppercase tracking-wider hover:shadow-[0_0_20px_rgba(66,234,255,0.3)] hover:scale-[1.01] transition-all flex items-center justify-center gap-1.5 h-9">
+                <i class="fa fa-search text-xs"></i> Analyze Page
+            </button>
+        </form>
+    </div>
+
+    @if (Model == null)
+    {
+        <div class="p-12 text-center max-w-xl mx-auto border border-dashed border-white/5 rounded-3xl mt-12 relative overflow-hidden">
+            <div class="w-16 h-16 bg-white/[0.02] border border-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa fa-bar-chart text-slate-600 text-2xl animate-pulse"></i>
+            </div>
+            <h3 class="text-base font-bold text-white mb-1">No Page Analyzed Yet</h3>
+            <p class="text-slate-500 text-xs font-medium max-w-xs mx-auto leading-relaxed">Enter a page URL above to analyze its SEO structure, tags, and content.</p>
+        </div>
+    }
+    else
+    {
+        <!-- Page Score Summary -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch mb-8">
+            <div class="md:col-span-4 lg:col-span-3">
+                <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] text-center flex flex-col justify-between h-100 min-h-[220px]">
+                    <h5 class="text-[10px] font-bold uppercase tracking-widest text-slate-500 border-b border-white/[0.03] pb-2 mb-4">SEO Score</h5>
+                    <div class="flex flex-col items-center justify-center relative py-1">
+                        @{
+                            string scoreColor = Model.PageScore >= 80 ? "border-emerald-500 text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.2)]" :
+                                                (Model.PageScore >= 50 ? "border-brand-yellow text-brand-yellow shadow-[0_0_20px_rgba(255,179,67,0.2)]" :
+                                                                           "border-rose-500 text-rose-400 shadow-[0_0_20px_rgba(244,63,94,0.2)]");
+                        }
+                        <div class="w-32 h-32 border-[6px] rounded-full flex items-center justify-center bg-black/20 @scoreColor">
+                            <span class="text-4xl font-black font-mono tracking-tighter">@Model.PageScore</span>
+                        </div>
+                    </div>
+                    <div class="text-[10px] font-bold uppercase tracking-wider mt-3">
+                        @if (Model.PageScore >= 80)
+                        {
+                            <span class="text-emerald-400">Good SEO Structure</span>
+                        }
+                        else if (Model.PageScore >= 50)
+                        {
+                            <span class="text-brand-yellow">Needs Optimization</span>
+                        }
+                        else
+                        {
+                            <span class="text-rose-400">Critical Issues Found</span>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Details -->
+            <div class="md:col-span-8 lg:col-span-9">
+                <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] h-100 flex flex-col justify-center">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-5">Page Details</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-x-4 gap-y-3.5 text-xs font-semibold">
+                        <div class="sm:col-span-3 text-slate-500">Page URL:</div>
+                        <div class="sm:col-span-9 text-brand-cyan font-mono truncate select-all">@Model.Url</div>
+
+                        <div class="sm:col-span-3 text-slate-500">HTTP Status:</div>
+                        <div class="sm:col-span-9">
+                            @if (Model.StatusCode == 200)
+                            {
+                                <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">200 OK</span>
+                            }
+                            else
+                            {
+                                <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">@Model.StatusCode @Model.ResponseMessage</span>
+                            }
+                        </div>
+
+                        <div class="sm:col-span-3 text-slate-500">Indexing:</div>
+                        <div class="sm:col-span-9">
+                            @if (Model.IsNoindex)
+                            {
+                                <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">NOINDEX (Blocked)</span>
+                            }
+                            else
+                            {
+                                <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">INDEXABLE</span>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(ViewBag.Keyword))
+                        {
+                            <div class="sm:col-span-3 text-slate-500">Target Keyword:</div>
+                            <div class="sm:col-span-9"><span class="px-2.5 py-0.5 bg-brand-blue/20 text-brand-blue border border-brand-blue/20 font-bold rounded text-[11px]">@ViewBag.Keyword</span></div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meta Tags Analysis -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Title Card -->
+            <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-sm font-bold text-white uppercase tracking-wider">Title Tag</h4>
+                        @{
+                            string titleBadge = Model.TitleStatus.ToLower().Contains("excel") || Model.TitleStatus.ToLower().Contains("good") ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/10" :
+                                                Model.TitleStatus.ToLower().Contains("warn") ? "bg-brand-yellow/10 text-brand-yellow border-brand-yellow/10" : "bg-rose-500/10 text-rose-400 border-rose-500/10";
+                        }
+                        <span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide border @titleBadge">@Model.TitleStatus</span>
+                    </div>
+                    <div class="mb-4">
+                        <strong class="text-[10px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Title Content:</strong>
+                        <span class="text-sm font-bold text-white leading-relaxed">@(Model.Title ?? "Missing Title")</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6 text-xs font-semibold pt-3 border-t border-white/[0.03]">
+                    <div>
+                        <strong class="text-[10px] font-bold text-slate-500 uppercase tracking-wide block mb-0.5">Length:</strong>
+                        <span class="font-mono text-slate-300">@Model.TitleLength Chars</span>
+                    </div>
+                    <div class="border-l border-white/5 pl-6 flex-1 min-w-0">
+                        <strong class="text-[10px] font-bold text-slate-500 uppercase tracking-wide block mb-0.5">Recommendation:</strong>
+                        <span class="text-brand-blue text-xs block truncate" title="@Model.TitleMessage">@Model.TitleMessage</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meta Description Card -->
+            <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-sm font-bold text-white uppercase tracking-wider">Meta Description</h4>
+                        @{
+                            string descBadge = Model.MetaDescriptionStatus.ToLower().Contains("excel") || Model.MetaDescriptionStatus.ToLower().Contains("good") ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/10" :
+                                               Model.MetaDescriptionStatus.ToLower().Contains("warn") ? "bg-brand-yellow/10 text-brand-yellow border-brand-yellow/10" : "bg-rose-500/10 text-rose-400 border-rose-500/10";
+                        }
+                        <span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide border @descBadge">@Model.MetaDescriptionStatus</span>
+                    </div>
+                    <div class="mb-4">
+                        <strong class="text-[10px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Description Content:</strong>
+                        <span class="text-xs font-medium text-slate-300 leading-relaxed block">@(Model.MetaDescription ?? "Missing Meta Description")</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6 text-xs font-semibold pt-3 border-t border-white/[0.03]">
+                    <div>
+                        <strong class="text-[10px] font-bold text-slate-500 uppercase tracking-wide block mb-0.5">Length:</strong>
+                        <span class="font-mono text-slate-300">@Model.MetaDescriptionLength Chars</span>
+                    </div>
+                    <div class="border-l border-white/5 pl-6 flex-1 min-w-0">
+                        <strong class="text-[10px] font-bold text-slate-500 uppercase tracking-wide block mb-0.5">Recommendation:</strong>
+                        <span class="text-brand-blue text-xs block truncate" title="@Model.MetaDescriptionMessage">@Model.MetaDescriptionMessage</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 items-start">
+            <!-- Left Column: Headings & Directives -->
+            <div class="space-y-6">
+                <!-- Headings Structure -->
+                <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04]">
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="text-sm font-bold text-white uppercase tracking-wider">Headings Structure</h4>
+                        @{
+                            string headingBadge = Model.HeadingStatus.ToLower().Contains("excel") || Model.HeadingStatus.ToLower().Contains("good") ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/10" :
+                                                  Model.HeadingStatus.ToLower().Contains("warn") ? "bg-brand-yellow/10 text-brand-yellow border-brand-yellow/10" : "bg-rose-500/10 text-rose-400 border-rose-500/10";
+                        }
+                        <span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide border @headingBadge">@Model.HeadingStatus</span>
+                    </div>
+                    <p class="text-slate-500 text-xs font-medium mb-5">@Model.HeadingMessage</p>
+
+                    <div class="pl-4 border-l border-dashed border-white/10 space-y-3 font-medium text-xs">
+                        @if (!Model.Headings.Any())
+                        {
+                            <div class="text-brand-yellow italic">No heading tags (H1–H6) found on this page.</div>
+                        }
+                        else
+                        {
+                            @foreach (var heading in Model.Headings)
+                            {
+                                string hBgColor = heading.Type.ToLower() == "h1" ? "bg-brand-cyan text-dark-bg" :
+                                                  heading.Type.ToLower() == "h2" ? "bg-brand-blue text-white" :
+                                                  heading.Type.ToLower() == "h3" ? "bg-brand-yellow text-dark-bg" : "bg-white/10 text-slate-400";
+                                <div class="flex items-center gap-3 relative before:content-[''] before:absolute before:-left-[17px] before:top-1/2 before:-translate-y-1/2 before:w-2.5 before:h-px before:bg-white/10">
+                                    <span class="px-1.5 py-0.5 rounded text-[9px] font-black font-mono uppercase tracking-wide @hBgColor flex-shrink-0">@heading.Type</span>
+                                    <span class="text-white truncate">@heading.Content</span>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <!-- Technical Settings Card -->
+                <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04]">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-5">Technical Settings</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-y-4 text-xs font-semibold items-start">
+                        <div class="sm:col-span-4 text-slate-500">Canonical URL:</div>
+                        <div class="sm:col-span-8">
+                            @if (Model.HasCanonical)
+                            {
+                                <div class="text-white font-mono break-all font-bold">@Model.CanonicalUrl</div>
+                                @if (Model.CanonicalMatchesUrl)
+                                {
+                                    <span class="inline-flex mt-2 px-2 py-0.5 text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded"><i class="fa fa-check mr-1 mt-0.5"></i> Matches Current URL</span>
+                                }
+                                else
+                                {
+                                    <span class="inline-flex mt-2 px-2 py-0.5 text-[9px] font-bold bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded"><i class="fa fa-exclamation-triangle mr-1 mt-0.5"></i> Canonical URL Mismatch</span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="px-2 py-0.5 text-[9px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">Missing Canonical Tag</span>
+                            }
+                        </div>
+
+                        <div class="sm:col-span-4 text-slate-500 pt-1 border-t border-white/[0.02]">Robots Meta:</div>
+                        <div class="sm:col-span-8 pt-1 border-t border-white/[0.02]">
+                            @if (!string.IsNullOrEmpty(Model.RobotsMeta))
+                            {
+                                <code class="text-brand-orange font-mono bg-white/[0.02] px-2 py-1 rounded-lg text-[11px]">@Model.RobotsMeta</code>
+                            }
+                            else
+                            {
+                                <span class="text-slate-500 italic">Index, Follow (Default)</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Media, Links & Keywords -->
+            <div class="space-y-6">
+                <!-- Keyword Density -->
+                @if (!string.IsNullOrEmpty(ViewBag.Keyword))
+                {
+                    <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04]">
+                        <div class="flex justify-between items-center mb-3">
+                            <h4 class="text-sm font-bold text-white uppercase tracking-wider">Keyword Density</h4>
+                            @{
+                                string kwBadge = Model.KeywordStatus.ToLower().Contains("excel") || Model.KeywordStatus.ToLower().Contains("good") ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/10" :
+                                                 Model.KeywordStatus.ToLower().Contains("warn") ? "bg-brand-yellow/10 text-brand-yellow border-brand-yellow/10" : "bg-rose-500/10 text-rose-400 border-rose-500/10";
+                            }
+                            <span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide border @kwBadge">@Model.KeywordStatus</span>
+                        </div>
+                        <p class="text-slate-500 text-xs font-medium mb-4">@Model.KeywordMessage</p>
+
+                        <div class="grid grid-cols-3 gap-4 font-mono text-center">
+                            <div class="bg-white/[0.01] border border-white/[0.02] p-2.5 rounded-xl">
+                                <div class="text-lg font-black text-white">@Model.KeywordCount</div>
+                                <div class="text-[9px] text-slate-500 font-sans font-bold uppercase mt-0.5">Occurrences</div>
+                            </div>
+                            <div class="bg-white/[0.01] border border-white/[0.02] p-2.5 rounded-xl">
+                                <div class="text-lg font-black text-brand-cyan">@Model.KeywordDensityPercentage%</div>
+                                <div class="text-[9px] text-slate-500 font-sans font-bold uppercase mt-0.5">Density</div>
+                            </div>
+                            <div class="bg-white/[0.01] border border-white/[0.02] p-2.5 rounded-xl">
+                                <div class="text-lg font-black text-brand-blue">@Model.WordCount</div>
+                                <div class="text-[9px] text-slate-500 font-sans font-bold uppercase mt-0.5">Total Words</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Images Audit -->
+                <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04]">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Images Audit</h4>
+                    <div class="flex justify-between items-center text-xs font-semibold mb-3.5">
+                        <span class="text-slate-400">Total Images Found:</span>
+                        <span class="px-2.5 py-0.5 bg-white/5 border border-white/5 font-bold rounded-lg font-mono text-xs">@Model.TotalImages</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs font-semibold mb-4">
+                        <span class="text-slate-400">Images Missing Alt Text:</span>
+                        @if (Model.ImagesMissingAltCount > 0)
+                        {
+                            <span class="px-2 py-0.5 text-[9px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded font-mono">@Model.ImagesMissingAltCount Missing Alt</span>
+                        }
+                        else
+                        {
+                            <span class="px-2 py-0.5 text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded uppercase tracking-wide"><i class="fa fa-check mr-1"></i> All Images Have Alt Text</span>
+                        }
+                    </div>
+
+                    @if (Model.ImagesMissingAltCount > 0)
+                    {
+                        <div class="max-h-[120px] overflow-y-auto bg-black/30 p-3 rounded-xl font-mono text-[10px] custom-scrollbar border border-white/[0.02]">
+                            <strong class="text-rose-400 uppercase tracking-wider text-[9px] block mb-1.5 font-sans">Images Without Alt Text:</strong>
+                            <ul class="space-y-1 pl-4 list-disc text-slate-400">
+                                @foreach (var img in Model.ImagesMissingAltList)
+                                {
+                                    <li class="break-all selection:bg-rose-500/20">@img</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+
+                <!-- Links Overview -->
+                <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04]">
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Links Overview</h4>
+                    <div class="grid grid-cols-3 gap-4 font-mono text-center">
+                        <div class="bg-white/[0.01] border border-white/[0.02] p-2.5 rounded-xl">
+                            <div class="text-lg font-black text-white">@Model.TotalLinks</div>
+                            <div class="text-[9px] text-slate-500 font-sans font-bold uppercase mt-0.5">Total Links</div>
+                        </div>
+                        <div class="bg-white/[0.01] border border-white/[0.02] p-2.5 rounded-xl">
+                            <div class="text-lg font-black text-emerald-400">@Model.InternalLinksCount</div>
+                            <div class="text-[9px] text-slate-500 font-sans font-bold uppercase mt-0.5">Internal</div>
+                        </div>
+                        <div class="bg-white/[0.01] border border-white/[0.02] p-2.5 rounded-xl">
+                            <div class="text-lg font-black text-brand-yellow">@Model.ExternalLinksCount</div>
+                            <div class="text-[9px] text-slate-500 font-sans font-bold uppercase mt-0.5">External</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media & Structured Data -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Structured Data (JSON-LD) -->
+            <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04]">
+                <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Structured Data (Schema / JSON-LD)</h4>
+                @if (!Model.SchemaTypes.Any())
+                {
+                    <div class="text-brand-orange text-xs font-semibold bg-brand-orange/5 border border-brand-orange/10 p-4 rounded-2xl italic">No JSON-LD structured data found on this page.</div>
+                }
+                else
+                {
+                    <p class="text-slate-500 text-xs font-medium mb-4">Detected Schema types:</p>
+                    <div class="flex flex-wrap gap-1.5 font-mono text-[10px] font-bold">
+                        @foreach (var type in Model.SchemaTypes)
+                        {
+                            <span class="px-2.5 py-1 bg-brand-blue/10 text-brand-cyan border border-brand-blue/10 rounded-lg">@type</span>
+                        }
+                    </div>
+                }
+            </div>
+
+            <!-- Social Media Tags -->
+            <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04]">
+                <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Social Media Tags (@(Model.OpenGraphTags.Count + Model.TwitterCardTags.Count))</h4>
+                @if (!Model.OpenGraphTags.Any() && !Model.TwitterCardTags.Any())
+                {
+                    <div class="text-brand-orange text-xs font-semibold bg-brand-orange/5 border border-brand-orange/10 p-4 rounded-2xl italic">No OpenGraph or Twitter card meta tags found on this page.</div>
+                }
+                else
+                {
+                    <div class="max-h-[220px] overflow-y-auto pr-2 custom-scrollbar">
+                        <dl class="grid grid-cols-1 gap-y-3 font-mono text-[11px] leading-relaxed">
+                            @foreach (var tag in Model.OpenGraphTags)
+                            {
+                                <div class="border-b border-white/[0.02] pb-2 last:border-0 last:pb-0">
+                                    <dt class="text-brand-blue font-bold text-[10px] uppercase tracking-wide">@tag.Key</dt>
+                                    <dd class="text-slate-300 break-all select-all font-medium mt-0.5">@tag.Value</dd>
+                                </div>
+                            }
+                            @foreach (var tag in Model.TwitterCardTags)
+                            {
+                                <div class="border-b border-white/[0.02] pb-2 last:border-0 last:pb-0">
+                                    <dt class="text-brand-yellow font-bold text-[10px] uppercase tracking-wide">@tag.Key</dt>
+                                    <dd class="text-slate-300 break-all select-all font-medium mt-0.5">@tag.Value</dd>
+                                </div>
+                            }
+                        </dl>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

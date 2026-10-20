@@ -1,0 +1,125 @@
+@model List<ActiveSessionViewModel>
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["ActiveSessions"].Value;
+}
+
+<div class="max-w-5xl mx-auto animate-fade-in-up">
+    <div class="glass-panel rounded-[2rem] p-6 lg:p-10 relative overflow-hidden">
+
+        <!-- Subtle Internal Glowing Orbs (Navy / Gold accent) -->
+        <div class="absolute -top-24 -right-24 w-72 h-72 bg-gold/10 rounded-full blur-[80px] pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-navy/20 rounded-full blur-[80px] pointer-events-none"></div>
+
+        <!-- Header -->
+        <div class="mb-8 relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 @(isRtl ? "space-x-reverse" : "")">
+            <div class="flex items-center @(isRtl ? "space-x-reverse sm:mr-4" : "space-x-4")">
+                <div class="w-12 h-12 rounded-xl bg-navy/30 flex items-center justify-center border border-gold/30 shadow-[0_0_15px_rgba(18,60,118,0.4)]">
+                    <i class="fas fa-shield-halved text-gold text-lg"></i>
+                </div>
+                <div class="text-start">
+                    <h1 class="text-2xl font-extrabold text-white tracking-tight">@Localizer["ActiveSessions"]</h1>
+                    <p class="text-slate-400 text-xs mt-1">@Localizer["ActiveSessionsSub"]</p>
+                </div>
+            </div>
+
+            @if (Model.Count(m => !m.IsCurrentSession) > 0)
+            {
+                <form asp-action="RevokeAllOthers" method="post" onsubmit="return confirm('@(isRtl ? "هل تريد تسجيل الخروج من جميع الأجهزة الأخرى؟ لا يمكن التراجع عن هذا الإجراء." : "Sign out of all other devices? This cannot be undone.")');">
+                    <button type="submit" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-navy text-gold font-bold text-xs uppercase tracking-wider hover:bg-navy/80 border border-gold/30 transition-all shadow-lg flex items-center justify-center gap-2 @(isRtl ? "space-x-reverse" : "")">
+                        <i class="fas fa-power-off"></i>
+                        <span>@Localizer["SignOutOtherDevices"]</span>
+                    </button>
+                </form>
+            }
+        </div>
+
+        <!-- Session List -->
+        <div class="space-y-4 relative z-10">
+            @if (!Model.Any())
+            {
+                <div class="p-10 text-center text-slate-400 text-sm">
+                    <i class="fas fa-circle-exclamation text-2xl mb-3 block text-slate-600"></i>
+                    @Localizer["NoSessionsFound"]
+                </div>
+            }
+            else
+            {
+                foreach (var session in Model)
+                {
+                    <div class="p-5 rounded-2xl border @(session.IsCurrentSession ? "border-gold/40 bg-gold/5" : "border-white/5 bg-brand-surface") flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6 @(isRtl ? "space-x-reverse" : "") transition-all">
+
+                        <!-- Device Info -->
+                        <div class="flex items-center gap-4 flex-1 min-w-0 @(isRtl ? "space-x-reverse" : "")">
+                            <div class="w-12 h-12 rounded-xl bg-navy/20 flex items-center justify-center shrink-0 border border-navy/30">
+                                <i class="@GetOsIconClass(session.OperatingSystem) text-gold text-xl"></i>
+                            </div>
+                            <div class="min-w-0 text-start">
+                                <div class="flex items-center gap-2 flex-wrap @(isRtl ? "space-x-reverse" : "")">
+                                    <p class="font-bold text-white text-sm truncate">@session.OperatingSystem &middot; @session.Browser</p>
+                                    @if (session.IsCurrentSession)
+                                    {
+                                        <span class="px-2 py-0.5 rounded-full bg-gold/20 text-gold text-[10px] font-bold uppercase tracking-wide border border-gold/30">@Localizer["ThisDevice"]</span>
+                                    }
+                                </div>
+                                <p class="text-slate-400 text-xs mt-1 truncate">
+                                    <i class="fas fa-location-dot @(isRtl ? "ml-1" : "mr-1")"></i>@session.IpAddress
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Timestamps -->
+                        <div class="flex flex-row gap-8 text-xs shrink-0 @(isRtl ? "space-x-reverse text-start" : "text-start")">
+                            <div>
+                                <p class="uppercase tracking-wider text-[10px] text-slate-500 font-bold mb-1">@Localizer["LoginTime"]</p>
+                                <p class="text-slate-300 font-medium font-sans">@session.CreatedAtUtc.ToString("MMM dd, yyyy HH:mm") UTC</p>
+                            </div>
+                            <div>
+                                <p class="uppercase tracking-wider text-[10px] text-slate-500 font-bold mb-1">@Localizer["LastActivity"]</p>
+                                <p class="text-slate-300 font-medium font-sans">@session.LastActivityUtc.ToString("MMM dd, yyyy HH:mm") UTC</p>
+                            </div>
+                        </div>
+
+                        <!-- Action -->
+                        <div class="lg:w-40 shrink-0 flex justify-end">
+                            @if (session.IsCurrentSession)
+                            {
+                                <span class="px-4 py-2.5 rounded-xl bg-white/5 text-slate-500 text-xs font-bold uppercase tracking-wide text-center w-full">@Localizer["Current"]</span>
+                            }
+                            else
+                            {
+                                <form asp-action="Revoke" method="post" class="w-full" onsubmit="return confirm('@(isRtl ? "هل تريد إنهاء هذه الجلسة؟ سيتم تسجيل خروج الجهاز على الفور." : "Terminate this session? The device will be signed out immediately.")');">
+                                    <input type="hidden" name="sessionId" value="@session.SessionId" />
+                                    <button type="submit" class="w-full px-4 py-2.5 rounded-xl bg-brand-orange/10 text-brand-orange text-xs font-bold uppercase tracking-wide hover:bg-brand-orange/20 border border-brand-orange/20 transition-all">
+                                        @Localizer["Revoke"]
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@functions {
+    /// <summary>
+    /// نگاشت نام سیستم‌عامل تجزیه‌شده به آیکون FontAwesome متناظر برای نمایش در فهرست نشست‌ها
+    /// Maps a parsed operating-system display name to its corresponding FontAwesome icon class.
+    /// </summary>
+    private static string GetOsIconClass(string operatingSystem)
+    {
+        if (string.IsNullOrEmpty(operatingSystem)) return "fas fa-desktop";
+
+        return operatingSystem switch
+        {
+            var os when os.Contains("Windows") => "fab fa-windows",
+            var os when os.Contains("macOS") => "fab fa-apple",
+            var os when os.Contains("iOS") => "fab fa-apple",
+            var os when os.Contains("Android") => "fab fa-android",
+            var os when os.Contains("Linux") => "fab fa-linux",
+            _ => "fas fa-desktop"
+        };
+    }
+}

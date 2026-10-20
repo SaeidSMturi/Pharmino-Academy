@@ -1,0 +1,38 @@
+@inject Application.Interfaces.ISettingsService SettingsService
+
+@{
+    var siteName = await SettingsService.GetStringSettingAsync("Site Name", "Pharmacy Store");
+    var supportEmail = await SettingsService.GetStringSettingAsync("Support Email");
+    var supportPhone = await SettingsService.GetStringSettingAsync("Support Phone");
+}
+
+<!-- Site Header Component -->
+<header class="bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-4 shadow-lg">
+    <div class="container mx-auto px-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                <i class="fas fa-hospital text-2xl"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold">@siteName</h1>
+                <p class="text-sm text-cyan-100">Professional Healthcare Solutions</p>
+            </div>
+        </div>
+        <div class="hidden md:flex items-center gap-6">
+            @if (!string.IsNullOrEmpty(supportEmail))
+            {
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:@supportEmail" class="hover:text-cyan-100 transition">@supportEmail</a>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(supportPhone))
+            {
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:@supportPhone" class="hover:text-cyan-100 transition">@supportPhone</a>
+                </div>
+            }
+        </div>
+    </div>
+</header>

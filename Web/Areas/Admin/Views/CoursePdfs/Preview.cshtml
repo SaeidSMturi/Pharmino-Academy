@@ -1,0 +1,136 @@
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["PreviewPdf"].Value;
+    var pdfId = (int)ViewBag.PdfId;
+    var courseId = (int)ViewBag.CourseId;
+    var fileDisplayName = (string)ViewBag.FileDisplayName;
+    var watermark = (string)ViewBag.Watermark;
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] text-start" dir="@(isRtl ? "rtl" : "ltr")">
+    <div class="flex items-center justify-between mb-4">
+        <div>
+            <h1 class="text-2xl font-bold text-white">@Localizer["PreviewPdf"]</h1>
+            <p class="text-slate-400 text-sm break-all">@fileDisplayName</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <a asp-action="Index" asp-route-courseId="@courseId"
+               class="px-4 py-2 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-xs font-bold flex items-center">
+                <i class="fas @(isRtl ? "fa-arrow-right ml-2" : "fa-arrow-left mr-2") text-xs"></i>
+                @Localizer["AllPdfs"]
+            </a>
+        </div>
+    </div>
+
+    <div class="glass-card rounded-xl overflow-hidden relative" style="height: calc(100vh - 220px); min-height: 520px;">
+        <!-- Visible watermark overlay (deterrent). -->
+        <div class="pointer-events-none absolute inset-0 z-10 opacity-15 select-none" aria-hidden="true">
+            <div class="w-full h-full" style="background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.35) 0px, rgba(255,255,255,0.35) 1px, transparent 1px, transparent 130px);"></div>
+        </div>
+        <div class="pointer-events-none absolute inset-0 z-20 flex items-center justify-center select-none" aria-hidden="true">
+            <div class="text-center transform -rotate-12" style="font-size: 64px; font-weight: 800; color: rgba(255,255,255,0.22);">
+                @watermark
+            </div>
+        </div>
+
+        <div id="viewer" class="relative z-0 w-full h-full overflow-auto" style="background:#0a0a0a;">
+            <div id="pages" class="p-4 space-y-6"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Deterrent-only UI restrictions
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', function (e) {
+            const key = (e.key || '').toLowerCase();
+            const ctrl = e.ctrlKey || e.metaKey;
+            if (!ctrl) return;
+            if (key === 's' || key === 'p' || key === 'c' || key === 'u') {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+    </script>
+
+    <script type="module">
+        const pages = document.getElementById('pages');
+
+        const watermark = '@watermark'.replaceAll('\\', '\\\\').replaceAll("'", "\\'");
+
+        try {
+            const pdfjs = await import('/lib/pdfjs/pdf.min.mjs');
+
+            // pdf.js ESM exports differ by build; support both named and default exports
+            const pdfjsLib = pdfjs?.default ?? pdfjs;
+
+            if (!pdfjsLib?.getDocument) {
+                pages.innerHTML = `
+                    <div class="text-red-300 p-4">
+                        pdf.js module loaded but API not found.<br/>
+                        Ensure <code>pdf.min.mjs</code> is a pdf.js build that exports <code>getDocument</code>.
+                    </div>`;
+                throw new Error('pdf.js getDocument not found');
+            }
+
+            if (pdfjsLib.GlobalWorkerOptions) {
+                pdfjsLib.GlobalWorkerOptions.workerSrc = '/lib/pdfjs/pdf.worker.min.mjs';
+            }
+
+            const url = '/Admin/CoursePdfs/Stream/@pdfId';
+            const loadingTask = pdfjsLib.getDocument({ url, disableStream: false, disableAutoFetch: false });
+
+            const pdf = await loadingTask.promise;
+
+            pages.innerHTML = '';
+
+            const dpr = window.devicePixelRatio || 1;
+            const maxWidth = 1100;
+
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                const page = await pdf.getPage(pageNum);
+
+                const unscaled = page.getViewport({ scale: 1 });
+                const scale = Math.min(maxWidth / unscaled.width, 2.0);
+                const viewport = page.getViewport({ scale });
+
+                const canvas = document.createElement('canvas');
+                canvas.className = 'block mx-auto rounded-lg shadow-lg';
+                canvas.style.background = 'white';
+
+                const context = canvas.getContext('2d', { alpha: false });
+                canvas.width = Math.floor(viewport.width * dpr);
+                canvas.height = Math.floor(viewport.height * dpr);
+                canvas.style.width = Math.floor(viewport.width) + 'px';
+                canvas.style.height = Math.floor(viewport.height) + 'px';
+
+                context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+                const renderContext = {
+                    canvasContext: context,
+                    viewport
+                };
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'relative';
+
+                const wm = document.createElement('div');
+                wm.className = 'pointer-events-none absolute inset-0 flex items-center justify-center select-none';
+                wm.style.color = 'rgba(0,0,0,0.10)';
+                wm.style.fontSize = '48px';
+                wm.style.fontWeight = '800';
+                wm.style.transform = 'rotate(-18deg)';
+                wm.textContent = watermark;
+
+                wrapper.appendChild(canvas);
+                wrapper.appendChild(wm);
+                pages.appendChild(wrapper);
+
+                await page.render(renderContext).promise;
+            }
+        } catch (err) {
+            pages.innerHTML = `<div class="text-red-300 p-4">pdf.js failed to load: ${err?.message || err}</div>`;
+        }
+    </script>
+}

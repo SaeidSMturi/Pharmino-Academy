@@ -1,0 +1,116 @@
+@using System.Globalization
+@model List<Domain.Entities.Course.Course>
+
+@{
+    var isRtl = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["Courses"].Value;
+}
+
+<div class="container mx-auto px-4 py-12 relative z-10">
+    <div class="text-center mb-16 animate-float" style="animation-duration: 5s;">
+        <h1 class="text-5xl font-extrabold text-custom-snow mb-4 tracking-tight">
+            <i class="fas fa-graduation-cap @(isRtl ? "ml-3" : "mr-3") text-custom-gold drop-shadow-[0_0_15px_rgba(225,215,136,0.4)]"></i>
+            @Localizer["OurCourses"]
+        </h1>
+        <p class="text-custom-snow/60 text-xl font-medium">@Localizer["ExploreOurCoursesSubtitle"]</p>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-center py-16">
+            <div class="inline-flex items-center justify-center w-32 h-32 rounded-full bg-custom-navy/20 border border-custom-gold/20 mb-6 shadow-[0_0_30px_rgba(18,60,118,0.3)] animate-pulse">
+                <i class="fas fa-inbox text-custom-gold text-6xl"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-custom-snow mb-2">@Localizer["NoCoursesAvailable"]</h3>
+            <p class="text-custom-snow/50 text-lg">@Localizer["CheckBackLater"]</p>
+        </div>
+    }
+    else
+    {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach (var course in Model)
+            {
+                <div class="group rounded-3xl overflow-hidden glass-panel transform transition-all duration-500 hover:shadow-[0_20px_50px_rgba(66,234,255,0.2)] flex flex-col h-full border border-custom-cyan/10 hover:border-custom-cyan/40 relative">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-custom-cyan to-custom-blue transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 z-20"></div>
+
+                    <div class="h-56 bg-custom-card relative overflow-hidden">
+                        <div class="absolute inset-0 bg-custom-dark/40 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
+                        @if (!string.IsNullOrEmpty(course.ImageName) && course.ImageName != "default.jpg")
+                        {
+                            <img src="~/uploads/courses/@course.ImageName" alt="@course.Title" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                        }
+                        else
+                        {
+                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-custom-card to-[#0d1527]">
+                                <i class="fas fa-graduation-cap text-7xl text-custom-cyan/20 transform group-hover:scale-110 group-hover:text-custom-cyan/40 transition-all duration-500"></i>
+                            </div>
+                        }
+                        <span class="absolute top-4 @(isRtl ? "left-4" : "right-4") px-4 py-1.5 text-xs font-black uppercase tracking-wider rounded-full bg-gradient-to-r from-custom-orange to-custom-yellow text-custom-dark z-20 shadow-lg">@Localizer["BadgeNew"]</span>
+                    </div>
+
+                    <div class="p-8 flex flex-col flex-grow">
+                        <div class="flex items-center justify-between text-xs text-custom-cyan mb-4 font-bold tracking-widest uppercase">
+                            <span class="flex items-center gap-1.5 bg-custom-cyan/10 px-3 py-1 rounded-full"><i class="far fa-clock"></i> @course.DurationHours @Localizer["HoursAbbr"]</span>
+                            <span class="flex items-center gap-1.5 bg-custom-cyan/10 px-3 py-1 rounded-full"><i class="fas fa-video"></i> @course.Videos.Count @Localizer["VideosAbbr"]</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-custom-snow mb-3 group-hover:text-custom-cyan transition-colors duration-300">@course.Title</h3>
+                        <p class="text-custom-snow/60 text-sm line-clamp-3 mb-8 flex-grow leading-relaxed">@course.Description</p>
+
+                        <div class="flex items-center justify-between mt-auto pt-6 border-t border-custom-cyan/10">
+                            <div class="text-3xl font-black text-custom-snow">$@course.Price.ToString("N0")</div>
+                            <a asp-area="" asp-controller="Courses" asp-action="Details" asp-route-id="@course.CourseId"
+                               class="px-6 py-2.5 rounded-full bg-custom-blue/20 hover:bg-custom-blue text-custom-cyan hover:text-white text-sm font-bold transition-all duration-300 border border-custom-blue/50 hover:shadow-[0_0_25px_rgba(66,114,255,0.5)] transform hover:scale-105">
+                                @Localizer["ViewCourse"]
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Styles {
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+}
+@section Scripts
+{
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        custom: {
+                            blue: '#4272FF',
+                            cyan: '#42EAFF',
+                            yellow: '#FFB343',
+                            orange: '#FF7E42',
+                            dark: '#060913',
+                            card: 'rgba(17, 24, 39, 0.7)',
+                            snow: '#F8FAFC',
+                            navy: '#123C76',
+                            gold: '#E1D788'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+}

@@ -1,0 +1,198 @@
+@model List<Domain.Entities.Seo.SeoImage>
+@{
+    ViewData["Title"] = "Image Alt Text";
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full" dir="ltr">
+
+    <!-- Back to Dashboard -->
+    <a href="@Url.Action("Index", "Seo", new { area = "Admin" })" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-brand-cyan transition-colors uppercase tracking-wider mb-6">
+        <i class="fa fa-arrow-left text-[10px]"></i> Back to SEO Dashboard
+    </a>
+
+    <!-- Header Block -->
+    <div class="pb-2 border-b border-white/5 mb-8">
+        <h2 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide">Image Alt Text</h2>
+        <p class="text-slate-500 text-xs font-medium leading-relaxed">Search engines use alt text to understand image content. Below are images found on your site that are missing alt text.</p>
+    </div>
+
+    <!-- Data Table -->
+    <div class="w-full overflow-x-auto custom-scrollbar">
+        <table class="w-full text-left border-collapse text-sm">
+            <thead>
+                <tr class="border-b border-white/5 text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/[0.01]">
+                    <th class="py-4 px-3 font-bold w-24">Preview</th>
+                    <th class="py-4 px-3 font-bold">Image URL</th>
+                    <th class="py-4 px-3 font-bold">Found on Page</th>
+                    <th class="py-4 px-3 font-bold">Current Alt Text</th>
+                    <th class="py-4 px-3 font-bold text-right w-40">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-white/[0.02]">
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-slate-500 text-xs font-medium py-12">
+                            No images with missing Alt text found! Run a site scan to check again.
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var image in Model)
+                    {
+                        <tr id="row-@image.Id" class="hover:bg-white/[0.01] transition-colors duration-200">
+                            <!-- Image Thumbnail Preview -->
+                            <td class="py-4 px-3">
+                                @if (!string.IsNullOrEmpty(image.ImageUrl))
+                                {
+                                    <img src="@image.ImageUrl" class="w-14 h-12 rounded-xl object-cover border border-white/5 bg-black/20" onerror="this.src='/images/placeholder.png'; this.onerror=null;" />
+                                }
+                                else
+                                {
+                                    <span class="text-slate-600 font-mono text-xs">No Image</span>
+                                }
+                            </td>
+
+                            <!-- Image URL -->
+                            <td class="py-4 px-3 text-xs font-mono text-slate-400 max-w-[280px] truncate select-all" title="@image.ImageUrl">
+                                @image.ImageUrl
+                            </td>
+
+                            <!-- Found On Page -->
+                            <td class="py-4 px-3 text-xs whitespace-nowrap">
+                                <a href="@image.FoundOnPage" target="_blank" class="text-brand-blue font-bold hover:text-brand-cyan transition-colors flex items-center gap-1">
+                                    @image.FoundOnPage <i class="fa fa-external-link text-[10px]"></i>
+                                </a>
+                            </td>
+
+                            <!-- Current Alt Text -->
+                            <td id="alt-text-cell-@image.Id" class="py-4 px-3 text-xs text-slate-500 font-medium italic">
+                                @(string.IsNullOrWhiteSpace(image.AltText) ? "Missing Alt Text" : image.AltText)
+                            </td>
+
+                            <!-- Action -->
+                            <td class="py-4 px-3 text-right whitespace-nowrap">
+                                <button class="px-3 py-1.5 bg-brand-blue/10 text-brand-blue border border-brand-blue/10 rounded-xl hover:bg-brand-blue hover:text-white text-[10px] font-bold transition-all uppercase tracking-wide" onclick="openOptimizeModal(@image.Id, '@image.ImageUrl', '@image.FoundOnPage', '@(System.Net.WebUtility.HtmlEncode(image.AltText ?? ""))')">
+                                    <i class="fa fa-edit mr-1"></i> Edit Alt Text
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal: Edit Alt Text -->
+<div class="modal fade" id="optimizeAltModal" tabindex="-1" aria-labelledby="optimizeAltModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-[#0B0D14]/95 border border-white/10 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl">
+            <div class="px-6 py-4 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
+                <h5 class="modal-title text-white font-bold text-sm uppercase tracking-wider" id="optimizeAltModalLabel">
+                    <i class="fa fa-image text-brand-cyan shadow-[0_0_8px_#42EAFF] mr-2"></i> Edit Alt Text
+                </h5>
+                <button type="button" class="btn-close btn-close-white focus:outline-none text-xs" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="p-6 space-y-5">
+                <input type="hidden" id="modalImageId" />
+
+                <!-- Image Preview -->
+                <img id="modalImagePreview" class="w-full max-h-56 object-contain rounded-2xl border border-white/5 bg-black/30 mx-auto block mb-6 shadow-inner" src="" onerror="this.src='/images/placeholder.png';" />
+
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide block">Image URL</label>
+                    <div class="border-b border-white/5">
+                        <input type="text" id="modalImageUrl" class="w-full bg-transparent py-2 text-slate-400 focus:outline-none text-xs font-mono truncate select-all" readonly style="opacity: 0.6;" />
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide block">Found on Page</label>
+                    <div class="border-b border-white/5">
+                        <input type="text" id="modalFoundOnPage" class="w-full bg-transparent py-2 text-brand-blue focus:outline-none text-xs font-mono truncate select-all" readonly style="opacity: 0.6;" />
+                    </div>
+                </div>
+
+                <div class="space-y-2 pt-2">
+                    <label class="block text-xs font-bold text-brand-cyan uppercase tracking-wide">Alt Text <span class="text-brand-orange">*</span></label>
+                    <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
+                        <input type="text" id="modalAltText" class="w-full bg-transparent py-2.5 text-white placeholder-slate-600 focus:outline-none text-sm font-medium" placeholder="Describe the image content clearly..." required />
+                    </div>
+                    <div class="text-[10px] text-slate-500 font-medium mt-1">Describe the image clearly and concisely for search engines and accessibility.</div>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-white/5 flex justify-end space-x-3 bg-white/[0.01]">
+                <button type="button" class="px-4 py-2 bg-white/5 text-slate-300 rounded-xl hover:bg-white/10 text-xs font-bold transition-all" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="px-5 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] text-xs font-black uppercase tracking-wide transition-all" onclick="saveAltText()">Save Alt Text</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let bootstrapModal;
+
+    document.addEventListener("DOMContentLoaded", function() {
+        if (window.bootstrap) {
+            bootstrapModal = new bootstrap.Modal(document.getElementById('optimizeAltModal'));
+        }
+    });
+
+    function openOptimizeModal(id, url, foundPage, currentAlt) {
+        document.getElementById('modalImageId').value = id;
+        document.getElementById('modalImagePreview').src = url;
+        document.getElementById('modalImageUrl').value = url;
+        document.getElementById('modalFoundOnPage').value = foundPage;
+        document.getElementById('modalAltText').value = currentAlt;
+
+        if (bootstrapModal) {
+            bootstrapModal.show();
+        } else {
+            bootstrapModal = new bootstrap.Modal(document.getElementById('optimizeAltModal'));
+            bootstrapModal.show();
+        }
+    }
+
+    function saveAltText() {
+        const id = document.getElementById('modalImageId').value;
+        const altText = document.getElementById('modalAltText').value;
+
+        if (!altText.trim()) {
+            alert("Please enter alt text for the image.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("id", id);
+        formData.append("altText", altText);
+
+        fetch('@Url.Action("UpdateImageAlt", "Seo", new { area = "Admin" })', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const cell = document.getElementById('alt-text-cell-' + id);
+                    if (cell) {
+                        cell.innerText = altText;
+                        cell.style.fontStyle = 'normal';
+                        cell.style.color = '#34d399';
+                    }
+
+                    bootstrapModal.hide();
+                    alert(data.message || 'Alt text updated successfully.');
+                } else {
+                    alert(data.message || 'Error updating alt text.');
+                }
+            })
+            .catch(error => {
+                alert("An error occurred: " + error);
+            });
+    }
+</script>

@@ -1,0 +1,78 @@
+@using Application.Interfaces
+@inject ISeoService SeoService
+
+@{
+    var request = Context.Request;
+    var host = request.Host.Value;
+    var scheme = request.Scheme;
+    var path = request.Path.Value ?? "/";
+    var currentUrl = $"{scheme}://{host}{path}";
+    var isArabic = System.Globalization.CultureInfo.CurrentCulture.Name.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+
+    // 1. Get default or controller-assigned values
+    var defaultTitle = isArabic ? "منصة آموزش الصيدلة التخصصية" : "Specialized Pharmacy Education System";
+    var defaultMetaDescription = isArabic ? "المنصة الإلكترونية الأكثر شمولاً لتعليم الصيدلة، علم الأدوية، الصيدلة السريرية وقراءة الوصفات الطبية." : "The most comprehensive online platform for pharmacy education, pharmacology, clinical pharmacy, and prescription reading.";
+    var defaultMetaKeywords = isArabic ? "تعليم الصيدلة, دورات الصيدلة, علم الأدوية, قراءة الوصفات الطبية, الصيدلة السريرية" : "pharmacy education, pharmacy courses, pharmacology, prescription reading, clinical pharmacy";
+
+    var title = ViewData["Title"]?.ToString() ?? defaultTitle;
+    var metaDescription = ViewData["MetaDescription"]?.ToString() ?? defaultMetaDescription;
+    var metaKeywords = ViewData["MetaKeywords"]?.ToString() ?? defaultMetaKeywords;
+    var metaRobots = ViewData["MetaRobots"]?.ToString() ?? "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+    var canonicalUrl = ViewData["CanonicalUrl"]?.ToString() ?? currentUrl;
+    var ogTitle = title;
+    var ogDescription = metaDescription;
+    var ogImage = ViewData["OgImage"]?.ToString() ?? $"{scheme}://{host}/images/logo-og.png";
+    var ogType = ViewData["OgType"]?.ToString() ?? "website";
+    var jsonLd = ViewData["JsonLd"]?.ToString();
+    var ogLocale = isArabic ? "ar_SA" : "en_US";
+
+    // 2. Check Admin DB Override for the current URL path
+    var customPageSeo = await SeoService.GetPageSeoByPathAsync(path);
+    if (customPageSeo != null && customPageSeo.IsActive)
+    {
+        if (!string.IsNullOrWhiteSpace(customPageSeo.Title)) title = customPageSeo.Title;
+        if (!string.IsNullOrWhiteSpace(customPageSeo.MetaDescription)) metaDescription = customPageSeo.MetaDescription;
+        if (!string.IsNullOrWhiteSpace(customPageSeo.MetaKeywords)) metaKeywords = customPageSeo.MetaKeywords;
+        if (!string.IsNullOrWhiteSpace(customPageSeo.MetaRobots)) metaRobots = customPageSeo.MetaRobots;
+        if (!string.IsNullOrWhiteSpace(customPageSeo.CanonicalUrl)) canonicalUrl = customPageSeo.CanonicalUrl;
+        
+        ogTitle = !string.IsNullOrWhiteSpace(customPageSeo.OgTitle) ? customPageSeo.OgTitle : title;
+        ogDescription = !string.IsNullOrWhiteSpace(customPageSeo.OgDescription) ? customPageSeo.OgDescription : metaDescription;
+        if (!string.IsNullOrWhiteSpace(customPageSeo.OgImage)) ogImage = customPageSeo.OgImage;
+        if (!string.IsNullOrWhiteSpace(customPageSeo.OgType)) ogType = customPageSeo.OgType;
+        if (!string.IsNullOrWhiteSpace(customPageSeo.JsonLd)) jsonLd = customPageSeo.JsonLd;
+    }
+}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>@title - Pharmacists</title>
+<meta name="description" content="@metaDescription">
+<meta name="keywords" content="@metaKeywords">
+<meta name="robots" content="@metaRobots">
+<meta name="author" content="Pharmacists Platform">
+<link rel="canonical" href="@canonicalUrl" />
+
+<!-- Open Graph / Facebook / LinkedIn / Telegram -->
+<meta property="og:type" content="@ogType">
+<meta property="og:url" content="@canonicalUrl">
+<meta property="og:title" content="@ogTitle">
+<meta property="og:description" content="@ogDescription">
+<meta property="og:image" content="@ogImage">
+<meta property="og:site_name" content="Pharmacists">
+<meta property="og:locale" content="@ogLocale">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="@canonicalUrl">
+<meta name="twitter:title" content="@ogTitle">
+<meta name="twitter:description" content="@ogDescription">
+<meta name="twitter:image" content="@ogImage">
+
+@if (!string.IsNullOrWhiteSpace(jsonLd))
+{
+    <script type="application/ld+json">
+        @Html.Raw(jsonLd)
+    </script>
+}

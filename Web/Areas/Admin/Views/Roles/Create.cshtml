@@ -1,0 +1,226 @@
+@model Domain.Entities.Permission.Role
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["CreateRole"].Value;
+    var permissions = ViewBag.Permissions as List<Domain.Entities.Permission.Permission>;
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full max-w-5xl mx-auto text-start" dir="@(isRtl ? "rtl" : "ltr")">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+        <div>
+            <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide">
+                @Localizer["CreateRole"]
+            </h1>
+            <p class="text-slate-400 text-sm font-medium">@Localizer["CreateRoleSub"]</p>
+        </div>
+        <a asp-action="Index" class="w-full sm:w-auto text-center px-5 py-2.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg whitespace-nowrap">
+            <i class="fas @(isRtl ? "fa-arrow-right ml-2" : "fa-arrow-left mr-2") text-xs"></i> @Localizer["BackToRoles"]
+        </a>
+    </div>
+
+    <form asp-action="Create" method="post" class="space-y-6">
+        @Html.AntiForgeryToken()
+
+        @if (!Html.ViewData.ModelState.IsValid)
+        {
+            <div asp-validation-summary="ModelOnly" class="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4 text-rose-400 text-sm font-semibold flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") shadow-[0_0_15px_rgba(244,63,94,0.1)] mb-6">
+                <i class="fas fa-triangle-exclamation text-lg"></i>
+                <span>@Localizer["PleaseFixErrors"]</span>
+            </div>
+        }
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <div class="lg:col-span-2 space-y-6">
+
+                <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05] backdrop-blur-xl">
+                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center">
+                        <i class="fas fa-circle-info text-brand-cyan @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["RoleInformation"]
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label asp-for="RoleName" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                                @Localizer["RoleName"] <span class="text-brand-orange">*</span>
+                            </label>
+                            <div class="relative group">
+                                <input asp-for="RoleName" class="w-full bg-dark-bg/50 border border-white/10 rounded-xl px-4 py-3 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none focus:border-brand-cyan/40 focus:ring-4 focus:ring-brand-cyan/5 transition-all text-sm font-medium" placeholder="e.g., ContentManager" />
+                                <i class="fas fa-tag absolute @(isRtl ? "right-4" : "left-4") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-brand-cyan transition-colors text-xs"></i>
+                            </div>
+                            <span asp-validation-for="RoleName" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label asp-for="DisplayName" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                                @Localizer["RoleDisplayName"] <span class="text-brand-orange">*</span>
+                            </label>
+                            <div class="relative group">
+                                <input asp-for="DisplayName" class="w-full bg-dark-bg/50 border border-white/10 rounded-xl px-4 py-3 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none focus:border-brand-cyan/40 focus:ring-4 focus:ring-brand-cyan/5 transition-all text-sm font-medium" placeholder="e.g., Content Manager" />
+                                <i class="fas fa-i-cursor absolute @(isRtl ? "right-4" : "left-4") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-brand-cyan transition-colors text-xs"></i>
+                            </div>
+                            <span asp-validation-for="DisplayName" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                        </div>
+
+                        <div class="space-y-2 md:col-span-2">
+                            <label asp-for="Description" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                                @Localizer["RoleDescription"]
+                            </label>
+                            <textarea asp-for="Description" rows="3" class="w-full bg-dark-bg/50 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-brand-cyan/40 focus:ring-4 focus:ring-brand-cyan/5 transition-all text-sm font-medium" placeholder="@Localizer["RoleDescription"]..."></textarea>
+                            <span asp-validation-for="Description" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                        </div>
+
+                        <label class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01] border border-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/[0.03] transition-colors group md:col-span-2">
+                            <input asp-for="IsActive" type="checkbox" checked class="w-4 h-4 rounded border-white/10 bg-dark-bg text-brand-cyan focus:ring-brand-cyan/20 focus:ring-offset-0" />
+                            <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition-colors flex items-center">
+                                <i class="fas fa-power-off @(isRtl ? "ml-2" : "mr-2") text-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.3)]"></i>
+                                @Localizer["SetRoleActiveImmediately"]
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                        <h3 class="text-base font-bold text-white flex items-center">
+                            <i class="fas fa-key @(isRtl ? "ml-3" : "mr-3") text-brand-blue text-lg"></i> @Localizer["AssignPermissions"]
+                        </h3>
+                        <span class="text-xs font-bold text-brand-cyan bg-brand-cyan/10 border border-brand-cyan/10 px-2.5 py-1 rounded-lg">
+                            <span id="selectedCount">0</span> @Localizer["Selected"]
+                        </span>
+                    </div>
+
+                    <div class="mb-6 flex items-center @(isRtl ? "space-x-reverse" : "space-x-4") bg-white/[0.01] p-3 rounded-xl border border-white/[0.02]">
+                        <button type="button" onclick="selectAll()" class="text-xs font-bold text-brand-cyan hover:text-white transition-colors flex items-center">
+                            <i class="fas fa-check-double @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["SelectAll"]
+                        </button>
+                        <span class="text-slate-700 font-mono text-xs">|</span>
+                        <button type="button" onclick="deselectAll()" class="text-xs font-bold text-slate-500 hover:text-slate-300 transition-colors flex items-center">
+                            <i class="fas fa-ban @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["ClearAll"]
+                        </button>
+                    </div>
+
+                    @if (permissions != null && permissions.Any())
+                    {
+                        var permissionsByCategory = permissions.GroupBy(p => p.Category ?? "Other").OrderBy(g => g.Key);
+
+                        <div class="space-y-4">
+                            @foreach (var category in permissionsByCategory)
+                            {
+                                <div class="border border-white/5 rounded-2xl p-4 bg-dark-bg/20 category-container-@category.Key">
+                                    <div class="flex items-center justify-between mb-3 border-b border-white/[0.03] pb-2">
+                                        <h4 class="text-xs font-bold text-brand-blue uppercase tracking-wider flex items-center">
+                                            <i class="fas fa-folder-open @(isRtl ? "ml-2" : "mr-2") text-slate-500"></i> @category.Key
+                                        </h4>
+                                        <button type="button" onclick="toggleCategory('@category.Key')" class="text-[10px] font-bold text-slate-400 hover:text-brand-cyan transition-colors bg-white/5 px-2 py-0.5 rounded border border-white/5">
+                                            @Localizer["ToggleGroup"]
+                                        </button>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                        @foreach (var permission in category.OrderBy(p => p.DisplayName))
+                                        {
+                                            <label class="flex items-start @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01] border border-white/[0.02] rounded-xl px-3 py-2.5 cursor-pointer hover:bg-white/[0.03] hover:border-brand-blue/20 transition-all category-@category.Key">
+                                                <input type="checkbox" name="SelectedPermissions" value="@permission.PermissionId" class="w-4 h-4 mt-0.5 rounded border-white/10 bg-dark-bg text-brand-blue focus:ring-brand-blue/20 permission-checkbox focus:ring-offset-0" onchange="updateCount()" />
+                                                <div class="flex-1 min-w-0">
+                                                    <span class="text-slate-300 text-xs font-bold block truncate">@permission.DisplayName</span>
+                                                    @if (!string.IsNullOrEmpty(permission.Description))
+                                                    {
+                                                        <p class="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">@permission.Description</p>
+                                                    }
+                                                </div>
+                                            </label>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-12 bg-white/[0.01] border border-white/5 border-dashed rounded-2xl">
+                            <i class="fas fa-key text-4xl text-slate-600 mb-3 block"></i>
+                            <p class="text-xs text-slate-500 font-medium">@Localizer["NoPermissionsFound"]</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="space-y-6 sticky top-6">
+                <div class="bg-brand-cyan/5 border border-brand-cyan/10 rounded-3xl p-5 flex flex-col gap-3">
+                    <h4 class="text-xs font-bold text-brand-cyan uppercase tracking-wider flex items-center">
+                        <i class="fas fa-circle-exclamation @(isRtl ? "ml-2" : "mr-2") text-sm"></i> @Localizer["Guidelines"]
+                    </h4>
+                    <ul class="text-[11px] text-slate-400 space-y-2 list-none font-medium leading-relaxed">
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 rounded-full bg-brand-cyan mt-1.5 @(isRtl ? "ml-2" : "mr-2") flex-shrink-0 shadow-[0_0_6px_#42EAFF]"></span>@Localizer["RoleGuidelines1"]</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 rounded-full bg-brand-cyan mt-1.5 @(isRtl ? "ml-2" : "mr-2") flex-shrink-0 shadow-[0_0_6px_#42EAFF]"></span>@Localizer["RoleGuidelines2"]</li>
+                        <li class="flex items-start"><span class="w-1.5 h-1.5 rounded-full bg-brand-cyan mt-1.5 @(isRtl ? "ml-2" : "mr-2") flex-shrink-0 shadow-[0_0_6px_#42EAFF]"></span>@Localizer["RoleGuidelines3"]</li>
+                    </ul>
+                </div>
+
+                <div class="p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                    <h4 class="text-xs font-bold text-white uppercase tracking-widest mb-4">@Localizer["Summary"]</h4>
+                    <div class="space-y-2.5 text-xs font-medium">
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">@Localizer["AvailablePermissions"]:</span>
+                            <span class="text-white font-bold font-mono">@permissions?.Count()</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">@Localizer["Categories"]:</span>
+                            <span class="text-white font-bold font-mono">@permissions?.GroupBy(p => p.Category).Count()</span>
+                        </div>
+                        <div class="flex justify-between border-t border-white/5 pt-2.5">
+                            <span class="text-slate-400">@Localizer["Selected"]:</span>
+                            <span class="text-brand-cyan font-black font-mono" id="selectedCountSidebar">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5">
+                    <button type="submit" class="w-full px-6 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg font-black text-xs rounded-xl hover:shadow-[0_0_20px_rgba(66,234,255,0.3)] hover:scale-[1.01] transition-all flex items-center justify-center">
+                        <i class="fas fa-save @(isRtl ? "ml-2" : "mr-2") text-sm"></i> @Localizer["CreateRole"]
+                    </button>
+                    <a asp-action="Index" class="block w-full px-5 py-2.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-xs font-bold text-center">
+                        <i class="fas fa-times @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i> @Localizer["Cancel"]
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function updateCount() {
+            const count = document.querySelectorAll('.permission-checkbox:checked').length;
+            document.getElementById('selectedCount').textContent = count;
+            document.getElementById('selectedCountSidebar').textContent = count;
+        }
+
+        function selectAll() {
+            document.querySelectorAll('.permission-checkbox').forEach(cb => {
+                cb.checked = true;
+            });
+            updateCount();
+        }
+
+        function deselectAll() {
+            document.querySelectorAll('.permission-checkbox').forEach(cb => {
+                cb.checked = false;
+            });
+            updateCount();
+        }
+
+        function toggleCategory(category) {
+            const checkboxes = document.querySelectorAll(`.category-${category} .permission-checkbox`);
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+            checkboxes.forEach(cb => {
+                cb.checked = !allChecked;
+            });
+            updateCount();
+        }
+
+        updateCount();
+    </script>
+}
