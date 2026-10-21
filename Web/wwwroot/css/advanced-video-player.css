@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 🎬 ADVANCED VIDEO PLAYER STYLES v2.0
  * استایل‌های پلیر ویدیو فوق پیشرفته
  */
@@ -607,6 +607,24 @@
 .avp-settings-item i:last-child {
     margin-left: auto;
     opacity: 0.5;
+}
+
+.avp-settings-value {
+    color: #42eaff;
+    font-weight: 700;
+    font-size: 11px;
+    margin-left: auto;
+    margin-right: 6px;
+    font-family: monospace;
+}
+
+.avp-quality-menu {
+    min-width: 170px;
+}
+
+.avp-quality-options .avp-settings-item.active {
+    color: #42eaff;
+    font-weight: 600;
 }
 
 /* ============================================

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 🔒 HLS Secure Stream Handler
  * فقط وظیفه دیکد کردن و تزریق امن استریم HLS به پلیر اصلی را دارد
  */
@@ -41,9 +41,14 @@ class HlsSecurePlayer {
         console.log('%c🔧 HLS Secure: hls.js initializing', 'color:#8b5cf6');
         const cfg = {
             xhrSetup: (xhr, url) => this._xhrSetup(xhr, url),
-            maxBufferLength: 30,
-            maxMaxBufferLength: 60,
-            maxBufferSize: 60 * 1024 * 1024,
+            maxBufferLength: 10,
+            maxMaxBufferLength: 20,
+            maxBufferSize: 30 * 1024 * 1024,
+            maxBufferHole: 0.5,
+            startFragPrefetch: true,
+            enableWorker: true,
+            lowLatencyMode: false,
+            backBufferLength: 30,
             debug: false
         };
 
@@ -54,11 +59,45 @@ class HlsSecurePlayer {
             this._hls.loadSource(this._cfg.manifestUrl);
         });
 
-        this._hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        this._hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
             if (this._cfg.startTime > 0) this._video.currentTime = this._cfg.startTime;
+
+            if (this._hls && this._hls.levels && this._hls.levels.length > 0) {
+                this._video.dispatchEvent(new CustomEvent('hlsLevelsLoaded', {
+                    detail: {
+                        levels: this._hls.levels,
+                        currentLevel: this._hls.currentLevel,
+                        setQuality: (levelIndex) => this.setQuality(levelIndex)
+                    }
+                }));
+            }
+        });
+
+        this._hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+            this._video.dispatchEvent(new CustomEvent('hlsLevelSwitched', {
+                detail: {
+                    level: data.level,
+                    levelData: this._hls.levels[data.level]
+                }
+            }));
         });
 
         this._hls.on(Hls.Events.ERROR, (_, data) => this._handleHlsError(data));
+    }
+
+    setQuality(levelIndex) {
+        if (this._hls) {
+            console.log(`🎬 Switching HLS Quality to level: ${levelIndex}`);
+            this._hls.currentLevel = levelIndex;
+        }
+    }
+
+    getLevels() {
+        return this._hls ? this._hls.levels : [];
+    }
+
+    getCurrentLevel() {
+        return this._hls ? this._hls.currentLevel : -1;
     }
 
     _xhrSetup(xhr, url) {

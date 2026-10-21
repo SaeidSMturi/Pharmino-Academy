@@ -10,6 +10,8 @@ using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Web.Attributes;
 
@@ -26,6 +28,7 @@ namespace Web.Areas.Admin.Controllers
         private readonly IHlsProgressService _hlsProgress;
         private readonly ILogger<CourseVideosController> _logger;
         private readonly IStorageService _storageService;
+        private readonly IHttpClientFactory _httpClientFactory;
 
 
         private const string TempUploadSessionPrefix = "CourseVideos.TempUpload.";
@@ -43,14 +46,15 @@ namespace Web.Areas.Admin.Controllers
             public string? FileName { get; set; }
         }
 
-        // توزیع و تزریق از قبل در کانستراکتور انجام شده بود، از همان نمونه استفاده می‌کنیم
         public CourseVideosController(
             WebContext context,
             IWebHostEnvironment environment,
             IOptions<UploadLimitsOptions> uploadLimits,
             IHlsProcessingService hlsService,
             IHlsProgressService hlsProgress,
-            ILogger<CourseVideosController> logger, IStorageService storageService)
+            ILogger<CourseVideosController> logger,
+            IStorageService storageService,
+            IHttpClientFactory httpClientFactory)
         {
             _context = context;
             _environment = environment;
@@ -59,11 +63,14 @@ namespace Web.Areas.Admin.Controllers
             _hlsProgress = hlsProgress;
             _logger = logger;
             _storageService = storageService;
+            _httpClientFactory = httpClientFactory;
         }
 
         [HttpPost]
         [Permission("Courses.Create")]
         [ValidateAntiForgeryToken]
+        [RequestSizeLimit(10737418240)] // 10GB for video upload
+        [RequestFormLimits(MultipartBodyLengthLimit = 10737418240)]
         public async Task<IActionResult> UploadVideo(int courseId, IFormFile? videoFile)
         {
             var file = videoFile ?? Request.Form.Files.FirstOrDefault();
@@ -137,79 +144,151 @@ namespace Web.Areas.Admin.Controllers
         [Permission("Courses.Create")]
         public async Task<IActionResult> TestOnly_DownloadVideoFromUrl(int courseId, string videoUrl)
         {
-            _logger.LogWarning("⚠️ TEST METHOD EXECUTED: Attempting to download test video from {Url} for Course ID: {CourseId}", videoUrl, courseId);
+            _logger.LogInformation("Attempting to download video from {Url} for Course ID: {CourseId}", videoUrl, courseId);
 
             if (courseId <= 0)
                 return BadRequest(new { success = false, message = "شناسه دوره نامعتبر است." });
 
-            if (string.IsNullOrWhiteSpace(videoUrl) || !Uri.TryCreate(videoUrl, UriKind.Absolute, out var uriResult))
+            if (string.IsNullOrWhiteSpace(videoUrl) || !Uri.TryCreate(videoUrl.Trim(), UriKind.Absolute, out var uriResult))
                 return BadRequest(new { success = false, message = "آدرس اینترنتی (URL) نامعتبر است." });
+
+            // 1. Enforce HTTP/HTTPS only
+            if (uriResult.Scheme != Uri.UriSchemeHttp && uriResult.Scheme != Uri.UriSchemeHttps)
+                return BadRequest(new { success = false, message = "فقط پروتکل‌های http و https مجاز هستند." });
+
+            // 2. SSRF Protection: Resolve host and block loopback, private networks, and internal server IP (104.207.93.83)
+            try
+            {
+                var hostAddresses = await Dns.GetHostAddressesAsync(uriResult.DnsSafeHost);
+                if (hostAddresses.Length == 0 || hostAddresses.Any(IsRestrictedIpAddress))
+                {
+                    _logger.LogWarning("SSRF attempt blocked. Target URL {Url} resolves to restricted IP.", videoUrl);
+                    return BadRequest(new { success = false, message = "دانلود از این آدرس اینترنتی به دلایل امنیتی مجاز نمی‌باشد." });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "DNS resolution failed for {Host}", uriResult.DnsSafeHost);
+                return BadRequest(new { success = false, message = "امکان دسترسی به هاست مورد نظر وجود ندارد." });
+            }
+
+            var fileExtension = Path.GetExtension(uriResult.AbsolutePath).ToLowerInvariant();
+            if (string.IsNullOrEmpty(fileExtension) || !fileExtension.Contains("."))
+                fileExtension = ".mp4";
+
+            var uniqueFileName = $"VID_{Guid.NewGuid():N}{fileExtension}";
+            var directoryPath = $"uploads/courses/{courseId}/videos";
+            var tempFilePath = Path.Combine(Path.GetTempPath(), $"dl_{Guid.NewGuid():N}.tmp");
 
             try
             {
-                // ۱. دانلود ویدیو از آدرس اینترنتی
-                using var httpClient = new HttpClient();
-                using var response = await httpClient.GetAsync(uriResult, HttpCompletionOption.ResponseHeadersRead);
+                var httpClient = _httpClientFactory.CreateClient();
+                httpClient.Timeout = TimeSpan.FromMinutes(10);
 
+                using var response = await httpClient.GetAsync(uriResult, HttpCompletionOption.ResponseHeadersRead);
                 if (!response.IsSuccessStatusCode)
                 {
-                    _logger.LogError("⚠️ TEST METHOD FAILED: Cannot download from {Url}. Status: {StatusCode}", videoUrl, response.StatusCode);
-                    return BadRequest(new { success = false, message = "دانلود ویدیو از آدرس اینترنتی با خطا مواجه شد." });
+                    _logger.LogError("Download failed from {Url}. Status: {StatusCode}", videoUrl, response.StatusCode);
+                    return BadRequest(new { success = false, message = $"دانلود ویدیو با خطا مواجه شد. (کد وضعیت: {response.StatusCode})" });
                 }
 
-                var fileExtension = Path.GetExtension(uriResult.AbsolutePath).ToLowerInvariant();
-                if (string.IsNullOrEmpty(fileExtension) || !fileExtension.Contains("."))
-                    fileExtension = ".mp4";
-
-                var uniqueFileName = $"TEST_{Guid.NewGuid()}{fileExtension}";
-                var directoryPath = $"uploads/courses/{courseId}/videos";
-
-                // ۲. کپی کردن استریم شبکه درون MemoryStream برای جلوگیری از کرش
-                using var networkStream = await response.Content.ReadAsStreamAsync();
-                using var memoryStream = new MemoryStream();
-                await networkStream.CopyToAsync(memoryStream);
-                memoryStream.Position = 0; // مهم: بازگرداندن نشانگر خواندن به ابتدای فایل
-
-                // ۳. ساخت FormFile امن و قابل پردازش
-                var formFile = new FormFile(memoryStream, 0, memoryStream.Length, "testVideoFile", uniqueFileName)
+                // Check Content-Length if provided
+                if (response.Content.Headers.ContentLength.HasValue && 
+                    response.Content.Headers.ContentLength.Value > _uploadLimits.CourseVideoMaxBytes)
                 {
-                    Headers = new HeaderDictionary(),
-                    ContentType = response.Content.Headers.ContentType?.MediaType ?? "video/mp4"
-                };
+                    return BadRequest(new { success = false, message = "حجم فایل ویدیو بیشتر از حد مجاز تعیین‌شده در سیستم است." });
+                }
 
-                // ۴. آپلود فایل با استفاده از سرویس ذخیره‌ساز فعلی سیستم
-                await _storageService.UploadFileAsync(formFile, directoryPath, uniqueFileName);
-                _logger.LogInformation("⚠️ TEST METHOD: Downloaded file saved to {Path}", $"{directoryPath}/{uniqueFileName}");
+                // Stream directly to temp file on disk (prevents RAM Out-Of-Memory)
+                using (var networkStream = await response.Content.ReadAsStreamAsync())
+                using (var fileStream = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 81920, useAsync: true))
+                {
+                    var buffer = new byte[81920];
+                    long totalBytesRead = 0;
+                    int bytesRead;
 
-                // ۵. ذخیره متادیتا در دیتابیس
+                    while ((bytesRead = await networkStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    {
+                        totalBytesRead += bytesRead;
+                        if (totalBytesRead > _uploadLimits.CourseVideoMaxBytes)
+                        {
+                            return BadRequest(new { success = false, message = "حجم فایل در حین دانلود از حد مجاز فراتر رفت." });
+                        }
+                        await fileStream.WriteAsync(buffer, 0, bytesRead);
+                    }
+                }
+
+                // Upload physical file to storage (DigitalOcean Spaces Smart Object Bucket / LocalStorage)
+                await _storageService.UploadPhysicalFileAsync(tempFilePath, directoryPath, uniqueFileName);
+                _logger.LogInformation("Video successfully uploaded to storage: {Path}", $"{directoryPath}/{uniqueFileName}");
+
+                // Save metadata in database
                 var newVideo = new CourseVideo
                 {
                     CourseId = courseId,
-                    Title = "تست دانلود ویدیو (Test)",
-                    Description = $"این ویدیو در تاریخ {DateTime.Now} مستقیماً از سطح اینترنت دانلود و ذخیره شده است.",
+                    Title = "ویدیوی جدید (دانلود مستقیم)",
+                    Description = $"دانلود شده در تاریخ {DateTime.UtcNow:yyyy/MM/dd HH:mm} از آدرس اینترنتی.",
                     VideoFileName = uniqueFileName,
-                    IsFree = true,
+                    IsFree = false,
                     IsActive = true,
-                    OrderIndex = _context.CourseVideos.Count(v => v.CourseId == courseId) + 1, // گرفتن ترتیب درست
+                    OrderIndex = await _context.CourseVideos.CountAsync(v => v.CourseId == courseId) + 1,
                     CreateDate = DateTime.UtcNow
                 };
 
                 _context.CourseVideos.Add(newVideo);
                 await _context.SaveChangesAsync();
 
-                // آپدیت کردن مدت زمان دوره (طبق روال استاندارد کنترلر)
+                // Recalculate duration
                 await UpdateCourseDurationAsync(courseId);
 
-                _logger.LogInformation("⚠️ TEST METHOD SUCCESS: Video ID {VideoId} created successfully.", newVideo.VideoId);
-
-                return Ok(new { success = true, message = "ویدیوی تست با موفقیت دانلود و ذخیره شد.", videoId = newVideo.VideoId });
+                return Ok(new { success = true, message = "ویدیو با موفقیت دانلود و در فضای ابری ذخیره شد.", videoId = newVideo.VideoId });
             }
             catch (Exception ex)
             {
-                // در کنسول (ترمینال) محیط توسعه یا سرور، خطای دقیق در اینجا چاپ می‌شود
-                _logger.LogError(ex, "⚠️ TEST METHOD CRASH: Unexpected error during download/save process.");
-                return StatusCode(500, new { success = false, message = "خطای سرور هنگام پردازش ویدیوی تست." });
+                _logger.LogError(ex, "Unexpected error occurred during video download and upload process.");
+                return StatusCode(500, new { success = false, message = "خطای غیرمنتظره هنگام پردازش ویدیو." });
             }
+            finally
+            {
+                // Always clean up temp file on local disk
+                try
+                {
+                    if (System.IO.File.Exists(tempFilePath))
+                    {
+                        System.IO.File.Delete(tempFilePath);
+                    }
+                }
+                catch (Exception cleanupEx)
+                {
+                    _logger.LogWarning(cleanupEx, "Failed to clean up temp file {TempFile}", tempFilePath);
+                }
+            }
+        }
+
+        private static bool IsRestrictedIpAddress(IPAddress ip)
+        {
+            if (IPAddress.IsLoopback(ip)) return true;
+            if (ip.ToString() == "104.207.93.83") return true;
+
+            byte[] bytes = ip.GetAddressBytes();
+            if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+            {
+                // 10.0.0.0/8
+                if (bytes[0] == 10) return true;
+                // 172.16.0.0/12
+                if (bytes[0] == 172 && bytes[1] >= 16 && bytes[1] <= 31) return true;
+                // 192.168.0.0/16
+                if (bytes[0] == 192 && bytes[1] == 168) return true;
+                // 169.254.0.0/16 (Link Local / Cloud Metadata)
+                if (bytes[0] == 169 && bytes[1] == 254) return true;
+                // 0.0.0.0
+                if (bytes[0] == 0) return true;
+            }
+            else if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
+            {
+                if (ip.IsIPv6LinkLocal || ip.IsIPv6SiteLocal) return true;
+            }
+            return false;
         }
         private async Task UpdateCourseDurationAsync(int courseId)
         {
@@ -260,6 +339,7 @@ namespace Web.Areas.Admin.Controllers
         [Permission("Courses.Create")]
         [ValidateAntiForgeryToken]
         [RequestSizeLimit(10737418240)] // 10GB for video upload
+        [RequestFormLimits(MultipartBodyLengthLimit = 10737418240)]
         public async Task<IActionResult> Create([Bind(nameof(CourseVideo.CourseId), nameof(CourseVideo.Title), nameof(CourseVideo.Description), nameof(CourseVideo.DurationSeconds), nameof(CourseVideo.OrderIndex), nameof(CourseVideo.IsFree), nameof(CourseVideo.IsActive))] CourseVideo video, IFormFile? VideoFile, string? UploadedVideoToken)
         {
             _logger.LogInformation("Form submission received to submit new video for Course ID: {CourseId}. Token Present: {TokenPresent}",
@@ -570,6 +650,8 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         [Permission("Courses.Edit")]
         [ValidateAntiForgeryToken]
+        [RequestSizeLimit(10737418240)] // 10GB for video upload
+        [RequestFormLimits(MultipartBodyLengthLimit = 10737418240)]
         public async Task<IActionResult> Edit([Bind(nameof(CourseVideo.VideoId), nameof(CourseVideo.CourseId), nameof(CourseVideo.Title), nameof(CourseVideo.Description), nameof(CourseVideo.DurationSeconds), nameof(CourseVideo.OrderIndex), nameof(CourseVideo.IsFree), nameof(CourseVideo.IsActive))] CourseVideo video, IFormFile? VideoFile, string? UploadedVideoToken)
         {
             _logger.LogInformation("Received structural update transaction for Video ID: {VideoId}. Course ID: {CourseId}", video.VideoId, video.CourseId);

@@ -554,6 +554,15 @@ namespace Infrastructure.Persistence
                     Description = "Manage payments only",
                     CreateDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                     IsActive = true
+                },
+                new Role
+                {
+                    RoleId = 4,
+                    RoleName = "IT",
+                    DisplayName = "IT Administrator",
+                    Description = "Technical and administrative access to manage courses, videos, users, and roles, excluding financial records",
+                    CreateDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+                    IsActive = true
                 }
             );
 
@@ -592,8 +601,25 @@ namespace Infrastructure.Persistence
                 new RolePermission { RolePermissionId = 30, RoleId = 3, PermissionId = 19 }  // Payments.Manage
             };
 
+            // IT - All permissions except Financial (Payments.View = 18, Payments.Manage = 19)
+            var itPermissionIds = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20, 21 };
+            var itPermissions = new List<RolePermission>();
+            int itRolePermissionId = 31;
+            foreach (var permId in itPermissionIds)
+            {
+                itPermissions.Add(new RolePermission
+                {
+                    RolePermissionId = itRolePermissionId++,
+                    RoleId = 4,
+                    PermissionId = permId
+                });
+            }
+
             modelBuilder.Entity<RolePermission>().HasData(
-                superAdminPermissions.Concat(courseManagerPermissions).Concat(accountantPermissions)
+                superAdminPermissions
+                    .Concat(courseManagerPermissions)
+                    .Concat(accountantPermissions)
+                    .Concat(itPermissions)
             );
 
             #endregion

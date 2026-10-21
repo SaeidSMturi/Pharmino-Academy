@@ -1,0 +1,7 @@
+C:\Users\user\Desktop\Pharmacists\publish\Application.dll
+C:\Users\user\Desktop\Pharmacists\publish\Application.deps.json
+C:\Users\user\Desktop\Pharmacists\publish\Application.pdb
+C:\Users\user\Desktop\Pharmacists\publish\Microsoft.EntityFrameworkCore.dll
+C:\Users\user\Desktop\Pharmacists\publish\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\user\Desktop\Pharmacists\publish\Domain.dll
+C:\Users\user\Desktop\Pharmacists\publish\Domain.pdb

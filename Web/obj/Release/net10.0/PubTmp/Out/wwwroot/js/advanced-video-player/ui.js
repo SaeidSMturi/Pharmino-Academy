@@ -1,4 +1,4 @@
-﻿export class PlayerUI {
+export class PlayerUI {
     constructor(context) {
         this.ctx = context;
     }
@@ -128,11 +128,24 @@
                                 <div class="avp-settings-header">
                                     <i class="fas fa-cog"></i> Settings
                                 </div>
+                                <div class="avp-settings-item" id="avp-settings-quality" style="display: none;">
+                                    <i class="fas fa-sliders-h"></i>
+                                    <span>Quality</span>
+                                    <span class="avp-settings-value" id="avp-quality-current" style="margin-left: auto; margin-right: 8px; color: #42eaff; font-weight: bold; font-size: 11px;">Auto</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
                                 <div class="avp-settings-item" id="avp-settings-shortcuts">
                                     <i class="fas fa-keyboard"></i>
                                     <span>Keyboard Shortcuts</span>
                                     <i class="fas fa-chevron-right"></i>
                                 </div>
+                            </div>
+
+                            <div class="avp-settings-menu avp-quality-menu" id="avp-quality-menu" style="display: none;">
+                                <div class="avp-settings-header" id="avp-quality-back" style="cursor: pointer;">
+                                    <i class="fas fa-chevron-left" style="margin-right: 8px;"></i> Quality
+                                </div>
+                                <div id="avp-quality-options" class="avp-quality-options"></div>
                             </div>
 
                             <button class="avp-btn avp-btn-icon" id="avp-fullscreen-btn" title="Fullscreen (F)">
@@ -252,6 +265,11 @@
             speedMenu: document.getElementById('avp-speed-menu'),
             speedOptions: document.querySelectorAll('.avp-speed-option'),
             settingsMenu: document.getElementById('avp-settings-menu'),
+            settingsQuality: document.getElementById('avp-settings-quality'),
+            qualityCurrent: document.getElementById('avp-quality-current'),
+            qualityMenu: document.getElementById('avp-quality-menu'),
+            qualityBack: document.getElementById('avp-quality-back'),
+            qualityOptions: document.getElementById('avp-quality-options'),
             settingsShortcuts: document.getElementById('avp-settings-shortcuts'),
             shortcutsModal: document.getElementById('avp-shortcuts-modal'),
             shortcutsClose: document.getElementById('avp-shortcuts-close'),

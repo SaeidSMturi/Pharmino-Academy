@@ -177,6 +177,7 @@ namespace Web
             #endregion
 
             // Register DI Services
+            builder.Services.AddHttpClient();
             builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
             builder.Services.AddScoped<IPasswordValidator, PasswordValidator>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();

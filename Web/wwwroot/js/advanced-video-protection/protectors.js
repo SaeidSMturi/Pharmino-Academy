@@ -1,4 +1,4 @@
-﻿// protectors.js
+// protectors.js
 import { debounce } from './utils.js';
 
 export class UIProtectors {
@@ -58,20 +58,12 @@ export class UIProtectors {
     }
 
     setupFocusProtection() {
-        const handleBlur = () => {
+        // Do not pause video when user clicks outside or switches windows
+        window.addEventListener('blur', () => {
             this.ctx.state.focusChanges++;
-            const video = document.getElementById(this.ctx.config.videoElementId);
-            if (video && !video.paused) {
-                video.pause();
-                const overlay = document.getElementById('blurOverlay');
-                if (overlay) overlay.classList.remove('hidden');
-            }
-        };
-
-        window.addEventListener('blur', handleBlur);
+        });
         document.addEventListener('visibilitychange', () => {
             this.ctx.state.visibilityChanges++;
-            if (document.hidden) handleBlur();
         });
     }
 

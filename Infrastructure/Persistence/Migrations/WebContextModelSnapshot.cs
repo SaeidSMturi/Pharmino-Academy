@@ -584,6 +584,15 @@ namespace Infrastructure.Persistence.Migrations
                             DisplayName = "Accountant",
                             IsActive = true,
                             RoleName = "Accountant"
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            CreateDate = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Technical and administrative access to manage courses, videos, users, and roles, excluding financial records",
+                            DisplayName = "IT Administrator",
+                            IsActive = true,
+                            RoleName = "IT"
                         });
                 });
 
@@ -789,6 +798,120 @@ namespace Infrastructure.Persistence.Migrations
                             RolePermissionId = 30,
                             PermissionId = 19,
                             RoleId = 3
+                        },
+                        new
+                        {
+                            RolePermissionId = 31,
+                            PermissionId = 1,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 32,
+                            PermissionId = 2,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 33,
+                            PermissionId = 3,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 34,
+                            PermissionId = 4,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 35,
+                            PermissionId = 5,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 36,
+                            PermissionId = 6,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 37,
+                            PermissionId = 7,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 38,
+                            PermissionId = 8,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 39,
+                            PermissionId = 9,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 40,
+                            PermissionId = 10,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 41,
+                            PermissionId = 11,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 42,
+                            PermissionId = 12,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 43,
+                            PermissionId = 13,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 44,
+                            PermissionId = 14,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 45,
+                            PermissionId = 15,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 46,
+                            PermissionId = 16,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 47,
+                            PermissionId = 17,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 48,
+                            PermissionId = 20,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            RolePermissionId = 49,
+                            PermissionId = 21,
+                            RoleId = 4
                         });
                 });
 

@@ -2,6 +2,7 @@ using Application.Interfaces;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System.Security.Claims;
 using System.Text;
 
@@ -9,31 +10,6 @@ namespace Web.Areas.User.Controllers
 {
     /// <summary>
     /// ── فاز ۲: کنترلر امن HLS ──
-    ///
-    /// سه endpoint برای سرو ایمن فایل‌های HLS:
-    ///
-    ///   GET /User/Hls/Manifest?videoId={id}&amp;sid={sid}&amp;ct={ct}
-    ///       → پلی‌لیست m3u8 بازنویسی‌شده با URL امضاشده برای هر چانک
-    ///
-    ///   GET /User/Hls/Segment?videoId={id}&amp;seg={index}&amp;sid={sid}&amp;st={segToken}
-    ///       → فایل .ts رمزنگاری‌شده پس از اعتبارسنجی توکن per-segment
-    ///
-    ///   GET /User/Hls/Key?videoId={id}&amp;sid={sid}&amp;kt={keyToken}
-    ///       → کلید AES-128 خام (16 بایت) پس از اعتبارسنجی session
-    ///
-    /// مدل امنیتی:
-    ///   ct  = توکن دسترسی (60 دقیقه) — از صفحه Watch تأمین می‌شود
-    ///   st  = توکن per-segment با TTL 120 ثانیه — تعبیه‌شده در m3u8
-    ///   kt  = توکن کلید AES با TTL 5 دقیقه — در EXT-X-KEY تعبیه‌شده در m3u8
-    ///   sid = HMAC-signed session ID — روی هر درخواست اعتبارسنجی می‌شود
-    ///
-    /// جلوگیری از IDM / ابزارهای دانلود:
-    ///   1. توکن‌های کوتاه‌مدت per-segment: دانلود کامل ویدیو بدون session فعال ناممکن
-    ///   2. IP binding در session manager
-    ///   3. اعتبارسنجی heartbeat در SessionManager
-    ///   4. سگمنت‌ها AES-128 رمز شده‌اند; بدون کلید قابل پخش نیستند
-    ///   5. کلید AES فقط با session فعال و توکن معتبر سرو می‌شود
-    ///   6. هدر X-Video-Session در xhrSetup پلیر الزامی است
     /// </summary>
     [Area("User")]
     [Authorize]
@@ -45,6 +21,7 @@ namespace Web.Areas.User.Controllers
         private readonly IVideoSegmentationService _segmentationService;
         private readonly IHlsProcessingService _hlsService;
         private readonly ILogger<HlsController> _logger;
+        private readonly IMemoryCache _cache;
 
         // TTL توکن‌ها
         private const int SegmentTokenTtlSeconds = 120;  // ۲ دقیقه برای هر چانک
@@ -56,7 +33,8 @@ namespace Web.Areas.User.Controllers
             IVideoSessionManager sessionManager,
             IVideoSegmentationService segmentationService,
             IHlsProcessingService hlsService,
-            ILogger<HlsController> logger)
+            ILogger<HlsController> logger,
+            IMemoryCache cache)
         {
             _courseService = courseService;
             _videoTokenService = videoTokenService;
@@ -64,6 +42,28 @@ namespace Web.Areas.User.Controllers
             _segmentationService = segmentationService;
             _hlsService = hlsService;
             _logger = logger;
+            _cache = cache;
+        }
+
+        private async Task<(int CourseId, string VideoGuid)?> GetCachedVideoMetaAsync(int videoId)
+        {
+            string cacheKey = $"Hls_VideoMeta_{videoId}";
+            if (_cache.TryGetValue(cacheKey, out (int CourseId, string VideoGuid) cached))
+            {
+                return cached;
+            }
+
+            var video = await _courseService.GetVideoByIdAsync(videoId);
+            if (video == null) return null;
+
+            var meta = (video.CourseId, Path.GetFileNameWithoutExtension(video.VideoFileName));
+            _cache.Set(cacheKey, meta, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(2),
+                Size = 1
+            });
+
+            return meta;
         }
 
         private int GetCurrentUserId()
@@ -77,12 +77,12 @@ namespace Web.Areas.User.Controllers
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
         /// <summary>
-        /// سرو پلی‌لیست HLS با URL‌های امضاشده per-segment.
+        /// سرو پلی‌لیست HLS با URL‌های امضاشده per-segment یا Master Playlist برای کیفیت‌های چندگانه.
         /// پلی‌لیست اصلی روی دیسک هرگز مستقیم serve نمی‌شود.
         /// MIME: application/vnd.apple.mpegurl
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Manifest(int videoId, string sid, string ct)
+        public async Task<IActionResult> Manifest(int videoId, string sid, string ct, string? quality = null)
         {
             var userId = GetCurrentUserId();
 
@@ -94,31 +94,46 @@ namespace Web.Areas.User.Controllers
                 return Unauthorized(new { error = "Access denied" });
             }
 
-            var video = await _courseService.GetVideoByIdAsync(videoId);
-            if (video == null) return NotFound();
+            var meta = await GetCachedVideoMetaAsync(videoId);
+            if (meta == null) return NotFound();
 
-            var videoGuid = Path.GetFileNameWithoutExtension(video.VideoFileName);
-
-            if (!await _hlsService.HlsExistsAsync(video.CourseId, videoGuid))
+            if (!await _hlsService.HlsExistsAsync(meta.Value.CourseId, meta.Value.VideoGuid))
             {
                 _logger.LogWarning(
                     "HLS files not found — VideoId: {VideoId}, Guid: {Guid}",
-                    videoId, videoGuid);
+                    videoId, meta.Value.VideoGuid);
                 return NotFound(new { error = "HLS stream not available for this video. Please contact support." });
             }
 
-            var rawPlaylist = await _hlsService.ReadPlaylistAsync(video.CourseId, videoGuid);
+            string rawPlaylist;
+            if (string.IsNullOrEmpty(quality))
+            {
+                rawPlaylist = await _hlsService.ReadPlaylistAsync(meta.Value.CourseId, meta.Value.VideoGuid);
 
-            // بازنویسی پلی‌لیست با URL‌های امضاشده
-            var securePlaylist = RewritePlaylist(rawPlaylist, videoId, video.CourseId, videoGuid, userId, sid);
+                // اگر پلی‌لیست اصلی شامل شاخه‌های کیفیت چندگانه باشد، مستر پلی‌لیست بازنویسی می‌شود
+                if (rawPlaylist.Contains("#EXT-X-STREAM-INF", StringComparison.OrdinalIgnoreCase))
+                {
+                    var secureMaster = RewriteMasterPlaylist(rawPlaylist, videoId, sid, ct);
+                    _logger.LogInformation("✅ Multi-Quality HLS Master manifest served — VideoId: {VideoId}, UserId: {UserId}", videoId, userId);
+                    SetSecurityHeaders();
+                    return Content(secureMaster, "application/vnd.apple.mpegurl", Encoding.UTF8);
+                }
 
-            _logger.LogInformation(
-                "✅ HLS manifest served — VideoId: {VideoId}, UserId: {UserId}",
-                videoId, userId);
-
-            SetSecurityHeaders();
-            // MIME صحیح برای HLS که Safari و hls.js هر دو نیاز دارند
-            return Content(securePlaylist, "application/vnd.apple.mpegurl", Encoding.UTF8);
+                // پلی‌لیست تک‌کیفیت سنتی
+                var securePlaylist = RewritePlaylist(rawPlaylist, videoId, meta.Value.CourseId, meta.Value.VideoGuid, userId, sid, null);
+                _logger.LogInformation("✅ HLS single manifest served — VideoId: {VideoId}, UserId: {UserId}", videoId, userId);
+                SetSecurityHeaders();
+                return Content(securePlaylist, "application/vnd.apple.mpegurl", Encoding.UTF8);
+            }
+            else
+            {
+                // خواندن ساب‌پلی‌لیست مربوط به کیفیت درخواستی (مثلاً 1080p, 720p, 480p)
+                rawPlaylist = await _hlsService.ReadVariantPlaylistAsync(meta.Value.CourseId, meta.Value.VideoGuid, quality);
+                var secureVariantPlaylist = RewritePlaylist(rawPlaylist, videoId, meta.Value.CourseId, meta.Value.VideoGuid, userId, sid, quality);
+                _logger.LogInformation("✅ HLS variant manifest served for {Quality} — VideoId: {VideoId}, UserId: {UserId}", quality, videoId, userId);
+                SetSecurityHeaders();
+                return Content(secureVariantPlaylist, "application/vnd.apple.mpegurl", Encoding.UTF8);
+            }
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -130,13 +145,13 @@ namespace Web.Areas.User.Controllers
         /// MIME: video/mp2t
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Segment(int videoId, int seg, string sid, string st)
+        public async Task<IActionResult> Segment(int videoId, int seg, string sid, string st, string? quality = null)
         {
             var userId = GetCurrentUserId();
 
             if (!ValidateSegmentAccess(userId, videoId, seg, sid, st))
             {
-                _logger.LogWarning("🚫 Segment denied — VideoId: {VideoId}, Seg: {Seg}", videoId, seg);
+                _logger.LogWarning("🚫 Segment denied — VideoId: {VideoId}, Seg: {Seg}, Quality: {Quality}", videoId, seg, quality);
                 return Unauthorized(new { error = "Invalid segment token" });
             }
 
@@ -145,27 +160,27 @@ namespace Web.Areas.User.Controllers
                 return Unauthorized(new { error = "Direct URL access not allowed" });
             }
 
-            var video = await _courseService.GetVideoByIdAsync(videoId);
-            if (video == null) return NotFound();
-
-            var videoGuid = Path.GetFileNameWithoutExtension(video.VideoFileName);
+            var meta = await GetCachedVideoMetaAsync(videoId);
+            if (meta == null) return NotFound();
 
             try
             {
-                // 🌟 تغییر کلیدی: دریافت مستقیم استریم از S3 به جای ریختن در آرایه بایت
-                // فرض بر این است که متدی به نام GetSegmentStreamAsync نوشته‌اید
-                var (fileStream, contentLength) = await _hlsService.GetSegmentStreamAsync(video.CourseId, videoGuid, seg);
+                // دریافت مستقیم استریم چانک با توجه به کیفیت انتخابی از باکت / دیسک
+                var (fileStream, contentLength) = await _hlsService.GetSegmentStreamAsync(meta.Value.CourseId, meta.Value.VideoGuid, seg, quality);
 
                 _sessionManager.RecordChunkRequest(sid, 0, contentLength, contentLength, TimeSpan.FromMilliseconds(1));
 
                 SetSecurityHeaders();
+                if (contentLength > 0)
+                {
+                    Response.ContentLength = contentLength;
+                }
 
-                // 🌟 ارسال مستقیم استریم به کلاینت؛ دانلود از S3 و آپلود به کاربر همزمان انجام می‌شود!
                 return File(fileStream, "video/mp2t");
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Segment file not found in Storage — VideoId: {VideoId}, Seg: {Seg}", videoId, seg);
+                _logger.LogWarning(ex, "Segment file not found in Storage — VideoId: {VideoId}, Seg: {Seg}, Quality: {Quality}", videoId, seg, quality);
                 return NotFound();
             }
         }
@@ -187,15 +202,13 @@ namespace Web.Areas.User.Controllers
             if (string.IsNullOrEmpty(kt) || !_videoTokenService.ValidateToken(kt, videoId, userId))
                 return Unauthorized(new { error = "Invalid key token" });
 
-            var video = await _courseService.GetVideoByIdAsync(videoId);
-            if (video == null) return NotFound();
-
-            var videoGuid = Path.GetFileNameWithoutExtension(video.VideoFileName);
+            var meta = await GetCachedVideoMetaAsync(videoId);
+            if (meta == null) return NotFound();
 
             try
             {
                 // 🌟 خواندن مستقیم کلید از باکت
-                var keyBytes = await _hlsService.ReadKeyAsync(video.CourseId, videoGuid);
+                var keyBytes = await _hlsService.ReadKeyAsync(meta.Value.CourseId, meta.Value.VideoGuid);
 
                 Response.Headers.Append("Cache-Control", "private, no-cache, no-store, must-revalidate");
                 Response.Headers.Append("Pragma", "no-cache");
@@ -205,7 +218,7 @@ namespace Web.Areas.User.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "AES key file missing in Storage — VideoId: {VideoId}, Guid: {Guid}", videoId, videoGuid);
+                _logger.LogError(ex, "AES key file missing in Storage — VideoId: {VideoId}, Guid: {Guid}", videoId, meta.Value.VideoGuid);
                 return NotFound();
             }
         }
@@ -272,8 +285,43 @@ namespace Web.Areas.User.Controllers
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 📝 بازنویسی پلی‌لیست
+        // 📝 بازنویسی پلی‌لیست مستر و ساب‌پلی‌لیست‌ها
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        /// <summary>
+        /// پلی‌لیست مستر شامل شاخه‌های کیفیت‌های مختلف (1080p, 720p, 480p) را با لینک‌های امن Manifest بازنویسی می‌کند.
+        /// </summary>
+        private string RewriteMasterPlaylist(string rawMaster, int videoId, string sid, string ct)
+        {
+            var lines = rawMaster.Split('\n');
+            var result = new StringBuilder(rawMaster.Length * 2);
+
+            foreach (var rawLine in lines)
+            {
+                var line = rawLine.TrimEnd('\r');
+                if (line.EndsWith(".m3u8", StringComparison.OrdinalIgnoreCase) && !line.StartsWith("#"))
+                {
+                    // نام کیفیت بر اساس نام فایل پلی‌لیست (مثلاً 1080p یا 720p یا 480p)
+                    var qualityName = Path.GetFileNameWithoutExtension(line);
+                    var variantUrl = Url.Action("Manifest", "Hls", new
+                    {
+                        Area = "User",
+                        videoId,
+                        sid,
+                        ct,
+                        quality = qualityName
+                    }, Request.Scheme)!;
+
+                    result.AppendLine(variantUrl);
+                }
+                else
+                {
+                    result.AppendLine(line);
+                }
+            }
+
+            return result.ToString();
+        }
 
         /// <summary>
         /// پلی‌لیست اصلی FFmpeg را با URL‌های امن جایگزین می‌کند:
@@ -283,7 +331,8 @@ namespace Web.Areas.User.Controllers
         private string RewritePlaylist(
             string rawPlaylist,
             int videoId, int courseId, string videoGuid,
-            int userId, string sid)
+            int userId, string sid,
+            string? quality)
         {
             // توکن کلید AES با TTL کوتاه (5 دقیقه)
             var keyToken = _videoTokenService.GenerateToken(videoId, userId, KeyTokenTtlMinutes);
@@ -317,12 +366,10 @@ namespace Web.Areas.User.Controllers
                 }
 
                 // ── جایگزینی مسیر .ts با URL امضاشده per-segment ──
-                // ── جایگزینی مسیر .ts با URL امضاشده per-segment ──
                 if (line.EndsWith(HlsProcessingService.SegmentExtension, StringComparison.OrdinalIgnoreCase)
                     && !line.StartsWith("#"))
                 {
-                    // تغییر مهم: TTL به ۶ ساعت افزایش یافت. 
-                    // امنیت لحظه‌ای توسط SessionManager و Heartbeat تامین می‌شود نه توکن سگمنت.
+                    // TTL شش ساعت، اعتبارسنجی زنده توسط SessionManager انجام می‌شود
                     var segToken = _segmentationService.GenerateSegmentToken(
                         videoId, userId, segIndex,
                         DateTime.UtcNow.AddHours(6));
@@ -333,7 +380,8 @@ namespace Web.Areas.User.Controllers
                         videoId,
                         seg = segIndex,
                         sid,
-                        st = segToken
+                        st = segToken,
+                        quality = quality
                     }, Request.Scheme)!;
 
                     result.AppendLine(segUrl);

@@ -1,4 +1,4 @@
-﻿export class PlayerEvents {
+export class PlayerEvents {
     constructor(context) {
         this.ctx = context;
     }
@@ -39,8 +39,95 @@
         // Settings and Menus
         this.ctx.elements.speedBtn.addEventListener('click', (e) => { e.stopPropagation(); this.ctx.controls.toggleSpeedMenu(); });
         this.ctx.elements.settingsBtn.addEventListener('click', (e) => { e.stopPropagation(); this.ctx.controls.toggleSettingsMenu(); });
+        if (this.ctx.elements.settingsQuality) {
+            this.ctx.elements.settingsQuality.addEventListener('click', (e) => { e.stopPropagation(); this.ctx.controls.openQualityMenu(); });
+        }
+        if (this.ctx.elements.qualityBack) {
+            this.ctx.elements.qualityBack.addEventListener('click', (e) => { e.stopPropagation(); this.ctx.controls.backToSettingsMenu(); });
+        }
         this.ctx.elements.settingsShortcuts.addEventListener('click', () => this.ctx.controls.showShortcutsModal());
         this.ctx.elements.shortcutsClose.addEventListener('click', () => this.ctx.controls.hideShortcutsModal());
+
+        // Multi-Quality HLS Listener
+        video.addEventListener('hlsLevelsLoaded', (e) => {
+            const { levels, currentLevel, setQuality } = e.detail;
+            if (!levels || levels.length <= 1) return;
+
+            if (this.ctx.elements.settingsQuality) {
+                this.ctx.elements.settingsQuality.style.display = 'flex';
+            }
+
+            const qualityList = this.ctx.elements.qualityOptions;
+            if (!qualityList) return;
+            qualityList.innerHTML = '';
+
+            const updateActiveItem = (selectedIndex, labelText) => {
+                if (this.ctx.elements.qualityCurrent) {
+                    this.ctx.elements.qualityCurrent.textContent = labelText;
+                    this.ctx.elements.qualityCurrent.dataset.manual = selectedIndex === -1 ? 'false' : 'true';
+                }
+                const items = qualityList.querySelectorAll('.avp-settings-item');
+                items.forEach(el => {
+                    const check = el.querySelector('.fa-check');
+                    if (check) check.remove();
+                });
+                const activeItem = qualityList.querySelector(`[data-level="${selectedIndex}"]`);
+                if (activeItem) {
+                    activeItem.insertAdjacentHTML('beforeend', '<i class="fas fa-check" style="margin-left:auto; color:#42eaff;"></i>');
+                }
+            };
+
+            // Auto Option
+            const autoOpt = document.createElement('div');
+            autoOpt.className = 'avp-settings-item';
+            autoOpt.dataset.level = '-1';
+            autoOpt.innerHTML = `<span>Auto</span>${currentLevel === -1 ? '<i class="fas fa-check" style="margin-left:auto; color:#42eaff;"></i>' : ''}`;
+            autoOpt.addEventListener('click', (evt) => {
+                evt.stopPropagation();
+                setQuality(-1);
+                updateActiveItem(-1, 'Auto');
+                this.ctx.controls.closeAllMenus();
+            });
+            qualityList.appendChild(autoOpt);
+
+            const formatQualityLabel = (lvl) => {
+                if (lvl.attrs && lvl.attrs.NAME) return lvl.attrs.NAME;
+                if (lvl.name) return lvl.name;
+                if (lvl.height) {
+                    if (lvl.height >= 800) return '1080p';
+                    if (lvl.height >= 600) return '720p';
+                    if (lvl.height >= 400) return '480p';
+                    return `${lvl.height}p`;
+                }
+                return 'Standard';
+            };
+
+            // Level Options
+            levels.forEach((lvl, idx) => {
+                const opt = document.createElement('div');
+                const label = formatQualityLabel(lvl);
+                opt.className = 'avp-settings-item';
+                opt.dataset.level = idx.toString();
+                opt.innerHTML = `<span>${label}</span>${currentLevel === idx ? '<i class="fas fa-check" style="margin-left:auto; color:#42eaff;"></i>' : ''}`;
+                opt.addEventListener('click', (evt) => {
+                    evt.stopPropagation();
+                    setQuality(idx);
+                    updateActiveItem(idx, label);
+                    this.ctx.controls.closeAllMenus();
+                });
+                qualityList.appendChild(opt);
+            });
+        });
+
+        video.addEventListener('hlsLevelSwitched', (e) => {
+            const { level, levelData } = e.detail;
+            if (this.ctx.elements.qualityCurrent && levelData) {
+                if (this.ctx.elements.qualityCurrent.dataset.manual !== 'true') {
+                    const label = (levelData.attrs && levelData.attrs.NAME) || levelData.name || (levelData.height >= 800 ? '1080p' : (levelData.height >= 600 ? '720p' : (levelData.height >= 400 ? '480p' : `${levelData.height}p`)));
+                    this.ctx.elements.qualityCurrent.textContent = `Auto (${label})`;
+                }
+            }
+        });
 
         this.ctx.elements.speedOptions.forEach(option => {
             option.addEventListener('click', (e) => {

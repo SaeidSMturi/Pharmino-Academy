@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -45,10 +45,11 @@ namespace Application.Services
                 if (fileInfo.Length == 0)
                     continue;
 
+                var relativePath = Path.GetRelativePath(_logsRootPath, filePath).Replace('\\', '/');
                 var fileDto = new LogFileInfoDto
                 {
-                    FileName = Path.Combine(fileInfo.Directory?.Name ?? "", fileInfo.Name),
-                    FilePath = filePath
+                    FileName = Path.Combine(fileInfo.Directory?.Name ?? "", fileInfo.Name).Replace('\\', '/'),
+                    FilePath = relativePath
                 };
 
                 var parsedErrors = new List<ParsedLogEntry>();
@@ -160,13 +161,46 @@ namespace Application.Services
 
         public async Task<string> GetRawLogFileContentAsync(string filePath)
         {
-            if (!File.Exists(filePath))
+            if (string.IsNullOrWhiteSpace(filePath))
+                throw new ArgumentException("Log file path cannot be empty.", nameof(filePath));
+
+            // Prevent path traversal sequences
+            if (filePath.Contains(".."))
+            {
+                throw new UnauthorizedAccessException("Path traversal sequences are strictly forbidden.");
+            }
+
+            // Canonicalize the allowed root directory
+            string canonicalRoot = Path.GetFullPath(_logsRootPath);
+            if (!canonicalRoot.EndsWith(Path.DirectorySeparatorChar.ToString()))
+            {
+                canonicalRoot += Path.DirectorySeparatorChar;
+            }
+
+            // Resolve full candidate path safely
+            string fullPath = Path.IsPathRooted(filePath)
+                ? Path.GetFullPath(filePath)
+                : Path.GetFullPath(Path.Combine(_logsRootPath, filePath));
+
+            // Validate that the resolved path is strictly within the allowed Logs directory
+            if (!fullPath.StartsWith(canonicalRoot, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new UnauthorizedAccessException("Access to files outside the logs directory is forbidden.");
+            }
+
+            // Validate file extension is strictly .txt
+            if (!string.Equals(Path.GetExtension(fullPath), ".txt", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new UnauthorizedAccessException("Only .txt log files may be accessed.");
+            }
+
+            if (!File.Exists(fullPath))
                 throw new FileNotFoundException("The specified log file was not found.");
 
             try
             {
                 // Using FileShare.ReadWrite to bypass exclusive write locks by Serilog
-                using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 using (var reader = new StreamReader(stream))
                 {
                     return await reader.ReadToEndAsync();

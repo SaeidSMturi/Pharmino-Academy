@@ -70,8 +70,12 @@ namespace Infrastructure.Services
         public string GetKeyPath(int courseId, string videoGuid) =>
             $"{GetHlsDirectory(courseId, videoGuid)}/enc.key";
 
-        public string GetSegmentPath(int courseId, string videoGuid, int segIndex) =>
-            $"{GetHlsDirectory(courseId, videoGuid)}/seg{segIndex:D3}.ts";
+        public string GetSegmentPath(int courseId, string videoGuid, int segIndex, string? quality = null)
+        {
+            if (!string.IsNullOrEmpty(quality))
+                return $"{GetHlsDirectory(courseId, videoGuid)}/seg_{quality}_{segIndex:D3}.ts";
+            return $"{GetHlsDirectory(courseId, videoGuid)}/seg{segIndex:D3}.ts";
+        }
 
         public async Task<bool> HlsExistsAsync(int courseId, string videoGuid) =>
             await _storageService.FileExistsAsync(GetHlsDirectory(courseId, videoGuid), "index.m3u8");
@@ -79,17 +83,41 @@ namespace Infrastructure.Services
         public async Task<string> ReadPlaylistAsync(int courseId, string videoGuid) =>
             await _storageService.ReadFileTextAsync(GetHlsDirectory(courseId, videoGuid), "index.m3u8");
 
+        public async Task<string> ReadVariantPlaylistAsync(int courseId, string videoGuid, string quality) =>
+            await _storageService.ReadFileTextAsync(GetHlsDirectory(courseId, videoGuid), $"{quality}.m3u8");
+
         public async Task<byte[]> ReadKeyAsync(int courseId, string videoGuid) =>
             await _storageService.ReadFileBytesAsync(GetHlsDirectory(courseId, videoGuid), "enc.key");
 
-        public async Task<byte[]> ReadSegmentAsync(int courseId, string videoGuid, int segIndex) =>
-            await _storageService.ReadFileBytesAsync(GetHlsDirectory(courseId, videoGuid), $"seg{segIndex:D3}.ts");
-
-        public async Task<(Stream fileStream, long contentLength)> GetSegmentStreamAsync(int courseId, string videoGuid, int segmentIndex)
+        public async Task<byte[]> ReadSegmentAsync(int courseId, string videoGuid, int segIndex, string? quality = null)
         {
-            string fileName = $"seg{segmentIndex:D3}.ts";
+            string dir = GetHlsDirectory(courseId, videoGuid);
+            if (!string.IsNullOrEmpty(quality))
+            {
+                string qualityFileName = $"seg_{quality}_{segIndex:D3}.ts";
+                if (await _storageService.FileExistsAsync(dir, qualityFileName))
+                    return await _storageService.ReadFileBytesAsync(dir, qualityFileName);
+            }
+            return await _storageService.ReadFileBytesAsync(dir, $"seg{segIndex:D3}.ts");
+        }
+
+        public async Task<(Stream fileStream, long contentLength)> GetSegmentStreamAsync(int courseId, string videoGuid, int segmentIndex, string? quality = null)
+        {
             string directoryPath = GetHlsDirectory(courseId, videoGuid);
-            return await _storageService.GetFileStreamAsync(directoryPath, fileName);
+            if (!string.IsNullOrEmpty(quality))
+            {
+                string qualityFileName = $"seg_{quality}_{segmentIndex:D3}.ts";
+                try
+                {
+                    return await _storageService.GetFileStreamAsync(directoryPath, qualityFileName);
+                }
+                catch (FileNotFoundException)
+                {
+                    // Fallback to legacy single-quality filename if variant not found
+                }
+            }
+            string fallbackFileName = $"seg{segmentIndex:D3}.ts";
+            return await _storageService.GetFileStreamAsync(directoryPath, fallbackFileName);
         }
 
         public async Task<int> GetSegmentCountAsync(int courseId, string videoGuid)
@@ -128,7 +156,6 @@ namespace Infrastructure.Services
                 }, cancellationToken);
 
                 var tempPlaylistPath = Path.Combine(tempDir, "index.m3u8");
-                var segmentPattern = Path.Combine(tempDir, "seg%03d.ts");
 
                 var conversion = FFmpeg.Conversions.New();
 
@@ -149,9 +176,12 @@ namespace Infrastructure.Services
                     };
                 }
 
-                var rawArguments = $"-y -i \"{inputFilePath}\" -c:v libx264 -preset fast -crf 22 -c:a aac -b:a 128k -vf scale=-2:720 -profile:v baseline -level:v 3.1 -movflags +faststart -force_key_frames \"expr:gte(t,n_forced*5)\" -hls_time 5 -hls_list_size 0 -hls_segment_type mpegts -hls_flags independent_segments -hls_segment_filename \"{segmentPattern}\" -hls_key_info_file \"{keyInfoPath}\" -f hls \"{tempPlaylistPath}\"";
+                var cleanTempDir = tempDir.Replace("\\", "/");
+                var cleanKeyInfo = keyInfoPath.Replace("\\", "/");
 
-                _logger.LogInformation("Starting HLS processing (Temp Dir) — CourseId: {CourseId}, VideoGuid: {Guid}", courseId, videoGuid);
+                var rawArguments = $"-y -i \"{inputFilePath}\" -map 0:v:0 -map 0:a:0? -map 0:v:0 -map 0:a:0? -map 0:v:0 -map 0:a:0? -c:v:0 copy -c:a:0 aac -b:a:0 128k -filter:v:1 scale=-2:720 -c:v:1 libx264 -preset ultrafast -crf 24 -c:a:1 aac -b:a:1 128k -filter:v:2 scale=-2:480 -c:v:2 libx264 -preset ultrafast -crf 26 -c:a:2 aac -b:a:2 96k -f hls -hls_time 5 -hls_list_size 0 -hls_key_info_file \"{cleanKeyInfo}\" -hls_flags independent_segments -hls_segment_type mpegts -hls_segment_filename \"{cleanTempDir}/seg_%v_%03d.ts\" -master_pl_name index.m3u8 -var_stream_map \"v:0,a:0,name:1080p v:1,a:1,name:720p v:2,a:2,name:480p\" \"{cleanTempDir}/%v.m3u8\"";
+
+                _logger.LogInformation("Starting Multi-Quality HLS processing (Temp Dir) — CourseId: {CourseId}, VideoGuid: {Guid}", courseId, videoGuid);
 
                 try
                 {

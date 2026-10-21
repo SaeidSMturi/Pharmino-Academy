@@ -192,17 +192,13 @@ C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\scopedcss\Views\Shared
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\scopedcss\bundle\Web.styles.css
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\scopedcss\projectbundle\Web.bundle.scp.css
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\6lpa2tr6ex-{0}-cymw47bwax-cymw47bwax.gz
-C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\rj1i4o2db1-{0}-qogyj6ishk-qogyj6ishk.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\1ayw5voaa5-{0}-d9t0ry3mjf-d9t0ry3mjf.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\704jwtt7bs-{0}-s62qkxfvkf-s62qkxfvkf.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\bdfeud9h6e-{0}-1ieaimc0zs-1ieaimc0zs.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\mo5xe3o7ip-{0}-61n19gt1b8-61n19gt1b8.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\xuph0orury-{0}-kao2ds4qcg-kao2ds4qcg.gz
-C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\15c8sfbgbu-{0}-jcn93gq2k0-jcn93gq2k0.gz
-C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\rqkye4xa2r-{0}-umktlogxv0-umktlogxv0.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\c7c8xhpwka-{0}-24tr4vdcjn-24tr4vdcjn.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\qxtltq3tzw-{0}-gtxjp1wxkm-gtxjp1wxkm.gz
-C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\62j3x091fd-{0}-5byfkmhimr-5byfkmhimr.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\opb8szq0ka-{0}-93wqrk750r-93wqrk750r.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\czcm2eovn5-{0}-3f6ah0a671-3f6ah0a671.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\nk8dogfvvt-{0}-smxqa5gqq0-smxqa5gqq0.gz
@@ -210,7 +206,6 @@ C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\2s28s4nlbv-
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\3rgcb30j84-{0}-hj9fzf3fdj-hj9fzf3fdj.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\jrbsexuqkk-{0}-2kmti0wmlm-2kmti0wmlm.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\ezcmgm95k5-{0}-u9e2av2m7w-u9e2av2m7w.gz
-C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\d0xy4joxk5-{0}-19n73lt4vc-19n73lt4vc.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\iykz3ia9fw-{0}-qujhvtfwd4-qujhvtfwd4.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\l3wkktrrp2-{0}-gz82qzyp2e-gz82qzyp2e.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\95wzysxikh-{0}-2upq22cokd-2upq22cokd.gz
@@ -293,7 +288,6 @@ C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\refint\Web.dll
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.pdb
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.genruntimeconfig.cache
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\ref\Web.dll
-C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\staticwebassets.upToDateCheck.txt
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\web.config
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\AppData\VideoEngine\version.json
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\appsettings.Development.json
@@ -488,18 +482,14 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\scop
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\scopedcss\bundle\Web.styles.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\scopedcss\projectbundle\Web.bundle.scp.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\6lpa2tr6ex-{0}-cymw47bwax-cymw47bwax.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\rj1i4o2db1-{0}-qogyj6ishk-qogyj6ishk.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\1ayw5voaa5-{0}-d9t0ry3mjf-d9t0ry3mjf.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\704jwtt7bs-{0}-s62qkxfvkf-s62qkxfvkf.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\bdfeud9h6e-{0}-1ieaimc0zs-1ieaimc0zs.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\b2msq9thvz-{0}-dwvehyt1bp-dwvehyt1bp.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\mo5xe3o7ip-{0}-61n19gt1b8-61n19gt1b8.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\xuph0orury-{0}-kao2ds4qcg-kao2ds4qcg.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\15c8sfbgbu-{0}-jcn93gq2k0-jcn93gq2k0.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\rqkye4xa2r-{0}-umktlogxv0-umktlogxv0.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\c7c8xhpwka-{0}-24tr4vdcjn-24tr4vdcjn.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\qxtltq3tzw-{0}-gtxjp1wxkm-gtxjp1wxkm.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\62j3x091fd-{0}-5byfkmhimr-5byfkmhimr.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\opb8szq0ka-{0}-93wqrk750r-93wqrk750r.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\czcm2eovn5-{0}-3f6ah0a671-3f6ah0a671.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\nk8dogfvvt-{0}-smxqa5gqq0-smxqa5gqq0.gz
@@ -507,7 +497,6 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\comp
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\3rgcb30j84-{0}-hj9fzf3fdj-hj9fzf3fdj.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\jrbsexuqkk-{0}-2kmti0wmlm-2kmti0wmlm.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\ezcmgm95k5-{0}-u9e2av2m7w-u9e2av2m7w.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\d0xy4joxk5-{0}-19n73lt4vc-19n73lt4vc.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\iykz3ia9fw-{0}-qujhvtfwd4-qujhvtfwd4.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\l3wkktrrp2-{0}-gz82qzyp2e-gz82qzyp2e.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\95wzysxikh-{0}-2upq22cokd-2upq22cokd.gz
@@ -610,3 +599,37 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runt
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\win-x64\native\pdfium.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\win-x86\native\LICENSE
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\runtimes\win-x86\native\pdfium.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\Web.sourcelink.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\rj1i4o2db1-{0}-zw6008a3ed-zw6008a3ed.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\15c8sfbgbu-{0}-n1w7lfdwi0-n1w7lfdwi0.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\62j3x091fd-{0}-62vwscbxhq-62vwscbxhq.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\rqkye4xa2r-{0}-99emilyk1j-99emilyk1j.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\d0xy4joxk5-{0}-tilkjcuxzf-tilkjcuxzf.gz
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Assets\Fonts\DejaVuSans-Bold.ttf
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Assets\Fonts\DejaVuSansMono.ttf
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\Docnet.Core.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\SixLabors.ImageSharp.Drawing.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\linux-arm\native\LICENSE
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\linux-arm\native\pdfium.so
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\linux-arm64\native\LICENSE
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\linux-arm64\native\pdfium.so
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\linux\native\LICENSE
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\linux\native\pdfium.so
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\osx-arm64\native\LICENSE
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\osx-arm64\native\pdfium.dylib
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\osx-x64\native\LICENSE
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\osx-x64\native\pdfium.dylib
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\win-x64\native\LICENSE
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\win-x64\native\pdfium.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\win-x86\native\LICENSE
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\runtimes\win-x86\native\pdfium.dll
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\Web.sourcelink.json
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\ar\Web.resources.cs
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\en\Web.resources.cs
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\rj1i4o2db1-{0}-zw6008a3ed-zw6008a3ed.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\b2msq9thvz-{0}-dwvehyt1bp-dwvehyt1bp.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\15c8sfbgbu-{0}-n1w7lfdwi0-n1w7lfdwi0.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\rqkye4xa2r-{0}-99emilyk1j-99emilyk1j.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\62j3x091fd-{0}-62vwscbxhq-62vwscbxhq.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\d0xy4joxk5-{0}-tilkjcuxzf-tilkjcuxzf.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\x2a1khw7i6-{0}-0v4nk7ihdf-0v4nk7ihdf.gz

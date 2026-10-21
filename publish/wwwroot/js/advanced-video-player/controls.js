@@ -1,4 +1,4 @@
-﻿export class PlayerControls {
+export class PlayerControls {
     constructor(context) {
         this.ctx = context; // دسترسی به کلاس اصلی AdvancedVideoPlayer
     }
@@ -176,18 +176,41 @@
      * ⚙️ Menus & Modals
      */
     toggleSpeedMenu() {
+        this.closeQualityMenu();
         this.ctx.elements.settingsMenu.classList.remove('active');
         this.ctx.elements.speedMenu.classList.toggle('active');
     }
 
     toggleSettingsMenu() {
+        this.closeQualityMenu();
         this.ctx.elements.speedMenu.classList.remove('active');
         this.ctx.elements.settingsMenu.classList.toggle('active');
     }
 
+    openQualityMenu() {
+        if (this.ctx.elements.settingsMenu) this.ctx.elements.settingsMenu.classList.remove('active');
+        if (this.ctx.elements.qualityMenu) {
+            this.ctx.elements.qualityMenu.style.display = 'block';
+            this.ctx.elements.qualityMenu.classList.add('active');
+        }
+    }
+
+    closeQualityMenu() {
+        if (this.ctx.elements.qualityMenu) {
+            this.ctx.elements.qualityMenu.classList.remove('active');
+            this.ctx.elements.qualityMenu.style.display = 'none';
+        }
+    }
+
+    backToSettingsMenu() {
+        this.closeQualityMenu();
+        if (this.ctx.elements.settingsMenu) this.ctx.elements.settingsMenu.classList.add('active');
+    }
+
     closeAllMenus() {
-        this.ctx.elements.speedMenu.classList.remove('active');
-        this.ctx.elements.settingsMenu.classList.remove('active');
+        if (this.ctx.elements.speedMenu) this.ctx.elements.speedMenu.classList.remove('active');
+        if (this.ctx.elements.settingsMenu) this.ctx.elements.settingsMenu.classList.remove('active');
+        this.closeQualityMenu();
     }
 
     showShortcutsModal() {

@@ -18,15 +18,16 @@ namespace Application.Interfaces
         string GetHlsDirectory(int courseId, string videoGuid);
         Task<bool> HlsExistsAsync(int courseId, string videoGuid);
         Task<string> ReadPlaylistAsync(int courseId, string videoGuid);
+        Task<string> ReadVariantPlaylistAsync(int courseId, string videoGuid, string quality);
         Task<byte[]> ReadKeyAsync(int courseId, string videoGuid);
-        Task<byte[]> ReadSegmentAsync(int courseId, string videoGuid, int segIndex);
+        Task<byte[]> ReadSegmentAsync(int courseId, string videoGuid, int segIndex, string? quality = null);
 
         // 🎬 GetSegmentStreamAsync
-        Task<(Stream fileStream, long contentLength)> GetSegmentStreamAsync(int courseId, string videoGuid, int segmentIndex);
+        Task<(Stream fileStream, long contentLength)> GetSegmentStreamAsync(int courseId, string videoGuid, int segmentIndex, string? quality = null);
 
         Task<int> GetSegmentCountAsync(int courseId, string videoGuid);
 
         string GetKeyPath(int courseId, string videoGuid);
-        string GetSegmentPath(int courseId, string videoGuid, int segIndex);
+        string GetSegmentPath(int courseId, string videoGuid, int segIndex, string? quality = null);
     }
 }

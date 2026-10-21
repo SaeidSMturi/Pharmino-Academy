@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+using Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,12 +25,26 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpGet("view-raw")]
-        public async Task<IActionResult> ViewRaw([FromQuery] string filePath)
+        public async Task<IActionResult> ViewRaw([FromQuery] string? logFile, [FromQuery] string? filePath)
         {
+            var target = !string.IsNullOrWhiteSpace(logFile) ? logFile : filePath;
+            if (string.IsNullOrWhiteSpace(target))
+            {
+                return BadRequest("A log file path must be provided.");
+            }
+
             try
             {
-                var content = await _logManagerService.GetRawLogFileContentAsync(filePath);
+                var content = await _logManagerService.GetRawLogFileContentAsync(target);
                 return Content(content, "text/plain");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return BadRequest($"Security violation: {ex.Message}");
+            }
+            catch (FileNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {

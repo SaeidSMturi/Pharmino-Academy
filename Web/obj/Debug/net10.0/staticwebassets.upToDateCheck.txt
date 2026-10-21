@@ -182,3 +182,5 @@ wwwroot\sitemap_index.xml
 wwwroot\sitemap_pages.xml
 wwwroot\sitemap_posts.xml
 wwwroot\sitemap_products.xml
+wwwroot\uploads\courses\0ef00181-1d4a-4c95-b092-9ae556f5eb60.gif
+wwwroot\uploads\posts\1c3e0af6-f84b-41b6-adbe-9fab4e37112d.gif

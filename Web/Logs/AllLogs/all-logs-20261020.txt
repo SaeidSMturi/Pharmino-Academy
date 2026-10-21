@@ -1,0 +1,280 @@
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'CourseEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'PaymentTransaction'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'VideoProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'Post'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'AccountLockHistory'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SuspiciousActivity'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserActiveSession'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserLastKnownLocation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+No store type was specified for the decimal property 'PaymentAmount' on entity type 'CourseEnrollment'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+No store type was specified for the decimal property 'Price' on entity type 'CoursePdf'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+No store type was specified for the decimal property 'DataDecimal' on entity type 'Setting'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'CourseEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'PaymentTransaction'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'VideoProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'Post'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'AccountLockHistory'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SuspiciousActivity'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserActiveSession'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserLastKnownLocation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+No store type was specified for the decimal property 'Price' on entity type 'Course'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+No store type was specified for the decimal property 'PaymentAmount' on entity type 'CourseEnrollment'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+No store type was specified for the decimal property 'Price' on entity type 'CoursePdf'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:47] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+No store type was specified for the decimal property 'DataDecimal' on entity type 'Setting'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:48] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (172ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:48] [فایل/بخش: Microsoft.EntityFrameworkCore.Migrations]
+Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:49] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (200ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:49] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (137ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:49] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (183ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:50] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (174ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:50] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (260ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:50] [فایل/بخش: Microsoft.EntityFrameworkCore.Migrations]
+Applying migration '20261020164807_AddITRoleWithNonFinancialPermissions'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:50] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (167ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'RoleId', N'CreateDate', N'Description', N'DisplayName', N'IsActive', N'RoleName') AND [object_id] = OBJECT_ID(N'[Roles]'))
+    SET IDENTITY_INSERT [Roles] ON;
+INSERT INTO [Roles] ([RoleId], [CreateDate], [Description], [DisplayName], [IsActive], [RoleName])
+VALUES (4, '2026-01-01T00:00:00.0000000Z', N'Technical and administrative access to manage courses, videos, users, and roles, excluding financial records', N'IT Administrator', CAST(1 AS bit), N'IT');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'RoleId', N'CreateDate', N'Description', N'DisplayName', N'IsActive', N'RoleName') AND [object_id] = OBJECT_ID(N'[Roles]'))
+    SET IDENTITY_INSERT [Roles] OFF;
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:50] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (234ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'RolePermissionId', N'PermissionId', N'RoleId') AND [object_id] = OBJECT_ID(N'[RolePermissions]'))
+    SET IDENTITY_INSERT [RolePermissions] ON;
+INSERT INTO [RolePermissions] ([RolePermissionId], [PermissionId], [RoleId])
+VALUES (31, 1, 4),
+(32, 2, 4),
+(33, 3, 4),
+(34, 4, 4),
+(35, 5, 4),
+(36, 6, 4),
+(37, 7, 4),
+(38, 8, 4),
+(39, 9, 4),
+(40, 10, 4),
+(41, 11, 4),
+(42, 12, 4),
+(43, 13, 4),
+(44, 14, 4),
+(45, 15, 4),
+(46, 16, 4),
+(47, 17, 4),
+(48, 20, 4),
+(49, 21, 4);
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'RolePermissionId', N'PermissionId', N'RoleId') AND [object_id] = OBJECT_ID(N'[RolePermissions]'))
+    SET IDENTITY_INSERT [RolePermissions] OFF;
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:50] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (148ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20261020164807_AddITRoleWithNonFinancialPermissions', N'10.0.10');
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-20 20:48:51] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (143ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+
+--------------------------------------------------
+
