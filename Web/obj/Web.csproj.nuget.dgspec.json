@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj": {}
+    "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\user\\Desktop\\Pharmacists\\Application\\Application.csproj": {
+    "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmacists\\Application\\Application.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Application\\Application.csproj",
+        "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Application\\obj\\",
+        "outputPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -34,8 +34,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\user\\Desktop\\Pharmacists\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Domain\\Domain.csproj"
+              "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj"
               }
             }
           }
@@ -499,14 +499,14 @@
         }
       }
     },
-    "C:\\Users\\user\\Desktop\\Pharmacists\\Domain\\Domain.csproj": {
+    "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmacists\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Domain\\Domain.csproj",
+        "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -841,14 +841,14 @@
         }
       }
     },
-    "C:\\Users\\user\\Desktop\\Pharmacists\\Infrastructure\\Infrastructure.csproj": {
+    "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmacists\\Infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Infrastructure\\Infrastructure.csproj",
+        "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -871,11 +871,11 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\user\\Desktop\\Pharmacists\\Application\\Application.csproj": {
-                "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Application\\Application.csproj"
+              "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj"
               },
-              "C:\\Users\\user\\Desktop\\Pharmacists\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Domain\\Domain.csproj"
+              "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj"
               }
             }
           }
@@ -1361,14 +1361,14 @@
         }
       }
     },
-    "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj": {
+    "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
         "projectName": "Web",
-        "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+        "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\obj\\",
+        "outputPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -1391,11 +1391,11 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\user\\Desktop\\Pharmacists\\Application\\Application.csproj": {
-                "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Application\\Application.csproj"
+              "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj"
               },
-              "C:\\Users\\user\\Desktop\\Pharmacists\\Infrastructure\\Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Infrastructure\\Infrastructure.csproj"
+              "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj"
               }
             }
           }

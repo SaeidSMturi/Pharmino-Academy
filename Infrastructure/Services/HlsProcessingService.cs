@@ -55,7 +55,10 @@ namespace Infrastructure.Services
                 if (await _storageService.FileExistsAsync(dir, qualityFileName))
                     return await _storageService.ReadFileBytesAsync(dir, qualityFileName);
             }
-            return await _storageService.ReadFileBytesAsync(dir, $"{SegmentPrefix}{segIndex:D3}{SegmentExtension}");
+            string fallbackFileName = $"{SegmentPrefix}{segIndex:D3}{SegmentExtension}";
+            if (await _storageService.FileExistsAsync(dir, fallbackFileName))
+                return await _storageService.ReadFileBytesAsync(dir, fallbackFileName);
+            return await _storageService.ReadFileBytesAsync(dir, $"{SegmentPrefix}_{segIndex:D3}{SegmentExtension}");
         }
 
         public async Task<(Stream fileStream, long contentLength)> GetSegmentStreamAsync(int courseId, string videoGuid, int segmentIndex, string? quality = null)
@@ -70,11 +73,19 @@ namespace Infrastructure.Services
                 }
                 catch (FileNotFoundException)
                 {
-                    // Fallback to legacy single-quality filename if variant not found
+                    // Fallback to single-quality filename if variant not found
                 }
             }
             string fallbackFileName = $"{SegmentPrefix}{segmentIndex:D3}{SegmentExtension}";
-            return await _storageService.GetFileStreamAsync(directoryPath, fallbackFileName);
+            try
+            {
+                return await _storageService.GetFileStreamAsync(directoryPath, fallbackFileName);
+            }
+            catch (FileNotFoundException)
+            {
+                string altFileName = $"{SegmentPrefix}_{segmentIndex:D3}{SegmentExtension}";
+                return await _storageService.GetFileStreamAsync(directoryPath, altFileName);
+            }
         }
 
         public async Task<int> GetSegmentCountAsync(int courseId, string videoGuid)
@@ -96,6 +107,7 @@ namespace Infrastructure.Services
 
         public async Task<HlsProcessingResult> ProcessVideoAsync(
             int courseId, string inputFilePath, string videoGuid,
+            bool multiQuality = false,
             IProgress<int>? progress = null,
             CancellationToken cancellationToken = default)
         {
@@ -117,8 +129,9 @@ namespace Infrastructure.Services
 
                 var tempPlaylistPath = Path.Combine(tempDir, PlaylistFileName);
 
-                var ffmpegArgs = BuildFfmpegArgs(inputFilePath, tempDir, keyInfoPath);
-                _logger.LogInformation("🎬 Starting Multi-Quality HLS FFmpeg (Smart Copy + Ultrafast) — CourseId: {CourseId}, VideoGuid: {Guid}", courseId, videoGuid);
+                var ffmpegArgs = BuildFfmpegArgs(inputFilePath, tempDir, keyInfoPath, multiQuality);
+                _logger.LogInformation("🎬 Starting HLS FFmpeg (Mode: {Mode}, hls_time: 10s) — CourseId: {CourseId}, VideoGuid: {Guid}",
+                    multiQuality ? "Multi-Quality (1080p+720p+480p)" : "Fast Smart Copy", courseId, videoGuid);
 
                 var runResult = await RunFfmpegAsync(ffmpegArgs, progress, cancellationToken);
                 if (!runResult.Success) return runResult;
@@ -126,7 +139,7 @@ namespace Infrastructure.Services
                 if (!File.Exists(tempPlaylistPath))
                     return new HlsProcessingResult { Success = false, Error = "Playlist not generated" };
 
-                _logger.LogInformation("🚀 FFmpeg finished. Uploading Multi-Quality HLS segments to Storage...");
+                _logger.LogInformation("🚀 FFmpeg finished. Uploading HLS segments to Storage...");
 
                 var filesToUpload = Directory.GetFiles(tempDir)
                     .Where(f => !f.EndsWith(KeyInfoFileName))
@@ -136,7 +149,7 @@ namespace Infrastructure.Services
 
                 var segmentCount = filesToUpload.Count(f => f.EndsWith(SegmentExtension));
 
-                _logger.LogInformation("✅ Multi-Quality HLS uploaded successfully — Total Segments & Playlists: {Count}", filesToUpload.Count);
+                _logger.LogInformation("✅ HLS uploaded successfully — Total Segments & Playlists: {Count}", filesToUpload.Count);
 
                 return new HlsProcessingResult
                 {
@@ -157,11 +170,31 @@ namespace Infrastructure.Services
             }
         }
 
-        private static string BuildFfmpegArgs(string inputPath, string tempDir, string keyInfoPath)
+        private static string BuildFfmpegArgs(string inputPath, string tempDir, string keyInfoPath, bool multiQuality)
         {
             var cleanTempDir = tempDir.Replace("\\", "/");
             var cleanKeyInfo = keyInfoPath.Replace("\\", "/");
 
+            if (!multiQuality)
+            {
+                // ⚡ Fast Smart Copy mode: No re-encoding video frames, AES-128 encryption + 10s segments
+                return string.Join(" ",
+                    "-y",
+                    $"-i \"{inputPath}\"",
+                    "-c:v copy",
+                    "-c:a aac -b:a 128k",
+                    "-f hls",
+                    "-hls_time 10",
+                    "-hls_list_size 0",
+                    $"-hls_key_info_file \"{cleanKeyInfo}\"",
+                    "-hls_flags independent_segments",
+                    "-hls_segment_type mpegts",
+                    $"-hls_segment_filename \"{cleanTempDir}/seg%03d.ts\"",
+                    $"\"{cleanTempDir}/index.m3u8\""
+                );
+            }
+
+            // 🎬 Multi-Quality mode: 1080p (copy) + 720p (ultrafast) + 480p (ultrafast)
             return string.Join(" ",
                 "-y",
                 $"-i \"{inputPath}\"",
@@ -172,7 +205,7 @@ namespace Infrastructure.Services
                 "-filter:v:1 scale=-2:720 -c:v:1 libx264 -preset ultrafast -crf 24 -c:a:1 aac -b:a:1 128k",
                 "-filter:v:2 scale=-2:480 -c:v:2 libx264 -preset ultrafast -crf 26 -c:a:2 aac -b:a:2 96k",
                 "-f hls",
-                "-hls_time 5",
+                "-hls_time 10",
                 "-hls_list_size 0",
                 $"-hls_key_info_file \"{cleanKeyInfo}\"",
                 "-hls_flags independent_segments",

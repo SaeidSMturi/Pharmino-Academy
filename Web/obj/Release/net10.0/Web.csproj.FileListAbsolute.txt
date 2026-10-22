@@ -199,12 +199,10 @@ C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\mo5xe3o7ip-
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\xuph0orury-{0}-kao2ds4qcg-kao2ds4qcg.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\c7c8xhpwka-{0}-24tr4vdcjn-24tr4vdcjn.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\qxtltq3tzw-{0}-gtxjp1wxkm-gtxjp1wxkm.gz
-C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\opb8szq0ka-{0}-93wqrk750r-93wqrk750r.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\czcm2eovn5-{0}-3f6ah0a671-3f6ah0a671.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\nk8dogfvvt-{0}-smxqa5gqq0-smxqa5gqq0.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\2s28s4nlbv-{0}-c6cczd3u2l-c6cczd3u2l.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\3rgcb30j84-{0}-hj9fzf3fdj-hj9fzf3fdj.gz
-C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\jrbsexuqkk-{0}-2kmti0wmlm-2kmti0wmlm.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\ezcmgm95k5-{0}-u9e2av2m7w-u9e2av2m7w.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\iykz3ia9fw-{0}-qujhvtfwd4-qujhvtfwd4.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\l3wkktrrp2-{0}-gz82qzyp2e-gz82qzyp2e.gz
@@ -490,12 +488,10 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\comp
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\xuph0orury-{0}-kao2ds4qcg-kao2ds4qcg.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\c7c8xhpwka-{0}-24tr4vdcjn-24tr4vdcjn.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\qxtltq3tzw-{0}-gtxjp1wxkm-gtxjp1wxkm.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\opb8szq0ka-{0}-93wqrk750r-93wqrk750r.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\czcm2eovn5-{0}-3f6ah0a671-3f6ah0a671.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\nk8dogfvvt-{0}-smxqa5gqq0-smxqa5gqq0.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\2s28s4nlbv-{0}-c6cczd3u2l-c6cczd3u2l.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\3rgcb30j84-{0}-hj9fzf3fdj-hj9fzf3fdj.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\jrbsexuqkk-{0}-2kmti0wmlm-2kmti0wmlm.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\ezcmgm95k5-{0}-u9e2av2m7w-u9e2av2m7w.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\iykz3ia9fw-{0}-qujhvtfwd4-qujhvtfwd4.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\l3wkktrrp2-{0}-gz82qzyp2e-gz82qzyp2e.gz
@@ -633,3 +629,7 @@ C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\rqkye4xa2r-
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\62j3x091fd-{0}-62vwscbxhq-62vwscbxhq.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\d0xy4joxk5-{0}-tilkjcuxzf-tilkjcuxzf.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\x2a1khw7i6-{0}-0v4nk7ihdf-0v4nk7ihdf.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\opb8szq0ka-{0}-tivxt5ldv9-tivxt5ldv9.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\jrbsexuqkk-{0}-01te2tn2yu-01te2tn2yu.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\opb8szq0ka-{0}-tivxt5ldv9-tivxt5ldv9.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\jrbsexuqkk-{0}-01te2tn2yu-01te2tn2yu.gz

@@ -251,10 +251,9 @@
                                         <a asp-controller="CourseVideos" asp-action="Details" asp-route-id="@video.VideoId" class="w-8 h-8 rounded-lg bg-brand-cyan/10 text-brand-cyan flex items-center justify-center hover:bg-brand-cyan hover:text-dark-bg hover:shadow-[0_0_12px_#42EAFF] transition-all" title="Watch Video"><i class="fas fa-play text-xs"></i></a>
                                         <a asp-controller="CourseVideos" asp-action="Edit" asp-route-id="@video.VideoId" class="w-8 h-8 rounded-lg bg-brand-blue/10 text-brand-blue flex items-center justify-center hover:bg-brand-blue hover:text-white transition-all" title="Edit Video"><i class="fas fa-edit text-xs"></i></a>
 
-                                        @if (!(hlsExists.TryGetValue(video.VideoId, out var hlsReady) && hlsReady))
-                                        {
-                                            <button type="button" onclick="convertToHls(@video.VideoId, this)" class="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/10 flex items-center justify-center hover:bg-purple-500 hover:text-white transition-all" title="Convert to HLS"><i class="fas fa-film text-xs"></i></button>
-                                        }
+                                        <button type="button" onclick="openHlsModal(@video.VideoId, '@(video.Title.Replace("'", "\\'"))', this)" class="w-8 h-8 rounded-lg @(hlsExists.TryGetValue(video.VideoId, out var hlsReady) && hlsReady ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-purple-500/10 text-purple-400 border border-purple-500/20") flex items-center justify-center hover:bg-purple-500 hover:text-white transition-all" title="@(hlsReady ? "Configure / Re-encode HLS Stream" : "Convert to HLS Stream")">
+                                            <i class="fas fa-film text-xs"></i>
+                                        </button>
 
                                         <button type="button" onclick="toggleVideoActive(@video.VideoId, @video.IsActive.ToString().ToLower())" class="w-8 h-8 rounded-lg bg-brand-yellow/10 text-brand-yellow flex items-center justify-center hover:bg-brand-yellow hover:text-dark-bg transition-all" title="Toggle Active Status"><i class="fas fa-@(video.IsActive ? "eye-slash" : "eye") text-xs"></i></button>
                                         <button type="button" onclick="toggleVideoFree(@video.VideoId, @video.IsFree.ToString().ToLower())" class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center hover:bg-emerald-500 hover:text-dark-bg transition-all" title="Toggle Free Preview"><i class="fas fa-@(video.IsFree ? "lock" : "unlock") text-xs"></i></button>
@@ -561,6 +560,72 @@
     </div>
 </div>
 
+<!-- HLS Stream Options Modal (Option B: Fast Copy vs Multi-Quality) -->
+<div id="hlsOptionsModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+    <div class="glass-panel rounded-3xl border border-white/10 p-6 max-w-md w-full shadow-2xl space-y-5 animate-scale-up" dir="@(isRtl ? "rtl" : "ltr")">
+        <div class="flex items-center justify-between border-b border-white/5 pb-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400">
+                    <i class="fas fa-film text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold text-base">HLS Stream Encoding</h3>
+                    <p id="hlsModalVideoTitle" class="text-slate-400 text-xs truncate max-w-[240px]"></p>
+                </div>
+            </div>
+            <button type="button" onclick="closeHlsModal()" class="text-slate-400 hover:text-white transition-colors">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <p class="text-slate-300 text-xs leading-relaxed">
+            Choose your preferred HLS streaming conversion method:
+        </p>
+
+        <div class="space-y-3">
+            <!-- Choice 1: Fast Smart Copy (~25 seconds) -->
+            <button type="button" onclick="startHlsConversion(false)"
+                    class="w-full text-start p-4 rounded-2xl bg-white/[0.03] hover:bg-brand-cyan/10 border border-white/5 hover:border-brand-cyan/40 transition-all group flex items-start gap-4">
+                <div class="w-10 h-10 rounded-xl bg-brand-cyan/15 flex items-center justify-center text-brand-cyan shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-bolt text-lg"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-white font-bold text-sm group-hover:text-brand-cyan transition-colors">Fast Smart Copy</span>
+                        <span class="px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">⚡ ~25s</span>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Lossless instant repackaging with AES-128 encryption. Original high quality preserved, zero server load.
+                    </p>
+                </div>
+            </button>
+
+            <!-- Choice 2: Multi-Quality Ladder -->
+            <button type="button" onclick="startHlsConversion(true)"
+                    class="w-full text-start p-4 rounded-2xl bg-white/[0.03] hover:bg-purple-500/10 border border-white/5 hover:border-purple-500/40 transition-all group flex items-start gap-4">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/15 flex items-center justify-center text-purple-400 shrink-0 mt-0.5 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-sliders text-lg"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-white font-bold text-sm group-hover:text-purple-400 transition-colors">Multi-Quality Ladder</span>
+                        <span class="px-2 py-0.5 text-[10px] font-bold rounded bg-purple-500/15 text-purple-400 border border-purple-500/20">1080p + 720p + 480p</span>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Generates 3 resolution streams for adaptive playback. Full CPU transcode (takes longer).
+                    </p>
+                </div>
+            </button>
+        </div>
+
+        <div class="flex justify-end pt-2">
+            <button type="button" onclick="closeHlsModal()" class="px-4 py-2 bg-white/5 hover:bg-white/10 text-slate-300 rounded-xl text-xs font-semibold transition-colors">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         // Toggle course status
@@ -670,38 +735,73 @@
             if (_hlsPollInterval) { clearInterval(_hlsPollInterval); _hlsPollInterval = null; }
         }
 
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // HLS Modal & Conversion Handlers (Option B)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        let _currentHlsVideoId = null;
+        let _currentHlsBtn = null;
+
+        function openHlsModal(videoId, title, btn) {
+            _currentHlsVideoId = videoId;
+            _currentHlsBtn = btn;
+            const titleEl = document.getElementById('hlsModalVideoTitle');
+            if (titleEl) titleEl.textContent = title || ('Video #' + videoId);
+            const modal = document.getElementById('hlsOptionsModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeHlsModal() {
+            const modal = document.getElementById('hlsOptionsModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        async function startHlsConversion(multiQuality) {
+            closeHlsModal();
+            if (!_currentHlsVideoId) return;
+            await convertToHls(_currentHlsVideoId, multiQuality, _currentHlsBtn);
+        }
+
         // Trigger background ffmpeg conversion
-        async function convertToHls(videoId, btn) {
-            if (!confirm('Start HLS conversion for this video?')) return;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i>';
+        async function convertToHls(videoId, multiQuality, btn) {
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i>';
+            }
 
             try {
                 const response = await fetch('/Admin/CourseVideos/ProcessHls', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-                    body: JSON.stringify({ id: videoId })
+                    body: JSON.stringify({ id: videoId, multiQuality: multiQuality })
                 });
                 const result = await response.json();
                 if (result.success) {
-                    btn.innerHTML = '<i class="fas fa-film fa-spin text-xs text-brand-cyan"></i>';
-                    btn.title = 'Processing video in background...';
+                    if (btn) {
+                        btn.innerHTML = '<i class="fas fa-film fa-spin text-xs text-brand-cyan"></i>';
+                        btn.title = 'Processing video in background...';
+                    }
 
                     document.getElementById('hlsToastBar').style.width = '0%';
                     document.getElementById('hlsToastPct').textContent = '0%';
-                    document.getElementById('hlsToastMsg').textContent = 'Initializing conversion...';
+                    document.getElementById('hlsToastMsg').textContent = multiQuality 
+                        ? 'Starting Multi-Quality conversion (1080p, 720p, 480p)...' 
+                        : 'Starting Fast Smart Copy conversion (~25s)...';
                     document.getElementById('hlsToastIcon').className = 'fas fa-film text-brand-cyan';
-                    document.getElementById('hlsToastTitle').textContent = 'HLS Conversion';
+                    document.getElementById('hlsToastTitle').textContent = multiQuality ? 'Multi-Quality HLS' : 'Fast HLS (~25s)';
                     hlsToastShow();
                     hlsPollStart(videoId);
                 } else {
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-film text-xs"></i>';
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-film text-xs"></i>';
+                    }
                     alert('Error: ' + result.message);
                 }
             } catch (error) {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-film text-xs"></i>';
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-film text-xs"></i>';
+                }
                 alert('Connection error: ' + error.message);
             }
         }

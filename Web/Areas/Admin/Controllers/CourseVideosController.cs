@@ -36,6 +36,7 @@ namespace Web.Areas.Admin.Controllers
         public class IdRequest
         {
             public int Id { get; set; }
+            public bool MultiQuality { get; set; } = false;
         }
 
         public class UploadVideoResponse
@@ -809,31 +810,27 @@ namespace Web.Areas.Admin.Controllers
         // 🎬 HLS Processing Helpers
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-        private void TriggerHlsProcessing(int videoId, int courseId, string videoFileName)
+        private void TriggerHlsProcessing(int videoId, int courseId, string videoFileName, bool multiQuality = false)
         {
             var videoGuid = Path.GetFileNameWithoutExtension(videoFileName);
 
             // مسیرهای استاندارد
             var directoryPath = $"uploads/courses/{courseId}/videos";
-
-            // نکته: اگر متد _hlsService.GetHlsDirectory خروجی مسیر فیزیکی (Physical) می‌دهد، 
-            // بهتر است آن را آپدیت کنید تا فقط یک مسیر مجازی برگرداند (مثل uploads/courses/1/hls/guid)
             var hlsDirectoryPath = $"uploads/courses/{courseId}/hls/{videoGuid}";
 
-            _logger.LogInformation("Asynchronous HLS Worker thread preparing job deployment parameters. Video ID: {VideoId}", videoId);
+            _logger.LogInformation("Asynchronous HLS Worker preparing job. Video ID: {VideoId}, MultiQuality: {MultiQuality}", videoId, multiQuality);
 
             // ثبت وضعیت اولیه در progress store
             _hlsProgress.SetQueued(videoId);
 
-            // به دام انداختن وابستگی‌ها برای استفاده درون ترد پس‌زمینه
             var hlsService = _hlsService;
             var hlsProgress = _hlsProgress;
             var logger = _logger;
-            var storageService = _storageService; // اطمینان حاصل کنید که IStorageService در کنترلر اینجکت شده باشد
+            var storageService = _storageService;
 
             _ = Task.Run(async () =>
             {
-                logger.LogInformation("Background Task worker explicitly spawned for tracking HLS segments generation. Video ID: {VideoId}", videoId);
+                logger.LogInformation("Background Task worker spawned for HLS. Video ID: {VideoId}, MultiQuality: {MultiQuality}", videoId, multiQuality);
                 var progress = new Progress<int>(pct => hlsProgress.Report(videoId, pct));
 
                 try
@@ -849,37 +846,38 @@ namespace Web.Areas.Admin.Controllers
                         logger.LogError(clEx, "Pre-flight workspace cleaner crashed. Unable to wipe: {Folder}", hlsDirectoryPath);
                     }
 
-                    // ۲. دریافت مسیری که FFmpeg بتواند بخواند (مسیر فیزیکی برای لوکال، لینک امضاشده طولانی برای S3)
+                    // ۲. دریافت مسیری که FFmpeg بتواند بخواند
                     var inputPath = await storageService.GetFileUrlForProcessingAsync(directoryPath, videoFileName);
 
-                    // ۳. اجرای عملیات تبدیل
-                    var result = await hlsService.ProcessVideoAsync(courseId, inputPath, videoGuid, progress);
+                    // ۳. اجرای عملیات تبدیل (سریع Smart Copy یا Multi-Quality بر اساس انتخاب کاربر)
+                    var result = await hlsService.ProcessVideoAsync(courseId, inputPath, videoGuid, multiQuality: multiQuality, progress: progress);
 
                     if (result.Success)
                     {
                         hlsProgress.SetCompleted(videoId);
-                        logger.LogInformation("Background Task finalized successfully! HLS Compilation built for Video ID: {VideoId}", videoId);
+                        logger.LogInformation("Background Task finalized successfully! HLS built for Video ID: {VideoId}", videoId);
                     }
                     else
                     {
                         hlsProgress.SetFailed(videoId, result.Error ?? "Unknown error");
-                        logger.LogError("Background Task transcode failed reported inside runtime worker framework for VideoId {VideoId}: {Error}", videoId, result.Error);
+                        logger.LogError("Background Task transcode failed for VideoId {VideoId}: {Error}", videoId, result.Error);
                     }
                 }
                 catch (Exception ex)
                 {
                     hlsProgress.SetFailed(videoId, ex.Message);
-                    logger.LogError(ex, "Fatal Thread Panic Exception caught during background processing pipeline routines for VideoId {VideoId}", videoId);
+                    logger.LogError(ex, "Fatal Thread Panic Exception caught during background HLS routine for VideoId {VideoId}", videoId);
                 }
             });
         }
 
         [HttpPost]
         [Permission("Courses.Edit")]
-        public async Task<IActionResult> ProcessHls([FromBody] IdRequest? payload, int? id)
+        public async Task<IActionResult> ProcessHls([FromBody] IdRequest? payload, int? id, bool? multiQuality)
         {
             var videoId = payload?.Id > 0 ? payload!.Id : (id ?? 0);
-            _logger.LogWarning("Manual re-processing request received to force build HLS streaming stack for Video ID: {VideoId}", videoId);
+            var isMultiQuality = payload?.MultiQuality ?? multiQuality ?? false;
+            _logger.LogWarning("Manual HLS request received for Video ID: {VideoId}, MultiQuality: {MultiQuality}", videoId, isMultiQuality);
 
             if (videoId <= 0)
                 return Json(new { success = false, message = "Invalid video id" });
@@ -897,10 +895,10 @@ namespace Web.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Video has no file" });
             }
 
-            // فراخوانی متد اصلاح‌شده که بلافاصله خروجی می‌دهد و کار در بک‌گراند انجام می‌شود
-            TriggerHlsProcessing(video.VideoId, video.CourseId, video.VideoFileName);
+            // فراخوانی متد با حالت انتخابی کاربر
+            TriggerHlsProcessing(video.VideoId, video.CourseId, video.VideoFileName, isMultiQuality);
 
-            return Json(new { success = true, videoId, message = "HLS encoding started in background." });
+            return Json(new { success = true, videoId, multiQuality = isMultiQuality, message = "HLS encoding started in background." });
         }
 
         [HttpGet]

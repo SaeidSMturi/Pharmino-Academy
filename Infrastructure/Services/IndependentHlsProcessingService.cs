@@ -98,7 +98,10 @@ namespace Infrastructure.Services
                 if (await _storageService.FileExistsAsync(dir, qualityFileName))
                     return await _storageService.ReadFileBytesAsync(dir, qualityFileName);
             }
-            return await _storageService.ReadFileBytesAsync(dir, $"seg{segIndex:D3}.ts");
+            string fallbackFileName = $"seg{segIndex:D3}.ts";
+            if (await _storageService.FileExistsAsync(dir, fallbackFileName))
+                return await _storageService.ReadFileBytesAsync(dir, fallbackFileName);
+            return await _storageService.ReadFileBytesAsync(dir, $"seg_{segIndex:D3}.ts");
         }
 
         public async Task<(Stream fileStream, long contentLength)> GetSegmentStreamAsync(int courseId, string videoGuid, int segmentIndex, string? quality = null)
@@ -113,11 +116,19 @@ namespace Infrastructure.Services
                 }
                 catch (FileNotFoundException)
                 {
-                    // Fallback to legacy single-quality filename if variant not found
+                    // Fallback to single-quality filename if variant not found
                 }
             }
             string fallbackFileName = $"seg{segmentIndex:D3}.ts";
-            return await _storageService.GetFileStreamAsync(directoryPath, fallbackFileName);
+            try
+            {
+                return await _storageService.GetFileStreamAsync(directoryPath, fallbackFileName);
+            }
+            catch (FileNotFoundException)
+            {
+                string altFileName = $"seg_{segmentIndex:D3}.ts";
+                return await _storageService.GetFileStreamAsync(directoryPath, altFileName);
+            }
         }
 
         public async Task<int> GetSegmentCountAsync(int courseId, string videoGuid)
@@ -129,6 +140,7 @@ namespace Infrastructure.Services
 
         public async Task<HlsProcessingResult> ProcessVideoAsync(
             int courseId, string inputFilePath, string videoGuid,
+            bool multiQuality = false,
             IProgress<int>? progress = null,
             CancellationToken cancellationToken = default)
         {
@@ -179,9 +191,20 @@ namespace Infrastructure.Services
                 var cleanTempDir = tempDir.Replace("\\", "/");
                 var cleanKeyInfo = keyInfoPath.Replace("\\", "/");
 
-                var rawArguments = $"-y -i \"{inputFilePath}\" -map 0:v:0 -map 0:a:0? -map 0:v:0 -map 0:a:0? -map 0:v:0 -map 0:a:0? -c:v:0 copy -c:a:0 aac -b:a:0 128k -filter:v:1 scale=-2:720 -c:v:1 libx264 -preset ultrafast -crf 24 -c:a:1 aac -b:a:1 128k -filter:v:2 scale=-2:480 -c:v:2 libx264 -preset ultrafast -crf 26 -c:a:2 aac -b:a:2 96k -f hls -hls_time 5 -hls_list_size 0 -hls_key_info_file \"{cleanKeyInfo}\" -hls_flags independent_segments -hls_segment_type mpegts -hls_segment_filename \"{cleanTempDir}/seg_%v_%03d.ts\" -master_pl_name index.m3u8 -var_stream_map \"v:0,a:0,name:1080p v:1,a:1,name:720p v:2,a:2,name:480p\" \"{cleanTempDir}/%v.m3u8\"";
+                string rawArguments;
+                if (!multiQuality)
+                {
+                    // ⚡ Fast Smart Copy mode
+                    rawArguments = $"-y -i \"{inputFilePath}\" -c:v copy -c:a aac -b:a 128k -f hls -hls_time 10 -hls_list_size 0 -hls_key_info_file \"{cleanKeyInfo}\" -hls_flags independent_segments -hls_segment_type mpegts -hls_segment_filename \"{cleanTempDir}/seg%03d.ts\" \"{cleanTempDir}/index.m3u8\"";
+                }
+                else
+                {
+                    // 🎬 Multi-Quality mode
+                    rawArguments = $"-y -i \"{inputFilePath}\" -map 0:v:0 -map 0:a:0? -map 0:v:0 -map 0:a:0? -map 0:v:0 -map 0:a:0? -c:v:0 copy -c:a:0 aac -b:a:0 128k -filter:v:1 scale=-2:720 -c:v:1 libx264 -preset ultrafast -crf 24 -c:a:1 aac -b:a:1 128k -filter:v:2 scale=-2:480 -c:v:2 libx264 -preset ultrafast -crf 26 -c:a:2 aac -b:a:2 96k -f hls -hls_time 10 -hls_list_size 0 -hls_key_info_file \"{cleanKeyInfo}\" -hls_flags independent_segments -hls_segment_type mpegts -hls_segment_filename \"{cleanTempDir}/seg_%v_%03d.ts\" -master_pl_name index.m3u8 -var_stream_map \"v:0,a:0,name:1080p v:1,a:1,name:720p v:2,a:2,name:480p\" \"{cleanTempDir}/%v.m3u8\"";
+                }
 
-                _logger.LogInformation("Starting Multi-Quality HLS processing (Temp Dir) — CourseId: {CourseId}, VideoGuid: {Guid}", courseId, videoGuid);
+                _logger.LogInformation("Starting HLS processing (Mode: {Mode}, hls_time: 10s) — CourseId: {CourseId}, VideoGuid: {Guid}",
+                    multiQuality ? "Multi-Quality" : "Fast Smart Copy", courseId, videoGuid);
 
                 try
                 {

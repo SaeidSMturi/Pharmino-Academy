@@ -81,7 +81,13 @@
     <value>OmanPharmaAcademy</value>
   </data>
   <data name="LiveSite" xml:space="preserve">
-    <value>Live Site</value>
+    <value>Main Website</value>
+  </data>
+  <data name="AdminPanel" xml:space="preserve">
+    <value>Admin Panel</value>
+  </data>
+  <data name="UserPanel" xml:space="preserve">
+    <value>User Portal</value>
   </data>
   <data name="WelcomeBack" xml:space="preserve">
     <value>Welcome Back</value>

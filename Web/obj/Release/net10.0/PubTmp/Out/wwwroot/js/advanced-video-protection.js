@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 🔐 ADVANCED ANTI-DOWNLOAD PROTECTION SYSTEM
  * نسخه: 2.0.0
  * 
@@ -822,32 +822,18 @@ class AdvancedVideoProtection {
      * 👁️ محافظت Focus
      */
     setupFocusProtection() {
-        // Focus change
+        // Focus change (No pause on blur/visibility change)
         window.addEventListener('focus', () => {
             this.state.focusChanges++;
         });
 
         window.addEventListener('blur', () => {
             this.state.focusChanges++;
-            
-            const video = document.getElementById(this.config.videoElementId);
-            if (video && !video.paused) {
-                video.pause();
-                this.showBlurOverlay();
-            }
         });
 
         // Visibility change
         document.addEventListener('visibilitychange', () => {
             this.state.visibilityChanges++;
-            
-            if (document.hidden) {
-                const video = document.getElementById(this.config.videoElementId);
-                if (video && !video.paused) {
-                    video.pause();
-                    this.showBlurOverlay();
-                }
-            }
         });
     }
 

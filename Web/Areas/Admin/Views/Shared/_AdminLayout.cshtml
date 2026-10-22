@@ -377,9 +377,24 @@
             </nav>
 
             <!-- Bottom Actions -->
-            <div class="p-4 border-t border-white/[0.05]">
+            <div class="p-4 border-t border-white/[0.05] space-y-2">
+                <div class="grid grid-cols-2 gap-2">
+                    <a asp-area="User" asp-controller="Dashboard" asp-action="Index"
+                       class="flex items-center justify-center @(isRtl ? "space-x-reverse space-x-2" : "space-x-2") py-2.5 px-2 rounded-xl bg-white/[0.03] hover:bg-brand-blue/15 text-slate-300 hover:text-brand-blue border border-white/[0.05] hover:border-brand-blue/30 transition-all duration-300 text-xs font-semibold group"
+                       title="@Localizer["UserPanel"]">
+                        <i class="fas fa-graduation-cap text-brand-blue text-xs group-hover:scale-110 transition-transform"></i>
+                        <span class="truncate">@Localizer["UserPanel"]</span>
+                    </a>
+                    <a href="/"
+                       class="flex items-center justify-center @(isRtl ? "space-x-reverse space-x-2" : "space-x-2") py-2.5 px-2 rounded-xl bg-white/[0.03] hover:bg-brand-cyan/15 text-slate-300 hover:text-brand-cyan border border-white/[0.05] hover:border-brand-cyan/30 transition-all duration-300 text-xs font-semibold group"
+                       title="@Localizer["LiveSite"]">
+                        <i class="fas fa-globe text-brand-cyan text-xs group-hover:scale-110 transition-transform"></i>
+                        <span class="truncate">@Localizer["LiveSite"]</span>
+                    </a>
+                </div>
+
                 <a asp-area="" asp-controller="Account" asp-action="Logout"
-                   class="flex items-center justify-center @(isRtl ? "space-x-reverse" : "space-x-2") w-full py-3 rounded-xl bg-brand-orange/10 text-brand-orange hover:bg-brand-orange hover:text-dark-bg hover:shadow-[0_0_20px_rgba(255,126,66,0.4)] transition-all duration-300 font-bold text-sm">
+                   class="flex items-center justify-center @(isRtl ? "space-x-reverse" : "space-x-2") w-full py-2.5 rounded-xl bg-brand-orange/10 text-brand-orange hover:bg-brand-orange hover:text-dark-bg hover:shadow-[0_0_20px_rgba(255,126,66,0.4)] transition-all duration-300 font-bold text-sm">
                     <i class="fas fa-power-off"></i>
                     <span>@Localizer["Logout"]</span>
                 </a>
@@ -411,10 +426,6 @@
                     </div>
                     <div class="flex items-center @(isRtl ? "space-x-reverse space-x-4" : "space-x-4")">
                         <partial name="_LanguageSwitcher" />
-                        <a href="/" class="px-4 py-2 rounded-lg bg-white/5 hover:bg-brand-cyan/10 text-slate-300 hover:text-brand-cyan transition-colors text-sm font-medium border border-white/5 flex items-center @(isRtl ? "space-x-reverse space-x-2" : "space-x-2")">
-                            <i class="fas fa-external-link-alt"></i>
-                            <span>@Localizer["LiveSite"]</span>
-                        </a>
                     </div>
                 </header>
 

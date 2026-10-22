@@ -12,6 +12,7 @@ namespace Application.Interfaces
     {
         Task<HlsProcessingResult> ProcessVideoAsync(
             int courseId, string inputFilePath, string videoGuid,
+            bool multiQuality = false,
             IProgress<int>? progress = null,
             CancellationToken cancellationToken = default);
 

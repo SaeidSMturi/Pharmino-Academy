@@ -81,7 +81,13 @@
     <value>أكاديمية عمان للصيدلة</value>
   </data>
 	<data name="LiveSite" xml:space="preserve">
-    <value>الموقع المباشر</value>
+    <value>الموقع الرئيسي</value>
+  </data>
+  <data name="AdminPanel" xml:space="preserve">
+    <value>لوحة الإدارة</value>
+  </data>
+  <data name="UserPanel" xml:space="preserve">
+    <value>بوابة المتدربين</value>
   </data>
 	<data name="WelcomeBack" xml:space="preserve">
     <value>مرحباً بعودتك</value>
