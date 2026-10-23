@@ -482,6 +482,19 @@ namespace Web.Areas.Admin.Controllers
                 _logger.LogInformation("No user-defined cover uploaded. Defaulting cover art to 'default.jpg' for course '{Title}'.", course.Title);
             }
 
+            if (course.IsDiscountActive && course.Price > 0)
+            {
+                if (int.TryParse(Request.Form["discountPercent"], out var pct) && pct > 0 && pct < 100)
+                {
+                    course.DiscountPrice = Math.Round(course.Price * (1m - (pct / 100m)), 2);
+                }
+            }
+            else
+            {
+                course.DiscountPrice = null;
+                course.IsDiscountActive = false;
+            }
+
             course.CreateDate = DateTime.UtcNow;
             course.DurationHours = 0;
 
@@ -634,6 +647,19 @@ namespace Web.Areas.Admin.Controllers
 
             _logger.LogInformation("AUDIT: Updating data records for Course ID {CourseId}. Retargeting values -> Title: '{OldTitle}' to '{NewTitle}', Price: {OldPrice} to {NewPrice}.",
                 existingCourse.CourseId, existingCourse.Title, course.Title, existingCourse.Price, course.Price);
+
+            if (course.IsDiscountActive && course.Price > 0)
+            {
+                if (int.TryParse(Request.Form["discountPercent"], out var pct) && pct > 0 && pct < 100)
+                {
+                    course.DiscountPrice = Math.Round(course.Price * (1m - (pct / 100m)), 2);
+                }
+            }
+            else
+            {
+                course.DiscountPrice = null;
+                course.IsDiscountActive = false;
+            }
 
             existingCourse.Title = course.Title;
             existingCourse.Description = course.Description;

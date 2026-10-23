@@ -1011,7 +1011,7 @@
     <value>Pricing</value>
   </data>
   <data name="PriceUSD" xml:space="preserve">
-    <value>Price (USD)</value>
+    <value>Price</value>
   </data>
   <data name="SetPriceZeroFree" xml:space="preserve">
     <value>Set price to 0 to make this course free.</value>
@@ -1146,7 +1146,7 @@
     <value>Pricing &amp; Status</value>
   </data>
   <data name="PdfPriceUSD" xml:space="preserve">
-    <value>PDF Price (USD)</value>
+    <value>PDF Price</value>
   </data>
   <data name="SetPriceZeroFreePdf" xml:space="preserve">
     <value>Set price to 0 for free PDF documents.</value>

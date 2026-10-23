@@ -1011,7 +1011,7 @@
     <value>التسعير</value>
   </data>
   <data name="PriceUSD" xml:space="preserve">
-    <value>السعر (بالدولار)</value>
+    <value>السعر</value>
   </data>
   <data name="SetPriceZeroFree" xml:space="preserve">
     <value>ضع السعر 0 لجعل هذه الدورة مجانية.</value>
@@ -1146,7 +1146,7 @@
     <value>التسعير والحالة</value>
   </data>
   <data name="PdfPriceUSD" xml:space="preserve">
-    <value>سعر ملف PDF (بالدولار)</value>
+    <value>سعر ملف PDF</value>
   </data>
   <data name="SetPriceZeroFreePdf" xml:space="preserve">
     <value>ضع السعر 0 لجعل ملف PDF مجانياً.</value>

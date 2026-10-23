@@ -143,20 +143,103 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <label asp-for="Price" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
-                            @Localizer["PriceUSD"] (@(isRtl ? "قیمت اصلی" : "Base Price")) <span class="text-brand-orange">*</span>
+                            @Localizer["PriceUSD"] (@(isRtl ? "السعر الأساسي" : "Base Price")) <span class="text-brand-orange">*</span>
                         </label>
                         <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
-                            <input asp-for="Price" id="regularPriceInput" type="number" step="0.01" min="0" oninput="updateDiscountPreview()" class="w-full bg-transparent px-4 py-3.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-bold font-mono" placeholder="0.00" />
+                            <input asp-for="Price" id="regularPriceInput" type="number" step="0.01" min="0" oninput="onRegularPriceInput()" class="w-full bg-transparent px-4 py-3.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-bold font-mono" placeholder="0.00" />
                             <i class="fas fa-tag absolute @(isRtl ? "right-2" : "left-2") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-brand-cyan transition-colors text-sm"></i>
                         </div>
                         <span asp-validation-for="Price" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+
+                        <!-- Smart IP & Regional Currency Converter -->
+                        <div id="priceConverterBar" class="mt-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/5 space-y-2.5">
+                            <div class="flex items-center justify-between gap-2 flex-wrap text-xs">
+                                <span class="text-slate-400 font-medium flex items-center gap-1.5">
+                                    <i class="fas fa-globe-americas text-brand-cyan text-xs"></i>
+                                    <span id="detectedRegionText">@(isRtl ? "جاري كشف العملة المحلية..." : "Detecting local currency...")</span>
+                                </span>
+                                <div class="flex items-center gap-1.5">
+                                    <label for="currencySelect" class="text-[10px] uppercase font-bold text-slate-500">@(isRtl ? "تحويل إلى:" : "Convert to:")</label>
+                                    <select id="currencySelect" onchange="onCurrencySelectChange(this.value)" class="bg-dark-bg/90 border border-white/10 rounded-lg px-2 py-1 text-xs font-bold text-brand-cyan focus:outline-none focus:border-brand-cyan max-w-[170px]">
+                                        <optgroup label="GCC & Arab Currencies">
+                                            <option value="OMR">OMR (ر.ع.) - Oman (Base)</option>
+                                            <option value="AED">AED (د.إ) - UAE</option>
+                                            <option value="SAR">SAR (ر.س) - Saudi Arabia</option>
+                                            <option value="QAR">QAR (ر.ق) - Qatar</option>
+                                            <option value="KWD">KWD (د.ك) - Kuwait</option>
+                                            <option value="BHD">BHD (د.ب) - Bahrain</option>
+                                            <option value="IQD">IQD (د.ع) - Iraq</option>
+                                            <option value="JOD">JOD (د.أ) - Jordan</option>
+                                            <option value="EGP">EGP (ج.م) - Egypt</option>
+                                            <option value="LBP">LBP (ل.ل) - Lebanon</option>
+                                            <option value="MAD">MAD (د.م.) - Morocco</option>
+                                            <option value="DZD">DZD (د.ج) - Algeria</option>
+                                            <option value="TND">TND (د.ت) - Tunisia</option>
+                                            <option value="LYD">LYD (د.ل) - Libya</option>
+                                            <option value="YER">YER (ر.ي) - Yemen</option>
+                                        </optgroup>
+                                        <optgroup label="Major Global Currencies">
+                                            <option value="USD">USD ($) - US Dollar</option>
+                                            <option value="EUR">EUR (€) - Euro</option>
+                                            <option value="GBP">GBP (£) - British Pound</option>
+                                            <option value="CHF">CHF (CHF) - Swiss Franc</option>
+                                            <option value="CAD">CAD (CA$) - Canada</option>
+                                            <option value="AUD">AUD (AU$) - Australia</option>
+                                            <option value="JPY">JPY (¥) - Japan</option>
+                                            <option value="CNY">CNY (¥) - China</option>
+                                            <option value="INR">INR (₹) - India</option>
+                                            <option value="TRY">TRY (₺) - Turkey</option>
+                                            <option value="SGD">SGD (S$) - Singapore</option>
+                                            <option value="NZD">NZD (NZ$) - New Zealand</option>
+                                            <option value="HKD">HKD (HK$) - Hong Kong</option>
+                                            <option value="KRW">KRW (₩) - South Korea</option>
+                                            <option value="MYR">MYR (RM) - Malaysia</option>
+                                            <option value="IDR">IDR (Rp) - Indonesia</option>
+                                            <option value="THB">THB (฿) - Thailand</option>
+                                            <option value="PKR">PKR (₨) - Pakistan</option>
+                                            <option value="BDT">BDT (৳) - Bangladesh</option>
+                                            <option value="PHP">PHP (₱) - Philippines</option>
+                                            <option value="SEK">SEK (kr) - Sweden</option>
+                                            <option value="NOK">NOK (kr) - Norway</option>
+                                            <option value="DKK">DKK (kr) - Denmark</option>
+                                            <option value="PLN">PLN (zł) - Poland</option>
+                                            <option value="CZK">CZK (Kč) - Czech Republic</option>
+                                            <option value="HUF">HUF (Ft) - Hungary</option>
+                                            <option value="RON">RON (lei) - Romania</option>
+                                            <option value="BGN">BGN (лв) - Bulgaria</option>
+                                            <option value="ZAR">ZAR (R) - South Africa</option>
+                                            <option value="BRL">BRL (R$) - Brazil</option>
+                                            <option value="MXN">MXN (Mex$) - Mexico</option>
+                                            <option value="CLP">CLP (CLP$) - Chile</option>
+                                            <option value="COP">COP (COL$) - Colombia</option>
+                                            <option value="PEN">PEN (S/) - Peru</option>
+                                            <option value="ARS">ARS (ARS$) - Argentina</option>
+                                            <option value="NGN">NGN (₦) - Nigeria</option>
+                                            <option value="KES">KES (KSh) - Kenya</option>
+                                            <option value="GHS">GHS (GH₵) - Ghana</option>
+                                            <option value="AZN">AZN (₼) - Azerbaijan</option>
+                                            <option value="KZT">KZT (₸) - Kazakhstan</option>
+                                            <option value="UZS">UZS (soʻm) - Uzbekistan</option>
+                                            <option value="GEL">GEL (₾) - Georgia</option>
+                                        </optgroup>
+                                        <optgroup id="otherCurrenciesGroup" label="Other World Currencies">
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between text-xs pt-1.5 border-t border-white/5">
+                                <span class="text-slate-400">@(isRtl ? "المعادل بالعملة المحددة:" : "Estimated converted price:")</span>
+                                <span id="convertedPriceText" class="font-bold font-mono text-brand-cyan">0.000 OMR</span>
+                            </div>
+                        </div>
+
                         <p class="text-[10px] text-slate-500 font-medium flex items-center mt-2">
                             <i class="fas fa-circle-info @(isRtl ? "ml-1.5" : "mr-1.5") text-brand-blue"></i> @Localizer["SetPriceZeroFree"]
                         </p>
                     </div>
 
                     <!-- Discount Section -->
-                    <div class="space-y-3 p-4 rounded-2xl bg-white/[0.01] border border-white/5">
+                    <div class="space-y-3.5 p-4 rounded-2xl bg-white/[0.01] border border-white/5">
                         <div class="flex items-center justify-between">
                             <label class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2.5") cursor-pointer">
                                 <input asp-for="IsDiscountActive" id="isDiscountActiveCheckbox" type="checkbox" onchange="toggleDiscountSection()" class="w-4 h-4 rounded border-white/10 bg-dark-bg text-brand-yellow focus:ring-brand-yellow/20" />
@@ -169,16 +252,56 @@
                             </span>
                         </div>
 
-                        <div id="discountPriceWrapper" class="space-y-2 opacity-50 pointer-events-none transition-all duration-300">
-                            <label asp-for="DiscountPrice" class="block text-[11px] font-bold text-slate-400 uppercase tracking-wide">
-                                @(isRtl ? "قیمت با تخفیف (دلار)" : "Discounted Price (USD)")
+                        <div id="discountPriceWrapper" class="space-y-3 opacity-50 pointer-events-none transition-all duration-300">
+                            <input type="hidden" asp-for="DiscountPrice" id="discountPriceHidden" />
+                            <input type="hidden" name="discountPercent" id="discountPercentHidden" />
+
+                            <label for="discountPercentInput" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                                @(isRtl ? "نسبة الخصم (%)" : "Discount Percentage (%)")
                             </label>
-                            <div class="relative group border-b border-white/10 focus-within:border-emerald-400/80 transition-colors">
-                                <input asp-for="DiscountPrice" id="discountPriceInput" type="number" step="0.01" min="0" oninput="updateDiscountPreview()" class="w-full bg-transparent px-4 py-2.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-bold font-mono text-emerald-400" placeholder="0.00" />
-                                <i class="fas fa-percent absolute @(isRtl ? "right-2" : "left-2") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-emerald-400 transition-colors text-xs"></i>
+
+                            <div class="space-y-2.5">
+                                <div class="relative group border-b border-white/10 focus-within:border-emerald-400/80 transition-colors">
+                                    <input type="number" id="discountPercentInput" min="1" max="99" step="1" oninput="onDiscountPercentInput(this.value)" class="w-full bg-transparent px-4 py-2.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-bold font-mono text-emerald-400" placeholder="0" />
+                                    <i class="fas fa-percent absolute @(isRtl ? "right-2" : "left-2") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-emerald-400 transition-colors text-xs"></i>
+                                </div>
+
+                                <!-- Preset Quick Buttons: 10%, 15%, 25%, 50%, 75%, 99% -->
+                                <div>
+                                    <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider block mb-1.5">
+                                        @(isRtl ? "اختر نسبة جاهزة أو أدخل رقماً مخصصاً:" : "Quick Discount Presets (or type custom):")
+                                    </span>
+                                    <div class="flex items-center flex-wrap gap-1.5">
+                                        <button type="button" onclick="selectDiscountPreset(10)" data-preset="10" class="discount-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-slate-300 hover:bg-emerald-500/20 hover:text-emerald-300 hover:border-emerald-500/30 transition-all cursor-pointer">10%</button>
+                                        <button type="button" onclick="selectDiscountPreset(15)" data-preset="15" class="discount-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-slate-300 hover:bg-emerald-500/20 hover:text-emerald-300 hover:border-emerald-500/30 transition-all cursor-pointer">15%</button>
+                                        <button type="button" onclick="selectDiscountPreset(25)" data-preset="25" class="discount-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-slate-300 hover:bg-emerald-500/20 hover:text-emerald-300 hover:border-emerald-500/30 transition-all cursor-pointer">25%</button>
+                                        <button type="button" onclick="selectDiscountPreset(50)" data-preset="50" class="discount-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-slate-300 hover:bg-emerald-500/20 hover:text-emerald-300 hover:border-emerald-500/30 transition-all cursor-pointer">50%</button>
+                                        <button type="button" onclick="selectDiscountPreset(75)" data-preset="75" class="discount-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-slate-300 hover:bg-emerald-500/20 hover:text-emerald-300 hover:border-emerald-500/30 transition-all cursor-pointer">75%</button>
+                                        <button type="button" onclick="selectDiscountPreset(99)" data-preset="99" class="discount-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-slate-300 hover:bg-emerald-500/20 hover:text-emerald-300 hover:border-emerald-500/30 transition-all cursor-pointer">99%</button>
+                                    </div>
+                                </div>
                             </div>
+
+                            <!-- Glowing Final Price Preview Card -->
+                            <div id="finalPriceCard" class="mt-3 p-3.5 rounded-xl bg-gradient-to-r from-emerald-950/40 via-emerald-900/20 to-transparent border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all">
+                                <div class="flex items-center justify-between flex-wrap gap-2">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-sparkles text-emerald-400 text-sm animate-pulse"></i>
+                                        <span class="text-xs font-bold text-slate-300">
+                                            @(isRtl ? "السعر النهائي بعد الخصم:" : "Final price after discount:")
+                                        </span>
+                                    </div>
+                                    <span id="finalPriceGlowAmount" class="font-black italic text-emerald-300 text-xl font-mono glowing-price drop-shadow-[0_0_15px_rgba(52,211,153,0.9)]">
+                                        0.00
+                                    </span>
+                                </div>
+                                <div class="flex items-center justify-between text-[11px] text-slate-400 mt-2 pt-2 border-t border-emerald-500/10">
+                                    <span id="discountSavingsText" class="text-emerald-400/90 font-medium"></span>
+                                    <span id="finalPriceConvertedText" class="font-mono text-slate-300 font-bold"></span>
+                                </div>
+                            </div>
+
                             <span asp-validation-for="DiscountPrice" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
-                            <div id="discountSavingsCalc" class="text-[11px] text-emerald-400/90 font-medium hidden"></div>
                         </div>
                     </div>
                 </div>
@@ -259,27 +382,297 @@
             if (chk.checked) {
                 wrapper.classList.remove('opacity-50', 'pointer-events-none');
                 badge.classList.remove('hidden');
-                document.getElementById('discountPriceInput').focus();
+                document.getElementById('discountPercentInput').focus();
             } else {
                 wrapper.classList.add('opacity-50', 'pointer-events-none');
                 badge.classList.add('hidden');
             }
-            updateDiscountPreview();
+            updateDiscountCalculations();
         }
 
-        function updateDiscountPreview() {
-            const regular = parseFloat(document.getElementById('regularPriceInput').value) || 0;
-            const discount = parseFloat(document.getElementById('discountPriceInput').value) || 0;
-            const isDiscountActive = document.getElementById('isDiscountActiveCheckbox').checked;
-            const calcEl = document.getElementById('discountSavingsCalc');
+        // --- Smart Currency Converter & Geo-IP Engine (Base: OMR, Excluding FATF Blacklist) ---
+        const FATF_BLACKLIST_CURRENCIES = ['IRR', 'KPW', 'MMK', 'RUB', 'SYP', 'CUP'];
+        const FATF_BLACKLIST_CODES = ['IR', 'KP', 'MM', 'RU', 'SY', 'CU', 'IRN', 'PRK', 'MMR', 'RUS', 'SYR', 'CUB'];
 
-            if (isDiscountActive && regular > 0 && discount > 0 && discount < regular) {
-                const diff = regular - discount;
-                const pct = Math.round((diff / regular) * 100);
-                calcEl.textContent = `🎉 Save $${diff.toFixed(2)} (${pct}% discount) — Final Price: $${discount.toFixed(2)}`;
-                calcEl.classList.remove('hidden');
+        function isFatfBlacklisted(val) {
+            if (!val) return false;
+            const str = String(val).trim().toUpperCase();
+            if (FATF_BLACKLIST_CURRENCIES.includes(str) || FATF_BLACKLIST_CODES.includes(str)) return true;
+            const lower = str.toLowerCase();
+            return lower.includes('iran') || lower.includes('north korea') || lower.includes('dprk') ||
+                   lower.includes('myanmar') || lower.includes('burma') || lower.includes('syria') ||
+                   lower.includes('russia') || lower.includes('cuba');
+        }
+
+        // Base currency is OMR (Omani Rial). Rates relative to 1 OMR:
+        const exchangeRates = {
+            // GCC & Arab
+            OMR: { rate: 1.0, symbol: 'ر.ع.', name: 'Omani Rial', decimals: 3 },
+            AED: { rate: 9.5514, symbol: 'د.إ', name: 'UAE Dirham', decimals: 2 },
+            SAR: { rate: 9.7530, symbol: 'ر.س', name: 'Saudi Riyal', decimals: 2 },
+            QAR: { rate: 9.4670, symbol: 'ر.ق', name: 'Qatari Riyal', decimals: 2 },
+            KWD: { rate: 0.8010, symbol: 'د.ك', name: 'Kuwaiti Dinar', decimals: 3 },
+            BHD: { rate: 0.9800, symbol: 'د.ب', name: 'Bahraini Dinar', decimals: 3 },
+            IQD: { rate: 3946.5, symbol: 'د.ع', name: 'Iraqi Dinar', decimals: 0 },
+            JOD: { rate: 1.8440, symbol: 'د.أ', name: 'Jordanian Dinar', decimals: 3 },
+            EGP: { rate: 126.15, symbol: 'ج.م', name: 'Egyptian Pound', decimals: 2 },
+            LBP: { rate: 232800, symbol: 'ل.ل', name: 'Lebanese Pound', decimals: 0 },
+            MAD: { rate: 25.80, symbol: 'د.م.', name: 'Moroccan Dirham', decimals: 2 },
+            DZD: { rate: 348.50, symbol: 'د.ج', name: 'Algerian Dinar', decimals: 2 },
+            TND: { rate: 8.050, symbol: 'د.ت', name: 'Tunisian Dinar', decimals: 3 },
+            LYD: { rate: 12.60, symbol: 'د.ل', name: 'Libyan Dinar', decimals: 3 },
+            YER: { rate: 651.0, symbol: 'ر.ي', name: 'Yemeni Rial', decimals: 0 },
+
+            // Global Major
+            USD: { rate: 2.6008, symbol: '$', name: 'US Dollar', decimals: 2 },
+            EUR: { rate: 2.3188, symbol: '€', name: 'Euro', decimals: 2 },
+            GBP: { rate: 1.9420, symbol: '£', name: 'British Pound', decimals: 2 },
+            CHF: { rate: 2.3140, symbol: 'CHF', name: 'Swiss Franc', decimals: 2 },
+            CAD: { rate: 3.5890, symbol: 'CA$', name: 'Canadian Dollar', decimals: 2 },
+            AUD: { rate: 3.9520, symbol: 'AU$', name: 'Australian Dollar', decimals: 2 },
+            JPY: { rate: 390.50, symbol: '¥', name: 'Japanese Yen', decimals: 0 },
+            CNY: { rate: 18.72, symbol: '¥', name: 'Chinese Yuan', decimals: 2 },
+            INR: { rate: 218.40, symbol: '₹', name: 'Indian Rupee', decimals: 2 },
+            TRY: { rate: 89.20, symbol: '₺', name: 'Turkish Lira', decimals: 2 },
+            SGD: { rate: 3.480, symbol: 'S$', name: 'Singapore Dollar', decimals: 2 },
+            NZD: { rate: 4.350, symbol: 'NZ$', name: 'New Zealand Dollar', decimals: 2 },
+            HKD: { rate: 20.25, symbol: 'HK$', name: 'Hong Kong Dollar', decimals: 2 },
+            KRW: { rate: 3580.0, symbol: '₩', name: 'South Korean Won', decimals: 0 },
+            MYR: { rate: 11.55, symbol: 'RM', name: 'Malaysian Ringgit', decimals: 2 },
+            IDR: { rate: 42100, symbol: 'Rp', name: 'Indonesian Rupiah', decimals: 0 },
+            THB: { rate: 88.50, symbol: '฿', name: 'Thai Baht', decimals: 2 },
+            PKR: { rate: 724.0, symbol: '₨', name: 'Pakistani Rupee', decimals: 2 },
+            BDT: { rate: 312.0, symbol: '৳', name: 'Bangladeshi Taka', decimals: 2 },
+            PHP: { rate: 151.2, symbol: '₱', name: 'Philippine Peso', decimals: 2 },
+            SEK: { rate: 27.20, symbol: 'kr', name: 'Swedish Krona', decimals: 2 },
+            NOK: { rate: 28.10, symbol: 'kr', name: 'Norwegian Krone', decimals: 2 },
+            DKK: { rate: 17.30, symbol: 'kr', name: 'Danish Krone', decimals: 2 },
+            PLN: { rate: 10.15, symbol: 'zł', name: 'Polish Zloty', decimals: 2 },
+            CZK: { rate: 58.60, symbol: 'Kč', name: 'Czech Koruna', decimals: 2 },
+            HUF: { rate: 955.0, symbol: 'Ft', name: 'Hungarian Forint', decimals: 0 },
+            RON: { rate: 11.55, symbol: 'lei', name: 'Romanian Leu', decimals: 2 },
+            BGN: { rate: 4.54, symbol: 'лв', name: 'Bulgarian Lev', decimals: 2 },
+            ZAR: { rate: 46.50, symbol: 'R', name: 'South African Rand', decimals: 2 },
+            BRL: { rate: 14.80, symbol: 'R$', name: 'Brazilian Real', decimals: 2 },
+            MXN: { rate: 52.10, symbol: 'Mex$', name: 'Mexican Peso', decimals: 2 },
+            CLP: { rate: 2470.0, symbol: 'CLP$', name: 'Chilean Peso', decimals: 0 },
+            COP: { rate: 11100.0, symbol: 'COL$', name: 'Colombian Peso', decimals: 0 },
+            PEN: { rate: 9.85, symbol: 'S/', name: 'Peruvian Sol', decimals: 2 },
+            ARS: { rate: 2650.0, symbol: 'ARS$', name: 'Argentine Peso', decimals: 2 },
+            NGN: { rate: 4180.0, symbol: '₦', name: 'Nigerian Naira', decimals: 2 },
+            KES: { rate: 336.0, symbol: 'KSh', name: 'Kenyan Shilling', decimals: 2 },
+            GHS: { rate: 41.50, symbol: 'GH₵', name: 'Ghanaian Cedi', decimals: 2 },
+            AZN: { rate: 4.42, symbol: '₼', name: 'Azerbaijani Manat', decimals: 2 },
+            KZT: { rate: 1270.0, symbol: '₸', name: 'Kazakhstani Tenge', decimals: 2 },
+            UZS: { rate: 33500, symbol: 'soʻm', name: 'Uzbekistani Som', decimals: 0 },
+            GEL: { rate: 7.15, symbol: '₾', name: 'Georgian Lari', decimals: 2 }
+        };
+
+        let selectedCurrency = 'OMR';
+
+        function countryToCurrencyCode(code) {
+            if (isFatfBlacklisted(code)) return 'OMR';
+            const map = {
+                'OM': 'OMR', 'AE': 'AED', 'SA': 'SAR', 'KW': 'KWD', 'QA': 'QAR', 
+                'BH': 'BHD', 'IQ': 'IQD', 'JO': 'JOD', 'EG': 'EGP', 'LB': 'LBP',
+                'TR': 'TRY', 'GB': 'GBP', 'CA': 'CAD', 'AU': 'AUD', 'NZ': 'NZD',
+                'DE': 'EUR', 'FR': 'EUR', 'IT': 'EUR', 'ES': 'EUR', 'NL': 'EUR',
+                'CH': 'CHF', 'JP': 'JPY', 'CN': 'CNY', 'IN': 'INR', 'SG': 'SGD',
+                'US': 'USD'
+            };
+            return map[code] || 'USD';
+        }
+
+        async function initSmartPriceConverter() {
+            let detectedCurrency = null;
+            let detectedCountry = null;
+
+            try {
+                const resp = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(2500) });
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data.country_code && isFatfBlacklisted(data.country_code)) {
+                        detectedCurrency = 'OMR';
+                        detectedCountry = 'Oman';
+                    } else if (data.currency && isFatfBlacklisted(data.currency)) {
+                        detectedCurrency = 'OMR';
+                        detectedCountry = 'Oman';
+                    } else if (data.currency && exchangeRates[data.currency]) {
+                        detectedCurrency = data.currency;
+                        detectedCountry = data.country_name || data.country_code;
+                    } else if (data.country_code) {
+                        detectedCurrency = countryToCurrencyCode(data.country_code);
+                        detectedCountry = data.country_name || data.country_code;
+                    }
+                }
+            } catch (e) {
+                // Offline or adblock: fallback to client timezone
+            }
+
+            if (!detectedCurrency || isFatfBlacklisted(detectedCurrency)) {
+                const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
+                if (tz.includes('muscat')) { detectedCurrency = 'OMR'; detectedCountry = 'Oman'; }
+                else if (tz.includes('dubai')) { detectedCurrency = 'AED'; detectedCountry = 'United Arab Emirates'; }
+                else if (tz.includes('riyadh')) { detectedCurrency = 'SAR'; detectedCountry = 'Saudi Arabia'; }
+                else if (tz.includes('kuwait')) { detectedCurrency = 'KWD'; detectedCountry = 'Kuwait'; }
+                else if (tz.includes('qatar')) { detectedCurrency = 'QAR'; detectedCountry = 'Qatar'; }
+                else if (tz.includes('bahrain')) { detectedCurrency = 'BHD'; detectedCountry = 'Bahrain'; }
+                else if (tz.includes('baghdad')) { detectedCurrency = 'IQD'; detectedCountry = 'Iraq'; }
+                else if (tz.includes('amman')) { detectedCurrency = 'JOD'; detectedCountry = 'Jordan'; }
+                else if (tz.includes('cairo')) { detectedCurrency = 'EGP'; detectedCountry = 'Egypt'; }
+                else if (tz.includes('istanbul')) { detectedCurrency = 'TRY'; detectedCountry = 'Turkey'; }
+                else if (tz.includes('london')) { detectedCurrency = 'GBP'; detectedCountry = 'United Kingdom'; }
+                else if (tz.includes('paris') || tz.includes('berlin') || tz.includes('rome') || tz.includes('madrid')) { detectedCurrency = 'EUR'; detectedCountry = 'Europe'; }
+                else if (tz.includes('toronto') || tz.includes('vancouver')) { detectedCurrency = 'CAD'; detectedCountry = 'Canada'; }
+                else if (tz.includes('tehran') || tz.includes('pyongyang') || tz.includes('yangon')) { detectedCurrency = 'OMR'; detectedCountry = 'Oman'; }
+                else { detectedCurrency = 'USD'; detectedCountry = 'United States'; }
+            }
+
+            if (detectedCurrency && !isFatfBlacklisted(detectedCurrency)) {
+                selectedCurrency = detectedCurrency;
+                const sel = document.getElementById('currencySelect');
+                if (sel) {
+                    ensureCurrencyInSelect(detectedCurrency);
+                    sel.value = detectedCurrency;
+                }
+                const regionEl = document.getElementById('detectedRegionText');
+                if (regionEl) regionEl.textContent = `${detectedCountry} (${detectedCurrency})`;
+            }
+
+            // Asynchronously fetch live rate updates with base OMR from open.er-api.com
+            fetch('https://open.er-api.com/v6/latest/OMR')
+                .then(r => r.json())
+                .then(d => {
+                    if (d && d.rates) {
+                        const otherGroup = document.getElementById('otherCurrenciesGroup');
+                        for (const c in d.rates) {
+                            if (isFatfBlacklisted(c)) continue; // Filter out FATF blacklist!
+
+                            if (!exchangeRates[c]) {
+                                exchangeRates[c] = {
+                                    rate: d.rates[c],
+                                    symbol: c,
+                                    name: c,
+                                    decimals: 2
+                                };
+                                if (otherGroup) {
+                                    const opt = document.createElement('option');
+                                    opt.value = c;
+                                    opt.textContent = `${c} - ${c}`;
+                                    otherGroup.appendChild(opt);
+                                }
+                            } else {
+                                exchangeRates[c].rate = d.rates[c];
+                            }
+                        }
+                        updateAllConversions();
+                    }
+                })
+                .catch(() => {});
+
+            updateAllConversions();
+        }
+
+        function ensureCurrencyInSelect(code) {
+            const sel = document.getElementById('currencySelect');
+            if (!sel || !code) return;
+            let exists = false;
+            for (let i = 0; i < sel.options.length; i++) {
+                if (sel.options[i].value === code) { exists = true; break; }
+            }
+            if (!exists && !isFatfBlacklisted(code)) {
+                const opt = document.createElement('option');
+                opt.value = code;
+                opt.textContent = `${code} (${code})`;
+                sel.appendChild(opt);
+            }
+        }
+
+        function formatCurrencyValue(val, currCode) {
+            const curr = exchangeRates[currCode] || exchangeRates.OMR;
+            const converted = val * curr.rate;
+            const decimals = curr.decimals;
+            return `${converted.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })} ${curr.symbol}`;
+        }
+
+        function onCurrencySelectChange(newCurrency) {
+            if (isFatfBlacklisted(newCurrency)) {
+                selectedCurrency = 'OMR';
             } else {
-                calcEl.classList.add('hidden');
+                selectedCurrency = newCurrency;
+            }
+            updateAllConversions();
+        }
+
+        function onRegularPriceInput() {
+            updateAllConversions();
+        }
+
+        function updateAllConversions() {
+            const regular = parseFloat(document.getElementById('regularPriceInput').value) || 0;
+            const convEl = document.getElementById('convertedPriceText');
+            if (convEl) {
+                convEl.textContent = regular > 0 ? formatCurrencyValue(regular, selectedCurrency) : `0.00 ${selectedCurrency}`;
+            }
+            updateDiscountCalculations();
+        }
+
+        // --- Discount Calculations & Preset Buttons ---
+        function selectDiscountPreset(preset) {
+            const input = document.getElementById('discountPercentInput');
+            input.value = preset;
+            onDiscountPercentInput(preset);
+        }
+
+        function onDiscountPercentInput(val) {
+            const pct = parseInt(val) || 0;
+
+            // Highlight active preset button if value matches
+            document.querySelectorAll('.discount-preset-btn').forEach(btn => {
+                const btnPreset = parseInt(btn.getAttribute('data-preset'));
+                if (btnPreset === pct) {
+                    btn.classList.add('preset-active');
+                } else {
+                    btn.classList.remove('preset-active');
+                }
+            });
+
+            updateDiscountCalculations();
+        }
+
+        function updateDiscountCalculations() {
+            const regular = parseFloat(document.getElementById('regularPriceInput').value) || 0;
+            const pct = parseInt(document.getElementById('discountPercentInput').value) || 0;
+            const isDiscountActive = document.getElementById('isDiscountActiveCheckbox').checked;
+
+            const hiddenDiscountPrice = document.getElementById('discountPriceHidden');
+            const hiddenDiscountPercent = document.getElementById('discountPercentHidden');
+            const glowEl = document.getElementById('finalPriceGlowAmount');
+            const savingsEl = document.getElementById('discountSavingsText');
+            const convEl = document.getElementById('finalPriceConvertedText');
+
+            if (hiddenDiscountPercent) {
+                hiddenDiscountPercent.value = pct > 0 ? pct : '';
+            }
+
+            if (isDiscountActive && regular > 0 && pct > 0 && pct < 100) {
+                const finalPrice = Math.round((regular * (1 - (pct / 100))) * 100) / 100;
+                const savings = Math.round((regular - finalPrice) * 100) / 100;
+
+                if (hiddenDiscountPrice) hiddenDiscountPrice.value = finalPrice.toFixed(2);
+                if (glowEl) glowEl.textContent = finalPrice.toFixed(2);
+                if (savingsEl) savingsEl.textContent = `Save ${savings.toFixed(2)} (${pct}% off)`;
+                if (convEl) convEl.textContent = `≈ ${formatCurrencyValue(finalPrice, selectedCurrency)}`;
+            } else if (isDiscountActive && regular > 0) {
+                if (hiddenDiscountPrice) hiddenDiscountPrice.value = regular.toFixed(2);
+                if (glowEl) glowEl.textContent = regular.toFixed(2);
+                if (savingsEl) savingsEl.textContent = 'Enter discount % or click a preset above';
+                if (convEl) convEl.textContent = `≈ ${formatCurrencyValue(regular, selectedCurrency)}`;
+            } else {
+                if (hiddenDiscountPrice) hiddenDiscountPrice.value = '';
+                if (glowEl) glowEl.textContent = '0.00';
+                if (savingsEl) savingsEl.textContent = '';
+                if (convEl) convEl.textContent = '';
             }
         }
 
@@ -300,6 +693,29 @@
         // Initialize state on load
         document.addEventListener('DOMContentLoaded', function () {
             toggleDiscountSection();
+            initSmartPriceConverter();
         });
     </script>
+    <style>
+        .glowing-price {
+            text-shadow: 0 0 10px rgba(52, 211, 153, 0.9), 
+                         0 0 20px rgba(52, 211, 153, 0.6), 
+                         0 0 30px rgba(16, 185, 129, 0.4);
+            animation: pulse-glow 2s infinite ease-in-out alternate;
+        }
+        @@keyframes pulse-glow {
+            0% {
+                text-shadow: 0 0 8px rgba(52, 211, 153, 0.8), 0 0 16px rgba(52, 211, 153, 0.5);
+            }
+            100% {
+                text-shadow: 0 0 14px rgba(52, 211, 153, 1), 0 0 28px rgba(52, 211, 153, 0.8), 0 0 40px rgba(16, 185, 129, 0.6);
+            }
+        }
+        .preset-active {
+            background-color: rgba(16, 185, 129, 0.25) !important;
+            border-color: rgba(52, 211, 153, 0.8) !important;
+            color: #6ee7b7 !important;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.35) !important;
+        }
+    </style>
 }
