@@ -19,6 +19,7 @@ C:\Users\user\Desktop\Pharmacists\publish\Web.runtimeconfig.json
 C:\Users\user\Desktop\Pharmacists\publish\Web.pdb
 C:\Users\user\Desktop\Pharmacists\publish\ar\Web.resources.dll
 C:\Users\user\Desktop\Pharmacists\publish\en\Web.resources.dll
+C:\Users\user\Desktop\Pharmacists\publish\fa\Web.resources.dll
 C:\Users\user\Desktop\Pharmacists\publish\AdvancedStringBuilder.dll
 C:\Users\user\Desktop\Pharmacists\publish\AWSSDK.Core.dll
 C:\Users\user\Desktop\Pharmacists\publish\AWSSDK.S3.dll

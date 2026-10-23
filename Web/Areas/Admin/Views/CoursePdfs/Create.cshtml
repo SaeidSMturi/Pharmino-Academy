@@ -1,6 +1,9 @@
 @model Domain.Entities.Course.CoursePdf
 
 @{
+    var cultureName = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var isFarsi = cultureName.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
+    var isArabic = cultureName.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
     var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
     ViewData["Title"] = Localizer["AddPdf"].Value;
     var courseId = ViewBag.CourseId;
@@ -79,10 +82,10 @@
                             <div class="flex items-center justify-between gap-2 flex-wrap text-xs">
                                 <span class="text-slate-400 font-medium flex items-center gap-1.5">
                                     <i class="fas fa-globe text-brand-cyan text-xs"></i>
-                                    <span id="detectedRegionText">@(isRtl ? "جاري كشف العملة المحلية..." : "Detecting local currency...")</span>
+                                    <span id="detectedRegionText">@(isFarsi ? "در حال شناسایی ارز محلی..." : (isArabic ? "جاري كشف العملة المحلية..." : "Detecting local currency..."))</span>
                                 </span>
                                 <div class="flex items-center gap-1.5">
-                                    <label for="currencySelect" class="text-[10px] uppercase font-bold text-slate-500">@(isRtl ? "العملة:" : "Currency:")</label>
+                                    <label for="currencySelect" class="text-[10px] uppercase font-bold text-slate-500">@(isFarsi ? "ارز:" : (isArabic ? "العملة:" : "Currency:"))</label>
                                     <select id="currencySelect" onchange="onCurrencySelectChange(this.value)" class="bg-dark-bg/90 border border-white/10 rounded-lg px-2 py-1 text-xs font-bold text-brand-cyan focus:outline-none focus:border-brand-cyan max-w-[170px]">
                                         <optgroup label="GCC & Arab Currencies">
                                             <option value="OMR">OMR (ر.ع.) - Oman (Base)</option>
@@ -151,7 +154,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center justify-between text-xs pt-1 border-t border-white/5">
-                                <span class="text-slate-400">@(isRtl ? "المعادل بالعملة المحددة:" : "Regional estimate:")</span>
+                                <span class="text-slate-400">@(isFarsi ? "معادل با ارز انتخابی:" : (isArabic ? "المعادل بالعملة المحددة:" : "Regional estimate:"))</span>
                                 <span id="convertedPriceText" class="font-bold font-mono text-brand-cyan">0.000 OMR</span>
                             </div>
                         </div>

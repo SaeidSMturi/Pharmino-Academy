@@ -28,6 +28,19 @@
 <!DOCTYPE html>
 <html lang="@currentCulture" dir="@(isRtl ? "rtl" : "ltr")">
 <head>
+    <script>
+        (function () {
+            try {
+                var theme = localStorage.getItem('pharmino_theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+                if (theme === 'light') {
+                    document.documentElement.classList.add('light', 'light-theme');
+                } else {
+                    document.documentElement.classList.add('dark', 'dark-theme');
+                }
+            } catch (e) { }
+        })();
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Pharmacists Admin</title>
@@ -59,11 +72,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
-    @if (isRtl)
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    @{
+        var isFarsi = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
+        var isArabic = currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
+    }
+    @if (isFarsi)
+    {
+        <style>
+            @@font-face {
+                font-family: 'B Nazanin';
+                src: url('/fonts/BNazanin.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+            }
+            html {
+                font-size: 19px !important;
+            }
+            body, h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, div, label, th, td {
+                font-family: 'B Nazanin', Tahoma, sans-serif !important;
+            }
+        </style>
+    }
+    else if (isArabic)
     {
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <style>
-            body, h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, div {
+            body, h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, div, label, th, td {
                 font-family: 'Cairo', sans-serif !important;
             }
         </style>
@@ -213,7 +249,8 @@
             <h1 class="text-xl font-bold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent">
                 Pharmacists
             </h1>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
+                <partial name="_ThemeToggle" />
                 <partial name="_LanguageSwitcher" />
                 <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-dark-bg font-bold text-sm">
                     @(User.Identity?.Name?.Substring(0, 1).ToUpper() ?? "A")
@@ -419,12 +456,13 @@
                 }
 
                 <!-- Topbar inside main content (Desktop only) -->
-                <header class="hidden lg:flex items-center justify-between glass-panel rounded-2xl px-6 py-4 mb-8">
+                <header class="relative z-30 hidden lg:flex items-center justify-between glass-panel rounded-2xl px-6 py-4 mb-8">
                     <div class="text-start">
                         <h2 class="text-xl font-bold text-white">@ViewData["Title"]</h2>
                         <p class="text-sm text-slate-400 mt-1">@Localizer["AdminLayoutSub"]</p>
                     </div>
-                    <div class="flex items-center @(isRtl ? "space-x-reverse space-x-4" : "space-x-4")">
+                    <div class="flex items-center @(isRtl ? "space-x-reverse space-x-3" : "space-x-3")">
+                        <partial name="_ThemeToggle" />
                         <partial name="_LanguageSwitcher" />
                     </div>
                 </header>
@@ -507,6 +545,7 @@
         }
     </script>
 
+    <script src="~/js/theme.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -9,6 +9,19 @@
 <!DOCTYPE html>
 <html lang="@currentCulture" dir="@(isRtl ? "rtl" : "ltr")">
 <head>
+    <script>
+        (function () {
+            try {
+                var theme = localStorage.getItem('pharmino_theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+                if (theme === 'light') {
+                    document.documentElement.classList.add('light', 'light-theme');
+                } else {
+                    document.documentElement.classList.add('dark', 'dark-theme');
+                }
+            } catch (e) { }
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - @Localizer["SiteName"]</title>
@@ -17,6 +30,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -48,7 +62,29 @@
             box-shadow: 0 10px 25px -5px rgba(66, 114, 255, 0.4);
         }
     </style>
-    @if (isRtl)
+    @{
+        var isFarsi = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
+        var isArabic = currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
+    }
+    @if (isFarsi)
+    {
+        <style>
+            @@font-face {
+                font-family: 'B Nazanin';
+                src: url('/fonts/BNazanin.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+            }
+            html {
+                font-size: 19px !important;
+            }
+            body, h1, h2, h3, h4, h5, h6, p, span, a, input, button, label, select, option {
+                font-family: 'B Nazanin', Tahoma, sans-serif !important;
+            }
+        </style>
+    }
+    else if (isArabic)
     {
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <style>
@@ -60,9 +96,10 @@
 </head>
 <body class="antialiased selection:bg-cyan-500 selection:text-white">
 
-    <!-- Floating Language Switcher -->
-    <div class="absolute top-4 right-4 z-50">
-        <div class="glass-panel p-1 rounded-full bg-slate-900/40 border border-white/10 shadow-lg">
+    <!-- Floating Theme & Language Switcher -->
+    <div class="absolute top-4 right-4 z-50 flex items-center gap-2">
+        <div class="glass-panel p-1.5 rounded-full bg-slate-900/40 border border-white/10 shadow-lg flex items-center gap-2">
+            <partial name="_ThemeToggle" />
             <partial name="_LanguageSwitcher" />
         </div>
     </div>
@@ -129,5 +166,6 @@
         </main>
     </div>
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/theme.js" asp-append-version="true"></script>
 </body>
 </html>

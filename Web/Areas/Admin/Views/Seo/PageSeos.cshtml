@@ -1,14 +1,16 @@
 @model List<Domain.Entities.Seo.PageSeo>
 @{
-    ViewData["Title"] = "Page SEO Management";
+    var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var isRtl = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase) || currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
+    ViewData["Title"] = Localizer["PageSeo"].Value;
 }
 
 <!-- Main Page Container -->
-<div class="animate-[fadeIn_0.4s_ease_forwards] w-full" dir="ltr">
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full @(isRtl ? "font-fa" : "") text-start" dir="@(isRtl ? "rtl" : "ltr")">
 
     <!-- Back to Dashboard -->
     <a href="@Url.Action("Index", "Seo", new { area = "Admin" })" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-brand-cyan transition-colors uppercase tracking-wider mb-6">
-        <i class="fa fa-arrow-left text-[10px]"></i> Back to SEO Dashboard
+        <i class="fa @(isRtl ? "fa-arrow-right" : "fa-arrow-left") text-[10px]"></i> <span>@Localizer["BackToSeoDashboard"]</span>
     </a>
 
     <!-- Flash Messages -->
@@ -137,7 +139,7 @@
 </div>
 
 <!-- Modal Form -->
-<div id="pageSeoModal" class="fixed inset-0 z-[9999] hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto" dir="ltr">
+<div id="pageSeoModal" class="fixed inset-0 z-[9999] hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto @(isRtl ? "font-fa" : "") text-start" dir="@(isRtl ? "rtl" : "ltr")">
     <div class="relative w-full max-w-3xl max-h-[90vh] flex flex-col rounded-3xl bg-slate-900 border border-white/10 shadow-2xl overflow-hidden my-auto">
         <div class="flex items-center justify-between p-6 border-b border-white/10 bg-white/[0.02] shrink-0">
             <h3 id="modalTitle" class="text-lg font-black text-white flex items-center gap-2">

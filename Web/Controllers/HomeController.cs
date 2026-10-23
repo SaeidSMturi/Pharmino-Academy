@@ -55,9 +55,17 @@ namespace Web.Controllers
                 LatestCourses = latestCourses
             };
 
-            var isArabic = System.Globalization.CultureInfo.CurrentCulture.Name.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+            var cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+            var isFarsi = cultureName.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
+            var isArabic = cultureName.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
 
-            if (isArabic)
+            if (isFarsi)
+            {
+                ViewData["Title"] = "صفحه اصلی | آموزش تخصصی داروسازی و علوم دارویی";
+                ViewData["MetaDescription"] = "جامع‌ترین پلتفرم آنلاین آموزش داروسازی، فارماکولوژی، داروسازی بالینی و نسخه‌خوانی با برترین دوره‌ها و اساتید.";
+                ViewData["MetaKeywords"] = "آموزش داروسازی, فارماکولوژی, نسخه‌خوانی, داروسازی بالینی, دوره‌های آنلاین داروسازی, داروساز";
+            }
+            else if (isArabic)
             {
                 ViewData["Title"] = "الرئيسية | التعليم التخصصي في الصيدلة والعلوم الصيدلانية";
                 ViewData["MetaDescription"] = "المنصة الإلكترونية الأكثر شمولاً لتعليم الصيدلة، علم الأدوية، الصيدلة السريرية، وقراءة الوصفات الطبية مع أفضل الدورات والمحاضرين.";
@@ -74,9 +82,9 @@ namespace Web.Controllers
             var scheme = Request.Scheme ?? "https";
             var host = Request.Host.Value;
 
-            var siteName = isArabic ? "منصة الصيدليين" : "Pharmacists Platform";
-            var siteDesc = isArabic ? "نظام آموزش الصيدلة التخصصي" : "Specialized Pharmacy Education System";
-            var itemListTitle = isArabic ? "أحدث دورات الصيدلة" : "Latest Pharmacy Courses";
+            var siteName = isFarsi ? "پلتفرم داروسازان" : (isArabic ? "منصة الصيدليين" : "Pharmacists Platform");
+            var siteDesc = isFarsi ? "سامانه آموزش تخصصی داروسازی" : (isArabic ? "نظام آموزش الصيدلة التخصصي" : "Specialized Pharmacy Education System");
+            var itemListTitle = isFarsi ? "جدیدترین دوره‌های داروسازی" : (isArabic ? "أحدث دورات الصيدلة" : "Latest Pharmacy Courses");
 
             var courseListItems = latestCourses.Select((c, idx) => $@"
             {{
@@ -233,8 +241,17 @@ namespace Web.Controllers
 
         public IActionResult Privacy()
         {
-            var isArabic = System.Globalization.CultureInfo.CurrentCulture.Name.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
-            if (isArabic)
+            var cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+            var isFarsi = cultureName.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
+            var isArabic = cultureName.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+
+            if (isFarsi)
+            {
+                ViewData["Title"] = "سیاست حفظ حریم خصوصی و شرایط استفاده";
+                ViewData["MetaDescription"] = "بیانیه حریم خصوصی و قوانین استفاده از خدمات آموزشی پلتفرم داروسازان.";
+                ViewData["MetaKeywords"] = "حریم خصوصی, شرایط استفاده, قوانین پلتفرم, مقررات داروسازی";
+            }
+            else if (isArabic)
             {
                 ViewData["Title"] = "سياسة الخصوصية وشروط الاستخدام";
                 ViewData["MetaDescription"] = "بيان سياسة الخصوصية والشروط والأحكام لاستخدام الخدمات التعليمية لمنصة الصيدليين.";

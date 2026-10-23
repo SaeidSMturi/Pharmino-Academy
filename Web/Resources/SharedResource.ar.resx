@@ -1,43 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
-<root>
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="0" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
+<?xml version='1.0' encoding='utf-8'?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:schema id="root">
+		<xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xs:element name="root" ns1:IsDataSet="true">
+			<xs:complexType>
+				<xs:choice maxOccurs="unbounded">
+					<xs:element name="metadata">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="value" type="xsd:string" minOccurs="0" />
+							</xs:sequence>
+							<xs:attribute name="name" use="required" type="xsd:string" />
+							<xs:attribute name="type" type="xsd:string" />
+							<xs:attribute name="mimetype" type="xsd:string" />
+							<xs:attribute ref="xml:space" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="assembly">
+						<xs:complexType>
+							<xs:attribute name="alias" type="xsd:string" />
+							<xs:attribute name="name" type="xsd:string" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="data">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="0" />
+								<xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+							</xs:sequence>
+							<xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1" />
+							<xs:attribute name="type" type="xsd:string" ns1:Ordinal="3" />
+							<xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4" />
+							<xs:attribute ref="xml:space" />
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+			</xs:complexType>
+		</xs:element>
+	</xs:schema>
 	<resheader name="resmimetype">
 		<value>text/microsoft-resx</value>
 	</resheader>
@@ -482,44 +482,14 @@
 	<data name="Revoke" xml:space="preserve">
     <value>إلغاء الصلاحية</value>
   </data>
-	<data name="Overview" xml:space="preserve">
-    <value>نظرة عامة</value>
-  </data>
-	<data name="Management" xml:space="preserve">
-    <value>الإدارة</value>
-  </data>
-	<data name="UserNetwork" xml:space="preserve">
-    <value>شبكة المستخدمين</value>
-  </data>
-	<data name="Students" xml:space="preserve">
-    <value>الطلاب</value>
-  </data>
-	<data name="AdminUsers" xml:space="preserve">
-    <value>المسؤولون</value>
-  </data>
-	<data name="Permissions" xml:space="preserve">
-    <value>الصلاحيات</value>
-  </data>
 	<data name="Enrollments" xml:space="preserve">
     <value>التسجيلات</value>
   </data>
 	<data name="Content" xml:space="preserve">
     <value>المحتوى</value>
   </data>
-	<data name="System" xml:space="preserve">
-    <value>النظام</value>
-  </data>
-	<data name="Preferences" xml:space="preserve">
-    <value>التفضيلات</value>
-  </data>
-	<data name="Logs" xml:space="preserve">
-    <value>السجلات</value>
-  </data>
 	<data name="AdminLayoutSub" xml:space="preserve">
     <value>إدارة ومراقبة التطبيق الخاص بك.</value>
-  </data>
-	<data name="ControlCenter" xml:space="preserve">
-    <value>مركز التحكم</value>
   </data>
 	<data name="SystemManager" xml:space="preserve">
     <value>مدير النظام</value>
@@ -649,9 +619,6 @@
   </data>
 	<data name="CommitJsonModifications" xml:space="preserve">
     <value>حفظ تعديلات JSON</value>
-  </data>
-	<data name="LockedAccounts" xml:space="preserve">
-    <value>الحسابات المقفلة</value>
   </data>
 	<data name="SecurityAndLocks" xml:space="preserve">
     <value>الأمان والأقفال</value>
@@ -878,20 +845,11 @@
   <data name="Back" xml:space="preserve">
     <value>رجوع</value>
   </data>
-  <data name="Actions" xml:space="preserve">
-    <value>الإجراءات</value>
-  </data>
   <data name="Status" xml:space="preserve">
     <value>الحالة</value>
   </data>
-  <data name="Active" xml:space="preserve">
-    <value>نشط</value>
-  </data>
   <data name="Inactive" xml:space="preserve">
     <value>غير نشط</value>
-  </data>
-  <data name="Free" xml:space="preserve">
-    <value>مجاني</value>
   </data>
   <data name="Paid" xml:space="preserve">
     <value>مدفوع</value>
@@ -925,9 +883,6 @@
   </data>
   <data name="EditUser" xml:space="preserve">
     <value>تعديل المستخدم</value>
-  </data>
-  <data name="UserDetails" xml:space="preserve">
-    <value>تفاصيل المستخدم</value>
   </data>
   <data name="BackToUsers" xml:space="preserve">
     <value>العودة للمستخدمين</value>
@@ -1175,9 +1130,6 @@
   <data name="ConfirmDeletePdf" xml:space="preserve">
     <value>هل أنت متأكد من رغبتك في حذف ملف PDF هذا؟ لا يمكن التراجع عن هذا الإجراء.</value>
   </data>
-  <data name="Posts" xml:space="preserve">
-    <value>المقالات والمنشورات</value>
-  </data>
   <data name="PostsManagementSub" xml:space="preserve">
     <value>عرض وإدارة ونشر المقالات والأخبار على الموقع.</value>
   </data>
@@ -1244,12 +1196,6 @@
   <data name="DraftNotice" xml:space="preserve">
     <value>في حال عدم التحديد، سيتم حفظ هذا المقال كمسودة.</value>
   </data>
-  <data name="Published" xml:space="preserve">
-    <value>منشور</value>
-  </data>
-  <data name="Draft" xml:space="preserve">
-    <value>مسودة</value>
-  </data>
   <data name="Drafts" xml:space="preserve">
     <value>المسودات</value>
   </data>
@@ -1288,9 +1234,6 @@
   </data>
   <data name="PublishPost" xml:space="preserve">
     <value>نشر المقال</value>
-  </data>
-  <data name="TotalCourses" xml:space="preserve">
-    <value>إجمالي الدورات</value>
   </data>
   <data name="ActiveCourses" xml:space="preserve">
     <value>الدورات النشطة</value>
@@ -1388,9 +1331,6 @@
   <data name="TotalPosts" xml:space="preserve">
     <value>إجمالي المقالات</value>
   </data>
-  <data name="RolesAndPermissions" xml:space="preserve">
-    <value>الأدوار والصلاحيات</value>
-  </data>
   <data name="RolesAndPermissionsSub" xml:space="preserve">
     <value>إدارة أدوار المستخدمين ومستويات الوصول وصلاحيات النظام.</value>
   </data>
@@ -1400,20 +1340,11 @@
   <data name="CreateRoleSub" xml:space="preserve">
     <value>إنشاء دور مستخدم جديد وتعيين صلاحيات النظام.</value>
   </data>
-  <data name="EditRole" xml:space="preserve">
-    <value>تعديل الدور</value>
-  </data>
   <data name="EditRoleSub" xml:space="preserve">
     <value>تحديث تفاصيل الدور والحالة والصلاحيات المعينة.</value>
   </data>
-  <data name="RoleDetails" xml:space="preserve">
-    <value>تفاصيل الدور</value>
-  </data>
   <data name="RoleDetailsSub" xml:space="preserve">
     <value>عرض معلومات الدور والصلاحيات المعينة والمستخدمين المرتبطين.</value>
-  </data>
-  <data name="BackToRoles" xml:space="preserve">
-    <value>العودة إلى الأدوار</value>
   </data>
   <data name="SearchRoles" xml:space="preserve">
     <value>البحث في الأدوار...</value>
@@ -1430,9 +1361,6 @@
   <data name="AssignedUsers" xml:space="preserve">
     <value>المستخدمون المعينون</value>
   </data>
-  <data name="RoleName" xml:space="preserve">
-    <value>اسم الدور</value>
-  </data>
   <data name="RoleDisplayName" xml:space="preserve">
     <value>الاسم المعروض</value>
   </data>
@@ -1448,11 +1376,8 @@
   <data name="AssignPermissions" xml:space="preserve">
     <value>تعيين الصلاحيات</value>
   </data>
-  <data name="Permissions" xml:space="preserve">
-    <value>الصلاحيات</value>
-  </data>
   <data name="Selected" xml:space="preserve">
-    <value>محدد</value>
+    <value>تم التحديد:</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
     <value>تحديد الكل</value>
@@ -1517,17 +1442,8 @@
   <data name="Assigned" xml:space="preserve">
     <value>تم التعيين</value>
   </data>
-  <data name="Users" xml:space="preserve">
-    <value>المستخدمون</value>
-  </data>
   <data name="UserManagement" xml:space="preserve">
     <value>إدارة المستخدمين</value>
-  </data>
-  <data name="Students" xml:space="preserve">
-    <value>الطلاب</value>
-  </data>
-  <data name="AdminUsers" xml:space="preserve">
-    <value>المدراء</value>
   </data>
   <data name="StudentsDescription" xml:space="preserve">
     <value>المستخدمون العاديون (الطلاب)</value>
@@ -1547,9 +1463,6 @@
   <data name="CreateUserSub" xml:space="preserve">
     <value>إنشاء حساب مستخدم جديد.</value>
   </data>
-  <data name="EditUser" xml:space="preserve">
-    <value>تعديل المستخدم</value>
-  </data>
   <data name="EditUserSub" xml:space="preserve">
     <value>تحديث بيانات الحساب وصلاحيات هذا المستخدم.</value>
   </data>
@@ -1559,38 +1472,11 @@
   <data name="UserProfileSub" xml:space="preserve">
     <value>تفاصيل الحساب والأمان لـ @{0}</value>
   </data>
-  <data name="AccountInformation" xml:space="preserve">
-    <value>معلومات الحساب</value>
-  </data>
   <data name="PersonalInformation" xml:space="preserve">
     <value>المعلومات الشخصية</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>اسم المستخدم</value>
-  </data>
-  <data name="EmailAddress" xml:space="preserve">
-    <value>البريد الإلكتروني</value>
-  </data>
-  <data name="FirstName" xml:space="preserve">
-    <value>الاسم الأول</value>
-  </data>
-  <data name="LastName" xml:space="preserve">
-    <value>اسم العائلة</value>
-  </data>
-  <data name="PhoneNumber" xml:space="preserve">
-    <value>رقم الهاتف</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>كلمة المرور</value>
-  </data>
-  <data name="ConfirmPassword" xml:space="preserve">
-    <value>تأكيد كلمة المرور</value>
-  </data>
-  <data name="NewPassword" xml:space="preserve">
-    <value>كلمة المرور الجديدة</value>
-  </data>
-  <data name="AccountStatusAndVerification" xml:space="preserve">
-    <value>حالة الحساب والتحقق</value>
   </data>
   <data name="IsEmailActive" xml:space="preserve">
     <value>البريد مؤكد</value>
@@ -1624,9 +1510,6 @@
   </data>
   <data name="SelectUserRolesHelp" xml:space="preserve">
     <value>اختر الأدوار لتعيينها لهذا المستخدم للتحكم في صلاحيات وصوله.</value>
-  </data>
-  <data name="ChangePassword" xml:space="preserve">
-    <value>تغيير كلمة المرور</value>
   </data>
   <data name="LeaveBlankPasswordHelp" xml:space="preserve">
     <value>اتركه فارغاً إذا كنت لا ترغب في تغيير كلمة المرور الحالية.</value>
@@ -1706,17 +1589,11 @@
   <data name="NoUsersFoundSub" xml:space="preserve">
     <value>لا يوجد مستخدمون يطابقون معايير البحث حالياً.</value>
   </data>
-  <data name="TotalUsers" xml:space="preserve">
-    <value>إجمالي المستخدمين</value>
-  </data>
   <data name="ActiveUsers" xml:space="preserve">
     <value>المستخدمون النشطون</value>
   </data>
   <data name="UserEnrollments" xml:space="preserve">
     <value>الدورات المسجل بها</value>
-  </data>
-  <data name="AllEnrollments" xml:space="preserve">
-    <value>جميع التسجيلات</value>
   </data>
   <data name="EnrollInCourse" xml:space="preserve">
     <value>التسجيل في دورة</value>
@@ -1733,29 +1610,8 @@
   <data name="TypeToSearchCourses" xml:space="preserve">
     <value>اكتب للبحث عن الدورات...</value>
   </data>
-  <data name="MarkAsPaid" xml:space="preserve">
-    <value>تعيين كمدفوع</value>
-  </data>
-  <data name="ConfirmEnrollment" xml:space="preserve">
-    <value>تأكيد التسجيل</value>
-  </data>
-  <data name="NoEnrolledCourses" xml:space="preserve">
-    <value>لا توجد دورات مسجل بها</value>
-  </data>
-  <data name="NoEnrolledCoursesSub" xml:space="preserve">
-    <value>هذا المستخدم غير مسجل في أي دورة حالياً.</value>
-  </data>
-  <data name="AlreadyEnrolled" xml:space="preserve">
-    <value>مسجل بالفعل</value>
-  </data>
   <data name="Course" xml:space="preserve">
-    <value>الدورة</value>
-  </data>
-  <data name="EnrollmentDate" xml:space="preserve">
-    <value>تاريخ التسجيل</value>
-  </data>
-  <data name="PaymentStatus" xml:space="preserve">
-    <value>حالة الدفع</value>
+    <value>الدورات</value>
   </data>
   <data name="NotProvided" xml:space="preserve">
     <value>غير متوفر</value>
@@ -1775,4 +1631,4 @@
   <data name="AdminNotes" xml:space="preserve">
     <value>ملاحظات المدير</value>
   </data>
-</root>
+<data name="General" xml:space="preserve"><value>عام</value></data><data name="Email" xml:space="preserve"><value>البريد الإلكتروني</value></data><data name="Payment" xml:space="preserve"><value>المدفوعات</value></data><data name="SEO" xml:space="preserve"><value>تحسين محركات البحث</value></data><data name="Site Name" xml:space="preserve"><value>اسم الموقع</value></data><data name="Main name displayed across the site" xml:space="preserve"><value>الاسم الرئيسي المعروض عبر الموقع</value></data><data name="Site Description" xml:space="preserve"><value>وصف الموقع</value></data><data name="Meta description for search engines" xml:space="preserve"><value>الوصف الوصفي لمحركات البحث</value></data><data name="Site Logo URL" xml:space="preserve"><value>رابط شعار الموقع</value></data><data name="URL path to site logo" xml:space="preserve"><value>مسار رابط شعار الموقع</value></data><data name="Support Email" xml:space="preserve"><value>بريد الدعم</value></data><data name="Main support email address" xml:space="preserve"><value>عنوان البريد الإلكتروني الرئيسي للدعم</value></data><data name="Support Phone" xml:space="preserve"><value>هاتف الدعم</value></data><data name="Customer support phone number" xml:space="preserve"><value>رقم هاتف دعم العملاء</value></data><data name="SMTP Server" xml:space="preserve"><value>خادم SMTP</value></data><data name="SMTP server address for sending emails" xml:space="preserve"><value>عنوان خادم SMTP لإرسال رسائل البريد</value></data><data name="SMTP Port" xml:space="preserve"><value>منفذ SMTP</value></data><data name="SMTP port number" xml:space="preserve"><value>رقم منفذ خادم SMTP</value></data><data name="SMTP Username" xml:space="preserve"><value>اسم مستخدم SMTP</value></data><data name="SMTP authentication username" xml:space="preserve"><value>اسم المستخدم للمصادقة في SMTP</value></data><data name="Enable Email Notifications" xml:space="preserve"><value>تفعيل إشعارات البريد</value></data><data name="Send email notifications to users" xml:space="preserve"><value>إرسال إشعارات البريد الإلكتروني للمستخدمين</value></data><data name="Account Lockout Duration (Minutes)" xml:space="preserve"><value>مدة قفل الحساب (بالدقائق)</value></data><data name="Minutes to lock account after failed attempts" xml:space="preserve"><value>عدد الدقائق لقفل الحساب بعد محاولات فاشلة</value></data><data name="Max Failed Login Attempts" xml:space="preserve"><value>أقصى عدد لمحاولات تسجيل الدخول الفاشلة</value></data><data name="Maximum failed login attempts before lockout" xml:space="preserve"><value>الحد الأقصى لمحاولات الدخول الفاشلة قبل القفل</value></data><data name="Password Expiration Days" xml:space="preserve"><value>فترة صلاحية كلمة المرور (أيام)</value></data><data name="Days before password expires (0 to disable)" xml:space="preserve"><value>الأيام قبل انتهاء صلاحية كلمة المرور (0 للتعطيل)</value></data><data name="Require Strong Password" xml:space="preserve"><value>اشتراط كلمة مرور قوية</value></data><data name="Enforce complex password requirements" xml:space="preserve"><value>فرض متطلبات معقدة لكلمة المرور</value></data><data name="Two-Factor Authentication Required" xml:space="preserve"><value>المصادقة الثنائية مطلوبة</value></data><data name="Require 2FA for admin users" xml:space="preserve"><value>طلب المصادقة الثنائية للمشرفين</value></data><data name="Default Currency" xml:space="preserve"><value>العملة الافتراضية</value></data><data name="Default currency for transactions" xml:space="preserve"><value>العملة الافتراضية للمعاملات</value></data><data name="Payment Gateway" xml:space="preserve"><value>بوابة الدفع</value></data><data name="Primary payment gateway provider" xml:space="preserve"><value>مزود بوابة الدفع الرئيسي</value></data><data name="Transaction Fee Percentage" xml:space="preserve"><value>نسبة رسوم المعاملة</value></data><data name="Percentage fee added to transactions" xml:space="preserve"><value>نسبة الرسوم المضافة للمعاملات</value></data><data name="Minimum Order Amount" xml:space="preserve"><value>الحد الأدنى للطلب</value></data><data name="Minimum amount for orders" xml:space="preserve"><value>الحد الأدنى لقيمة الطلبات</value></data><data name="Course Enrollment Requires Approval" xml:space="preserve"><value>الموافقة اليدوية على التسجيل</value></data><data name="Manual approval needed for course enrollment" xml:space="preserve"><value>يلزم الحصول على موافقة يدوية لتسجيل الطلاب</value></data><data name="Course Completion Threshold (%)" xml:space="preserve"><value>نسبة إكمال الدورة (%)</value></data><data name="Percentage of course content required for completion" xml:space="preserve"><value>نسبة المحتوى المطلوبة لإكمال الدورة</value></data><data name="Course Certificate Auto-Generate" xml:space="preserve"><value>إنشاء الشهادات تلقائياً</value></data><data name="Automatically generate certificate on completion" xml:space="preserve"><value>إنشاء الشهادة تلقائياً عند إكمال الدورة</value></data><data name="Max Course Instructors" xml:space="preserve"><value>الحد الأقصى لمدربي الدورة</value></data><data name="Maximum number of instructors per course" xml:space="preserve"><value>الحد الأقصى لعدد المدربين لكل دورة</value></data><data name="Enable Maintenance Mode" xml:space="preserve"><value>تفعيل وضع الصيانة</value></data><data name="Put site in maintenance mode" xml:space="preserve"><value>وضع الموقع في حالة الصيانة المؤقتة</value></data><data name="Session Timeout (Minutes)" xml:space="preserve"><value>انتهاء جلسة المستخدم (دقائق)</value></data><data name="User session expiration time in minutes" xml:space="preserve"><value>وقت انتهاء جلسة المستخدم بالدقائق عند عدم النشاط</value></data><data name="Log Activity" xml:space="preserve"><value>تسجيل الأنشطة</value></data><data name="Enable activity logging" xml:space="preserve"><value>تفعيل تسجيل أنشطة النظام في قاعدة البيانات</value></data><data name="Log Retention Days" xml:space="preserve"><value>أيام الاحتفاظ بالسجلات</value></data><data name="Days to keep activity logs" xml:space="preserve"><value>عدد أيام الاحتفاظ بسجلات الأنشطة</value></data><data name="Max Upload File Size (MB)" xml:space="preserve"><value>الحد الأقصى لحجم رفع الملفات (MB)</value></data><data name="Maximum file upload size in megabytes" xml:space="preserve"><value>أقصى حجم لرفع الملفات بالميجابايت</value></data><data name="IT Administrator" xml:space="preserve"><value>مدير تكنولوجيا المعلومات</value></data><data name="Super Administrator" xml:space="preserve"><value>المدير العام</value></data><data name="Course Manager" xml:space="preserve"><value>مدير الدورات</value></data><data name="Accountant" xml:space="preserve"><value>محاسب</value></data><data name="Technical and administrative access to manage courses, videos, users, and roles, excluding financial records" xml:space="preserve"><value>وصول فني وإداري لإدارة الدورات والفيديوهات والمستخدمين والأدوار دون السجلات المالية</value></data><data name="Full access to all features" xml:space="preserve"><value>وصول كامل إلى جميع ميزات النظام</value></data><data name="Manage courses and enrollments" xml:space="preserve"><value>إدارة الدورات التدريبية وتسجيلات الطلاب</value></data><data name="Manage payments only" xml:space="preserve"><value>إدارة المدفوعات والمعاملات المالية فقط</value></data><data name="EnrollmentManagement" xml:space="preserve"><value>إدارة التسجيلات</value></data><data name="TotalCourseEnrollments" xml:space="preserve"><value>إجمالي التسجيلات في الدورات:</value></data><data name="BulkTransfer" xml:space="preserve"><value>النقل الجماعي</value></data><data name="AddEnrollment" xml:space="preserve"><value>إضافة تسجيل</value></data><data name="SearchStudentPlaceholder" xml:space="preserve"><value>اسم الطالب أو البريد أو الدورة...</value></data><data name="AllStatuses" xml:space="preserve"><value>جميع الحالات</value></data><data name="AllTypes" xml:space="preserve"><value>جميع الأنواع</value></data><data name="SortBy" xml:space="preserve"><value>ترتيب حسب</value></data><data name="NewestFirst" xml:space="preserve"><value>الأحدث أولاً</value></data><data name="OldestFirst" xml:space="preserve"><value>الأقدم أولاً</value></data><data name="ProgressHighToLow" xml:space="preserve"><value>التقدم: من الأعلى للأدنى</value></data><data name="ProgressLowToHigh" xml:space="preserve"><value>التقدم: من الأدنى للأعلى</value></data><data name="StudentNameAsc" xml:space="preserve"><value>اسم الطالب: أ - ي</value></data><data name="CourseTitleAsc" xml:space="preserve"><value>عنوان الدورة: أ - ي</value></data><data name="ApplyFilter" xml:space="preserve"><value>تطبيق التصفية</value></data><data name="ActiveCourse" xml:space="preserve"><value>دورة نشطة</value></data><data name="InactiveCourse" xml:space="preserve"><value>دورة غير نشطة</value></data><data name="NoEnrollmentsFound" xml:space="preserve"><value>لم يتم العثور على أي تسجيلات</value></data><data name="NoEnrollmentsFilterDesc" xml:space="preserve"><value>لا توجد تسجيلات تطابق معايير البحث الحالية. حاول تعديل البحث.</value></data><data name="NoEnrollmentsEmptyDesc" xml:space="preserve"><value>لم يتم إنشاء أي تسجيلات حتى الآن. انقر أدناه لإضافة طالب إلى دورة.</value></data><data name="AddStudentToCourse" xml:space="preserve"><value>إضافة طالب إلى الدورة</value></data><data name="SearchStudentByNameOrEmail" xml:space="preserve"><value>ابحث عن الطالب بالاسم أو البريد...</value></data><data name="SearchCourseByTitle" xml:space="preserve"><value>ابحث عن الدورة بالعنوان...</value></data><data name="MarkAsPaidCourse" xml:space="preserve"><value>تحديد كدورة مدفوعة</value></data><data name="SaveEnrollment" xml:space="preserve"><value>حفظ التسجيل</value></data><data name="RemoveEnrollment" xml:space="preserve"><value>إلغاء التسجيل</value></data><data name="NoStudentsFound" xml:space="preserve"><value>لم يتم العثور على طلاب</value></data><data name="NoCoursesFound" xml:space="preserve"><value>لم يتم العثور على دورات</value></data><data name="PleaseSelectStudent" xml:space="preserve"><value>يرجى اختيار طالب.</value></data><data name="PleaseSelectCourse" xml:space="preserve"><value>يرجى اختيار دورة.</value></data><data name="SeoHealthDashboard" xml:space="preserve"><value>لوحة صحة تحسين محركات البحث</value></data><data name="SeoManagement" xml:space="preserve"><value>إدارة السيو</value></data><data name="SeoManagementSub" xml:space="preserve"><value>فحص الصفحات وتحسين البيانات الوصفية وإدارة خرائط الموقع.</value></data><data name="ScanAllPages" xml:space="preserve"><value>فحص جميع الصفحات</value></data><data name="RebuildSitemap" xml:space="preserve"><value>إعادة بناء خريطة الموقع</value></data><data name="SeoHealthScore" xml:space="preserve"><value>درجة صحة السيو</value></data><data name="OverallSiteScore" xml:space="preserve"><value>الدرجة الإجمالية للموقع</value></data><data name="SeoStatus" xml:space="preserve"><value>حالة السيو</value></data><data name="Missing" xml:space="preserve"><value>مفقود</value></data><data name="Generated" xml:space="preserve"><value>تم الإنشاء</value></data><data name="DisableSearchIndexing" xml:space="preserve"><value>تعطيل أرشفة محركات البحث</value></data><data name="DisableSearchIndexingSub" xml:space="preserve"><value>منع محركات البحث من أرشفة هذا الموقع (Noindex)</value></data><data name="IssuesOverview" xml:space="preserve"><value>نظرة عامة على المشاكل</value></data><data name="Errors404AndServer" xml:space="preserve"><value>أخطاء 404 والخادم</value></data><data name="MissingAltText" xml:space="preserve"><value>النص البديل المفقود</value></data><data name="MissingMetaDesc" xml:space="preserve"><value>الوصف الوصفي المفقود</value></data><data name="H1HeadingIssues" xml:space="preserve"><value>مشاكل وسوم H1</value></data><data name="UrlRedirects" xml:space="preserve"><value>إعادة توجيه الروابط</value></data><data name="UrlRedirectsSub" xml:space="preserve"><value>إدارة عمليات إعادة التوجيه 301/302 لتوجيه الروابط القديمة.</value></data><data name="ManageRedirects" xml:space="preserve"><value>إدارة التوجيهات</value></data><data name="SeoErrors" xml:space="preserve"><value>أخطاء السيو</value></data><data name="SeoErrorsSub" xml:space="preserve"><value>مراجعة الروابط المعطلة وأخطاء 404 ومشاكل الصفحات.</value></data><data name="ViewErrors" xml:space="preserve"><value>عرض الأخطاء</value></data><data name="ImageAltText" xml:space="preserve"><value>النص البديل للصور</value></data><data name="ImageAltTextSub" xml:space="preserve"><value>إضافة النص البديل للصور لتحسين سهولة الوصول والسيو.</value></data><data name="ManageImageAlts" xml:space="preserve"><value>إدارة بدائل الصور</value></data><data name="PageSeo" xml:space="preserve"><value>سيو الصفحات</value></data><data name="PageSeoSub" xml:space="preserve"><value>تخصيص وسوم العناوين والوصف وروابط canonical والوسوم الاجتماعية.</value></data><data name="PageAnalyzer" xml:space="preserve"><value>محلل الصفحات</value></data><data name="PageAnalyzerSub" xml:space="preserve"><value>تحليل العناوين وكثافة الكلمات المفتاحية والبيانات المنظمة لأي رابط.</value></data><data name="RobotsTxt" xml:space="preserve"><value>ملف Robots.txt</value></data><data name="RobotsTxtSub" xml:space="preserve"><value>عرض وتعديل قواعد برامج الزحف في ملف robots.txt.</value></data><data name="EditRobotsTxt" xml:space="preserve"><value>تعديل Robots.txt</value></data><data name="SitemapSettings" xml:space="preserve"><value>إعدادات خريطة الموقع</value></data><data name="SitemapSettingsSub" xml:space="preserve"><value>تهيئة تكرار التحديث ومستويات الأولوية والروابط المخصصة في خريطة الموقع.</value></data><data name="ScannedPages" xml:space="preserve"><value>الصفحات المفحوصة</value></data><data name="PageUrl" xml:space="preserve"><value>رابط الصفحة</value></data><data name="H1Tag" xml:space="preserve"><value>وسم H1</value></data><data name="MissingAlts" xml:space="preserve"><value>بدون بديل</value></data><data name="IndexStatus" xml:space="preserve"><value>حالة الفهرسة</value></data><data name="NoPagesScannedYet" xml:space="preserve"><value>لم يتم فحص أي صفحات حتى الآن. انقر فوق "فحص جميع الصفحات" أعلاه.</value></data><data name="ScanningSeo" xml:space="preserve"><value>جارٍ فحص السيو...</value></data><data name="GlobalNoindexWarning" xml:space="preserve"><value>تحذير: تم تعطيل أرشفة محركات البحث حالياً لهذا الموقع (Noindex نشط).</value></data><data name="SystemActivities" xml:space="preserve"><value>أنشطة النظام</value></data><data name="SystemActivitiesSub" xml:space="preserve"><value>عرض ومراقبة أحدث أنشطة وأحداث النظام.</value></data><data name="ClearAllActivities" xml:space="preserve"><value>مسح جميع الأنشطة</value></data><data name="HighPriority" xml:space="preserve"><value>أولوية عالية</value></data><data name="MediumPriority" xml:space="preserve"><value>أولوية متوسطة</value></data><data name="LowPriority" xml:space="preserve"><value>أولوية منخفضة</value></data><data name="BulkEnrollmentTransfer" xml:space="preserve"><value>النقل الجماعي للتسجيلات</value></data><data name="TransferStudentsDesc" xml:space="preserve"><value>نقل الطلاب من دورة إلى أخرى</value></data><data name="BackToEnrollments" xml:space="preserve"><value>العودة إلى التسجيلات</value></data><data name="TransferCompletedSuccessfully" xml:space="preserve"><value>تم النقل بنجاح</value></data><data name="Transferred" xml:space="preserve"><value>تم نقلهم</value></data><data name="SkippedAlreadyEnrolled" xml:space="preserve"><value>تم تخطيهم (مسجلون مسبقاً)</value></data><data name="RemovedFromSource" xml:space="preserve"><value>محذوف من المصدر</value></data><data name="TransferErrors" xml:space="preserve"><value>أخطاء النقل</value></data><data name="TransferRoute" xml:space="preserve"><value>مسار النقل</value></data><data name="FromCourseSource" xml:space="preserve"><value>من الدورة (المصدر)</value></data><data name="SelectSource" xml:space="preserve"><value>— حدد المصدر —</value></data><data name="ToCourseDestination" xml:space="preserve"><value>إلى الدورة (الوجهة)</value></data><data name="SelectDestination" xml:space="preserve"><value>— حدد الوجهة —</value></data><data name="TransferOptions" xml:space="preserve"><value>خيارات النقل</value></data><data name="OverrideExistingEnrollments" xml:space="preserve"><value>استبدال التسجيلات الحالية</value></data><data name="OverrideExistingDesc" xml:space="preserve"><value>إذا كان المستخدم مسجلاً بالفعل في دورة الوجهة، يتم تحديث تقدمه لمطابقة المصدر. خلاف ذلك، يتم تخطي المسجلين مسبقاً.</value></data><data name="CopyPaymentInfo" xml:space="preserve"><value>نسخ معلومات الدفع</value></data><data name="CopyPaymentInfoDesc" xml:space="preserve"><value>الحفاظ على حالة الدفع المجاني/المدفوع والمبلغ عند إنشاء التسجيل في دورة الوجهة.</value></data><data name="RemoveFromSourceAfterTransfer" xml:space="preserve"><value>إزالة من دورة المصدر بعد النقل</value></data><data name="RemoveFromSourceDesc" xml:space="preserve"><value>سيتم إلغاء تسجيل المستخدمين من دورة المصدر وحذف تقدم مشاهدة الفيديو نهائياً. لا يمكن التراجع عن هذا الإجراء.</value></data><data name="ExecuteTransfer" xml:space="preserve"><value>تنفيذ النقل</value></data><data name="HowItWorks" xml:space="preserve"><value>كيف يعمل</value></data><data name="BulkRevoke" xml:space="preserve"><value>إلغاء جماعي</value></data><data name="BulkRevokeDesc" xml:space="preserve"><value>إزالة جميع الطلاب من الدورة دفعة واحدة. سيؤدي هذا أيضاً إلى حذف تقدم الفيديو. استخدم بحذر.</value></data><data name="RevokeAllEnrollments" xml:space="preserve"><value>إلغاء جميع التسجيلات</value></data><data name="BackToSeoDashboard" xml:space="preserve"><value>العودة إلى لوحة تحكم السيو</value></data><data name="RobotsTxtEditor" xml:space="preserve"><value>محرر Robots.txt</value></data><data name="RobotsTxtEditorDesc" xml:space="preserve"><value>التحكم في الصفحات التي يُسمح لمحركات البحث والزواحف بالوصول إليها.</value></data><data name="SaveRobotsTxt" xml:space="preserve"><value>حفظ robots.txt</value></data><data name="QuickTemplates" xml:space="preserve"><value>قوالب سريعة</value></data><data name="QuickTemplatesDesc" xml:space="preserve"><value>اختر قالباً معداً مسبقاً لملء محتوى robots.txt بسرعة.</value></data><data name="LoadStandardTemplate" xml:space="preserve"><value>تحميل القالب القياسي</value></data><data name="AllowAllCrawlers" xml:space="preserve"><value>السماح لجميع الزواحف</value></data><data name="BlockAllCrawlers" xml:space="preserve"><value>حظر جميع الزواحف</value></data><data name="SyntaxGuidelines" xml:space="preserve"><value>إرشادات الصياغة</value></data><data name="SitemapSettingsTitle" xml:space="preserve"><value>إعدادات خريطة الموقع</value></data><data name="SectionFrequencyPriority" xml:space="preserve"><value>تكرار وأولوية الأقسام</value></data></root>

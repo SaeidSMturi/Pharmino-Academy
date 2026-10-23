@@ -1,6 +1,9 @@
 @model Domain.Entities.Course.Course
 
 @{
+    var cultureName = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var isFarsi = cultureName.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
+    var isArabic = cultureName.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
     var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
     ViewData["Title"] = Localizer["CreateNewCourse"].Value;
 }
@@ -143,7 +146,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <label asp-for="Price" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
-                            @Localizer["PriceUSD"] (@(isRtl ? "السعر الأساسي" : "Base Price")) <span class="text-brand-orange">*</span>
+                            @Localizer["PriceUSD"] (@(isFarsi ? "قیمت پایه" : (isArabic ? "السعر الأساسي" : "Base Price"))) <span class="text-brand-orange">*</span>
                         </label>
                         <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
                             <input asp-for="Price" id="regularPriceInput" type="number" step="0.01" min="0" oninput="onRegularPriceInput()" class="w-full bg-transparent px-4 py-3.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-bold font-mono" placeholder="0.00" />
@@ -156,10 +159,10 @@
                             <div class="flex items-center justify-between gap-2 flex-wrap text-xs">
                                 <span class="text-slate-400 font-medium flex items-center gap-1.5">
                                     <i class="fas fa-globe-americas text-brand-cyan text-xs"></i>
-                                    <span id="detectedRegionText">@(isRtl ? "جاري كشف العملة المحلية..." : "Detecting local currency...")</span>
+                                    <span id="detectedRegionText">@(isFarsi ? "در حال شناسایی ارز محلی..." : (isArabic ? "جاري كشف العملة المحلية..." : "Detecting local currency..."))</span>
                                 </span>
                                 <div class="flex items-center gap-1.5">
-                                    <label for="currencySelect" class="text-[10px] uppercase font-bold text-slate-500">@(isRtl ? "تحويل إلى:" : "Convert to:")</label>
+                                    <label for="currencySelect" class="text-[10px] uppercase font-bold text-slate-500">@(isFarsi ? "تبدیل به:" : (isArabic ? "تحويل إلى:" : "Convert to:"))</label>
                                     <select id="currencySelect" onchange="onCurrencySelectChange(this.value)" class="bg-dark-bg/90 border border-white/10 rounded-lg px-2 py-1 text-xs font-bold text-brand-cyan focus:outline-none focus:border-brand-cyan max-w-[170px]">
                                         <optgroup label="GCC & Arab Currencies">
                                             <option value="OMR">OMR (ر.ع.) - Oman (Base)</option>
@@ -257,7 +260,7 @@
                             <input type="hidden" name="discountPercent" id="discountPercentHidden" />
 
                             <label for="discountPercentInput" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
-                                @(isRtl ? "نسبة الخصم (%)" : "Discount Percentage (%)")
+                                @(isFarsi ? "درصد تخفیف (%)" : (isArabic ? "نسبة الخصم (%)" : "Discount Percentage (%)"))
                             </label>
 
                             <div class="space-y-2.5">
@@ -269,7 +272,7 @@
                                 <!-- Preset Quick Buttons: 10%, 15%, 25%, 50%, 75%, 99% -->
                                 <div>
                                     <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider block mb-1.5">
-                                        @(isRtl ? "اختر نسبة جاهزة أو أدخل رقماً مخصصاً:" : "Quick Discount Presets (or type custom):")
+                                        @(isFarsi ? "انتخاب درصد آماده یا وارد کردن مقدار دلخواه:" : (isArabic ? "اختر نسبة جاهزة أو أدخل رقماً مخصصاً:" : "Quick Discount Presets (or type custom):"))
                                     </span>
                                     <div class="flex items-center flex-wrap gap-1.5">
                                         <button type="button" onclick="selectDiscountPreset(10)" data-preset="10" class="discount-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-white/5 border border-white/10 text-slate-300 hover:bg-emerald-500/20 hover:text-emerald-300 hover:border-emerald-500/30 transition-all cursor-pointer">10%</button>
@@ -288,7 +291,7 @@
                                     <div class="flex items-center gap-2">
                                         <i class="fas fa-sparkles text-emerald-400 text-sm animate-pulse"></i>
                                         <span class="text-xs font-bold text-slate-300">
-                                            @(isRtl ? "السعر النهائي بعد الخصم:" : "Final price after discount:")
+                                            @(isFarsi ? "قیمت نهایی پس از تخفیف:" : (isArabic ? "السعر النهائي بعد الخصم:" : "Final price after discount:"))
                                         </span>
                                     </div>
                                     <span id="finalPriceGlowAmount" class="font-black italic text-emerald-300 text-xl font-mono glowing-price drop-shadow-[0_0_15px_rgba(52,211,153,0.9)]">
@@ -309,7 +312,7 @@
 
             <div class="pt-6">
                 <h3 class="text-sm font-bold text-brand-orange uppercase tracking-widest mb-6 flex items-center">
-                    <i class="fas fa-store @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @(isRtl ? "عرض للبيع في المتجر" : "Store & Sales Visibility")
+                    <i class="fas fa-store @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @(isFarsi ? "وضعیت نمایش و فروش در فروشگاه" : (isArabic ? "عرض للبيع في المتجر" : "Store & Sales Visibility"))
                 </h3>
 
                 <input type="hidden" name="IsActive" value="true" />
@@ -320,10 +323,10 @@
                         <div class="flex-1">
                             <span class="text-xs font-bold text-slate-300 group-hover:text-white transition-colors flex items-center gap-2">
                                 <i class="fas fa-cart-shopping text-emerald-400"></i>
-                                @(isRtl ? "عرض الدورة للبيع الفردي في المتجر العام" : "List course for individual sale in public store")
+                                @(isFarsi ? "نمایش دوره برای فروش تکی در فروشگاه" : (isArabic ? "عرض الدورة للبيع الفردي في المتجر العام" : "List course for individual sale in public store"))
                             </span>
                             <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                                @(isRtl ? "عند تفعيل هذا الخيار، ستظهر الدورة في المتجر العام ويمكن للطلاب شراؤها بشكل منفصل. إذا تم إلغاؤه، فستظل الدورة نشطة وجاهزة لكنها لن تُباع إلا ضمن الحزم (الباندل)." : "When enabled, this course appears in the public course catalog for individual purchase. When unchecked, it stays active and functional but can only be accessed by attaching it to a Bundle package.")
+                                @(isFarsi ? "در صورت فعال بودن، این دوره به صورت تکی در فروشگاه نمایش داده شده و قابل خرید است. در صورت غیرفعال بودن، تنها از طریق پکیج‌ها قابل دسترسی خواهد بود." : (isArabic ? "عند تفعيل هذا الخيار، ستظهر الدورة في المتجر العام ويمكن للطلاب شراؤها بشكل منفصل. إذا تم إلغاؤه، فستظل الدورة نشطة وجاهزة لكنها لن تُباع إلا ضمن الحزم (الباندل)." : "When enabled, this course appears in the public course catalog for individual purchase. When unchecked, it stays active and functional but can only be accessed by attaching it to a Bundle package."))
                             </p>
                         </div>
                     </label>

@@ -1,0 +1,1634 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:schema id="root">
+		<xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xs:element name="root" ns1:IsDataSet="true">
+			<xs:complexType>
+				<xs:choice maxOccurs="unbounded">
+					<xs:element name="metadata">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="value" type="xsd:string" minOccurs="0" />
+							</xs:sequence>
+							<xs:attribute name="name" use="required" type="xsd:string" />
+							<xs:attribute name="type" type="xsd:string" />
+							<xs:attribute name="mimetype" type="xsd:string" />
+							<xs:attribute ref="xml:space" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="assembly">
+						<xs:complexType>
+							<xs:attribute name="alias" type="xsd:string" />
+							<xs:attribute name="name" type="xsd:string" />
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="data">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="0" />
+								<xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+							</xs:sequence>
+							<xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1" />
+							<xs:attribute name="type" type="xsd:string" ns1:Ordinal="3" />
+							<xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4" />
+							<xs:attribute ref="xml:space" />
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+			</xs:complexType>
+		</xs:element>
+	</xs:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="Dashboard" xml:space="preserve">
+    <value>داشبورد</value>
+  </data>
+	<data name="Courses" xml:space="preserve">
+    <value>دوره‌ها</value>
+  </data>
+	<data name="Users" xml:space="preserve">
+    <value>کاربران</value>
+  </data>
+	<data name="Roles" xml:space="preserve">
+    <value>نقش‌ها و دسترسی‌ها</value>
+  </data>
+	<data name="Settings" xml:space="preserve">
+    <value>تنظیمات</value>
+  </data>
+	<data name="Logs" xml:space="preserve">
+    <value>گزارش‌ها و لاگ‌ها</value>
+  </data>
+	<data name="Security" xml:space="preserve">
+    <value>امنیت</value>
+  </data>
+	<data name="Logout" xml:space="preserve">
+    <value>خروج از حساب</value>
+  </data>
+	<data name="Profile" xml:space="preserve">
+    <value>پروفایل کاربری</value>
+  </data>
+	<data name="SiteName" xml:space="preserve">
+    <value>آکادمی فارمینو</value>
+  </data>
+	<data name="LiveSite" xml:space="preserve">
+    <value>مشاهده سایت</value>
+  </data>
+  <data name="AdminPanel" xml:space="preserve">
+    <value>پنل مدیریت</value>
+  </data>
+  <data name="UserPanel" xml:space="preserve">
+    <value>بخش دانشجویان</value>
+  </data>
+	<data name="WelcomeBack" xml:space="preserve">
+    <value>خوش آمدید</value>
+  </data>
+	<data name="SignIn" xml:space="preserve">
+    <value>ورود به حساب</value>
+  </data>
+	<data name="SignUp" xml:space="preserve">
+    <value>ثبت‌نام</value>
+  </data>
+	<data name="EmailAddress" xml:space="preserve">
+    <value>نشانی ایمیل</value>
+  </data>
+	<data name="Username" xml:space="preserve">
+    <value>نام کاربری</value>
+  </data>
+	<data name="Password" xml:space="preserve">
+    <value>رمز عبور</value>
+  </data>
+	<data name="ConfirmPassword" xml:space="preserve">
+    <value>تکرار رمز عبور</value>
+  </data>
+	<data name="ForgotPasswordLink" xml:space="preserve">
+    <value>رمز عبور را فراموش کرده‌اید؟</value>
+  </data>
+	<data name="ContinueWithGoogle" xml:space="preserve">
+    <value>ورود با حساب گوگل</value>
+  </data>
+	<data name="SignUpLink" xml:space="preserve">
+    <value>همین حالا ثبت‌نام کنید</value>
+  </data>
+	<data name="AlreadyHaveAccount" xml:space="preserve">
+    <value>قبلاً ثبت‌نام کرده‌اید؟</value>
+  </data>
+	<data name="NoAccount" xml:space="preserve">
+    <value>هنوز حساب کاربری ندارید؟</value>
+  </data>
+	<data name="RegisterTitle" xml:space="preserve">
+    <value>ایجاد حساب کاربری جدید</value>
+  </data>
+	<data name="RegisterSub" xml:space="preserve">
+    <value>برای دسترسی به دوره‌های تخصصی ثبت‌نام کنید.</value>
+  </data>
+	<data name="ForgotPasswordTitle" xml:space="preserve">
+    <value>فراموشی رمز عبور</value>
+  </data>
+	<data name="ForgotPasswordSub" xml:space="preserve">
+    <value>نشانی ایمیل خود را برای دریافت پیوند بازیابی وارد کنید.</value>
+  </data>
+	<data name="SendResetLink" xml:space="preserve">
+    <value>ارسال پیوند بازیابی</value>
+  </data>
+	<data name="BackToLogin" xml:space="preserve">
+    <value>بازگشت به صفحه ورود</value>
+  </data>
+	<data name="ResetPasswordTitle" xml:space="preserve">
+    <value>تغییر رمز عبور</value>
+  </data>
+	<data name="ResetPasswordSub" xml:space="preserve">
+    <value>رمز عبور جدید خود را در کادرهای زیر وارد نمایید.</value>
+  </data>
+	<data name="ResetPasswordBtn" xml:space="preserve">
+    <value>تغییر و ذخیره رمز عبور</value>
+  </data>
+	<data name="FirstName" xml:space="preserve">
+    <value>نام</value>
+  </data>
+	<data name="LastName" xml:space="preserve">
+    <value>نام خانوادگی</value>
+  </data>
+	<data name="MyCourses" xml:space="preserve">
+    <value>دوره‌های من</value>
+  </data>
+	<data name="ActiveSessions" xml:space="preserve">
+    <value>نشست‌های فعال</value>
+  </data>
+	<data name="ProfileSettings" xml:space="preserve">
+    <value>تنظیمات پروفایل</value>
+  </data>
+	<data name="AccountSettings" xml:space="preserve">
+    <value>تنظیمات حساب کاربری</value>
+  </data>
+	<data name="TerminateSession" xml:space="preserve">
+    <value>ابطال نشست</value>
+  </data>
+	<data name="Welcome" xml:space="preserve">
+    <value>خوش آمدید</value>
+  </data>
+	<data name="StudentAccount" xml:space="preserve">
+    <value>حساب کاربری دانشجو</value>
+  </data>
+	<data name="ChangePassword" xml:space="preserve">
+    <value>تغییر رمز عبور</value>
+  </data>
+	<data name="EditProfile" xml:space="preserve">
+    <value>ویرایش مشخصات</value>
+  </data>
+	<data name="CurrentPassword" xml:space="preserve">
+    <value>رمز عبور فعلی</value>
+  </data>
+	<data name="NewPassword" xml:space="preserve">
+    <value>رمز عبور جدید</value>
+  </data>
+	<data name="SaveChanges" xml:space="preserve">
+    <value>ذخیره تغییرات</value>
+  </data>
+	<data name="ControlCenter" xml:space="preserve">
+    <value>مرکز راهبری</value>
+  </data>
+	<data name="UserNetwork" xml:space="preserve">
+    <value>شبکه کاربران</value>
+  </data>
+	<data name="Students" xml:space="preserve">
+    <value>دانشجویان</value>
+  </data>
+	<data name="AdminUsers" xml:space="preserve">
+    <value>مدیران سیستم</value>
+  </data>
+	<data name="Permissions" xml:space="preserve">
+    <value>دسترسی‌ها و مجوزها</value>
+  </data>
+	<data name="Preferences" xml:space="preserve">
+    <value>ترجیحات کاربری</value>
+  </data>
+	<data name="System" xml:space="preserve">
+    <value>سامانه</value>
+  </data>
+	<data name="Overview" xml:space="preserve">
+    <value>نمای کلی</value>
+  </data>
+	<data name="Management" xml:space="preserve">
+    <value>مدیریت</value>
+  </data>
+	<data name="TerminateAll" xml:space="preserve">
+    <value>خروج از تمامی دستگاه‌ها</value>
+  </data>
+	<data name="LockedAccounts" xml:space="preserve">
+    <value>حساب‌های مسدود</value>
+  </data>
+	<data name="UserDetails" xml:space="preserve">
+    <value>مشخصات کاربر</value>
+  </data>
+	<data name="Activities" xml:space="preserve">
+    <value>رویدادها و فعالیت‌ها</value>
+  </data>
+	<data name="Posts" xml:space="preserve">
+    <value>پست‌ها و مقالات</value>
+  </data>
+	<data name="LoginSub" xml:space="preserve">
+    <value>برای ورود به دوره و ادامه یادگیری وارد شوید.</value>
+  </data>
+	<data name="PasswordMustContain" xml:space="preserve">
+    <value>رمز عبور باید شامل موارد زیر باشد:</value>
+  </data>
+	<data name="PasswordMinLength" xml:space="preserve">
+    <value>حداقل ۸ نویسه (کاراکتر)</value>
+  </data>
+	<data name="PasswordUppercase" xml:space="preserve">
+    <value>حداقل یک حرف بزرگ انگلیسی (A-Z)</value>
+  </data>
+	<data name="PasswordLowercase" xml:space="preserve">
+    <value>حداقل یک حرف کوچک انگلیسی (a-z)</value>
+  </data>
+	<data name="PasswordDigit" xml:space="preserve">
+    <value>حداقل یک عدد (0-9)</value>
+  </data>
+	<data name="or" xml:space="preserve">
+    <value>یا</value>
+  </data>
+	<data name="PhoneNumber" xml:space="preserve">
+    <value>شماره همراه</value>
+  </data>
+	<data name="OrContinueWith" xml:space="preserve">
+    <value>یا ورود با روش‌های دیگر</value>
+  </data>
+	<data name="SearchCountry" xml:space="preserve">
+    <value>جستجوی کشور...</value>
+  </data>
+	<data name="AtLeast8Chars" xml:space="preserve">
+    <value>حداقل ۸ کاراکتر</value>
+  </data>
+	<data name="OneUppercase" xml:space="preserve">
+    <value>یک حرف بزرگ (A-Z)</value>
+  </data>
+	<data name="OneLowercase" xml:space="preserve">
+    <value>یک حرف کوچک (a-z)</value>
+  </data>
+	<data name="OneDigit" xml:space="preserve">
+    <value>یک عدد (0-9)</value>
+  </data>
+	<data name="OneSpecialChar" xml:space="preserve">
+    <value>یک نماد ویژه (!@#$)</value>
+  </data>
+	<data name="FourUniqueChars" xml:space="preserve">
+    <value>۴ کاراکتر غیرتکراری</value>
+  </data>
+	<data name="AccessDenied" xml:space="preserve">
+    <value>دسترسی غیرمجاز</value>
+  </data>
+	<data name="AccessDeniedSub" xml:space="preserve">
+    <value>متأسفانه شما دسترسی لازم برای مشاهده این صفحه را ندارید. لطفاً حساب کاربری خود را بررسی کنید یا با پشتیبانی تماس بگیرید.</value>
+  </data>
+	<data name="BackToHome" xml:space="preserve">
+    <value>بازگشت به صفحه اصلی</value>
+  </data>
+	<data name="LoginDifferentAccount" xml:space="preserve">
+    <value>ورود با حسابی دیگر</value>
+  </data>
+	<data name="MainMenu" xml:space="preserve">
+    <value>منوی اصلی</value>
+  </data>
+	<data name="UserLayoutSub" xml:space="preserve">
+    <value>مدیریت دوره‌ها و روند یادگیری تخصصی شما</value>
+  </data>
+	<data name="WelcomeBackUser" xml:space="preserve">
+    <value>خوش آمدید،</value>
+  </data>
+	<data name="DashboardSub" xml:space="preserve">
+    <value>گزارش وضعیت روند یادگیری شما در سامانه.</value>
+  </data>
+	<data name="TotalCourses" xml:space="preserve">
+    <value>کل دوره‌ها</value>
+  </data>
+	<data name="Completed" xml:space="preserve">
+    <value>تکمیل شده</value>
+  </data>
+	<data name="InProgress" xml:space="preserve">
+    <value>در حال یادگیری</value>
+  </data>
+	<data name="MemberSince" xml:space="preserve">
+    <value>عضویت از تاریخ</value>
+  </data>
+	<data name="QuickActions" xml:space="preserve">
+    <value>دسترسی سریع</value>
+  </data>
+	<data name="BrowseCourses" xml:space="preserve">
+    <value>مشاهده دوره‌ها</value>
+  </data>
+	<data name="BrowseCoursesSub" xml:space="preserve">
+    <value>بررسی منابع و دوره‌های آموزشی موجود</value>
+  </data>
+	<data name="EditProfileSub" xml:space="preserve">
+    <value>ویرایش و به‌روزرسانی مشخصات فردی</value>
+  </data>
+	<data name="ChangePasswordSub" xml:space="preserve">
+    <value>مدیریت و ارتقای امنیت رمز عبور</value>
+  </data>
+	<data name="RecentCourses" xml:space="preserve">
+    <value>دوره‌های اخیر</value>
+  </data>
+	<data name="NoEnrollments" xml:space="preserve">
+    <value>شما در دوره‌ای ثبت‌نام نکرده‌اید.</value>
+  </data>
+	<data name="StartLearning" xml:space="preserve">
+    <value>آغاز یادگیری</value>
+  </data>
+	<data name="MyEnrolledCourses" xml:space="preserve">
+    <value>دوره‌های من</value>
+  </data>
+	<data name="MyEnrolledCoursesSub" xml:space="preserve">
+    <value>دوره‌های اختصاصی که به آن‌ها دسترسی کامل دارید.</value>
+  </data>
+	<data name="NoEnrolledCourses" xml:space="preserve">
+    <value>هنوز در دوره‌ای عضو نشده‌اید</value>
+  </data>
+	<data name="NoEnrolledCoursesSub" xml:space="preserve">
+    <value>هنوز در دوره‌ای ثبت‌نام نکرده‌اید. همین امروز دانش داروسازی خود را ارتقا دهید!</value>
+  </data>
+	<data name="BrowseAllCourses" xml:space="preserve">
+    <value>مشاهده تمام دوره‌ها</value>
+  </data>
+	<data name="Enrolled" xml:space="preserve">
+    <value>ثبت‌نام شده</value>
+  </data>
+	<data name="FullAccess" xml:space="preserve">
+    <value>دسترسی کامل</value>
+  </data>
+	<data name="ContinueLearning" xml:space="preserve">
+    <value>مشاهده دوره و یادگیری</value>
+  </data>
+	<data name="BackToMyCourses" xml:space="preserve">
+    <value>بازگشت به دوره‌های من</value>
+  </data>
+	<data name="Videos" xml:space="preserve">
+    <value>ویدیوها</value>
+  </data>
+	<data name="PDFs" xml:space="preserve">
+    <value>جزوات PDF</value>
+  </data>
+	<data name="Free" xml:space="preserve">
+    <value>رایگان</value>
+  </data>
+	<data name="Price" xml:space="preserve">
+    <value>قیمت (OMR)</value>
+  </data>
+	<data name="CourseContent" xml:space="preserve">
+    <value>سرفصل‌های دوره</value>
+  </data>
+	<data name="Resources" xml:space="preserve">
+    <value>منابع و فایل‌ها</value>
+  </data>
+	<data name="NoContentYet" xml:space="preserve">
+    <value>هنوز محتوایی قرار نگرفته است</value>
+  </data>
+	<data name="VideosSoon" xml:space="preserve">
+    <value>ویدیوهای این دوره به زودی بارگذاری خواهند شد.</value>
+  </data>
+	<data name="WatchVideo" xml:space="preserve">
+    <value>تماشای ویدیو</value>
+  </data>
+	<data name="NoResourcesFound" xml:space="preserve">
+    <value>هیچ فایلی یافت نشد</value>
+  </data>
+	<data name="ResourcesSoon" xml:space="preserve">
+    <value>جزوات PDF و مراجع مرتبط به زودی در این قسمت قرار می‌گیرند.</value>
+  </data>
+	<data name="ViewDocument" xml:space="preserve">
+    <value>مشاهده جزوه</value>
+  </data>
+	<data name="IdentityMatrix" xml:space="preserve">
+    <value>مشخصات هویتی</value>
+  </data>
+	<data name="IdentityMatrixSub" xml:space="preserve">
+    <value>نام و مشخصات کاربری خود را ویرایش کنید.</value>
+  </data>
+	<data name="ValidationFailed" xml:space="preserve">
+    <value>لطفاً خطاهای موجود در فرم را برطرف نمایید.</value>
+  </data>
+	<data name="EnterFirstName" xml:space="preserve">
+    <value>نام خود را وارد کنید</value>
+  </data>
+	<data name="EnterLastName" xml:space="preserve">
+    <value>نام خانوادگی خود را وارد کنید</value>
+  </data>
+	<data name="SSOGoogleLock" xml:space="preserve">
+    <value>ورود با حساب گوگل (امکان تغییر ایمیل وجود ندارد)</value>
+  </data>
+	<data name="AbortChanges" xml:space="preserve">
+    <value>انصراف</value>
+  </data>
+	<data name="SyncProfile" xml:space="preserve">
+    <value>ذخیره تغییرات</value>
+  </data>
+	<data name="SecurityGateway" xml:space="preserve">
+    <value>امنیت و رمز عبور</value>
+  </data>
+	<data name="SecurityGatewaySub" xml:space="preserve">
+    <value>رمز عبور جدید خود را ثبت کنید.</value>
+  </data>
+	<data name="ErrorCorrectionRequired" xml:space="preserve">
+    <value>لطفاً خطاهای مشخص‌شده در زیر را اصلاح فرمایید.</value>
+  </data>
+	<data name="PasswordMinLengthConstraint" xml:space="preserve">
+    <value>باید حداقل ۶ کاراکتر باشد</value>
+  </data>
+	<data name="SecuritySafeguards" xml:space="preserve">
+    <value>نکات مهم رمز عبور:</value>
+  </data>
+	<data name="Safeguard1" xml:space="preserve">
+    <value>از رمزی قدرتمند و منحصر به فرد استفاده فرمایید</value>
+  </data>
+	<data name="Safeguard2" xml:space="preserve">
+    <value>از رمز عبور سایر وب‌سایت‌ها استفاده نکنید</value>
+  </data>
+	<data name="Safeguard3" xml:space="preserve">
+    <value>در صورت امکان از نرم‌افزارهای مدیریت رمز بهره ببرید</value>
+  </data>
+	<data name="UpdatePasskey" xml:space="preserve">
+    <value>به‌روزرسانی رمز عبور</value>
+  </data>
+	<data name="ActiveSessionsSub" xml:space="preserve">
+    <value>دستگاه‌های متصل به حساب خود را بررسی کرده و دسترسی‌های ناشناس را ابطال کنید.</value>
+  </data>
+	<data name="SignOutOtherDevices" xml:space="preserve">
+    <value>خروج از تمامی دستگاه‌های دیگر</value>
+  </data>
+	<data name="NoSessionsFound" xml:space="preserve">
+    <value>هیچ نشست فعالی یافت نشد.</value>
+  </data>
+	<data name="ThisDevice" xml:space="preserve">
+    <value>این دستگاه</value>
+  </data>
+	<data name="LoginTime" xml:space="preserve">
+    <value>زمان ورود</value>
+  </data>
+	<data name="LastActivity" xml:space="preserve">
+    <value>آخرین فعالیت</value>
+  </data>
+	<data name="Current" xml:space="preserve">
+    <value>جاری</value>
+  </data>
+	<data name="Revoke" xml:space="preserve">
+    <value>ابطال نشست</value>
+  </data>
+	<data name="Enrollments" xml:space="preserve">
+    <value>ثبت‌نام‌ها</value>
+  </data>
+	<data name="Content" xml:space="preserve">
+    <value>محتوا</value>
+  </data>
+	<data name="AdminLayoutSub" xml:space="preserve">
+    <value>سامانه جامع مدیریت و راهبری آکادمی فارمینو</value>
+  </data>
+	<data name="SystemManager" xml:space="preserve">
+    <value>مدیر ارشد سامانه</value>
+  </data>
+	<data name="Admin" xml:space="preserve">
+    <value>مدیریت</value>
+  </data>
+	<data name="AdminDashboard" xml:space="preserve">
+    <value>داشبورد مدیریت</value>
+  </data>
+	<data name="DashboardOverview" xml:space="preserve">
+    <value>نمای کلی داشبورد</value>
+  </data>
+	<data name="DashboardOverviewSub" xml:space="preserve">
+    <value>آمار کلی و آخرین رخدادهای سامانه</value>
+  </data>
+	<data name="TotalUsers" xml:space="preserve">
+    <value>کل کاربران</value>
+  </data>
+	<data name="Active" xml:space="preserve">
+    <value>فعال</value>
+  </data>
+	<data name="Registered" xml:space="preserve">
+    <value>ثبت‌نامی</value>
+  </data>
+	<data name="TotalContent" xml:space="preserve">
+    <value>کل محتوا</value>
+  </data>
+	<data name="Published" xml:space="preserve">
+    <value>منتشر شده</value>
+  </data>
+	<data name="Articles" xml:space="preserve">
+    <value>مقاله‌ها</value>
+  </data>
+	<data name="TotalVisits" xml:space="preserve">
+    <value>کل بازدیدها</value>
+  </data>
+	<data name="Tracked" xml:space="preserve">
+    <value>ثبت شده</value>
+  </data>
+	<data name="Views" xml:space="preserve">
+    <value>بازدیدها</value>
+  </data>
+	<data name="SystemLogs" xml:space="preserve">
+    <value>گزارش‌های سیستم</value>
+  </data>
+	<data name="Recorded" xml:space="preserve">
+    <value>ثبت شده</value>
+  </data>
+	<data name="Actions" xml:space="preserve">
+    <value>عملیات</value>
+  </data>
+	<data name="RecentUsers" xml:space="preserve">
+    <value>جدیدترین کاربران</value>
+  </data>
+	<data name="ViewAll" xml:space="preserve">
+    <value>مشاهده همه</value>
+  </data>
+	<data name="New" xml:space="preserve">
+    <value>جدید</value>
+  </data>
+	<data name="NoRecentUsers" xml:space="preserve">
+    <value>کاربر جدیدی یافت نشد.</value>
+  </data>
+	<data name="RecentContent" xml:space="preserve">
+    <value>جدیدترین محتواها</value>
+  </data>
+	<data name="Draft" xml:space="preserve">
+    <value>پیش‌نویس</value>
+  </data>
+	<data name="NoRecentPosts" xml:space="preserve">
+    <value>پست جدیدی یافت نشد.</value>
+  </data>
+	<data name="SystemLogsAndActivities" xml:space="preserve">
+    <value>گزارش‌ها و رویدادهای سیستم</value>
+  </data>
+	<data name="ViewLogs" xml:space="preserve">
+    <value>مشاهده گزارش‌ها</value>
+  </data>
+	<data name="NoSystemActivities" xml:space="preserve">
+    <value>هیچ رویدادی به تازگی در سامانه رخ نداده است.</value>
+  </data>
+	<data name="RoleAccessRestrictedSub" xml:space="preserve">
+    <value>نقش فعلی شما مجوز مشاهده آمار داشبورد را ندارد.</value>
+  </data>
+	<data name="ContactAdmin" xml:space="preserve">
+    <value>تماس با مدیر سیستم</value>
+  </data>
+	<data name="SettingsManagement" xml:space="preserve">
+    <value>مدیریت تنظیمات</value>
+  </data>
+	<data name="SettingsGovernanceHub" xml:space="preserve">
+    <value>مرکز راهبری تنظیمات</value>
+  </data>
+	<data name="SettingsGovernanceHubSub" xml:space="preserve">
+    <value>مدیریت پیکربندی‌های کلی سیستم، سرویس ایمیل و متغیرهای سامانه.</value>
+  </data>
+	<data name="RealTimeSettingsParameters" xml:space="preserve">
+    <value>پارامترهای سیستمی</value>
+  </data>
+	<data name="RealTimeSettingsParametersSub" xml:space="preserve">
+    <value>تغییرات بلافاصله ذخیره شده و در سراسر سامانه اعمال می‌گردند.</value>
+  </data>
+	<data name="AppSettingsMatrix" xml:space="preserve">
+    <value>تنظیمات سامانه</value>
+  </data>
+	<data name="ParametersBlock" xml:space="preserve">
+    <value>گروه تنظیمات</value>
+  </data>
+	<data name="StateOption" xml:space="preserve">
+    <value>گزینه</value>
+  </data>
+	<data name="AppSettingsConfigurationRegistry" xml:space="preserve">
+    <value>پیکربندی appsettings.json</value>
+  </data>
+	<data name="AppSettingsConfigurationRegistrySub" xml:space="preserve">
+    <value>ویرایش مقادیر پیکربندی. پیش از ذخیره، به صورت خودکار پشتیبان‌گیری می‌شود.</value>
+  </data>
+	<data name="EditRawJsonBlock" xml:space="preserve">
+    <value>ویرایش مستقیم JSON</value>
+  </data>
+	<data name="RawJsonSystemMutator" xml:space="preserve">
+    <value>ویرایشگر مستقیم فایل JSON</value>
+  </data>
+	<data name="RawJsonSystemMutatorSub" xml:space="preserve">
+    <value>ویرایش مستقیم فایل appsettings.json با ارزیابی صحت ساختار نگارشی.</value>
+  </data>
+	<data name="CommitJsonModifications" xml:space="preserve">
+    <value>ذخیره تغییرات JSON</value>
+  </data>
+	<data name="SecurityAndLocks" xml:space="preserve">
+    <value>امنیت و حساب‌های مسدود</value>
+  </data>
+	<data name="LockedAccountsControl" xml:space="preserve">
+    <value>مدیریت حساب‌های مسدود</value>
+  </data>
+	<data name="LockedAccountsControlSub" xml:space="preserve">
+    <value>بررسی و مدیریت حساب‌های کاربری مسدود شده به علت فعالیت‌های مشکوک یا تلاش ناموفق.</value>
+  </data>
+	<data name="TotalIsolated" xml:space="preserve">
+    <value>کل حساب‌های مسدود</value>
+  </data>
+	<data name="IdentityNode" xml:space="preserve">
+    <value>کاربر</value>
+  </data>
+	<data name="SuspensionTimestamp" xml:space="preserve">
+    <value>زمان مسدودسازی</value>
+  </data>
+	<data name="SuspiciousMetric" xml:space="preserve">
+    <value>تعداد فعالیت‌های مشکوک</value>
+  </data>
+	<data name="ViolationReason" xml:space="preserve">
+    <value>علت مسدودسازی</value>
+  </data>
+	<data name="TerminalActions" xml:space="preserve">
+    <value>عملیات مدیریتی</value>
+  </data>
+	<data name="IdentityNameUnmapped" xml:space="preserve">
+    <value>کاربر نامشخص</value>
+  </data>
+	<data name="Overbounds" xml:space="preserve">
+    <value>بیش از حد مجاز</value>
+  </data>
+	<data name="InspectDetails" xml:space="preserve">
+    <value>مشاهده جزئیات</value>
+  </data>
+	<data name="AllClearMatrix" xml:space="preserve">
+    <value>هیچ حساب مسدودی وجود ندارد</value>
+  </data>
+	<data name="NoLockedAccountsSub" xml:space="preserve">
+    <value>در حال حاضر هیچ حساب کاربری مسدود شده‌ای در سامانه وجود ندارد.</value>
+  </data>
+	<data name="ReturnToDashboard" xml:space="preserve">
+    <value>بازگشت به داشبورد</value>
+  </data>
+	<data name="AutoUnlockProtocolFramework" xml:space="preserve">
+    <value>قوانین رفع مسدودی خودکار</value>
+  </data>
+	<data name="AutoUnlockProtocolFrameworkSub" xml:space="preserve">
+    <value>حساب‌های مسدود پس از ۲۴ ساعت به صورت خودکار آزاد می‌شوند. مدیران همچنین می‌توانند در هر لحظه حساب را دستی باز کنند.</value>
+  </data>
+	<data name="SystemLogsManager" xml:space="preserve">
+    <value>مدیریت گزارش‌های سیستم</value>
+  </data>
+	<data name="SystemLogsManagerSub" xml:space="preserve">
+    <value>بررسی خطاهای ثبت‌شده، استثنائات برنامه‌نویسی و فایل‌های لاگ.</value>
+  </data>
+	<data name="AutoRotatorActive" xml:space="preserve">
+    <value>چرخش خودکار فایل‌های لاگ فعال است</value>
+  </data>
+	<data name="ClearAllLogs" xml:space="preserve">
+    <value>پاک‌سازی تمام گزارش‌ها</value>
+  </data>
+	<data name="TotalSystemErrors" xml:space="preserve">
+    <value>کل خطاهای ثبت‌شده</value>
+  </data>
+	<data name="ActiveLogFiles" xml:space="preserve">
+    <value>فایل‌های گزارش</value>
+  </data>
+	<data name="LogRetention" xml:space="preserve">
+    <value>دوره نگهداری گزارش‌ها</value>
+  </data>
+	<data name="NoLogFilesIdentified" xml:space="preserve">
+    <value>هیچ فایل گزارشی یافت نشد</value>
+  </data>
+	<data name="NoLogFilesSub" xml:space="preserve">
+    <value>سامانه در سلامت کامل است. هیچ فایل خطایی روی دیسک ذخیره نشده است.</value>
+  </data>
+	<data name="Exceptions" xml:space="preserve">
+    <value>خطاها و استثناها</value>
+  </data>
+	<data name="RawNode" xml:space="preserve">
+    <value>فایل لاگ</value>
+  </data>
+	<data name="DistinctErrorSignature" xml:space="preserve">
+    <value>جزئیات خطا و سلسله‌مراتب وقوع (Stack Trace)</value>
+  </data>
+	<data name="Loops" xml:space="preserve">
+    <value>دفعات تکرار</value>
+  </data>
+	<data name="OperationalIntegritySecure" xml:space="preserve">
+    <value>هیچ خطایی مشاهده نشد. تمام بخش‌های سامانه در وضعیت مطلوب عمل می‌کنند.</value>
+  </data>
+	<data name="LastVectorOccurrence" xml:space="preserve">
+    <value>آخرین زمان وقوع:</value>
+  </data>
+	<data name="SectionNamespace" xml:space="preserve">
+    <value>منبع / طبقه‌بندی:</value>
+  </data>
+	<data name="RawDiagnosticsViewer" xml:space="preserve">
+    <value>مشاهده‌گر فایل‌های گزارش</value>
+  </data>
+	<data name="PurgeDiagnosticsCache" xml:space="preserve">
+    <value>پاک‌سازی تمامی فایل‌های گزارش؟</value>
+  </data>
+	<data name="PurgeDiagnosticsCacheSub" xml:space="preserve">
+    <value>تمام فایل‌های لاگ روی دیسک برای همیشه حذف خواهند شد. این اقدام قابل بازگشت نیست.</value>
+  </data>
+	<data name="WipeWarning" xml:space="preserve">
+    <value>هشدار: این عملیات به هیچ عنوان قابل بازگشت نخواهد بود!</value>
+  </data>
+	<data name="CancelOperation" xml:space="preserve">
+    <value>انصراف</value>
+  </data>
+	<data name="ExecuteTotalWipe" xml:space="preserve">
+    <value>تأیید و پاک‌سازی همه لاگ‌ها</value>
+  </data>
+	<data name="SystemMonitoring" xml:space="preserve">
+    <value>پایش و گزارش‌های سامانه</value>
+  </data>
+	<data name="LogsMatrix" xml:space="preserve">
+    <value>ماتریس لاگ‌های سیستم</value>
+  </data>
+	<data name="OurCourses" xml:space="preserve">
+    <value>دوره‌های آموزشی ما</value>
+  </data>
+	<data name="ExploreOurCoursesSubtitle" xml:space="preserve">
+    <value>دوره‌های تخصصی و جامع آمادگی آزمون داروسازی را کاوش کنید</value>
+  </data>
+	<data name="NoCoursesAvailable" xml:space="preserve">
+    <value>در حال حاضر دوره‌ای موجود نیست</value>
+  </data>
+	<data name="CheckBackLater" xml:space="preserve">
+    <value>به زودی دوره‌های جدید به سامانه اضافه خواهند شد!</value>
+  </data>
+	<data name="BadgeNew" xml:space="preserve">
+    <value>جدید</value>
+  </data>
+	<data name="HoursAbbr" xml:space="preserve">
+    <value>ساعت</value>
+  </data>
+	<data name="VideosAbbr" xml:space="preserve">
+    <value>ویدیو</value>
+  </data>
+	<data name="ViewCourse" xml:space="preserve">
+    <value>مشاهده دوره</value>
+  </data>
+	<data name="BackToCourses" xml:space="preserve">
+    <value>بازگشت به دوره‌ها</value>
+  </data>
+	<data name="Hours" xml:space="preserve">
+    <value>ساعت</value>
+  </data>
+	<data name="LoginToEnroll" xml:space="preserve">
+    <value>ورود برای ثبت‌نام در دوره</value>
+  </data>
+	<data name="EnrollNowForFree" xml:space="preserve">
+    <value>ثبت‌نام رایگان در دوره</value>
+  </data>
+	<data name="EnrollNowPrice" xml:space="preserve">
+    <value>ثبت‌نام در دوره - {0}</value>
+  </data>
+	<data name="EnrolledStatus" xml:space="preserve">
+    <value>شما در این دوره ثبت‌نام کرده‌اید</value>
+  </data>
+	<data name="GoToCourseDashboard" xml:space="preserve">
+    <value>مشاهده محتوای دوره</value>
+  </data>
+	<data name="CourseVideos" xml:space="preserve">
+    <value>ویدیوهای دوره</value>
+  </data>
+	<data name="LoginAndEnrollToViewVideos" xml:space="preserve">
+    <value>برای تماشای ویدیوها وارد شده و در دوره ثبت‌نام کنید</value>
+  </data>
+	<data name="NoVideosAvailable" xml:space="preserve">
+    <value>هنوز ویدیویی برای این دوره بارگذاری نشده است</value>
+  </data>
+	<data name="BadgeFreePreview" xml:space="preserve">
+    <value>پیش‌نمایش رایگان</value>
+  </data>
+	<data name="BadgeUnlocked" xml:space="preserve">
+    <value>دسترسی باز</value>
+  </data>
+	<data name="BadgePremium" xml:space="preserve">
+    <value>تخصصی و ویژه</value>
+  </data>
+	<data name="CourseMaterials" xml:space="preserve">
+    <value>جزوات و منابع دوره</value>
+  </data>
+	<data name="LoginAndEnrollToViewMaterials" xml:space="preserve">
+    <value>جهت دسترسی به جزوات در دوره ثبت‌نام نمایید</value>
+  </data>
+	<data name="NoMaterialsAvailable" xml:space="preserve">
+    <value>هنوز جزوه‌ای ثبت نشده است</value>
+  </data>
+	<data name="BadgeFree" xml:space="preserve">
+    <value>رایگان</value>
+  </data>
+	<data name="BadgeLocked" xml:space="preserve">
+    <value>قفل شده</value>
+  </data>
+	<data name="PdfDocument" xml:space="preserve">
+    <value>فایل جزوه PDF</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>انصراف</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>ذخیره تغییرات</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>ایجاد جدید</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>ویرایش</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>جزئیات</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>بازگشت</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>وضعیت</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>غیرفعال</value>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>پرداخت‌شده</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>در انتظار پرداخت</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>جستجو...</value>
+  </data>
+  <data name="GeneralInformation" xml:space="preserve">
+    <value>اطلاعات عمومی</value>
+  </data>
+  <data name="RequiredFieldsNote" xml:space="preserve">
+    <value>فیلدهای دارای علامت ستاره (*) الزامی می‌باشند.</value>
+  </data>
+  <data name="PleaseFixErrors" xml:space="preserve">
+    <value>لطفاً خطاهای مشخص‌شده در فرم را اصلاح فرمایید.</value>
+  </data>
+  <data name="NoImage" xml:space="preserve">
+    <value>بدون تصویر</value>
+  </data>
+  <data name="UsersManagement" xml:space="preserve">
+    <value>مدیریت کاربران</value>
+  </data>
+  <data name="CreateNewUser" xml:space="preserve">
+    <value>ایجاد کاربر جدید</value>
+  </data>
+  <data name="CreateNewUserSub" xml:space="preserve">
+    <value>تعریف حساب کاربری جدید همراه با تعیین نقش‌ها و سطوح دسترسی.</value>
+  </data>
+  <data name="EditUser" xml:space="preserve">
+    <value>ویرایش کاربر</value>
+  </data>
+  <data name="BackToUsers" xml:space="preserve">
+    <value>بازگشت به فهرست کاربران</value>
+  </data>
+  <data name="AccountInformation" xml:space="preserve">
+    <value>مشخصات حساب کاربری</value>
+  </data>
+  <data name="AccountStatusAndVerification" xml:space="preserve">
+    <value>وضعیت حساب و احراز هویت</value>
+  </data>
+  <data name="EmailConfirmed" xml:space="preserve">
+    <value>ایمیل تأیید شده</value>
+  </data>
+  <data name="PhoneNumberConfirmed" xml:space="preserve">
+    <value>شماره تلفن تأیید شده</value>
+  </data>
+  <data name="TwoFactorEnabled" xml:space="preserve">
+    <value>احراز هویت دو مرحله‌ای فعال است</value>
+  </data>
+  <data name="LockoutEnabled" xml:space="preserve">
+    <value>مسدودسازی فعال</value>
+  </data>
+  <data name="RolesAndPermissions" xml:space="preserve">
+    <value>نقش‌ها و دسترسی‌ها</value>
+  </data>
+  <data name="SelectRoles" xml:space="preserve">
+    <value>انتخاب نقش‌ها</value>
+  </data>
+  <data name="RolesManagement" xml:space="preserve">
+    <value>مدیریت نقش‌ها</value>
+  </data>
+  <data name="CreateNewRole" xml:space="preserve">
+    <value>ایجاد نقش جدید</value>
+  </data>
+  <data name="EditRole" xml:space="preserve">
+    <value>ویرایش نقش</value>
+  </data>
+  <data name="RoleDetails" xml:space="preserve">
+    <value>جزئیات نقش</value>
+  </data>
+  <data name="BackToRoles" xml:space="preserve">
+    <value>بازگشت به فهرست نقش‌ها</value>
+  </data>
+  <data name="RoleName" xml:space="preserve">
+    <value>نام نقش</value>
+  </data>
+  <data name="CourseManagement" xml:space="preserve">
+    <value>مدیریت دوره‌ها</value>
+  </data>
+  <data name="CourseManagementSub" xml:space="preserve">
+    <value>تعریف، ویرایش و سازمان‌دهی دوره‌ها، ویدیوها و جزوات آموزشی.</value>
+  </data>
+  <data name="CreateNewCourse" xml:space="preserve">
+    <value>ایجاد دوره جدید</value>
+  </data>
+  <data name="CreateNewCourseSub" xml:space="preserve">
+    <value>افزودن دوره آموزشی جدید و پیکربندی مشخصات پایه.</value>
+  </data>
+  <data name="EditCourse" xml:space="preserve">
+    <value>ویرایش دوره</value>
+  </data>
+  <data name="EditCourseSub" xml:space="preserve">
+    <value>ویرایش عناوین، توضیحات، تصویر کاور و وضعیت انتشار دوره.</value>
+  </data>
+  <data name="CourseDetailsTitle" xml:space="preserve">
+    <value>مشخصات کامل دوره</value>
+  </data>
+  <data name="CourseDetailsSub" xml:space="preserve">
+    <value>مشاهده ویدیوها، جزوات پیوست‌شده و فهرست دانشجویان ثبت‌نامی.</value>
+  </data>
+  <data name="CourseTitle" xml:space="preserve">
+    <value>عنوان دوره</value>
+  </data>
+  <data name="CourseDescription" xml:space="preserve">
+    <value>شرح و توضیحات دوره</value>
+  </data>
+  <data name="CourseImage" xml:space="preserve">
+    <value>تصویر کاور دوره</value>
+  </data>
+  <data name="CoursePricing" xml:space="preserve">
+    <value>قیمت‌گذاری دوره</value>
+  </data>
+  <data name="PriceUSD" xml:space="preserve">
+    <value>قیمت پایه (OMR)</value>
+  </data>
+  <data name="SetPriceZeroFree" xml:space="preserve">
+    <value>برای رایگان اعلام کردن دوره، مبلغ را ۰ وارد فرمایید.</value>
+  </data>
+  <data name="CourseStatus" xml:space="preserve">
+    <value>وضعیت انتشار دوره</value>
+  </data>
+  <data name="PublishCourseImmediately" xml:space="preserve">
+    <value>انتشار فوری دوره (فعال در سایت)</value>
+  </data>
+  <data name="ImageUploadConstraints" xml:space="preserve">
+    <value>فرمت‌های مجاز: JPG, PNG, GIF, WEBP. حداکثر حجم مجاز: ۵ مگابایت.</value>
+  </data>
+  <data name="EnrolledStudents" xml:space="preserve">
+    <value>دانشجویان ثبت‌نام‌شده</value>
+  </data>
+  <data name="EnrollStudent" xml:space="preserve">
+    <value>ثبت‌نام دانشجو در دوره</value>
+  </data>
+  <data name="AllEnrollments" xml:space="preserve">
+    <value>تمام ثبت‌نام‌ها</value>
+  </data>
+  <data name="CourseMetrics" xml:space="preserve">
+    <value>آمار و شاخص‌های دوره</value>
+  </data>
+  <data name="TotalDuration" xml:space="preserve">
+    <value>مدت زمان کل</value>
+  </data>
+  <data name="TotalRevenue" xml:space="preserve">
+    <value>کل درآمد</value>
+  </data>
+  <data name="AddTestVideo" xml:space="preserve">
+    <value>افزودن ویدیوی تستی</value>
+  </data>
+  <data name="AddFirstVideo" xml:space="preserve">
+    <value>افزودن اولین ویدیو</value>
+  </data>
+  <data name="AddFirstPdf" xml:space="preserve">
+    <value>افزودن اولین جزوه (PDF)</value>
+  </data>
+  <data name="NoEnrolledStudents" xml:space="preserve">
+    <value>هیچ دانشجویی ثبت‌نام نکرده است</value>
+  </data>
+  <data name="NoEnrolledStudentsSub" xml:space="preserve">
+    <value>در حال حاضر هیچ دانشجویی در این دوره ثبت‌نام نکرده است.</value>
+  </data>
+  <data name="EnrollFirstStudent" xml:space="preserve">
+    <value>ثبت‌نام نخستین دانشجو</value>
+  </data>
+  <data name="AddVideo" xml:space="preserve">
+    <value>افزودن ویدیو جدید</value>
+  </data>
+  <data name="AddVideoSub" xml:space="preserve">
+    <value>افزودن ویدیو به دوره: {0}</value>
+  </data>
+  <data name="EditVideo" xml:space="preserve">
+    <value>ویرایش ویدیو</value>
+  </data>
+  <data name="EditVideoSub" xml:space="preserve">
+    <value>ویرایش ویدیوی دوره: {0}</value>
+  </data>
+  <data name="VideoDetails" xml:space="preserve">
+    <value>مشخصات ویدیو</value>
+  </data>
+  <data name="VideoInformation" xml:space="preserve">
+    <value>اطلاعات ویدیو</value>
+  </data>
+  <data name="VideoTitle" xml:space="preserve">
+    <value>عنوان ویدیو</value>
+  </data>
+  <data name="VideoDescription" xml:space="preserve">
+    <value>توضیحات ویدیو</value>
+  </data>
+  <data name="VideoFile" xml:space="preserve">
+    <value>فایل ویدیو</value>
+  </data>
+  <data name="SelectVideoFile" xml:space="preserve">
+    <value>انتخاب فایل ویدیو</value>
+  </data>
+  <data name="ReplaceVideoFileOptional" xml:space="preserve">
+    <value>جایگزینی فایل ویدیو (اختیاری)</value>
+  </data>
+  <data name="VideoUploadAutoNotice" xml:space="preserve">
+    <value>با انتخاب فایل ویدیو، بارگذاری به صورت خودکار آغاز خواهد شد.</value>
+  </data>
+  <data name="DisplayOrder" xml:space="preserve">
+    <value>ترتیب نمایش</value>
+  </data>
+  <data name="OrderIndex" xml:space="preserve">
+    <value>شماره اولویت ترتیب</value>
+  </data>
+  <data name="DisplayOrderHelp" xml:space="preserve">
+    <value>اعداد کوچک‌تر ابتدا در فهرست ویدیوهای دوره نمایش داده می‌شوند.</value>
+  </data>
+  <data name="AccessAndStatus" xml:space="preserve">
+    <value>سطح دسترسی و وضعیت</value>
+  </data>
+  <data name="FreePreviewOption" xml:space="preserve">
+    <value>پیش‌نمایش رایگان (امکان تماشا برای همه کاربران)</value>
+  </data>
+  <data name="PublishImmediatelyActive" xml:space="preserve">
+    <value>انتشار فوری (فعال در سایت)</value>
+  </data>
+  <data name="VideoUploadInProgress" xml:space="preserve">
+    <value>در حال بارگذاری ویدیو...</value>
+  </data>
+  <data name="UploadComplete" xml:space="preserve">
+    <value>بارگذاری کامل شد</value>
+  </data>
+  <data name="ErrorUploadingVideo" xml:space="preserve">
+    <value>خطا در بارگذاری ویدیو</value>
+  </data>
+  <data name="CoursePdfFiles" xml:space="preserve">
+    <value>فایل‌های جزوه PDF دوره</value>
+  </data>
+  <data name="AddPdf" xml:space="preserve">
+    <value>افزودن فایل PDF جدید</value>
+  </data>
+  <data name="AddCoursePdf" xml:space="preserve">
+    <value>افزودن جزوه PDF جدید</value>
+  </data>
+  <data name="UploadPdfForCourse" xml:space="preserve">
+    <value>بارگذاری فایل جزوه برای دوره: {0}</value>
+  </data>
+  <data name="SelectPdfFile" xml:space="preserve">
+    <value>انتخاب فایل جزوه PDF</value>
+  </data>
+  <data name="PdfSupportNotice" xml:space="preserve">
+    <value>تنها فایل‌های با پسوند pdf. پشتیبانی می‌شوند. عنوان فایل به صورت خودکار ثبت خواهد شد.</value>
+  </data>
+  <data name="PricingAndStatus" xml:space="preserve">
+    <value>قیمت‌گذاری و وضعیت انتشار</value>
+  </data>
+  <data name="PdfPriceUSD" xml:space="preserve">
+    <value>قیمت فایل جزوه (OMR)</value>
+  </data>
+  <data name="SetPriceZeroFreePdf" xml:space="preserve">
+    <value>برای رایگان اعلام کردن جزوه، مبلغ را ۰ وارد فرمایید.</value>
+  </data>
+  <data name="PreviewPdf" xml:space="preserve">
+    <value>پیش‌نمایش جزوه</value>
+  </data>
+  <data name="DeletePdf" xml:space="preserve">
+    <value>حذف جزوه</value>
+  </data>
+  <data name="OriginalName" xml:space="preserve">
+    <value>نام اصلی فایل</value>
+  </data>
+  <data name="SavedFile" xml:space="preserve">
+    <value>فایل ذخیره‌شده</value>
+  </data>
+  <data name="NoPdfFiles" xml:space="preserve">
+    <value>هیچ فایل جزوه‌ای وجود ندارد</value>
+  </data>
+  <data name="NoPdfFilesSub" xml:space="preserve">
+    <value>در حال حاضر هیچ جزوه یا فایل PDF برای این دوره بارگذاری نشده است.</value>
+  </data>
+  <data name="AllPdfs" xml:space="preserve">
+    <value>تمام جزوات PDF</value>
+  </data>
+  <data name="ConfirmDeletePdf" xml:space="preserve">
+    <value>آیا از حذف این فایل جزوه اطمینان دارید؟ این عملیات غیرقابل بازگشت است.</value>
+  </data>
+  <data name="PostsManagementSub" xml:space="preserve">
+    <value>مشاهده، مدیریت و انتشار مقالات و مطالب آموزشی.</value>
+  </data>
+  <data name="CreateNewPost" xml:space="preserve">
+    <value>نگارش مقاله جدید</value>
+  </data>
+  <data name="CreateNewPostSub" xml:space="preserve">
+    <value>نگارش و انتشار مقاله یا مطلب نو در وبلاگ سامانه.</value>
+  </data>
+  <data name="EditPost" xml:space="preserve">
+    <value>ویرایش مقاله</value>
+  </data>
+  <data name="EditPostSub" xml:space="preserve">
+    <value>به‌روزرسانی محتوا، تصویر، تنظیمات سئو و وضعیت انتشار مقاله.</value>
+  </data>
+  <data name="PostDetails" xml:space="preserve">
+    <value>مشخصات کامل مقاله</value>
+  </data>
+  <data name="PostDetailsSub" xml:space="preserve">
+    <value>مشاهده مشخصات و تنظیمات مقاله شماره {0}</value>
+  </data>
+  <data name="BackToPosts" xml:space="preserve">
+    <value>بازگشت به مقالات</value>
+  </data>
+  <data name="PostTitle" xml:space="preserve">
+    <value>عنوان مقاله</value>
+  </data>
+  <data name="PostDescription" xml:space="preserve">
+    <value>چکیده مقاله</value>
+  </data>
+  <data name="MetaDescription" xml:space="preserve">
+    <value>توضیحات متا (سئو)</value>
+  </data>
+  <data name="MetaDescriptionHelp" xml:space="preserve">
+    <value>این خلاصه در نتایج موتورهای جستجو و اشتراک‌گذاری شبکه‌های اجتماعی نمایش داده می‌شود.</value>
+  </data>
+  <data name="FeaturedImage" xml:space="preserve">
+    <value>تصویر شاخص</value>
+  </data>
+  <data name="PostContent" xml:space="preserve">
+    <value>محتوای مقاله</value>
+  </data>
+  <data name="PostContentHelp" xml:space="preserve">
+    <value>می‌توانید از متن قالب‌بندی‌شده یا برچسب‌های HTML استفاده فرمایید.</value>
+  </data>
+  <data name="SEOAndTags" xml:space="preserve">
+    <value>سئو و برچسب‌ها</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>برچسب‌ها (تگ‌ها)</value>
+  </data>
+  <data name="TagsPlaceholder" xml:space="preserve">
+    <value>برچسب‌ها را با کاما جدا کنید</value>
+  </data>
+  <data name="URLSlug" xml:space="preserve">
+    <value>نامک پیوند (Slug)</value>
+  </data>
+  <data name="PublishingOptions" xml:space="preserve">
+    <value>گزینه‌های انتشار</value>
+  </data>
+  <data name="PublishPostImmediately" xml:space="preserve">
+    <value>انتشار فوری پست (فعال در سایت)</value>
+  </data>
+  <data name="DraftNotice" xml:space="preserve">
+    <value>در صورت عدم انتخاب، پست به صورت پیش‌نویس ذخیره خواهد شد.</value>
+  </data>
+  <data name="Drafts" xml:space="preserve">
+    <value>پیش‌نویس‌ها</value>
+  </data>
+  <data name="TotalViews" xml:space="preserve">
+    <value>کل بازدیدها</value>
+  </data>
+  <data name="NoPostsFound" xml:space="preserve">
+    <value>هیچ پستی یافت نشد</value>
+  </data>
+  <data name="NoPostsFoundSub" xml:space="preserve">
+    <value>در حال حاضر هیچ مقاله‌ای ثبت نشده است.</value>
+  </data>
+  <data name="AuthorInformation" xml:space="preserve">
+    <value>اطلاعات نویسنده</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>دیدگاه‌ها</value>
+  </data>
+  <data name="CommentsCount" xml:space="preserve">
+    <value>تعداد دیدگاه‌ها</value>
+  </data>
+  <data name="TagsCount" xml:space="preserve">
+    <value>تعداد برچسب‌ها</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>آمار و ارقام</value>
+  </data>
+  <data name="ConfirmDeletePost" xml:space="preserve">
+    <value>آیا از حذف همیشگی این پست اطمینان دارید؟ این عملیات غیرقابل بازگشت است.</value>
+  </data>
+  <data name="ConfirmTogglePublishPost" xml:space="preserve">
+    <value>آیا از تغییر وضعیت انتشار این پست اطمینان دارید؟</value>
+  </data>
+  <data name="UnpublishPost" xml:space="preserve">
+    <value>عدم انتشار پست</value>
+  </data>
+  <data name="PublishPost" xml:space="preserve">
+    <value>انتشار پست</value>
+  </data>
+  <data name="ActiveCourses" xml:space="preserve">
+    <value>دوره‌های فعال</value>
+  </data>
+  <data name="TotalVideos" xml:space="preserve">
+    <value>کل ویدیوها</value>
+  </data>
+  <data name="TotalEnrollments" xml:space="preserve">
+    <value>کل ثبت‌نام‌ها</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>فعال‌سازی</value>
+  </data>
+  <data name="Deactivate" xml:space="preserve">
+    <value>غیرفعال‌سازی</value>
+  </data>
+  <data name="NoCoursesAvailableSub" xml:space="preserve">
+    <value>در حال حاضر هیچ دوره‌ای در سامانه ایجاد نشده است.</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>مدت دوره</value>
+  </data>
+  <data name="Metadata" xml:space="preserve">
+    <value>فراداده‌ها</value>
+  </data>
+  <data name="CourseId" xml:space="preserve">
+    <value>شناسه دوره</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>تاریخ ایجاد</value>
+  </data>
+  <data name="LastUpdated" xml:space="preserve">
+    <value>آخرین به‌روزرسانی</value>
+  </data>
+  <data name="CoverImageName" xml:space="preserve">
+    <value>نام فایل تصویر کاور</value>
+  </data>
+  <data name="AddNewVideo" xml:space="preserve">
+    <value>افزودن ویدیوی جدید</value>
+  </data>
+  <data name="DeactivateCourse" xml:space="preserve">
+    <value>غیرفعال‌سازی دوره</value>
+  </data>
+  <data name="ActivateCourse" xml:space="preserve">
+    <value>فعال‌سازی دوره</value>
+  </data>
+  <data name="EditCourseDetails" xml:space="preserve">
+    <value>ویرایش جزئیات دوره</value>
+  </data>
+  <data name="DeleteCourse" xml:space="preserve">
+    <value>حذف دوره</value>
+  </data>
+  <data name="SearchStudent" xml:space="preserve">
+    <value>جستجوی دانشجو...</value>
+  </data>
+  <data name="SelectStudent" xml:space="preserve">
+    <value>انتخاب دانشجو</value>
+  </data>
+  <data name="MarkAsPaid" xml:space="preserve">
+    <value>ثبت به عنوان تراکنش پرداخت‌شده</value>
+  </data>
+  <data name="ConfirmEnrollment" xml:space="preserve">
+    <value>تأیید نهایی ثبت‌نام</value>
+  </data>
+  <data name="AlreadyEnrolled" xml:space="preserve">
+    <value>شما قبلاً در این دوره ثبت‌نام کرده‌اید.</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>در دسترس</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>میزان پیشرفت</value>
+  </data>
+  <data name="PaymentStatus" xml:space="preserve">
+    <value>وضعیت پرداخت</value>
+  </data>
+  <data name="Student" xml:space="preserve">
+    <value>دانشجو</value>
+  </data>
+  <data name="EnrollmentDate" xml:space="preserve">
+    <value>تاریخ ثبت‌نام</value>
+  </data>
+  <data name="FileAvailable" xml:space="preserve">
+    <value>فایل موجود است</value>
+  </data>
+  <data name="FileMissing" xml:space="preserve">
+    <value>فایل یافت نشد</value>
+  </data>
+  <data name="CurrentFile" xml:space="preserve">
+    <value>فایل فعلی</value>
+  </data>
+  <data name="TotalPosts" xml:space="preserve">
+    <value>کل مقالات و پست‌ها</value>
+  </data>
+  <data name="RolesAndPermissionsSub" xml:space="preserve">
+    <value>مدیریت نقش‌های کاربری، سطوح دسترسی و مجوزهای سیستمی.</value>
+  </data>
+  <data name="CreateRole" xml:space="preserve">
+    <value>ایجاد نقش جدید</value>
+  </data>
+  <data name="CreateRoleSub" xml:space="preserve">
+    <value>ایجاد نقش کاربری نو و تخصیص دسترسی‌های سیستمی.</value>
+  </data>
+  <data name="EditRoleSub" xml:space="preserve">
+    <value>به‌روزرسانی عنوان، وضعیت و دسترسی‌های تخصیص‌یافته به نقش.</value>
+  </data>
+  <data name="RoleDetailsSub" xml:space="preserve">
+    <value>مشاهده مشخصات نقش، مجوزها و کاربران عضو.</value>
+  </data>
+  <data name="SearchRoles" xml:space="preserve">
+    <value>جستجوی نقش‌ها...</value>
+  </data>
+  <data name="TotalRoles" xml:space="preserve">
+    <value>کل نقش‌ها</value>
+  </data>
+  <data name="ActiveRoles" xml:space="preserve">
+    <value>نقش‌های فعال</value>
+  </data>
+  <data name="TotalPermissions" xml:space="preserve">
+    <value>کل مجوزها</value>
+  </data>
+  <data name="AssignedUsers" xml:space="preserve">
+    <value>کاربران منتسب</value>
+  </data>
+  <data name="RoleDisplayName" xml:space="preserve">
+    <value>عنوان نمایشی نقش</value>
+  </data>
+  <data name="RoleDescription" xml:space="preserve">
+    <value>شرح نقش</value>
+  </data>
+  <data name="RoleInformation" xml:space="preserve">
+    <value>اطلاعات نقش</value>
+  </data>
+  <data name="RoleOverview" xml:space="preserve">
+    <value>نمای کلی نقش</value>
+  </data>
+  <data name="AssignPermissions" xml:space="preserve">
+    <value>تخصیص دسترسی‌ها</value>
+  </data>
+  <data name="Selected" xml:space="preserve">
+    <value>انتخاب‌شده:</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>انتخاب همه</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>پاک‌سازی همه</value>
+  </data>
+  <data name="ToggleGroup" xml:space="preserve">
+    <value>تغییر وضعیت گروه</value>
+  </data>
+  <data name="NoPermissionsFound" xml:space="preserve">
+    <value>هیچ مجوزی در سامانه یافت نشد.</value>
+  </data>
+  <data name="NoRolesFound" xml:space="preserve">
+    <value>هیچ نقشی یافت نشد</value>
+  </data>
+  <data name="NoRolesFoundSub" xml:space="preserve">
+    <value>در حال حاضر نقشی در سامانه تعریف نشده است.</value>
+  </data>
+  <data name="Guidelines" xml:space="preserve">
+    <value>راهنما و نکات مهم</value>
+  </data>
+  <data name="RoleGuidelines1" xml:space="preserve">
+    <value>عنوان نقش باید کاملاً منحصر به فرد باشد.</value>
+  </data>
+  <data name="RoleGuidelines2" xml:space="preserve">
+    <value>جهت حفظ امنیت سامانه، تنها مجوزهای ضروری را اختصاص دهید.</value>
+  </data>
+  <data name="RoleGuidelines3" xml:space="preserve">
+    <value>مجوزها بلافاصله پس از تخصیص به کاربران اعمال می‌گردند.</value>
+  </data>
+  <data name="DefaultSystemRole" xml:space="preserve">
+    <value>نقش پیش‌فرض سیستم</value>
+  </data>
+  <data name="DefaultSystemRoleNotice" xml:space="preserve">
+    <value>نقش پیش‌فرض سامانه غیرقابل ویرایش یا حذف است.</value>
+  </data>
+  <data name="SetRoleActiveImmediately" xml:space="preserve">
+    <value>فعال‌سازی فوری نقش پس از ایجاد</value>
+  </data>
+  <data name="AvailablePermissions" xml:space="preserve">
+    <value>دسترسی‌های قابل انتخاب</value>
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value>دسته‌بندی‌ها</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>خلاصه</value>
+  </data>
+  <data name="NoUsersAssigned" xml:space="preserve">
+    <value>کاربری به این نقش منتسب نشده است</value>
+  </data>
+  <data name="NoUsersAssignedSub" xml:space="preserve">
+    <value>هیچ کاربری در حال حاضر عضو این نقش نیست.</value>
+  </data>
+  <data name="NoPermissionsAssigned" xml:space="preserve">
+    <value>هیچ دسترسی اختصاص نیافته است</value>
+  </data>
+  <data name="NoPermissionsAssignedSub" xml:space="preserve">
+    <value>در حال حاضر هیچ مجوزی به این نقش تعلق نگرفته است.</value>
+  </data>
+  <data name="Assigned" xml:space="preserve">
+    <value>تخصیص‌یافته</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>مدیریت کاربران</value>
+  </data>
+  <data name="StudentsDescription" xml:space="preserve">
+    <value>کاربران و دانشجویان عادی سامانه</value>
+  </data>
+  <data name="AdminUsersDescription" xml:space="preserve">
+    <value>کاربران دارای دسترسی به پنل مدیریت</value>
+  </data>
+  <data name="SearchUsersPlaceholder" xml:space="preserve">
+    <value>جستجو بر اساس نام، نام خانوادگی، ایمیل...</value>
+  </data>
+  <data name="AddUser" xml:space="preserve">
+    <value>افزودن کاربر جدید</value>
+  </data>
+  <data name="CreateUser" xml:space="preserve">
+    <value>ایجاد کاربر جدید</value>
+  </data>
+  <data name="CreateUserSub" xml:space="preserve">
+    <value>تعریف حساب کاربری جدید در سامانه.</value>
+  </data>
+  <data name="EditUserSub" xml:space="preserve">
+    <value>به‌روزرسانی اطلاعات حساب و سطوح دسترسی کاربر.</value>
+  </data>
+  <data name="UserProfile" xml:space="preserve">
+    <value>پروفایل کاربر</value>
+  </data>
+  <data name="UserProfileSub" xml:space="preserve">
+    <value>اطلاعات هویتی و امنیتی کاربر {0}</value>
+  </data>
+  <data name="PersonalInformation" xml:space="preserve">
+    <value>مشخصات هویتی و فردی</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>نام کاربری</value>
+  </data>
+  <data name="IsEmailActive" xml:space="preserve">
+    <value>ایمیل تأیید شده</value>
+  </data>
+  <data name="IsPhoneNumberActive" xml:space="preserve">
+    <value>شماره همراه تأیید شده</value>
+  </data>
+  <data name="IsBan" xml:space="preserve">
+    <value>حساب مسدود است</value>
+  </data>
+  <data name="AccountActive" xml:space="preserve">
+    <value>حساب کاربری فعال</value>
+  </data>
+  <data name="AccountBanned" xml:space="preserve">
+    <value>حساب کاربری مسدود شده</value>
+  </data>
+  <data name="EmailStatus" xml:space="preserve">
+    <value>وضعیت ایمیل</value>
+  </data>
+  <data name="PhoneStatus" xml:space="preserve">
+    <value>وضعیت شماره همراه</value>
+  </data>
+  <data name="Verified" xml:space="preserve">
+    <value>تأیید شده</value>
+  </data>
+  <data name="GoogleLogin" xml:space="preserve">
+    <value>ورود از طریق گوگل</value>
+  </data>
+  <data name="UserRolesAndAccess" xml:space="preserve">
+    <value>نقش‌ها و دسترسی‌های کاربر</value>
+  </data>
+  <data name="SelectUserRolesHelp" xml:space="preserve">
+    <value>نقش‌های مورد نظر را برای تعیین سطوح دسترسی کاربر انتخاب نمایید.</value>
+  </data>
+  <data name="LeaveBlankPasswordHelp" xml:space="preserve">
+    <value>در صورتی که قصد تغییر رمز عبور را ندارید، این کادر را خالی بگذارید.</value>
+  </data>
+  <data name="BackToAdmins" xml:space="preserve">
+    <value>بازگشت به مدیران</value>
+  </data>
+  <data name="BackToStudents" xml:space="preserve">
+    <value>بازگشت به دانشجویان</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>بازگشت به فهرست</value>
+  </data>
+  <data name="UnbanAccount" xml:space="preserve">
+    <value>رفع مسدودی حساب</value>
+  </data>
+  <data name="BanAccount" xml:space="preserve">
+    <value>مسدودسازی حساب</value>
+  </data>
+  <data name="DeleteAccount" xml:space="preserve">
+    <value>حذف حساب کاربری</value>
+  </data>
+  <data name="AccountActivity" xml:space="preserve">
+    <value>فعالیت‌های حساب کاربری</value>
+  </data>
+  <data name="RegisteredOn" xml:space="preserve">
+    <value>تاریخ عضویت</value>
+  </data>
+  <data name="LastLogin" xml:space="preserve">
+    <value>آخرین ورود</value>
+  </data>
+  <data name="FailedLoginAttempts" xml:space="preserve">
+    <value>تلاش‌های ناموفق ورود</value>
+  </data>
+  <data name="LastFailedLogin" xml:space="preserve">
+    <value>آخرین تلاش ناموفق</value>
+  </data>
+  <data name="VerificationCodes" xml:space="preserve">
+    <value>کدهای احراز هویت</value>
+  </data>
+  <data name="ActivationCode" xml:space="preserve">
+    <value>کد فعال‌سازی</value>
+  </data>
+  <data name="SecurityToken" xml:space="preserve">
+    <value>توکن امنیتی</value>
+  </data>
+  <data name="SmsVerificationCode" xml:space="preserve">
+    <value>کد پیامکی</value>
+  </data>
+  <data name="AccountLocked" xml:space="preserve">
+    <value>حساب کاربری مسدود است</value>
+  </data>
+  <data name="LockedDate" xml:space="preserve">
+    <value>تاریخ مسدودسازی</value>
+  </data>
+  <data name="SuspiciousFlags" xml:space="preserve">
+    <value>نشانه‌های فعالیت مشکوک</value>
+  </data>
+  <data name="LockReason" xml:space="preserve">
+    <value>علت مسدودسازی</value>
+  </data>
+  <data name="ReviewAndUnlock" xml:space="preserve">
+    <value>بررسی و رفع مسدودی حساب</value>
+  </data>
+  <data name="SuspiciousActivityWarning" xml:space="preserve">
+    <value>هشدار فعالیت مشکوک در حساب</value>
+  </data>
+  <data name="SuspiciousActivitiesAndLogs" xml:space="preserve">
+    <value>سوابق و گزارش‌های فعالیت‌های مشکوک</value>
+  </data>
+  <data name="AccountLockHistory" xml:space="preserve">
+    <value>تاریخچه مسدودسازی حساب</value>
+  </data>
+  <data name="NoUsersFound" xml:space="preserve">
+    <value>هیچ کاربری یافت نشد</value>
+  </data>
+  <data name="NoUsersFoundSub" xml:space="preserve">
+    <value>کاربری مطابق با معیارهای جستجوی شما یافت نشد.</value>
+  </data>
+  <data name="ActiveUsers" xml:space="preserve">
+    <value>کاربران فعال</value>
+  </data>
+  <data name="UserEnrollments" xml:space="preserve">
+    <value>دوره‌های ثبت‌نامی کاربر</value>
+  </data>
+  <data name="EnrollInCourse" xml:space="preserve">
+    <value>ثبت‌نام در دوره</value>
+  </data>
+  <data name="EnrollNow" xml:space="preserve">
+    <value>ثبت‌نام فوری</value>
+  </data>
+  <data name="SearchCourse" xml:space="preserve">
+    <value>جستجوی دوره...</value>
+  </data>
+  <data name="SelectCourse" xml:space="preserve">
+    <value>انتخاب دوره</value>
+  </data>
+  <data name="TypeToSearchCourses" xml:space="preserve">
+    <value>برای جستجوی دوره تایپ کنید...</value>
+  </data>
+  <data name="Course" xml:space="preserve">
+    <value>دوره‌ها</value>
+  </data>
+  <data name="NotProvided" xml:space="preserve">
+    <value>ثبت نشده</value>
+  </data>
+  <data name="MainAdminAccountCannotBeModified" xml:space="preserve">
+    <value>حساب کاربری مدیر اصلی سامانه غیرقابل ویرایش یا حذف است.</value>
+  </data>
+  <data name="ViewAllActivities" xml:space="preserve">
+    <value>مشاهده تمامی رویدادها</value>
+  </data>
+  <data name="ViewFullHistory" xml:space="preserve">
+    <value>مشاهده سوابق کامل</value>
+  </data>
+  <data name="ViewSecurityLogs" xml:space="preserve">
+    <value>مشاهده گزارش‌های امنیتی</value>
+  </data>
+  <data name="AdminNotes" xml:space="preserve">
+    <value>یادداشت‌های مدیر</value>
+  </data>
+<data name="General" xml:space="preserve"><value>عمومی</value></data><data name="Email" xml:space="preserve"><value>ایمیل</value></data><data name="Payment" xml:space="preserve"><value>پرداخت و مالی</value></data><data name="SEO" xml:space="preserve"><value>سئو و بهینه‌سازی</value></data><data name="Site Name" xml:space="preserve"><value>نام سایت</value></data><data name="Main name displayed across the site" xml:space="preserve"><value>نام اصلی نمایش‌داده‌شده در تمام صفحات سامانه</value></data><data name="Site Description" xml:space="preserve"><value>توضیحات سایت</value></data><data name="Meta description for search engines" xml:space="preserve"><value>توضیحات متای پیش‌فرض برای موتورهای جستجو</value></data><data name="Site Logo URL" xml:space="preserve"><value>آدرس تصویر لوگو</value></data><data name="URL path to site logo" xml:space="preserve"><value>مسیر یا آدرس فایل تصویر لوگوی سامانه</value></data><data name="Support Email" xml:space="preserve"><value>ایمیل پشتیبانی</value></data><data name="Main support email address" xml:space="preserve"><value>آدرس ایمیل اصلی برای ارتباط و پشتیبانی کاربران</value></data><data name="Support Phone" xml:space="preserve"><value>تلفن پشتیبانی</value></data><data name="Customer support phone number" xml:space="preserve"><value>شماره تلفن واحد پشتیبانی کاربران</value></data><data name="SMTP Server" xml:space="preserve"><value>سرور SMTP</value></data><data name="SMTP server address for sending emails" xml:space="preserve"><value>آدرس سرور ایمیل جهت ارسال پیام‌های سیستمی</value></data><data name="SMTP Port" xml:space="preserve"><value>پورت SMTP</value></data><data name="SMTP port number" xml:space="preserve"><value>شماره پورت اتصال به سرور ایمیل</value></data><data name="SMTP Username" xml:space="preserve"><value>نام کاربری SMTP</value></data><data name="SMTP authentication username" xml:space="preserve"><value>نام کاربری جهت احراز هویت در سرور ایمیل</value></data><data name="Enable Email Notifications" xml:space="preserve"><value>فعال‌سازی اعلان‌های ایمیلی</value></data><data name="Send email notifications to users" xml:space="preserve"><value>ارسال ایمیل‌های اطلاع‌رسانی و رویدادها به کاربران</value></data><data name="Account Lockout Duration (Minutes)" xml:space="preserve"><value>مدت زمان قفل شدن حساب (دقیقه)</value></data><data name="Minutes to lock account after failed attempts" xml:space="preserve"><value>تعداد دقایقی که حساب کاربر پس از ورودهای ناموفق قفل می‌ماند</value></data><data name="Max Failed Login Attempts" xml:space="preserve"><value>حداکثر دفعات مجاز تلاش ناموفق</value></data><data name="Maximum failed login attempts before lockout" xml:space="preserve"><value>تعداد تلاش‌های ناموفق مجاز پیش از قفل خودکار حساب</value></data><data name="Password Expiration Days" xml:space="preserve"><value>مدت اعتبار رمز عبور (روز)</value></data><data name="Days before password expires (0 to disable)" xml:space="preserve"><value>تعداد روزهای اعتبار کلمه عبور پیش از لزوم تغییر (۰ برای غیرفعال)</value></data><data name="Require Strong Password" xml:space="preserve"><value>الزام استفاده از رمز عبور پیچیده</value></data><data name="Enforce complex password requirements" xml:space="preserve"><value>الزام کاربران به ترکیب حروف کوچک و بزرگ، اعداد و نمادها</value></data><data name="Two-Factor Authentication Required" xml:space="preserve"><value>الزام احراز هویت دو مرحله‌ای (2FA)</value></data><data name="Require 2FA for admin users" xml:space="preserve"><value>الزام فعال‌سازی تایید دو مرحله‌ای برای مدیران سامانه</value></data><data name="Default Currency" xml:space="preserve"><value>واحد پول پیش‌فرض</value></data><data name="Default currency for transactions" xml:space="preserve"><value>واحد پول مورد استفاده در تمامی تراکنش‌ها</value></data><data name="Payment Gateway" xml:space="preserve"><value>درگاه پرداخت اینترنتی</value></data><data name="Primary payment gateway provider" xml:space="preserve"><value>سرویس‌دهنده اصلی پردازش پرداخت‌های آنلاین</value></data><data name="Transaction Fee Percentage" xml:space="preserve"><value>درصد کارمزد تراکنش</value></data><data name="Percentage fee added to transactions" xml:space="preserve"><value>درصد کارمزد افزوده شده به صورت‌حساب پرداخت‌ها</value></data><data name="Minimum Order Amount" xml:space="preserve"><value>حداقل مبلغ خرید</value></data><data name="Minimum amount for orders" xml:space="preserve"><value>حداقل مجاز مبلغ فاکتور سفارش برای پرداخت</value></data><data name="Course Enrollment Requires Approval" xml:space="preserve"><value>تأیید دستی ثبت‌نام در دوره‌ها</value></data><data name="Manual approval needed for course enrollment" xml:space="preserve"><value>نیاز به بررسی و تأیید دستی مدیر برای نهایی شدن ثبت‌نام</value></data><data name="Course Completion Threshold (%)" xml:space="preserve"><value>حداقل درصد تکمیل دوره (%)</value></data><data name="Percentage of course content required for completion" xml:space="preserve"><value>درصد مشاهده محتوای دوره جهت صدور وضعیت تکمیل و گواهینامه</value></data><data name="Course Certificate Auto-Generate" xml:space="preserve"><value>صدور خودکار گواهینامه دوره</value></data><data name="Automatically generate certificate on completion" xml:space="preserve"><value>تولید و ثبت خودکار گواهینامه پس از اتمام موفق دوره</value></data><data name="Max Course Instructors" xml:space="preserve"><value>حداکثر تعداد اساتید دوره</value></data><data name="Maximum number of instructors per course" xml:space="preserve"><value>حداکثر تعداد مجاز مدرسین اختصاص داده شده به هر دوره</value></data><data name="Enable Maintenance Mode" xml:space="preserve"><value>فعال‌سازی حالت تعمیر و نگهداری</value></data><data name="Put site in maintenance mode" xml:space="preserve"><value>نمایش صفحه در دست تعمیر برای کاربران عادی و قفل موقت سامانه</value></data><data name="Session Timeout (Minutes)" xml:space="preserve"><value>مدت اعتبار نشست کاربری (دقیقه)</value></data><data name="User session expiration time in minutes" xml:space="preserve"><value>زمان انقضای نشست کاربری پس از عدم فعالیت کاربر به دقیقه</value></data><data name="Log Activity" xml:space="preserve"><value>ثبت و ذخیره رویدادها (لاگ)</value></data><data name="Enable activity logging" xml:space="preserve"><value>فعال‌سازی ذخیره رویدادها و فعالیت‌های کاربران در پایگاه داده</value></data><data name="Log Retention Days" xml:space="preserve"><value>مدت نگهداری فایل‌های لاگ (روز)</value></data><data name="Days to keep activity logs" xml:space="preserve"><value>تعداد روزهای نگهداری گزارش‌ها و سوابق فعالیت‌های سامانه</value></data><data name="Max Upload File Size (MB)" xml:space="preserve"><value>حداکثر حجم مجاز آپلود فایل (مگابایت)</value></data><data name="Maximum file upload size in megabytes" xml:space="preserve"><value>حداکثر حجم مجاز برای بارگذاری ویدیوها و فایل‌های سامانه به مگابایت</value></data><data name="IT Administrator" xml:space="preserve"><value>مدیر فناوری اطلاعات (IT)</value></data><data name="Super Administrator" xml:space="preserve"><value>مدیر ارشد سامانه</value></data><data name="Course Manager" xml:space="preserve"><value>مدیر دوره‌ها</value></data><data name="Accountant" xml:space="preserve"><value>حسابدار</value></data><data name="Technical and administrative access to manage courses, videos, users, and roles, excluding financial records" xml:space="preserve"><value>دسترسی فنی و اجرایی برای مدیریت دوره‌ها، ویدیوها، کاربران و نقش‌ها به استثنای اسناد مالی</value></data><data name="Full access to all features" xml:space="preserve"><value>دسترسی کامل و نامحدود به تمامی بخش‌ها و امکانات سامانه</value></data><data name="Manage courses and enrollments" xml:space="preserve"><value>مدیریت دوره‌های آموزشی و امور ثبت‌نام دانشجویان</value></data><data name="Manage payments only" xml:space="preserve"><value>مدیریت اختصاصی امور مالی، پرداخت‌ها و تراکنش‌ها</value></data><data name="EnrollmentManagement" xml:space="preserve"><value>مدیریت ثبت‌نام‌ها</value></data><data name="TotalCourseEnrollments" xml:space="preserve"><value>مجموع ثبت‌نام‌های دوره‌ها:</value></data><data name="BulkTransfer" xml:space="preserve"><value>انتقال دسته‌جمعی</value></data><data name="AddEnrollment" xml:space="preserve"><value>ثبت‌نام جدید</value></data><data name="SearchStudentPlaceholder" xml:space="preserve"><value>نام دانشجو، ایمیل یا نام دوره...</value></data><data name="AllStatuses" xml:space="preserve"><value>همه وضعیت‌ها</value></data><data name="AllTypes" xml:space="preserve"><value>همه موارد</value></data><data name="SortBy" xml:space="preserve"><value>مرتب‌سازی بر اساس</value></data><data name="NewestFirst" xml:space="preserve"><value>جدیدترین‌ها</value></data><data name="OldestFirst" xml:space="preserve"><value>قدیمی‌ترین‌ها</value></data><data name="ProgressHighToLow" xml:space="preserve"><value>پیشرفت: بیشترین به کمترین</value></data><data name="ProgressLowToHigh" xml:space="preserve"><value>پیشرفت: کمترین به بیشترین</value></data><data name="StudentNameAsc" xml:space="preserve"><value>نام دانشجو: الف تا ی</value></data><data name="CourseTitleAsc" xml:space="preserve"><value>عنوان دوره: الف تا ی</value></data><data name="ApplyFilter" xml:space="preserve"><value>اعمال فیلتر</value></data><data name="ActiveCourse" xml:space="preserve"><value>دوره فعال</value></data><data name="InactiveCourse" xml:space="preserve"><value>دوره غیرفعال</value></data><data name="NoEnrollmentsFound" xml:space="preserve"><value>هیچ ثبت‌نامی یافت نشد</value></data><data name="NoEnrollmentsFilterDesc" xml:space="preserve"><value>هیچ ثبت‌نامی مطابق با فیلترهای جستجوی شما یافت نشد. لطفاً فیلترها را تغییر دهید.</value></data><data name="NoEnrollmentsEmptyDesc" xml:space="preserve"><value>تاکنون هیچ ثبت‌نامی در سامانه ایجاد نشده است. برای افزودن دانشجو کلیک کنید.</value></data><data name="AddStudentToCourse" xml:space="preserve"><value>افزودن دانشجو به دوره</value></data><data name="SearchStudentByNameOrEmail" xml:space="preserve"><value>جستجوی دانشجو با نام یا ایمیل...</value></data><data name="SearchCourseByTitle" xml:space="preserve"><value>جستجوی دوره با عنوان...</value></data><data name="MarkAsPaidCourse" xml:space="preserve"><value>ثبت به عنوان دوره پرداخت‌شده</value></data><data name="SaveEnrollment" xml:space="preserve"><value>ذخیره ثبت‌نام</value></data><data name="RemoveEnrollment" xml:space="preserve"><value>حذف ثبت‌نام</value></data><data name="NoStudentsFound" xml:space="preserve"><value>هیچ دانشجویی یافت نشد</value></data><data name="NoCoursesFound" xml:space="preserve"><value>هیچ دوره‌ای یافت نشد</value></data><data name="PleaseSelectStudent" xml:space="preserve"><value>لطفاً یک دانشجو را انتخاب کنید.</value></data><data name="PleaseSelectCourse" xml:space="preserve"><value>لطفاً یک دوره را انتخاب کنید.</value></data><data name="SeoHealthDashboard" xml:space="preserve"><value>داشبورد سلامت سئو</value></data><data name="SeoManagement" xml:space="preserve"><value>مدیریت سئو و بهینه‌سازی</value></data><data name="SeoManagementSub" xml:space="preserve"><value>اسکن صفحات، بهینه‌سازی متادیتا و مدیریت نقشه‌های سایت.</value></data><data name="ScanAllPages" xml:space="preserve"><value>اسکن همه صفحات</value></data><data name="RebuildSitemap" xml:space="preserve"><value>بازسازی نقشه سایت</value></data><data name="SeoHealthScore" xml:space="preserve"><value>امتیاز سلامت سئو</value></data><data name="OverallSiteScore" xml:space="preserve"><value>امتیاز کلی سایت</value></data><data name="SeoStatus" xml:space="preserve"><value>وضعیت سئو</value></data><data name="Missing" xml:space="preserve"><value>ثبت‌نشده</value></data><data name="Generated" xml:space="preserve"><value>تولید شده</value></data><data name="DisableSearchIndexing" xml:space="preserve"><value>غیرفعال‌سازی ایندکس موتورهای جستجو</value></data><data name="DisableSearchIndexingSub" xml:space="preserve"><value>جلوگیری از ایندکس صفحات سایت توسط موتورهای جستجو (Noindex)</value></data><data name="IssuesOverview" xml:space="preserve"><value>خلاصه مشکلات و هشدارها</value></data><data name="Errors404AndServer" xml:space="preserve"><value>خطاهای ۴۰۴ و سرور</value></data><data name="MissingAltText" xml:space="preserve"><value>تصاویر بدون متن جایگزین (Alt)</value></data><data name="MissingMetaDesc" xml:space="preserve"><value>صفحات بدون توضیحات متا</value></data><data name="H1HeadingIssues" xml:space="preserve"><value>مشکلات تگ H1</value></data><data name="UrlRedirects" xml:space="preserve"><value>تغییرمسیرهای URL</value></data><data name="UrlRedirectsSub" xml:space="preserve"><value>مدیریت ریدایرکت‌های ۳۰۱ و ۳۰۲ برای هدایت آدرس‌های قدیمی یا شکسته.</value></data><data name="ManageRedirects" xml:space="preserve"><value>مدیریت ریدایرکت‌ها</value></data><data name="SeoErrors" xml:space="preserve"><value>خطاهای سئو</value></data><data name="SeoErrorsSub" xml:space="preserve"><value>بررسی لینک‌های شکسته، خطاهای ۴۰۴ و اشکالات صفحات.</value></data><data name="ViewErrors" xml:space="preserve"><value>مشاهده خطاها</value></data><data name="ImageAltText" xml:space="preserve"><value>متن جایگزین تصاویر</value></data><data name="ImageAltTextSub" xml:space="preserve"><value>افزودن توضیحات Alt به تصاویر جهت بهبود دسترسی‌پذیری و سئو.</value></data><data name="ManageImageAlts" xml:space="preserve"><value>مدیریت متن تصاویر</value></data><data name="PageSeo" xml:space="preserve"><value>سئو صفحات</value></data><data name="PageSeoSub" xml:space="preserve"><value>تنظیم عنوان، توضیحات متا، URL کانونیکال و متاتگ‌های شبکه‌های اجتماعی.</value></data><data name="PageAnalyzer" xml:space="preserve"><value>آنالیزور صفحه</value></data><data name="PageAnalyzerSub" xml:space="preserve"><value>تحلیل تیترها، تراکم کلمات کلیدی و داده‌های ساختاریافته هر آدرس.</value></data><data name="RobotsTxt" xml:space="preserve"><value>فایل Robots.txt</value></data><data name="RobotsTxtSub" xml:space="preserve"><value>مشاهده و ویرایش دستورالعمل‌های خزنده‌های وب در فایل robots.txt.</value></data><data name="EditRobotsTxt" xml:space="preserve"><value>ویرایش Robots.txt</value></data><data name="SitemapSettings" xml:space="preserve"><value>تنظیمات نقشه سایت</value></data><data name="SitemapSettingsSub" xml:space="preserve"><value>پیکربندی دوره‌های به‌روزرسانی و اولویت‌بندی آدرس‌ها در نقشه سایت.</value></data><data name="ScannedPages" xml:space="preserve"><value>صفحات اسکن‌شده</value></data><data name="PageUrl" xml:space="preserve"><value>آدرس صفحه</value></data><data name="H1Tag" xml:space="preserve"><value>تگ H1</value></data><data name="MissingAlts" xml:space="preserve"><value>بدون Alt</value></data><data name="IndexStatus" xml:space="preserve"><value>وضعیت ایندکس</value></data><data name="NoPagesScannedYet" xml:space="preserve"><value>تاکنون صفحه‌ای اسکن نشده است. برای بررسی سایت روی «اسکن همه صفحات» کلیک کنید.</value></data><data name="ScanningSeo" xml:space="preserve"><value>در حال اسکن سئو...</value></data><data name="GlobalNoindexWarning" xml:space="preserve"><value>هشدار: ایندکس موتورهای جستجو در حال حاضر برای کل سایت غیرفعال است (Noindex فعال است).</value></data><data name="SystemActivities" xml:space="preserve"><value>فعالیت‌های سیستم</value></data><data name="SystemActivitiesSub" xml:space="preserve"><value>مشاهده و نظارت بر آخرین فعالیت‌ها و رویدادهای سامانه.</value></data><data name="ClearAllActivities" xml:space="preserve"><value>پاکسازی تمامی فعالیت‌ها</value></data><data name="HighPriority" xml:space="preserve"><value>اولویت بالا</value></data><data name="MediumPriority" xml:space="preserve"><value>اولویت متوسط</value></data><data name="LowPriority" xml:space="preserve"><value>اولویت پایین</value></data><data name="BulkEnrollmentTransfer" xml:space="preserve"><value>انتقال گروهی ثبت‌نام‌ها</value></data><data name="TransferStudentsDesc" xml:space="preserve"><value>انتقال دانشجویان از یک دوره به دوره دیگر</value></data><data name="BackToEnrollments" xml:space="preserve"><value>بازگشت به ثبت‌نام‌ها</value></data><data name="TransferCompletedSuccessfully" xml:space="preserve"><value>انتقال با موفقیت انجام شد</value></data><data name="Transferred" xml:space="preserve"><value>انتقال‌یافته</value></data><data name="SkippedAlreadyEnrolled" xml:space="preserve"><value>نادیده‌گرفته‌شده (قبلاً ثبت‌نام شده)</value></data><data name="RemovedFromSource" xml:space="preserve"><value>حذف‌شده از دوره مبدا</value></data><data name="TransferErrors" xml:space="preserve"><value>خطاهای انتقال</value></data><data name="TransferRoute" xml:space="preserve"><value>مسیر انتقال</value></data><data name="FromCourseSource" xml:space="preserve"><value>از دوره (مبدا)</value></data><data name="SelectSource" xml:space="preserve"><value>— انتخاب مبدا —</value></data><data name="ToCourseDestination" xml:space="preserve"><value>به دوره (مقصد)</value></data><data name="SelectDestination" xml:space="preserve"><value>— انتخاب مقصد —</value></data><data name="TransferOptions" xml:space="preserve"><value>تنظیمات انتقال</value></data><data name="OverrideExistingEnrollments" xml:space="preserve"><value>بازنویسی ثبت‌نام‌های موجود</value></data><data name="OverrideExistingDesc" xml:space="preserve"><value>اگر کاربر از قبل در دوره مقصد ثبت‌نام کرده باشد، پیشرفت وی مطابق با مبدا به‌روزرسانی می‌شود. در غیر این صورت، کاربران ثبت‌نام‌شده نادیده گرفته می‌شوند.</value></data><data name="CopyPaymentInfo" xml:space="preserve"><value>کپی اطلاعات پرداخت</value></data><data name="CopyPaymentInfoDesc" xml:space="preserve"><value>حفظ وضعیت پولی/رایگان و مبلغ پرداختی هنگام ایجاد ثبت‌نام در دوره مقصد.</value></data><data name="RemoveFromSourceAfterTransfer" xml:space="preserve"><value>حذف از دوره مبدا پس از انتقال</value></data><data name="RemoveFromSourceDesc" xml:space="preserve"><value>ثبت‌نام کاربران از دوره مبدا لغو شده و پیشرفت ویدیویی آن‌ها در آن دوره برای همیشه پاک می‌شود. این عمل غیرقابل‌بازگشت است.</value></data><data name="ExecuteTransfer" xml:space="preserve"><value>اجرای انتقال</value></data><data name="HowItWorks" xml:space="preserve"><value>نحوه کارکرد</value></data><data name="BulkRevoke" xml:space="preserve"><value>لغو گروهی ثبت‌نام</value></data><data name="BulkRevokeDesc" xml:space="preserve"><value>حذف هم‌زمان تمام دانشجویان از یک دوره. این کار پیشرفت ویدیویی آن‌ها را نیز پاک می‌کند. با احتیاط استفاده کنید.</value></data><data name="RevokeAllEnrollments" xml:space="preserve"><value>لغو تمام ثبت‌نام‌ها</value></data><data name="BackToSeoDashboard" xml:space="preserve"><value>بازگشت به پیشخوان سئو</value></data><data name="RobotsTxtEditor" xml:space="preserve"><value>ویرایشگر Robots.txt</value></data><data name="RobotsTxtEditorDesc" xml:space="preserve"><value>کنترل صفحاتی که موتورهای جستجو و خزنده‌ها اجازه دسترسی به آن‌ها را دارند.</value></data><data name="SaveRobotsTxt" xml:space="preserve"><value>ذخیره robots.txt</value></data><data name="QuickTemplates" xml:space="preserve"><value>الگوهای آماده</value></data><data name="QuickTemplatesDesc" xml:space="preserve"><value>یک الگوی آماده برای پر کردن سریع محتوای robots.txt انتخاب کنید.</value></data><data name="LoadStandardTemplate" xml:space="preserve"><value>بارگذاری الگوی استاندارد</value></data><data name="AllowAllCrawlers" xml:space="preserve"><value>مجاز دانستن همه خزنده‌ها</value></data><data name="BlockAllCrawlers" xml:space="preserve"><value>مسدود کردن همه خزنده‌ها</value></data><data name="SyntaxGuidelines" xml:space="preserve"><value>راهنمای ساختار دستورات</value></data><data name="SitemapSettingsTitle" xml:space="preserve"><value>تنظیمات نقشه سایت</value></data><data name="SectionFrequencyPriority" xml:space="preserve"><value>تکرار و اولویت بخش‌ها</value></data></root>

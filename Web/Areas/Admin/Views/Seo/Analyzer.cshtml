@@ -1,19 +1,21 @@
 @model Application.DTOs.SeoOnPageResult
 @{
-    ViewData["Title"] = "On-Page SEO Analyzer";
+    var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var isRtl = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase) || currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
+    ViewData["Title"] = Localizer["PageAnalyzer"].Value;
 }
 
-<div class="animate-[fadeIn_0.4s_ease_forwards] w-full" dir="ltr">
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full @(isRtl ? "font-fa" : "") text-start" dir="@(isRtl ? "rtl" : "ltr")">
 
     <!-- Back Action Control Trigger -->
     <a href="@Url.Action("Index", "Seo", new { area = "Admin" })" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-brand-cyan transition-colors uppercase tracking-wider mb-6">
-        <i class="fa fa-arrow-left text-[10px]"></i> Back to SEO Dashboard
+        <i class="fa @(isRtl ? "fa-arrow-right" : "fa-arrow-left") text-[10px]"></i> <span>@Localizer["BackToSeoDashboard"]</span>
     </a>
 
     <!-- Top Search bar -->
     <div class="pb-8 mb-8 border-b border-white/5">
-        <h3 class="text-xl font-extrabold text-white mb-2 tracking-wide">On-Page SEO Analyzer</h3>
-        <p class="text-slate-500 text-xs font-medium mb-6">Analyze page titles, meta tags, headings, keywords, and structured data.</p>
+        <h3 class="text-xl font-extrabold text-white mb-2 tracking-wide">@Localizer["PageAnalyzer"]</h3>
+        <p class="text-slate-500 text-xs font-medium mb-6">@Localizer["PageAnalyzerDesc"]</p>
 
         <form action="@Url.Action("Analyzer", "Seo", new { area = "Admin" })" method="get" class="flex flex-wrap gap-6 items-end">
 

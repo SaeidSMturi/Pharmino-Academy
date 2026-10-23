@@ -288,7 +288,6 @@ C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\Web.genruntimeconfig.cac
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\ref\Web.dll
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\ar\Web.resources.cs
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\en\Web.resources.cs
-C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\b2msq9thvz-{0}-dwvehyt1bp-dwvehyt1bp.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\x2a1khw7i6-{0}-0v4nk7ihdf-0v4nk7ihdf.gz
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\Assets\Fonts\DejaVuSans-Bold.ttf
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\Assets\Fonts\DejaVuSansMono.ttf
@@ -652,3 +651,10 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\ar\Web
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\en\Web.resources.cs
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\runtimes\win\lib\net10.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\fa\Web.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\Web.Resources.SharedResource.fa.resources
+C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\Web.Resources.Views.Home.Index.fa.resources
+C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\Web.Resources.Views.Shared._Layout.fa.resources
+C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\fa\Web.resources.cs
+C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\fa\Web.resources.dll
+C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\b2msq9thvz-{0}-4tf3qoi7hs-4tf3qoi7hs.gz

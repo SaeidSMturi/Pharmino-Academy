@@ -351,6 +351,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Resources\SharedResource.en.resx
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/Desktop/Pharmacists/Web/Resources/SharedResource.fa.resx]
+build_metadata.AdditionalFiles.TargetPath = Resources\SharedResource.fa.resx
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/Desktop/Pharmacists/Web/Resources/Views/Home/Index.ar.resx]
 build_metadata.AdditionalFiles.TargetPath = Resources\Views\Home\Index.ar.resx
 build_metadata.AdditionalFiles.CssScope = 
@@ -359,10 +363,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Resources\Views\Home\Index.en.resx
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/user/Desktop/Pharmacists/Web/Resources/Views/Home/Index.fa.resx]
+build_metadata.AdditionalFiles.TargetPath = Resources\Views\Home\Index.fa.resx
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/Desktop/Pharmacists/Web/Resources/Views/Shared/_Layout.ar.resx]
 build_metadata.AdditionalFiles.TargetPath = Resources\Views\Shared\_Layout.ar.resx
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/user/Desktop/Pharmacists/Web/Resources/Views/Shared/_Layout.en.resx]
 build_metadata.AdditionalFiles.TargetPath = Resources\Views\Shared\_Layout.en.resx
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Pharmacists/Web/Resources/Views/Shared/_Layout.fa.resx]
+build_metadata.AdditionalFiles.TargetPath = Resources\Views\Shared\_Layout.fa.resx
 build_metadata.AdditionalFiles.CssScope = 

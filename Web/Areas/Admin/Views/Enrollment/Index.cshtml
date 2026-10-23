@@ -1,27 +1,28 @@
 @model Web.Areas.Admin.ViewModels.EnrollmentIndexViewModel
 
 @{
-    ViewData["Title"] = "Enrollment Management";
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["EnrollmentManagement"].Value;
 }
 
-<div class="animate-[fadeIn_0.4s_ease_forwards] w-full">
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start" dir="@(isRtl ? "rtl" : "ltr")">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
         <div>
             <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide">
-                Enrollment Management
+                @Localizer["EnrollmentManagement"]
             </h1>
             <p class="text-slate-400 text-sm font-medium">
-                Total course enrollments: <span class="text-brand-cyan font-bold font-mono">@Model.TotalCount</span>
+                @Localizer["TotalCourseEnrollments"] <span class="text-brand-cyan font-bold font-mono">@Model.TotalCount</span>
             </p>
         </div>
         <div class="flex flex-wrap gap-3 w-full md:w-auto justify-end">
             <a asp-action="BulkTransfer"
                class="w-full sm:w-auto text-center px-5 py-2.5 bg-brand-orange/10 text-brand-orange border border-brand-orange/20 rounded-xl hover:bg-brand-orange hover:text-dark-bg hover:shadow-[0_0_20px_rgba(255,126,66,0.4)] font-extrabold text-xs transition-all flex items-center justify-center whitespace-nowrap">
-                <i class="fas fa-exchange-alt mr-2"></i>Bulk Transfer
+                <i class="fas fa-exchange-alt @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["BulkTransfer"]
             </a>
             <button onclick="openAddModal()"
                     class="w-full sm:w-auto text-center px-6 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue rounded-xl text-dark-bg font-extrabold hover:shadow-[0_0_20px_rgba(66,234,255,0.4)] hover:scale-[1.02] transition-all duration-300 whitespace-nowrap text-sm flex items-center justify-center">
-                <i class="fas fa-user-plus mr-2 text-lg"></i>Add Enrollment
+                <i class="fas fa-user-plus @(isRtl ? "ml-2" : "mr-2") text-lg"></i>@Localizer["AddEnrollment"]
             </button>
         </div>
     </div>
@@ -30,20 +31,20 @@
         <form method="get" asp-action="Index" class="flex flex-wrap gap-6 items-end">
 
             <div class="flex-1 min-w-[220px] space-y-2">
-                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Search</label>
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">@Localizer["Search"]</label>
                 <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
-                    <i class="fas fa-search absolute left-2 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-brand-cyan transition-colors text-xs"></i>
+                    <i class="fas fa-search absolute @(isRtl ? "right-2" : "left-2") top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-brand-cyan transition-colors text-xs"></i>
                     <input type="text" name="searchQuery" value="@Model.Filter.SearchQuery"
-                           placeholder="Student name, email, or course..."
-                           class="w-full pl-9 pr-4 py-2.5 bg-transparent text-white placeholder-slate-600 focus:outline-none text-sm font-medium" />
+                           placeholder="@Localizer["SearchStudentPlaceholder"]"
+                           class="w-full @(isRtl ? "pr-9 pl-4" : "pl-9 pr-4") py-2.5 bg-transparent text-white placeholder-slate-600 focus:outline-none text-sm font-medium" />
                 </div>
             </div>
 
             <div class="min-w-[180px] space-y-2">
-                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Course</label>
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">@Localizer["Course"]</label>
                 <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
                     <select name="courseId" class="w-full bg-transparent py-2.5 text-slate-300 focus:outline-none text-sm font-medium cursor-pointer">
-                        <option value="" class="bg-[#0B0D14] text-slate-400">All Courses</option>
+                        <option value="" class="bg-[#0B0D14] text-slate-400">@Localizer["AllCourses"]</option>
                         @foreach (var c in Model.Courses)
                         {
                             <option value="@c.CourseId" selected="@(Model.Filter.CourseId == c.CourseId)" class="bg-[#0B0D14] text-white">
@@ -55,44 +56,44 @@
             </div>
 
             <div class="min-w-[140px] space-y-2">
-                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Status</label>
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">@Localizer["Status"]</label>
                 <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
                     <select name="isCompleted" class="w-full bg-transparent py-2.5 text-slate-300 focus:outline-none text-sm font-medium cursor-pointer">
-                        <option value="" class="bg-[#0B0D14] text-slate-400">All Statuses</option>
-                        <option value="false" selected="@(Model.Filter.IsCompleted == false)" class="bg-[#0B0D14] text-white">In Progress</option>
-                        <option value="true" selected="@(Model.Filter.IsCompleted == true)" class="bg-[#0B0D14] text-white">Completed</option>
+                        <option value="" class="bg-[#0B0D14] text-slate-400">@Localizer["AllStatuses"]</option>
+                        <option value="false" selected="@(Model.Filter.IsCompleted == false)" class="bg-[#0B0D14] text-white">@Localizer["InProgress"]</option>
+                        <option value="true" selected="@(Model.Filter.IsCompleted == true)" class="bg-[#0B0D14] text-white">@Localizer["Completed"]</option>
                     </select>
                 </div>
             </div>
 
             <div class="min-w-[140px] space-y-2">
-                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Payment Status</label>
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">@Localizer["PaymentStatus"]</label>
                 <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
                     <select name="isPaid" class="w-full bg-transparent py-2.5 text-slate-300 focus:outline-none text-sm font-medium cursor-pointer">
-                        <option value="" class="bg-[#0B0D14] text-slate-400">All Types</option>
-                        <option value="false" selected="@(Model.Filter.IsPaid == false)" class="bg-[#0B0D14] text-white">Free</option>
-                        <option value="true" selected="@(Model.Filter.IsPaid == true)" class="bg-[#0B0D14] text-white">Paid</option>
+                        <option value="" class="bg-[#0B0D14] text-slate-400">@Localizer["AllTypes"]</option>
+                        <option value="false" selected="@(Model.Filter.IsPaid == false)" class="bg-[#0B0D14] text-white">@Localizer["Free"]</option>
+                        <option value="true" selected="@(Model.Filter.IsPaid == true)" class="bg-[#0B0D14] text-white">@Localizer["Paid"]</option>
                     </select>
                 </div>
             </div>
 
             <div class="min-w-[160px] space-y-2">
-                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Sort By</label>
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">@Localizer["SortBy"]</label>
                 <div class="border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
                     <select name="sortBy" class="w-full bg-transparent py-2.5 text-slate-300 focus:outline-none text-sm font-medium cursor-pointer">
-                        <option value="date_desc" selected="@(Model.Filter.SortBy == "date_desc")" class="bg-[#0B0D14] text-white">Newest First</option>
-                        <option value="date_asc" selected="@(Model.Filter.SortBy == "date_asc")" class="bg-[#0B0D14] text-white">Oldest First</option>
-                        <option value="progress_desc" selected="@(Model.Filter.SortBy == "progress_desc")" class="bg-[#0B0D14] text-white">Progress: High to Low</option>
-                        <option value="progress_asc" selected="@(Model.Filter.SortBy == "progress_asc")" class="bg-[#0B0D14] text-white">Progress: Low to High</option>
-                        <option value="name_asc" selected="@(Model.Filter.SortBy == "name_asc")" class="bg-[#0B0D14] text-white">Student Name: A–Z</option>
-                        <option value="course_asc" selected="@(Model.Filter.SortBy == "course_asc")" class="bg-[#0B0D14] text-white">Course Title: A–Z</option>
+                        <option value="date_desc" selected="@(Model.Filter.SortBy == "date_desc")" class="bg-[#0B0D14] text-white">@Localizer["NewestFirst"]</option>
+                        <option value="date_asc" selected="@(Model.Filter.SortBy == "date_asc")" class="bg-[#0B0D14] text-white">@Localizer["OldestFirst"]</option>
+                        <option value="progress_desc" selected="@(Model.Filter.SortBy == "progress_desc")" class="bg-[#0B0D14] text-white">@Localizer["ProgressHighToLow"]</option>
+                        <option value="progress_asc" selected="@(Model.Filter.SortBy == "progress_asc")" class="bg-[#0B0D14] text-white">@Localizer["ProgressLowToHigh"]</option>
+                        <option value="name_asc" selected="@(Model.Filter.SortBy == "name_asc")" class="bg-[#0B0D14] text-white">@Localizer["StudentNameAsc"]</option>
+                        <option value="course_asc" selected="@(Model.Filter.SortBy == "course_asc")" class="bg-[#0B0D14] text-white">@Localizer["CourseTitleAsc"]</option>
                     </select>
                 </div>
             </div>
 
             <div class="flex gap-2 self-end">
                 <button type="submit" class="px-5 py-2.5 bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan rounded-xl hover:bg-brand-cyan hover:text-dark-bg transition-all text-xs font-bold shadow-md">
-                    <i class="fas fa-filter mr-1.5"></i>Apply Filter
+                    <i class="fas fa-filter @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["ApplyFilter"]
                 </button>
                 <a asp-action="Index" class="px-4 py-2.5 bg-white/5 border border-white/5 text-slate-400 rounded-xl hover:text-white hover:bg-white/10 transition-all text-xs flex items-center justify-center">
                     <i class="fas fa-rotate-left"></i>
@@ -110,7 +111,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-12 items-center gap-4">
 
                         <div class="md:col-span-3 min-w-0">
-                            <a asp-area="Admin" asp-controller="Users" asp-action="Details" asp-route-id="@row.UserId" class="flex items-center space-x-3 group">
+                            <a asp-area="Admin" asp-controller="Users" asp-action="Details" asp-route-id="@row.UserId" class="flex items-center @(isRtl ? "space-x-reverse space-x-3" : "space-x-3") group">
                                 <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-dark-bg font-extrabold text-sm flex-shrink-0 shadow-[0_0_12px_rgba(255,126,66,0.2)]">
                                     @(row.UserFullName.FirstOrDefault().ToString().ToUpper())
                                 </div>
@@ -118,7 +119,7 @@
                                     <p class="text-white text-sm font-bold group-hover:text-brand-cyan transition-colors truncate">
                                         @row.UserFullName.Trim()
                                     </p>
-                                    <p class="text-slate-500 text-xs truncate mt-0.5 font-medium">@row.UserEmail</p>
+                                    <p class="text-slate-500 text-xs truncate mt-0.5 font-medium" dir="ltr">@row.UserEmail</p>
                                 </div>
                             </a>
                         </div>
@@ -130,23 +131,23 @@
                                 </p>
                                 @if (!row.CourseIsActive)
                                 {
-                                    <span class="inline-flex items-center text-[10px] font-bold text-rose-400 mt-0.5"><i class="fas fa-circle text-[5px] mr-1.5 animate-pulse"></i>Inactive Course</span>
+                                    <span class="inline-flex items-center text-[10px] font-bold text-rose-400 mt-0.5"><i class="fas fa-circle text-[5px] @(isRtl ? "ml-1.5" : "mr-1.5") animate-pulse"></i>@Localizer["InactiveCourse"]</span>
                                 }
                                 else
                                 {
-                                    <span class="inline-flex items-center text-[10px] font-bold text-emerald-400 mt-0.5"><i class="fas fa-circle text-[5px] mr-1.5"></i>Active Course</span>
+                                    <span class="inline-flex items-center text-[10px] font-bold text-emerald-400 mt-0.5"><i class="fas fa-circle text-[5px] @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["ActiveCourse"]</span>
                                 }
                             </a>
                         </div>
 
                         <div class="md:col-span-2 text-slate-400 font-medium text-xs whitespace-nowrap">
-                            <div class="flex items-center space-x-1.5"><i class="far fa-calendar text-brand-cyan text-[10px]"></i><span>@row.EnrollmentDate.ToString("yyyy/MM/dd")</span></div>
-                            <div class="text-[10px] text-slate-600 mt-1 ml-4 font-mono font-semibold">@row.EnrollmentDate.ToString("HH:mm")</div>
+                            <div class="flex items-center gap-1.5"><i class="far fa-calendar text-brand-cyan text-[10px]"></i><span>@row.EnrollmentDate.ToString("yyyy/MM/dd")</span></div>
+                            <div class="text-[10px] text-slate-600 mt-1 font-mono font-semibold" dir="ltr">@row.EnrollmentDate.ToString("HH:mm")</div>
                         </div>
 
                         <div class="md:col-span-2">
-                            <div class="flex items-center space-x-3">
-                                <span class="text-xs font-bold @(row.IsCompleted ? "text-emerald-400" : "text-brand-blue") w-10 text-right">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-bold @(row.IsCompleted ? "text-emerald-400" : "text-brand-blue") w-10 @(isRtl ? "text-left" : "text-right") font-mono">
                                     @row.ProgressPercentage%
                                 </span>
                                 <div class="w-20 h-1 bg-white/5 rounded-full overflow-hidden shadow-inner flex-shrink-0">
@@ -156,29 +157,29 @@
                             </div>
                             @if (row.CompletionDate.HasValue)
                             {
-                                <p class="text-[9px] text-slate-600 font-mono font-bold mt-1 ml-10">Completed @row.CompletionDate.Value.ToString("yyyy/MM/dd")</p>
+                                <p class="text-[9px] text-slate-600 font-mono font-bold mt-1">@Localizer["Completed"] @row.CompletionDate.Value.ToString("yyyy/MM/dd")</p>
                             }
                         </div>
 
                         <div class="md:col-span-1 whitespace-nowrap">
                             @if (row.IsPaid)
                             {
-                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/10">
-                                    <i class="fas fa-coins mr-1"></i>$@row.PaymentAmount?.ToString("N0")
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 font-mono">
+                                    <i class="fas fa-coins @(isRtl ? "ml-1" : "mr-1")"></i>$@row.PaymentAmount?.ToString("N0")
                                 </span>
                             }
                             else
                             {
                                 <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 uppercase tracking-wide">
-                                    <i class="fas fa-gift mr-1"></i>Free
+                                    <i class="fas fa-gift @(isRtl ? "ml-1" : "mr-1")"></i>@Localizer["Free"]
                                 </span>
                             }
                         </div>
 
-                        <div class="md:col-span-1 text-right whitespace-nowrap">
+                        <div class="md:col-span-1 @(isRtl ? "text-left" : "text-right") whitespace-nowrap">
                             <button onclick="removeEnrollmentRow(@row.EnrollmentId, '@row.UserFullName.Trim().Replace("'", "\\'")', '@row.CourseTitle.Replace("'", "\\'")')"
-                                    class="px-2.5 py-1.5 bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded-lg hover:bg-rose-500 hover:text-white transition-all text-[10px] font-bold" title="Remove Enrollment">
-                                <i class="fas fa-user-minus mr-1"></i>Remove
+                                    class="px-2.5 py-1.5 bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded-lg hover:bg-rose-500 hover:text-white transition-all text-[10px] font-bold" title="@Localizer["RemoveEnrollment"]">
+                                <i class="fas fa-user-minus @(isRtl ? "ml-1" : "mr-1")"></i>@Localizer["Remove"]
                             </button>
                         </div>
 
@@ -190,7 +191,7 @@
             {
                 <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
                     <p class="text-xs text-slate-500 font-medium">
-                        Showing @((Model.Page - 1) * Model.PageSize + 1)–@(Math.Min(Model.Page * Model.PageSize, Model.TotalCount)) of @Model.TotalCount
+                        @((Model.Page - 1) * Model.PageSize + 1)–@(Math.Min(Model.Page * Model.PageSize, Model.TotalCount)) / @Model.TotalCount
                     </p>
                     <div class="flex items-center gap-1 font-mono text-xs">
                         @if (Model.Page > 1)
@@ -200,7 +201,7 @@
                                asp-route-isCompleted="@Model.Filter.IsCompleted" asp-route-isPaid="@Model.Filter.IsPaid"
                                asp-route-sortBy="@Model.Filter.SortBy" asp-route-page="@(Model.Page - 1)"
                                class="px-2.5 py-1.5 bg-white/5 text-slate-400 rounded-lg hover:bg-white/10 hover:text-white transition-colors">
-                                <i class="fas fa-chevron-left"></i>
+                                <i class="fas @(isRtl ? "fa-chevron-right" : "fa-chevron-left")"></i>
                             </a>
                         }
                         @for (int i = Math.Max(1, Model.Page - 2); i <= Math.Min(Model.TotalPages, Model.Page + 2); i++)
@@ -220,7 +221,7 @@
                                asp-route-isCompleted="@Model.Filter.IsCompleted" asp-route-isPaid="@Model.Filter.IsPaid"
                                asp-route-sortBy="@Model.Filter.SortBy" asp-route-page="@(Model.Page + 1)"
                                class="px-2.5 py-1.5 bg-white/5 text-slate-400 rounded-lg hover:bg-white/10 hover:text-white transition-colors">
-                                <i class="fas fa-chevron-right"></i>
+                                <i class="fas @(isRtl ? "fa-chevron-left" : "fa-chevron-right")"></i>
                             </a>
                         }
                     </div>
@@ -231,31 +232,31 @@
         {
             <div class="p-16 text-center max-w-xl mx-auto border border-dashed border-white/5 rounded-3xl mt-6">
                 <i class="fas fa-graduation-cap text-5xl text-slate-700 mb-4 animate-pulse"></i>
-                <h3 class="text-white font-bold text-lg mb-1">No Enrollments Found</h3>
+                <h3 class="text-white font-bold text-lg mb-1">@Localizer["NoEnrollmentsFound"]</h3>
                 <p class="text-slate-500 text-xs max-w-xs mx-auto mb-6 font-medium">
                     @if (!string.IsNullOrEmpty(Model.Filter.SearchQuery) || Model.Filter.CourseId.HasValue)
                     {
-                        <text>No enrollments match your current search filters. Try adjusting your search.</text>
+                        <text>@Localizer["NoEnrollmentsFilterDesc"]</text>
                     }
                     else
                     {
-                        <text>No enrollments have been created yet. Click below to add a student to a course.</text>
+                        <text>@Localizer["NoEnrollmentsEmptyDesc"]</text>
                     }
                 </p>
                 <button onclick="openAddModal()"
                         class="inline-flex px-5 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl font-extrabold hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] transition-all text-sm">
-                    <i class="fas fa-user-plus mr-2 mt-0.5"></i>Add Enrollment
+                    <i class="fas fa-user-plus @(isRtl ? "ml-2" : "mr-2") mt-0.5"></i>@Localizer["AddEnrollment"]
                 </button>
             </div>
         }
     </div>
 </div>
 
-<div id="addModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-dark-bg/80 backdrop-blur-md transition-all p-4">
-    <div class="bg-[#0B0D14]/90 border border-white/10 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-[fadeIn_0.3s_ease_forwards]">
+<div id="addModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-dark-bg/80 backdrop-blur-md transition-all p-4" dir="@(isRtl ? "rtl" : "ltr")">
+    <div class="bg-[#0B0D14]/90 border border-white/10 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-[fadeIn_0.3s_ease_forwards] text-start">
         <div class="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/[0.01]">
             <h4 class="text-white font-bold text-base flex items-center">
-                <i class="fas fa-user-plus mr-2 text-brand-cyan shadow-[0_0_8px_#42EAFF]"></i>Add Student to Course
+                <i class="fas fa-user-plus @(isRtl ? "ml-2" : "mr-2") text-brand-cyan shadow-[0_0_8px_#42EAFF]"></i>@Localizer["AddStudentToCourse"]
             </h4>
             <button onclick="closeAddModal()" class="text-slate-400 hover:text-white transition-colors">
                 <i class="fas fa-times text-sm"></i>
@@ -264,47 +265,47 @@
         <div class="p-6 space-y-6">
 
             <div class="space-y-2">
-                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Student</label>
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">@Localizer["Student"]</label>
                 <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
-                    <input type="text" id="addUserSearch" placeholder="Search student by name or email..."
+                    <input type="text" id="addUserSearch" placeholder="@Localizer["SearchStudentByNameOrEmail"]"
                            oninput="searchUsersAjax(this.value)" autocomplete="off"
                            class="w-full bg-transparent px-2 py-2.5 text-white placeholder-slate-600 focus:outline-none text-sm font-medium" />
                     <div id="addUserResults" class="absolute left-0 right-0 top-full mt-2 bg-[#121622] border border-white/10 rounded-xl shadow-2xl z-20 hidden max-h-48 overflow-y-auto custom-scrollbar divide-y divide-white/[0.03]"></div>
                 </div>
                 <p id="addUserSelected" class="mt-2 text-xs font-bold text-brand-cyan hidden flex items-center">
-                    <i class="fas fa-check-circle mr-1.5 shadow-[0_0_6px_#42EAFF] rounded-full"></i>Selected: <span id="addUserSelectedName" class="font-mono"></span>
+                    <i class="fas fa-check-circle @(isRtl ? "ml-1.5" : "mr-1.5") shadow-[0_0_6px_#42EAFF] rounded-full"></i>@Localizer["Selected"] <span id="addUserSelectedName" class="font-mono"></span>
                 </p>
                 <input type="hidden" id="addUserId" />
             </div>
 
             <div class="space-y-2">
-                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Course</label>
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">@Localizer["Course"]</label>
                 <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
-                    <input type="text" id="addCourseSearch" placeholder="Search course by title..."
+                    <input type="text" id="addCourseSearch" placeholder="@Localizer["SearchCourseByTitle"]"
                            oninput="searchCoursesAjax(this.value)" autocomplete="off"
                            class="w-full bg-transparent px-2 py-2.5 text-white placeholder-slate-600 focus:outline-none text-sm font-medium" />
                     <div id="addCourseResults" class="absolute left-0 right-0 top-full mt-2 bg-[#121622] border border-white/10 rounded-xl shadow-2xl z-20 hidden max-h-48 overflow-y-auto custom-scrollbar divide-y divide-white/[0.03]"></div>
                 </div>
                 <p id="addCourseSelected" class="mt-2 text-xs font-bold text-brand-blue hidden flex items-center">
-                    <i class="fas fa-check-circle mr-1.5 shadow-[0_0_6px_#4272FF] rounded-full"></i>Selected: <span id="addCourseSelectedName"></span>
+                    <i class="fas fa-check-circle @(isRtl ? "ml-1.5" : "mr-1.5") shadow-[0_0_6px_#4272FF] rounded-full"></i>@Localizer["Selected"] <span id="addCourseSelectedName"></span>
                 </p>
                 <input type="hidden" id="addCourseId" />
             </div>
 
             <div>
-                <label class="flex items-center space-x-3 bg-white/[0.01] border border-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/[0.03] transition-colors group">
+                <label class="flex items-center gap-3 bg-white/[0.01] border border-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/[0.03] transition-colors group">
                     <input type="checkbox" id="addIsPaid" class="w-4 h-4 rounded border-white/10 bg-dark-bg text-brand-cyan focus:ring-brand-cyan/20 focus:ring-offset-0" />
-                    <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition-colors flex items-center">
-                        <i class="fas fa-coins mr-2 text-slate-500 text-sm group-hover:text-brand-cyan transition-colors"></i>
-                        Mark as Paid Course
+                    <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition-colors flex items-center gap-2">
+                        <i class="fas fa-coins text-slate-500 text-sm group-hover:text-brand-cyan transition-colors"></i>
+                        @Localizer["MarkAsPaidCourse"]
                     </span>
                 </label>
             </div>
         </div>
 
-        <div class="px-6 py-4 border-t border-white/5 flex justify-end space-x-3 bg-white/[0.01]">
-            <button onclick="closeAddModal()" class="px-4 py-2 bg-white/5 text-slate-300 rounded-xl hover:bg-white/10 transition-colors text-xs font-bold">Cancel</button>
-            <button onclick="submitAddEnrollment()" class="px-5 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] transition-all text-xs font-black"><i class="fas fa-user-plus mr-1.5"></i>Save Enrollment</button>
+        <div class="px-6 py-4 border-t border-white/5 flex justify-end gap-3 bg-white/[0.01]">
+            <button onclick="closeAddModal()" class="px-4 py-2 bg-white/5 text-slate-300 rounded-xl hover:bg-white/10 transition-colors text-xs font-bold">@Localizer["Cancel"]</button>
+            <button onclick="submitAddEnrollment()" class="px-5 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg rounded-xl hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] transition-all text-xs font-black"><i class="fas fa-user-plus @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["SaveEnrollment"]</button>
         </div>
     </div>
 </div>
@@ -344,13 +345,13 @@
                 const data = await (await fetch(url)).json();
 
                 if (!data.length) {
-                    results.innerHTML = '<p class="px-4 py-3 text-slate-500 text-xs font-semibold">No students found</p>';
+                    results.innerHTML = '<p class="px-4 py-3 text-slate-500 text-xs font-semibold">@Localizer["NoStudentsFound"]</p>';
                 } else {
                     results.innerHTML = data.map(u =>
                         `<button type="button" onclick="selectUser(${u.userId}, '${escapeHtml(u.fullName)} (${escapeHtml(u.userName)})')"
-                            class="w-full text-left px-4 py-3 hover:bg-white/5 text-slate-300 hover:text-white transition-colors flex flex-col text-xs">
+                            class="w-full text-start px-4 py-3 hover:bg-white/5 text-slate-300 hover:text-white transition-colors flex flex-col text-xs">
                             <span class="font-bold text-sm text-white">${escapeHtml(u.fullName)}</span>
-                            <span class="text-slate-500 font-mono mt-0.5">${escapeHtml(u.email ?? u.userName)}</span>
+                            <span class="text-slate-500 font-mono mt-0.5" dir="ltr">${escapeHtml(u.email ?? u.userName)}</span>
                          </button>`
                     ).join('');
                 }
@@ -376,13 +377,13 @@
                 const data = await (await fetch(url)).json();
 
                 if (!data.length) {
-                    results.innerHTML = '<p class="px-4 py-3 text-slate-500 text-xs font-semibold">No courses found</p>';
+                    results.innerHTML = '<p class="px-4 py-3 text-slate-500 text-xs font-semibold">@Localizer["NoCoursesFound"]</p>';
                 } else {
                     results.innerHTML = data.map(c =>
                         `<button type="button" onclick="selectCourse(${c.courseId}, '${escapeHtml(c.title)}')"
-                            class="w-full text-left px-4 py-3 hover:bg-white/5 text-slate-300 hover:text-white transition-colors flex flex-col text-xs">
+                            class="w-full text-start px-4 py-3 hover:bg-white/5 text-slate-300 hover:text-white transition-colors flex flex-col text-xs">
                             <span class="font-bold text-sm text-white">${escapeHtml(c.title)}</span>
-                            <span class="text-slate-500 mt-1 font-semibold">$${c.price} · ${c.enrollmentCount} enrolled · ${c.isActive ? 'Active' : 'Inactive'}</span>
+                            <span class="text-slate-500 mt-1 font-semibold">$${c.price} · ${c.enrollmentCount} · ${c.isActive ? '@Localizer["ActiveCourse"]' : '@Localizer["InactiveCourse"]'}</span>
                          </button>`
                     ).join('');
                 }
@@ -401,8 +402,8 @@
             const userId = parseInt(document.getElementById('addUserId').value);
             const courseId = parseInt(document.getElementById('addCourseId').value);
             const isPaid = document.getElementById('addIsPaid').checked;
-            if (!userId) { alert('Please select a student.'); return; }
-            if (!courseId) { alert('Please select a course.'); return; }
+            if (!userId) { alert('@Localizer["PleaseSelectStudent"]'); return; }
+            if (!courseId) { alert('@Localizer["PleaseSelectCourse"]'); return; }
             try {
                 const r = await fetch('/Admin/Enrollment/AddEnrollment', {
                     method: 'POST',

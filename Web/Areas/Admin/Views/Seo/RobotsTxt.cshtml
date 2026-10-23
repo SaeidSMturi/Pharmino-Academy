@@ -1,13 +1,15 @@
 @model string
 @{
-    ViewData["Title"] = "Robots.txt Editor";
+    var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var isRtl = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase) || currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
+    ViewData["Title"] = Localizer["RobotsTxtEditor"].Value;
 }
 
-<div class="animate-[fadeIn_0.4s_ease_forwards] w-full" dir="ltr">
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full @(isRtl ? "font-fa" : "") text-start" dir="@(isRtl ? "rtl" : "ltr")">
 
     <!-- Back to Dashboard -->
     <a href="@Url.Action("Index", "Seo", new { area = "Admin" })" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-brand-cyan transition-colors uppercase tracking-wider mb-6">
-        <i class="fa fa-arrow-left text-[10px]"></i> Back to SEO Dashboard
+        <i class="fa @(isRtl ? "fa-arrow-right" : "fa-arrow-left") text-[10px]"></i> <span>@Localizer["BackToSeoDashboard"]</span>
     </a>
 
     <!-- Flash Messages -->
@@ -32,8 +34,8 @@
         <!-- Left Column: Editor -->
         <div class="lg:col-span-8 space-y-6">
             <div class="pb-2 border-b border-white/5 mb-4">
-                <h3 class="text-base font-bold text-white uppercase tracking-wider">Robots.txt Editor</h3>
-                <p class="text-slate-500 text-[11px] font-medium mt-1">Control which pages search engines and crawlers are allowed to access.</p>
+                <h3 class="text-base font-bold text-white uppercase tracking-wider">@Localizer["RobotsTxtEditor"]</h3>
+                <p class="text-slate-500 text-[11px] font-medium mt-1">@Localizer["RobotsTxtEditorDesc"]</p>
             </div>
 
             <form action="@Url.Action("SaveRobotsTxt", "Seo", new { area = "Admin" })" method="post" class="space-y-6">
@@ -41,7 +43,7 @@
 
                 <!-- Textarea Container -->
                 <div class="relative rounded-2xl overflow-hidden border border-white/10 focus-within:border-brand-cyan/40 focus-within:ring-4 focus-within:ring-brand-cyan/5 transition-all bg-black/40 backdrop-blur-xl">
-                    <div class="flex items-center justify-between px-4 py-2 bg-white/[0.02] border-b border-white/5 select-none">
+                    <div class="flex items-center justify-between px-4 py-2 bg-white/[0.02] border-b border-white/5 select-none" dir="ltr">
                         <div class="flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-rose-500/60 inline-block shadow-[0_0_6px_#f43f5e]"></span>
                             <span class="w-2 h-2 rounded-full bg-brand-yellow/60 inline-block"></span>
@@ -50,15 +52,15 @@
                         </div>
                     </div>
 
-                    <textarea name="content" id="robotsTextarea" rows="16"
-                              class="w-full bg-transparent p-5 font-mono text-sm text-emerald-400 focus:outline-none resize-y leading-relaxed selection:bg-brand-cyan/20 custom-scrollbar"
+                    <textarea name="content" id="robotsTextarea" rows="16" dir="ltr"
+                              class="w-full bg-transparent p-5 font-mono text-sm text-emerald-400 focus:outline-none resize-y leading-relaxed selection:bg-brand-cyan/20 custom-scrollbar text-left"
                               spellcheck="false">@Model</textarea>
                 </div>
 
                 <!-- Submit Button -->
                 <div class="flex justify-end">
                     <button type="submit" class="w-full sm:w-auto text-center px-6 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg font-black text-xs uppercase tracking-wide rounded-xl hover:shadow-[0_0_20px_rgba(66,234,255,0.3)] hover:scale-[1.01] transition-all flex items-center justify-center gap-1.5 h-9">
-                        <i class="fa fa-save text-sm"></i> Save robots.txt
+                        <i class="fa fa-save text-sm"></i> <span>@Localizer["SaveRobotsTxt"]</span>
                     </button>
                 </div>
             </form>
@@ -70,19 +72,19 @@
             <!-- Quick Templates -->
             <div class="space-y-4">
                 <div class="pb-2 border-b border-white/5 mb-4">
-                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">Quick Templates</h3>
-                    <p class="text-slate-500 text-[11px] font-medium mt-1">Choose a predefined template to quickly fill robots.txt content.</p>
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">@Localizer["QuickTemplates"]</h3>
+                    <p class="text-slate-500 text-[11px] font-medium mt-1">@Localizer["QuickTemplatesDesc"]</p>
                 </div>
 
                 <div class="space-y-2.5">
                     <button type="button" class="w-full px-4 py-2.5 bg-white/5 border border-white/5 text-slate-300 hover:text-white hover:bg-white/10 text-xs font-bold rounded-xl transition-all flex items-center gap-2.5" onclick="loadTemplate('standard')">
-                        <i class="fa fa-file-text-o text-brand-blue"></i> Load Standard Template
+                        <i class="fa fa-file-text-o text-brand-blue"></i> <span>@Localizer["LoadStandardTemplate"]</span>
                     </button>
                     <button type="button" class="w-full px-4 py-2.5 bg-brand-yellow/5 border border-brand-yellow/10 text-brand-yellow hover:bg-brand-yellow hover:text-dark-bg text-xs font-bold rounded-xl transition-all flex items-center gap-2.5 shadow-sm" onclick="loadTemplate('allow-all')">
-                        <i class="fa fa-check-circle-o"></i> Allow All Crawlers
+                        <i class="fa fa-check-circle-o"></i> <span>@Localizer["AllowAllCrawlers"]</span>
                     </button>
                     <button type="button" class="w-full px-4 py-2.5 bg-rose-500/5 border border-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white text-xs font-bold rounded-xl transition-all flex items-center gap-2.5 shadow-sm" onclick="loadTemplate('block-all')">
-                        <i class="fa fa-ban"></i> Block All Crawlers
+                        <i class="fa fa-ban"></i> <span>@Localizer["BlockAllCrawlers"]</span>
                     </button>
                 </div>
             </div>
@@ -90,21 +92,21 @@
             <!-- Guidelines -->
             <div class="space-y-4">
                 <div class="pb-2 border-b border-white/5 mb-4">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Syntax Guidelines</h3>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">@Localizer["SyntaxGuidelines"]</h3>
                 </div>
 
                 <ul class="space-y-3.5 text-xs font-medium text-slate-400 leading-relaxed pl-1">
                     <li class="flex items-start gap-2.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan mt-1.5 flex-shrink-0"></span>
-                        <span><code>User-agent: *</code> applies rules to all search engine web crawlers.</span>
+                        <span><code dir="ltr">User-agent: *</code> @(isRtl ? "قوانین را برای تمام خزنده‌های وب اعمال می‌کند." : "applies rules to all search engine web crawlers.")</span>
                     </li>
                     <li class="flex items-start gap-2.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan mt-1.5 flex-shrink-0"></span>
-                        <span><code>Disallow: /admin/</code> blocks crawlers from accessing any page under /admin/.</span>
+                        <span><code dir="ltr">Disallow: /admin/</code> @(isRtl ? "دسترسی خزنده‌ها به صفحات ادمین را مسدود می‌کند." : "blocks crawlers from accessing any page under /admin/.")</span>
                     </li>
                     <li class="flex items-start gap-2.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan mt-1.5 flex-shrink-0"></span>
-                        <span>Include a full URL for your sitemap using the <code>Sitemap:</code> directive.</span>
+                        <span>@(isRtl ? "آدرس کامل نقشه سایت را با استفاده از دستور Sitemap اضافه کنید:" : "Include a full URL for your sitemap using the") <code dir="ltr">Sitemap:</code></span>
                     </li>
                 </ul>
             </div>

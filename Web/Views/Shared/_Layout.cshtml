@@ -11,6 +11,8 @@
     
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture.Name;
     var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    var isFarsi = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
+    var isArabic = currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
 }
 
 <!DOCTYPE html>
@@ -40,11 +42,29 @@
     <script src="~/js/marked.min.js"></script>
     <link rel="stylesheet" href="~/css/Style.css" />
     <link rel="stylesheet" href="~/css/theme.css" />
-    @if (isRtl)
+    @if (isFarsi)
+    {
+        <style>
+            @@font-face {
+                font-family: 'B Nazanin';
+                src: url('/fonts/BNazanin.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+            }
+            html {
+                font-size: 19px !important;
+            }
+            body, h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, div, label, li {
+                font-family: 'B Nazanin', Tahoma, sans-serif !important;
+            }
+        </style>
+    }
+    else if (isArabic)
     {
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <style>
-            body, h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, div {
+            body, h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, div, label, li {
                 font-family: 'Cairo', sans-serif !important;
             }
         </style>

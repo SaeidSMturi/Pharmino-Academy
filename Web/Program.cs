@@ -359,7 +359,7 @@ namespace Web
             app.UseStaticFiles();
             app.UseWebMarkupMin();
 
-            var supportedCultures = new[] { "en", "ar" };
+            var supportedCultures = new[] { "en", "ar", "fa" };
             var localizationOptions = new RequestLocalizationOptions()
                 .SetDefaultCulture("en")
                 .AddSupportedCultures(supportedCultures)

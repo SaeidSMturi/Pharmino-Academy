@@ -60,7 +60,7 @@
                 <button onclick="switchTab('@tabId')" id="@btnId"
                         class="tab-btn @(isActive ? "active text-brand-cyan border-brand-cyan" : "text-slate-500 border-transparent hover:text-slate-300")
                     px-5 py-3 text-xs font-bold border-b-2 transition-all duration-200 flex items-center gap-2 uppercase tracking-wider focus:outline-none whitespace-nowrap @(isRtl ? "space-x-reverse" : "")">
-                    <i class="fas fa-cog text-[11px]"></i> @category
+                    <i class="fas fa-cog text-[11px]"></i> @Localizer[category]
                 </button>
             }
         }
@@ -84,7 +84,7 @@
 
                         <div class="pb-3 mb-2 flex items-center gap-2 @(isRtl ? "space-x-reverse" : "")">
                             <h2 class="text-base font-bold text-white flex items-center gap-2.5 uppercase tracking-wider">
-                                <i class="fas fa-sliders-h text-brand-cyan text-sm"></i> @category @Localizer["ParametersBlock"]
+                                <i class="fas fa-sliders-h text-brand-cyan text-sm"></i> @Localizer[category] @Localizer["ParametersBlock"]
                             </h2>
                         </div>
 
@@ -101,15 +101,15 @@
 
                                             <div class="space-y-1 flex-1 min-w-0 text-start">
                                                 <div class="flex items-center gap-2.5 @(isRtl ? "space-x-reverse" : "")">
-                                                    <h4 class="font-bold text-slate-200 text-sm tracking-wide">@setting.Title</h4>
+                                                    <h4 class="font-bold text-slate-200 text-sm tracking-wide">@Localizer[setting.Title]</h4>
                                                     @if (!setting.Changeable)
                                                     {
-                                                        <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/10 tracking-wider">READ-ONLY</span>
+                                                        <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/10 tracking-wider">@(isRtl ? "فقط‌خواندنی" : "READ-ONLY")</span>
                                                     }
                                                 </div>
                                                 @if (!string.IsNullOrEmpty(setting.Description))
                                                 {
-                                                    <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-2xl">@setting.Description</p>
+                                                    <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-2xl">@Localizer[setting.Description]</p>
                                                 }
                                             </div>
 

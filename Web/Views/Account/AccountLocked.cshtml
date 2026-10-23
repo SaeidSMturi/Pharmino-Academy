@@ -2,15 +2,31 @@
 @{
     var currentCulture = CultureInfo.CurrentCulture.Name;
     var isRtl = CultureInfo.CurrentCulture.TextInfo.IsRightToLeft;
-    ViewData["Title"] = isRtl ? "الحساب مغلق" : "Account Locked";
+    var isFarsi = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
+    var isArabic = currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
+    ViewData["Title"] = isFarsi ? "حساب کاربری مسدود شد" : (isArabic ? "الحساب مغلق" : "Account Locked");
     Layout = null;
 }
 <!DOCTYPE html>
 <html lang="@currentCulture" dir="@(isRtl ? "rtl" : "ltr")">
 <head>
+    <script>
+        (function () {
+            try {
+                var theme = localStorage.getItem('pharmino_theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+                if (theme === 'light') {
+                    document.documentElement.classList.add('light', 'light-theme');
+                } else {
+                    document.documentElement.classList.add('dark', 'dark-theme');
+                }
+            } catch (e) { }
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - @(isRtl ? "أكاديمية عمان للصيدلة" : "OmanPharmaAcademy")</title>
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -61,7 +77,29 @@
             animation-delay: 2s;
         }
     </style>
-    @if (isRtl)
+    @{
+        var isFarsi = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
+        var isArabic = currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
+    }
+    @if (isFarsi)
+    {
+        <style>
+            @@font-face {
+                font-family: 'B Nazanin';
+                src: url('/fonts/BNazanin.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+            }
+            html {
+                font-size: 19px !important;
+            }
+            body, h1, h2, h3, h4, h5, h6, p, span, a, input, button, label, select, option {
+                font-family: 'B Nazanin', Tahoma, sans-serif !important;
+            }
+        </style>
+    }
+    else if (isArabic)
     {
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <style>
@@ -73,9 +111,10 @@
 </head>
 <body class="antialiased relative min-h-screen">
 
-    <!-- Floating Language Switcher -->
-    <div class="absolute top-4 right-4 z-50">
-        <div class="glass-panel p-1 rounded-full bg-slate-900/40 border border-white/10 shadow-lg">
+    <!-- Floating Theme & Language Switcher -->
+    <div class="absolute top-4 right-4 z-50 flex items-center gap-2">
+        <div class="glass-panel p-1.5 rounded-full bg-slate-900/40 border border-white/10 shadow-lg flex items-center gap-2">
+            <partial name="_ThemeToggle" />
             <partial name="_LanguageSwitcher" />
         </div>
     </div>
@@ -99,10 +138,10 @@
             <div class="glass-panel rounded-3xl overflow-hidden shadow-2xl">
                 <div class="border-b border-slate-800/60 bg-slate-900/40 px-8 py-6 text-center">
                     <h1 class="text-3xl font-extrabold text-white tracking-tight">
-                        @(isRtl ? "الحساب مغلق" : "Account Locked")
+                        @(isFarsi ? "حساب کاربری مسدود شد" : (isArabic ? "الحساب مغلق" : "Account Locked"))
                     </h1>
                     <p class="text-slate-400 text-sm mt-1">
-                        @(isRtl ? "تم تقييد الوصول إلى حسابك" : "Access to your account has been restricted")
+                        @(isFarsi ? "دسترسی به حساب کاربری شما محدود شده است" : (isArabic ? "تم تقييد الوصول إلى حسابك" : "Access to your account has been restricted"))
                     </p>
                 </div>
 
@@ -116,19 +155,21 @@
                             </div>
                             <div class="flex-1">
                                 <h4 class="text-lg font-bold text-white mb-1.5">
-                                    @(isRtl ? "تقييد الوصول" : "Access Restricted")
+                                    @(isFarsi ? "محدودیت دسترسی" : (isArabic ? "تقييد الوصول" : "Access Restricted"))
                                 </h4>
                                 <p class="text-slate-400 text-sm leading-relaxed mb-4">
-                                    @(isRtl 
-                                        ? "تم إغلاق حسابك تلقائيًا بسبب أنشطة مشبوهة تم اكتشافها بواسطة نظام الأمان لدينا." 
-                                        : "Your account has been automatically locked due to suspicious activities detected by our security system.")
+                                    @(isFarsi
+                                        ? "حساب کاربری شما به دلیل شناسایی فعالیت‌های مشکوک توسط سیستم امنیتی ما به طور خودکار قفل شده است."
+                                        : (isArabic
+                                            ? "تم إغلاق حسابك تلقائيًا بسبب أنشطة مشبوهة تم اكتشافها بواسطة نظام الأمان لدينا." 
+                                            : "Your account has been automatically locked due to suspicious activities detected by our security system."))
                                 </p>
                                 <div class="flex items-center space-x-3 p-3.5 bg-slate-900/50 rounded-xl border border-slate-800 @(isRtl ? "space-x-reverse" : "")">
                                     <i class="fas fa-clock text-brand-cyan text-lg"></i>
                                     <p class="text-sm text-slate-300">
                                         <strong class="text-brand-cyan font-semibold">
-                                            @(isRtl ? "فتح تلقائي خلال 24 ساعة" : "Auto-unlock in 24 hours")
-                                        </strong> - @(isRtl ? "سيتم فتح حسابك تلقائيًا بعد هذه الفترة." : "Your account will be automatically unlocked after this period.")
+                                            @(isFarsi ? "بازگشایی خودکار ظرف ۲۴ ساعت" : (isArabic ? "فتح تلقائي خلال 24 ساعة" : "Auto-unlock in 24 hours"))
+                                        </strong> - @(isFarsi ? "حساب شما پس از این بازه زمانی به صورت خودکار بازگشایی خواهد شد." : (isArabic ? "سيتم فتح حسابك تلقائيًا بعد هذه الفترة." : "Your account will be automatically unlocked after this period."))
                                     </p>
                                 </div>
                             </div>
@@ -141,23 +182,25 @@
                                 <i class="fas fa-question-circle text-brand-orange"></i>
                             </div>
                             <h2 class="text-xl font-bold text-white tracking-tight">
-                                @(isRtl ? "لماذا تم قفل حسابي؟" : "Why Was My Account Locked?")
+                                @(isFarsi ? "چرا حساب کاربری من قفل شده است؟" : (isArabic ? "لماذا تم قفل حسابي؟" : "Why Was My Account Locked?"))
                             </h2>
                         </div>
                         <p class="text-slate-400 text-sm mb-4">
-                            @(isRtl 
-                                ? "اكتشف نظام الأمان لدينا سلوكيات مشبوهة في حسابك، والتي قد تشمل:" 
-                                : "Our security system has detected suspicious behavior in your account, which may include:")
+                            @(isFarsi
+                                ? "سیستم امنیتی ما رفتارهای مشکوکی را در حساب شما شناسایی کرده است که می‌تواند شامل موارد زیر باشد:"
+                                : (isArabic 
+                                    ? "اكتشف نظام الأمان لدينا سلوكيات مشبوهة في حسابك، والتي قد تشمل:" 
+                                    : "Our security system has detected suspicious behavior in your account, which may include:"))
                         </p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="flex items-start space-x-3 p-4 bg-slate-900/30 rounded-xl border border-slate-800/60 hover:border-brand-orange/20 transition-colors @(isRtl ? "space-x-reverse" : "")">
                                 <i class="fas fa-circle-xmark text-brand-orange mt-0.5 text-base"></i>
                                 <div>
                                     <p class="text-slate-200 font-semibold text-sm">
-                                        @(isRtl ? "تحميلات غير مصرح بها" : "Unauthorized Downloads")
+                                        @(isFarsi ? "دانلودهای غیرمجاز" : (isArabic ? "تحميلات غير مصرح بها" : "Unauthorized Downloads"))
                                     </p>
                                     <p class="text-slate-500 text-xs mt-0.5">
-                                        @(isRtl ? "محاولة تنزيل مقاطع الفيديو دون إذن" : "Trying to download videos without permission")
+                                        @(isFarsi ? "تلاش برای ذخیره یا دانلود ویدیوها بدون مجوز" : (isArabic ? "محاولة تنزيل مقاطع الفيديو دون إذن" : "Trying to download videos without permission"))
                                     </p>
                                 </div>
                             </div>
@@ -166,10 +209,10 @@
                                 <i class="fas fa-circle-xmark text-brand-orange mt-0.5 text-base"></i>
                                 <div>
                                     <p class="text-slate-200 font-semibold text-sm">
-                                        @(isRtl ? "برامج تنزيل خارجية" : "Download Managers")
+                                        @(isFarsi ? "ابزارهای دانلود خارجی" : (isArabic ? "برامج تنزيل خارجية" : "Download Managers"))
                                     </p>
                                     <p class="text-slate-500 text-xs mt-0.5">
-                                        @(isRtl ? "استخدام برامج تنزيل تابعة لجهات خارجية" : "Using third-party download software")
+                                        @(isFarsi ? "استفاده از نرم‌افزارهای دانلود متفرقه و افزونه‌های غیرمجاز" : (isArabic ? "استخدام برامج تنزيل تابعة لجهات خارجية" : "Using third-party download software"))
                                     </p>
                                 </div>
                             </div>
@@ -178,10 +221,10 @@
                                 <i class="fas fa-circle-xmark text-brand-orange mt-0.5 text-base"></i>
                                 <div>
                                     <p class="text-slate-200 font-semibold text-sm">
-                                        @(isRtl ? "سلوك غير طبيعي" : "Abnormal Behavior")
+                                        @(isFarsi ? "رفتار غیرعادی" : (isArabic ? "سلوك غير طبيعي" : "Abnormal Behavior"))
                                     </p>
                                     <p class="text-slate-500 text-xs mt-0.5">
-                                        @(isRtl ? "أنماط غير معتادة في استهلاك المحتوى" : "Unusual patterns in content consumption")
+                                        @(isFarsi ? "الگوهای غیرمعمول و نامتعارف در مصرف محتوا" : (isArabic ? "أنماط غير معتادة في استهلاك المحتوى" : "Unusual patterns in content consumption"))
                                     </p>
                                 </div>
                             </div>
@@ -190,10 +233,10 @@
                                 <i class="fas fa-circle-xmark text-brand-orange mt-0.5 text-base"></i>
                                 <div>
                                     <p class="text-slate-200 font-semibold text-sm">
-                                        @(isRtl ? "الوصول من أجهزة متعددة" : "Multiple Device Access")
+                                        @(isFarsi ? "دسترسی هم‌زمان از چندین دستگاه" : (isArabic ? "الوصول من أجهزة متعددة" : "Multiple Device Access"))
                                     </p>
                                     <p class="text-slate-500 text-xs mt-0.5">
-                                        @(isRtl ? "وصول متزامن من أجهزة مختلفة" : "Simultaneous access from different devices")
+                                        @(isFarsi ? "ورود و مشاهده هم‌زمان با دستگاه‌های مختلف" : (isArabic ? "وصول متزامن من أجهزة مختلفة" : "Simultaneous access from different devices"))
                                     </p>
                                 </div>
                             </div>
@@ -206,11 +249,15 @@
                                 <i class="fas fa-unlock-keyhole text-brand-blue"></i>
                             </div>
                             <h2 class="text-xl font-bold text-white tracking-tight">
-                                @(isRtl ? "كيف يمكنني فتح حسابي؟" : "How Can I Unlock My Account?")
+                                @(isFarsi ? "چگونه حساب کاربری خود را بازگشایی کنم؟" : (isArabic ? "كيف يمكنني فتح حسابي؟" : "How Can I Unlock My Account?"))
                             </h2>
                         </div>
                         <p class="text-slate-400 text-sm mb-5">
-                            @(isRtl ? "لإلغاء قفل حسابك فورًا، يرجى الاتصال بفريق الدعم لدينا عبر الخيارات التالية:" : "To unlock your account immediately, please contact our support team through the following options:")
+                            @(isFarsi
+                                ? "برای بازگشایی فوری حساب خود، لطفاً از طریق راه‌های زیر با تیم پشتیبانی ما تماس بگیرید:"
+                                : (isArabic 
+                                    ? "لإلغاء قفل حسابك فورًا، يرجى الاتصال بفريق الدعم لدينا عبر الخيارات التالية:" 
+                                    : "To unlock your account immediately, please contact our support team through the following options:"))
                         </p>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -222,7 +269,7 @@
                                     </div>
                                     <div>
                                         <p class="text-white font-bold text-sm">
-                                            @(isRtl ? "الدعم عبر البريد الإلكتروني" : "Email Support")
+                                            @(isFarsi ? "پشتیبانی از طریق ایمیل" : (isArabic ? "الدعم عبر البريد الإلكتروني" : "Email Support"))
                                         </p>
                                         <p class="text-slate-500 text-xs mt-0.5 truncate max-w-[160px] md:max-w-none">support@omanpharmaacademy.com</p>
                                     </div>
@@ -237,7 +284,7 @@
                                     </div>
                                     <div>
                                         <p class="text-white font-bold text-sm">
-                                            @(isRtl ? "الدعم الهاتفي" : "Phone Support")
+                                            @(isFarsi ? "پشتیبانی تلفنی" : (isArabic ? "الدعم الهاتفي" : "Phone Support"))
                                         </p>
                                         <p class="text-slate-500 text-xs mt-0.5" dir="ltr">+968-XXXX-XXXX</p>
                                     </div>
@@ -252,8 +299,12 @@
                             <div>
                                 <p class="text-slate-300 text-sm leading-relaxed">
                                     <strong class="text-white font-semibold">
-                                        @(isRtl ? "هام:" : "Important:")
-                                    </strong> @(isRtl ? "يرجى إرفاق بريدك الإلكتروني المسجل في طلب الدعم الخاص بك حتى يتمكن فريقنا من التحقق من هويتك ومساعدتك بشكل أسرع." : "Please include your registered account email in your support request so our team can verify your ownership and assist you much faster.")
+                                        @(isFarsi ? "مهم:" : (isArabic ? "هام:" : "Important:"))
+                                    </strong> @(isFarsi
+                                        ? "لطفاً ایمیل ثبت‌نامی خود را در پیام پشتیبانی قید کنید تا تیم ما بتواند هویت شما را با سرعت بیشتری تأیید و پیگیری کند."
+                                        : (isArabic 
+                                            ? "يرجى إرفاق بريدك الإلكتروني المسجل في طلب الدعم الخاص بك حتى يتمكن فريقنا من التحقق من هويتك ومساعدتك بشكل أسرع." 
+                                            : "Please include your registered account email in your support request so our team can verify your ownership and assist you much faster."))
                                 </p>
                             </div>
                         </div>
@@ -263,12 +314,12 @@
                         <a href="/Account/Logout"
                            class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-slate-700/50 bg-slate-800/40 text-slate-300 rounded-xl hover:bg-slate-800 hover:text-white transition-all text-sm font-semibold">
                             <i class="fas fa-sign-out-alt @(isRtl ? "ml-2" : "mr-2") text-xs"></i>
-                            @(isRtl ? "تسجيل الخروج" : "Logout")
+                            @(isFarsi ? "خروج از حساب" : (isArabic ? "تسجيل الخروج" : "Logout"))
                         </a>
                         <a href="/"
                            class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-brand-blue to-brand-cyan text-slate-900 rounded-xl shadow-lg shadow-brand-blue/10 hover:from-brand-cyan hover:to-brand-blue transition-all duration-300 transform hover:-translate-y-0.5 text-sm font-bold">
                             <i class="fas fa-house @(isRtl ? "ml-2" : "mr-2") text-xs"></i>
-                            @(isRtl ? "العودة إلى الرئيسية" : "Back to Home")
+                            @(isFarsi ? "بازگشت به صفحه اصلی" : (isArabic ? "العودة إلى الرئيسية" : "Back to Home"))
                         </a>
                     </div>
                 </div>
@@ -276,11 +327,12 @@
                 <div class="px-8 py-4 border-t border-slate-800/60 bg-slate-900/30 text-center">
                     <p class="text-slate-500 text-xs flex items-center justify-center">
                         <i class="fas fa-shield-halved text-slate-600 mr-2 text-sm"></i>
-                        @(isRtl ? "نحن ملتزمون تمامًا بضمان الأمان والخصوصية لمجتمعنا العالمي." : "We are fully committed to ensuring the advanced security and privacy of our global community.")
+                        @(isFarsi ? "ما خود را متعهد به حفظ بالاترین سطح امنیت و حریم خصوصی برای کاربران خود می‌دانیم." : (isArabic ? "نحن ملتزمون تمامًا بضمان الأمان والخصوصية لمجتمعنا العالمي." : "We are fully committed to ensuring the advanced security and privacy of our global community."))
                     </p>
                 </div>
             </div>
         </div>
     </div>
+    <script src="~/js/theme.js" asp-append-version="true"></script>
 </body>
 </html>

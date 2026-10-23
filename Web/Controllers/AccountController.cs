@@ -102,8 +102,15 @@ namespace Web.Controllers
             {
                 return RedirectToAction("Index", "Dashboard", new { area = "User" });
             }
-            var isArabic = System.Globalization.CultureInfo.CurrentCulture.Name.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
-            if (isArabic)
+            var cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+            var isFarsi = cultureName.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
+            var isArabic = cultureName.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+            if (isFarsi)
+            {
+                ViewData["Title"] = "ایجاد حساب کاربری جدید";
+                ViewData["MetaDescription"] = "ایجاد حساب کاربری جدید در سامانه تخصصی آموزش داروسازی.";
+            }
+            else if (isArabic)
             {
                 ViewData["Title"] = "إنشاء حساب جدید";
                 ViewData["MetaDescription"] = "إنشاء حساب جديد في المنصة التخصصية لتعليم الصيدلة.";
@@ -150,8 +157,15 @@ namespace Web.Controllers
                 return RedirectToAction("Index", "Dashboard", new { area = "User" });
             }
 
-            var isArabic = System.Globalization.CultureInfo.CurrentCulture.Name.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
-            if (isArabic)
+            var cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+            var isFarsi = cultureName.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
+            var isArabic = cultureName.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+            if (isFarsi)
+            {
+                ViewData["Title"] = "ورود به حساب کاربری";
+                ViewData["MetaDescription"] = "ورود کاربران و داروسازان برای دسترسی به دوره‌های آموزشی و حساب کاربری.";
+            }
+            else if (isArabic)
             {
                 ViewData["Title"] = "تسجيل الدخول إلى الحساب";
                 ViewData["MetaDescription"] = "تسجيل دخول المستخدمين والصيادلة للوصول إلى الدورات التعليمية والحساب الشخصي.";
@@ -227,8 +241,15 @@ namespace Web.Controllers
         [HttpGet]
         public IActionResult ForgotPassword()
         {
-            var isArabic = System.Globalization.CultureInfo.CurrentCulture.Name.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
-            if (isArabic)
+            var cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+            var isFarsi = cultureName.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
+            var isArabic = cultureName.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+            if (isFarsi)
+            {
+                ViewData["Title"] = "فراموشی رمز عبور";
+                ViewData["MetaDescription"] = "بازیابی رمز عبور حساب کاربری در پلتفرم داروسازان.";
+            }
+            else if (isArabic)
             {
                 ViewData["Title"] = "نسيان كلمة المرور";
                 ViewData["MetaDescription"] = "استعادة كلمة مرور الحساب في منصة الصيدليين.";
@@ -277,8 +298,10 @@ namespace Web.Controllers
                 return RedirectToAction("Login");
             }
 
-            var isArabic = System.Globalization.CultureInfo.CurrentCulture.Name.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
-            ViewData["Title"] = isArabic ? "إعادة ضبط كلمة المرور" : "Reset Password";
+            var cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+            var isFarsi = cultureName.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
+            var isArabic = cultureName.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+            ViewData["Title"] = isFarsi ? "تغییر رمز عبور" : (isArabic ? "إعادة ضبط كلمة المرور" : "Reset Password");
             ViewData["MetaRobots"] = "noindex, follow";
             var model = new ResetPasswordDto
             {
@@ -352,8 +375,10 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var isArabic = System.Globalization.CultureInfo.CurrentCulture.Name.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
-            ViewData["Title"] = isArabic ? "الحساب مغلق" : "Account Locked";
+            var cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+            var isFarsi = cultureName.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
+            var isArabic = cultureName.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+            ViewData["Title"] = isFarsi ? "حساب کاربری مسدود شد" : (isArabic ? "الحساب مغلق" : "Account Locked");
             ViewData["MetaRobots"] = "noindex, nofollow";
             return View();
         }
@@ -365,8 +390,10 @@ namespace Web.Controllers
         [HttpGet]
         public IActionResult AccessDenied()
         {
-            var isArabic = System.Globalization.CultureInfo.CurrentCulture.Name.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
-            ViewData["Title"] = isArabic ? "تم رفض الوصول" : "Access Denied";
+            var cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+            var isFarsi = cultureName.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
+            var isArabic = cultureName.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+            ViewData["Title"] = isFarsi ? "دسترسی غیرمجاز" : (isArabic ? "تم رفض الوصول" : "Access Denied");
             ViewData["MetaRobots"] = "noindex, nofollow";
             return View();
         }

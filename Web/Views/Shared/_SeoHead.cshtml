@@ -7,12 +7,14 @@
     var scheme = request.Scheme;
     var path = request.Path.Value ?? "/";
     var currentUrl = $"{scheme}://{host}{path}";
-    var isArabic = System.Globalization.CultureInfo.CurrentCulture.Name.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture.Name;
+    var isArabic = currentCulture.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+    var isFarsi = currentCulture.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
 
     // 1. Get default or controller-assigned values
-    var defaultTitle = isArabic ? "منصة آموزش الصيدلة التخصصية" : "Specialized Pharmacy Education System";
-    var defaultMetaDescription = isArabic ? "المنصة الإلكترونية الأكثر شمولاً لتعليم الصيدلة، علم الأدوية، الصيدلة السريرية وقراءة الوصفات الطبية." : "The most comprehensive online platform for pharmacy education, pharmacology, clinical pharmacy, and prescription reading.";
-    var defaultMetaKeywords = isArabic ? "تعليم الصيدلة, دورات الصيدلة, علم الأدوية, قراءة الوصفات الطبية, الصيدلة السريرية" : "pharmacy education, pharmacy courses, pharmacology, prescription reading, clinical pharmacy";
+    var defaultTitle = isFarsi ? "سامانه تخصصی آموزش داروسازی فارمینو" : (isArabic ? "منصة آموزش الصيدلة التخصصية" : "Specialized Pharmacy Education System");
+    var defaultMetaDescription = isFarsi ? "جامع‌ترین پلتفرم آنلاین آموزش داروسازی، فارماکولوژی، داروسازی بالینی و نسخه‌خوانی." : (isArabic ? "المنصة الإلكترونية الأكثر شمولاً لتعليم الصيدلة، علم الأدوية، الصيدلة السريرية وقراءة الوصفات الطبية." : "The most comprehensive online platform for pharmacy education, pharmacology, clinical pharmacy, and prescription reading.");
+    var defaultMetaKeywords = isFarsi ? "آموزش داروسازی, دوره‌های داروسازی, فارماکولوژی, نسخه‌خوانی, داروسازی بالینی" : (isArabic ? "تعليم الصيدلة, دورات الصيدلة, علم الأدوية, قراءة الوصفات الطبية, الصيدلة السريرية" : "pharmacy education, pharmacy courses, pharmacology, prescription reading, clinical pharmacy");
 
     var title = ViewData["Title"]?.ToString() ?? defaultTitle;
     var metaDescription = ViewData["MetaDescription"]?.ToString() ?? defaultMetaDescription;
@@ -24,7 +26,7 @@
     var ogImage = ViewData["OgImage"]?.ToString() ?? $"{scheme}://{host}/images/logo-og.png";
     var ogType = ViewData["OgType"]?.ToString() ?? "website";
     var jsonLd = ViewData["JsonLd"]?.ToString();
-    var ogLocale = isArabic ? "ar_SA" : "en_US";
+    var ogLocale = isFarsi ? "fa_IR" : (isArabic ? "ar_SA" : "en_US");
 
     // 2. Check Admin DB Override for the current URL path
     var customPageSeo = await SeoService.GetPageSeoByPathAsync(path);

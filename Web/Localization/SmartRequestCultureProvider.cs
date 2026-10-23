@@ -17,7 +17,12 @@ namespace Web.Localization
             "United Arab Emirates", "Bahrain", "Algeria", "Egypt", "Iraq", "Jordan", "Comoros", "Kuwait", "Lebanon", "Libya", "Morocco", "Mauritania", "Oman", "Palestine", "Qatar", "Saudi Arabia", "Sudan", "Somalia", "Syria", "Tunisia", "Yemen", "Djibouti"
         };
 
-        private static readonly string[] SupportedCultures = new[] { "en", "ar" };
+        private static readonly HashSet<string> PersianCountries = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "IR", "Iran", "Islamic Republic of Iran", "AF", "Afghanistan", "TJ", "Tajikistan"
+        };
+
+        private static readonly string[] SupportedCultures = new[] { "en", "ar", "fa" };
 
         public override async Task<ProviderCultureResult?> DetermineProviderCultureResult(HttpContext httpContext)
         {
@@ -91,6 +96,10 @@ namespace Web.Localization
                             if (ArabicCountries.Contains(location.Country))
                             {
                                 detectedCulture = "ar";
+                            }
+                            else if (PersianCountries.Contains(location.Country))
+                            {
+                                detectedCulture = "fa";
                             }
                         }
                     }

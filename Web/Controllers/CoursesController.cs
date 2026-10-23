@@ -45,9 +45,17 @@ namespace Web.Controllers
 
                 _logger.LogInformation("Successfully fetched {CourseCount} active courses.", courses?.Count() ?? 0);
 
-                var isArabic = System.Globalization.CultureInfo.CurrentCulture.Name.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+                var cultureName = System.Globalization.CultureInfo.CurrentCulture.Name;
+                var isFarsi = cultureName.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
+                var isArabic = cultureName.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
 
-                if (isArabic)
+                if (isFarsi)
+                {
+                    ViewData["Title"] = "دوره‌های تخصصی داروسازی | فهرست کلیه دوره‌ها";
+                    ViewData["MetaDescription"] = "جدیدترین دوره‌های تخصصی داروسازی، فارماکولوژی، داروسازی بالینی و آمادگی آزمون را مشاهده و ثبت‌نام کنید.";
+                    ViewData["MetaKeywords"] = "دوره‌های داروسازی, فارماکولوژی, ثبت‌نام دوره داروسازی, داروسازی بالینی, آزمون داروسازی";
+                }
+                else if (isArabic)
                 {
                     ViewData["Title"] = "دورات الصيدلة التخصصية | قائمة جميع الدورات";
                     ViewData["MetaDescription"] = "استكشف وسجل في أحدث دورات الصيدلة التخصصية، علم الأدوية، الصيدلة السريرية، والإعداد لاختبارات البورد.";
@@ -78,7 +86,7 @@ namespace Web.Controllers
                         }}
                     }}").ToList();
 
-                    var listName = isArabic ? "قائمة دورات تدريب الصيدلة" : "Pharmacy Training Courses List";
+                    var listName = isFarsi ? "فهرست دوره‌های آموزشی داروسازی" : (isArabic ? "قائمة دورات تدريب الصيدلة" : "Pharmacy Training Courses List");
 
                     ViewData["JsonLd"] = $@"
                     {{
@@ -155,11 +163,19 @@ namespace Web.Controllers
                 var scheme = Request.Scheme ?? "https";
                 var host = Request.Host.Value;
 
-                var isArabicDetails = System.Globalization.CultureInfo.CurrentCulture.Name.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
+                var cultureNameDetails = System.Globalization.CultureInfo.CurrentCulture.Name;
+                var isFarsiDetails = cultureNameDetails.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
+                var isArabicDetails = cultureNameDetails.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
                 var rawDescription = System.Text.RegularExpressions.Regex.Replace(course.Description ?? "", "<.*?>", string.Empty);
                 var metaDesc = rawDescription.Length > 160 ? rawDescription.Substring(0, 157) + "..." : rawDescription;
 
-                if (isArabicDetails)
+                if (isFarsiDetails)
+                {
+                    ViewData["Title"] = $"{course.Title} | دوره تخصصی داروسازی";
+                    ViewData["MetaDescription"] = string.IsNullOrWhiteSpace(metaDesc) ? $"دوره آموزشی تخصصی {course.Title} در پلتفرم داروسازان." : metaDesc;
+                    ViewData["MetaKeywords"] = $"{course.Title}, یادگیری {course.Title}, دوره داروسازی, فارماکولوژی";
+                }
+                else if (isArabicDetails)
                 {
                     ViewData["Title"] = $"{course.Title} | دورة صيدلة تخصصية";
                     ViewData["MetaDescription"] = string.IsNullOrWhiteSpace(metaDesc) ? $"دورة تدريبية تخصصية لـ {course.Title} على منصة الصيدليين." : metaDesc;
@@ -179,7 +195,7 @@ namespace Web.Controllers
                     ViewData["OgImage"] = $"{scheme}://{host}/uploads/courses/{course.ImageName}";
                 }
 
-                var providerName = isArabicDetails ? "منصة الصيدليين" : "Pharmacists Platform";
+                var providerName = isFarsiDetails ? "پلتفرم داروسازان" : (isArabicDetails ? "منصة الصيدليين" : "Pharmacists Platform");
 
                 var courseJsonLd = $@"
                 {{

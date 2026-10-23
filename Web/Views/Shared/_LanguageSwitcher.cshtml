@@ -1,20 +1,86 @@
-﻿@using System.Globalization
+@using System.Globalization
 
 @{
-    var currentCulture = CultureInfo.CurrentUICulture;
-    var isArabic = currentCulture.TwoLetterISOLanguageName.Equals("ar", StringComparison.OrdinalIgnoreCase);
+    var currentCulture = CultureInfo.CurrentUICulture.Name;
+    var currentLang = "en";
+    var currentLabel = "English";
+
+    if (currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase))
+    {
+        currentLang = "ar";
+        currentLabel = "العربية";
+    }
+    else if (currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase))
+    {
+        currentLang = "fa";
+        currentLabel = "فارسی";
+    }
+
     var returnUrl = Context.Request.Path + Context.Request.QueryString;
     var encodedReturnUrl = System.Net.WebUtility.UrlEncode(returnUrl);
-
-    // تعیین زبان هدف و متن دکمه بر اساس زبان فعلی سیستم
-    var targetCulture = isArabic ? "en" : "ar";
-    var buttonText = isArabic ? "English" : "العربية";
+    var uniqueId = "lang_dropdown_" + Guid.NewGuid().ToString("N").Substring(0, 8);
 }
 
 <div class="relative inline-block text-left text-sm font-semibold z-[100] lang-switcher-container">
-    <a href="/Language/SetLanguage?culture=@targetCulture&returnUrl=@encodedReturnUrl" 
-       class="flex items-center gap-2 px-4 py-2 rounded-full border border-custom-gold/20 bg-custom-navy/20 hover:bg-custom-navy/40 hover:border-custom-gold/50 text-custom-snow transition-all duration-300 shadow-md">
-        <i class="fas fa-globe text-custom-gold text-sm animate-pulse-slow"></i>
-        <span class="text-xs tracking-wide font-bold mt-0.5">@buttonText</span>
-    </a>
+    <button type="button" 
+            id="@uniqueId" 
+            onclick="toggleLanguageDropdown(this)" 
+            class="lang-switcher-btn flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 hover:border-brand-cyan/40 text-slate-200 transition-all duration-300 shadow-md focus:outline-none"
+            aria-expanded="false">
+        <i class="fas fa-globe text-brand-cyan text-xs"></i>
+        <span class="text-xs tracking-wide font-bold">@currentLabel</span>
+        <i class="fas fa-chevron-down text-[9px] text-slate-400 transition-transform duration-200"></i>
+    </button>
+
+    <div class="lang-dropdown-menu hidden absolute @(CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "left-0" : "right-0") mt-2 w-36 rounded-2xl bg-[#090d16]/95 backdrop-blur-xl border border-white/10 shadow-[0_15px_35px_rgba(0,0,0,0.5)] p-1.5 z-[9999] space-y-0.5">
+        <a href="/Language/SetLanguage?culture=en&returnUrl=@encodedReturnUrl"
+           class="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-colors @(currentLang == "en" ? "bg-brand-blue/20 text-brand-cyan" : "text-slate-300 hover:bg-white/5 hover:text-white")">
+            <span>English</span>
+            @if (currentLang == "en") { <i class="fas fa-check text-[10px] text-brand-cyan"></i> }
+        </a>
+        <a href="/Language/SetLanguage?culture=ar&returnUrl=@encodedReturnUrl"
+           class="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-colors @(currentLang == "ar" ? "bg-brand-blue/20 text-brand-cyan" : "text-slate-300 hover:bg-white/5 hover:text-white")">
+            <span style="font-family: 'Cairo', sans-serif !important;">العربية</span>
+            @if (currentLang == "ar") { <i class="fas fa-check text-[10px] text-brand-cyan"></i> }
+        </a>
+        <a href="/Language/SetLanguage?culture=fa&returnUrl=@encodedReturnUrl"
+           class="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-colors @(currentLang == "fa" ? "bg-brand-blue/20 text-brand-cyan" : "text-slate-300 hover:bg-white/5 hover:text-white")">
+            <span style="font-family: 'B Nazanin', Tahoma, sans-serif !important;">فارسی</span>
+            @if (currentLang == "fa") { <i class="fas fa-check text-[10px] text-brand-cyan"></i> }
+        </a>
+    </div>
 </div>
+
+<script>
+    if (typeof window.initLanguageDropdownListener === 'undefined') {
+        window.initLanguageDropdownListener = true;
+        document.addEventListener('click', function (e) {
+            const isClickInside = e.target.closest('.lang-switcher-container');
+            if (!isClickInside) {
+                document.querySelectorAll('.lang-dropdown-menu').forEach(m => m.classList.add('hidden'));
+                document.querySelectorAll('.lang-switcher-btn i.fa-chevron-down').forEach(i => i.classList.remove('rotate-180'));
+            }
+        });
+        window.toggleLanguageDropdown = function (btn) {
+            const container = btn.closest('.lang-switcher-container');
+            const menu = container.querySelector('.lang-dropdown-menu');
+            const chevron = btn.querySelector('.fa-chevron-down');
+            const isHidden = menu.classList.contains('hidden');
+
+            document.querySelectorAll('.lang-dropdown-menu').forEach(m => {
+                if (m !== menu) m.classList.add('hidden');
+            });
+            document.querySelectorAll('.lang-switcher-btn i.fa-chevron-down').forEach(i => {
+                if (i !== chevron) i.classList.remove('rotate-180');
+            });
+
+            if (isHidden) {
+                menu.classList.remove('hidden');
+                if (chevron) chevron.classList.add('rotate-180');
+            } else {
+                menu.classList.add('hidden');
+                if (chevron) chevron.classList.remove('rotate-180');
+            }
+        };
+    }
+</script>

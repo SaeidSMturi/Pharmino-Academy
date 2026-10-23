@@ -1,22 +1,25 @@
 @model Web.Areas.Admin.ViewModels.BulkTransferViewModel
 
 @{
-    ViewData["Title"] = "Bulk Enrollment Transfer";
+    var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var isRtl = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase) || currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
+    ViewData["Title"] = Localizer["BulkEnrollmentTransfer"].Value;
 }
 
-<div class="fade-in">
+<div class="fade-in @(isRtl ? "font-fa" : "") text-start" dir="@(isRtl ? "rtl" : "ltr")">
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
             <h1 class="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2">
-                Bulk Enrollment Transfer
+                @Localizer["BulkEnrollmentTransfer"]
             </h1>
-            <p class="text-slate-400">Transfer students from one course to another</p>
+            <p class="text-slate-400">@Localizer["TransferStudentsDesc"]</p>
         </div>
         <div class="flex gap-2">
             <a asp-action="Index"
-               class="px-5 py-2.5 bg-slate-700/50 text-slate-300 rounded-lg hover:bg-slate-700 transition-all text-sm whitespace-nowrap">
-                <i class="fas fa-arrow-left mr-2"></i>Back to Enrollments
+               class="px-5 py-2.5 bg-slate-700/50 text-slate-300 rounded-lg hover:bg-slate-700 transition-all text-sm whitespace-nowrap flex items-center gap-2">
+                <i class="fas @(isRtl ? "fa-arrow-right" : "fa-arrow-left")"></i>
+                <span>@Localizer["BackToEnrollments"]</span>
             </a>
         </div>
     </div>
@@ -26,23 +29,24 @@
         @if (Model.Result.IsSuccess)
         {
             <div class="mb-6 p-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10">
-                <h4 class="text-emerald-400 font-bold mb-3 flex items-center">
-                    <i class="fas fa-check-circle mr-2"></i>Transfer Completed Successfully
+                <h4 class="text-emerald-400 font-bold mb-3 flex items-center gap-2">
+                    <i class="fas fa-check-circle"></i>
+                    <span>@Localizer["TransferCompletedSuccessfully"]</span>
                 </h4>
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     <div class="bg-slate-800/50 rounded-lg p-3 text-center">
                         <p class="text-2xl font-bold text-emerald-400">@Model.Result.Transferred</p>
-                        <p class="text-xs text-slate-400 mt-1">Transferred</p>
+                        <p class="text-xs text-slate-400 mt-1">@Localizer["Transferred"]</p>
                     </div>
                     <div class="bg-slate-800/50 rounded-lg p-3 text-center">
                         <p class="text-2xl font-bold text-amber-400">@Model.Result.Skipped</p>
-                        <p class="text-xs text-slate-400 mt-1">Skipped (already enrolled)</p>
+                        <p class="text-xs text-slate-400 mt-1">@Localizer["SkippedAlreadyEnrolled"]</p>
                     </div>
                     @if (Model.Result.Removed > 0)
                     {
                         <div class="bg-slate-800/50 rounded-lg p-3 text-center">
                             <p class="text-2xl font-bold text-red-400">@Model.Result.Removed</p>
-                            <p class="text-xs text-slate-400 mt-1">Removed from source</p>
+                            <p class="text-xs text-slate-400 mt-1">@Localizer["RemovedFromSource"]</p>
                         </div>
                     }
                 </div>
@@ -51,13 +55,14 @@
         else
         {
             <div class="mb-6 p-5 rounded-xl border border-red-500/30 bg-red-500/10">
-                <h4 class="text-red-400 font-bold mb-2 flex items-center">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>Transfer Errors
+                <h4 class="text-red-400 font-bold mb-2 flex items-center gap-2">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>@Localizer["TransferErrors"]</span>
                 </h4>
                 <ul class="space-y-1">
                     @foreach (var err in Model.Result.Errors)
                     {
-                        <li class="text-red-300 text-sm"><i class="fas fa-circle-dot mr-1.5 text-xs"></i>@err</li>
+                        <li class="text-red-300 text-sm flex items-center gap-1.5"><i class="fas fa-circle-dot text-xs"></i><span>@err</span></li>
                     }
                 </ul>
             </div>
@@ -73,21 +78,21 @@
 
                 <!-- Source / Destination -->
                 <div class="glass-card rounded-xl p-6 mb-6">
-                    <h3 class="text-lg font-bold text-white mb-5 flex items-center">
-                        <i class="fas fa-route mr-3 text-purple-400"></i>
-                        Transfer Route
+                    <h3 class="text-lg font-bold text-white mb-5 flex items-center gap-3">
+                        <i class="fas fa-route text-purple-400"></i>
+                        <span>@Localizer["TransferRoute"]</span>
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
                         <!-- From -->
                         <div>
-                            <label asp-for="FromCourseId" class="text-sm text-slate-400 mb-2 block">From Course (source)</label>
+                            <label asp-for="FromCourseId" class="text-sm text-slate-400 mb-2 block">@Localizer["FromCourseSource"]</label>
                             <select asp-for="FromCourseId" id="fromCourse" onchange="updatePreview()"
                                     class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-purple-500 text-sm">
-                                <option value="">— select source —</option>
+                                <option value="">@Localizer["SelectSource"]</option>
                                 @foreach (var c in Model.AvailableCourses)
                                 {
                                     <option value="@c.CourseId" data-count="@c.EnrollmentCount">
-                                        @c.Title (@c.EnrollmentCount enrolled)
+                                        @c.Title (@c.EnrollmentCount @(isRtl ? "دانشجو" : "enrolled"))
                                     </option>
                                 }
                             </select>
@@ -97,21 +102,21 @@
                         <!-- Arrow -->
                         <div class="hidden md:flex items-center justify-center pt-8">
                             <div class="flex flex-col items-center">
-                                <i class="fas fa-arrow-right text-3xl text-slate-600"></i>
-                                <span class="text-xs text-slate-600 mt-1" id="transferCountLabel">— users</span>
+                                <i class="fas @(isRtl ? "fa-arrow-left" : "fa-arrow-right") text-3xl text-slate-600"></i>
+                                <span class="text-xs text-slate-600 mt-1" id="transferCountLabel">— @(isRtl ? "کاربر" : "users")</span>
                             </div>
                         </div>
 
                         <!-- To (spans full row on md) -->
                         <div class="md:col-start-1">
-                            <label asp-for="ToCourseId" class="text-sm text-slate-400 mb-2 block">To Course (destination)</label>
+                            <label asp-for="ToCourseId" class="text-sm text-slate-400 mb-2 block">@Localizer["ToCourseDestination"]</label>
                             <select asp-for="ToCourseId"
                                     class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-purple-500 text-sm">
-                                <option value="">— select destination —</option>
+                                <option value="">@Localizer["SelectDestination"]</option>
                                 @foreach (var c in Model.AvailableCourses)
                                 {
                                     <option value="@c.CourseId">
-                                        @c.Title (@c.EnrollmentCount enrolled)
+                                        @c.Title (@c.EnrollmentCount @(isRtl ? "دانشجو" : "enrolled"))
                                     </option>
                                 }
                             </select>
@@ -122,43 +127,41 @@
 
                 <!-- Options -->
                 <div class="glass-card rounded-xl p-6 mb-6">
-                    <h3 class="text-lg font-bold text-white mb-5 flex items-center">
-                        <i class="fas fa-sliders mr-3 text-blue-400"></i>
-                        Transfer Options
+                    <h3 class="text-lg font-bold text-white mb-5 flex items-center gap-3">
+                        <i class="fas fa-sliders text-blue-400"></i>
+                        <span>@Localizer["TransferOptions"]</span>
                     </h3>
                     <div class="space-y-4">
-                        <label class="flex items-start space-x-3 cursor-pointer p-3 rounded-lg hover:bg-slate-800/50 transition-colors">
+                        <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg hover:bg-slate-800/50 transition-colors">
                             <input asp-for="OverrideExisting" type="checkbox"
-                                   class="mt-0.5 rounded text-blue-500 focus:ring-blue-500" />
+                                   class="mt-1 rounded text-blue-500 focus:ring-blue-500" />
                             <div>
-                                <p class="text-white text-sm font-medium">Override existing enrollments</p>
+                                <p class="text-white text-sm font-medium">@Localizer["OverrideExistingEnrollments"]</p>
                                 <p class="text-slate-500 text-xs mt-0.5">
-                                    If the user is already enrolled in the destination course, update their progress to match the source.
-                                    Otherwise, already-enrolled users are skipped.
+                                    @Localizer["OverrideExistingDesc"]
                                 </p>
                             </div>
                         </label>
-                        <label class="flex items-start space-x-3 cursor-pointer p-3 rounded-lg hover:bg-slate-800/50 transition-colors">
+                        <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg hover:bg-slate-800/50 transition-colors">
                             <input asp-for="CopyPaymentInfo" type="checkbox"
-                                   class="mt-0.5 rounded text-blue-500 focus:ring-blue-500" />
+                                   class="mt-1 rounded text-blue-500 focus:ring-blue-500" />
                             <div>
-                                <p class="text-white text-sm font-medium">Copy payment information</p>
+                                <p class="text-white text-sm font-medium">@Localizer["CopyPaymentInfo"]</p>
                                 <p class="text-slate-500 text-xs mt-0.5">
-                                    Preserve paid/free status and payment amount when creating enrollments in the destination course.
+                                    @Localizer["CopyPaymentInfoDesc"]
                                 </p>
                             </div>
                         </label>
-                        <label class="flex items-start space-x-3 cursor-pointer p-3 rounded-lg hover:bg-slate-800/50 transition-colors border border-red-500/20">
+                        <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg hover:bg-slate-800/50 transition-colors border border-red-500/20">
                             <input asp-for="RemoveFromSource" type="checkbox"
-                                   class="mt-0.5 rounded text-red-500 focus:ring-red-500" />
+                                   class="mt-1 rounded text-red-500 focus:ring-red-500" />
                             <div>
-                                <p class="text-red-400 text-sm font-medium">
-                                    <i class="fas fa-exclamation-triangle mr-1 text-xs"></i>
-                                    Remove from source course after transfer
+                                <p class="text-red-400 text-sm font-medium flex items-center gap-1.5">
+                                    <i class="fas fa-exclamation-triangle text-xs"></i>
+                                    <span>@Localizer["RemoveFromSourceAfterTransfer"]</span>
                                 </p>
                                 <p class="text-slate-500 text-xs mt-0.5">
-                                    Users will be unenrolled from the source course and their video progress there will be permanently deleted.
-                                    <strong class="text-red-400">This cannot be undone.</strong>
+                                    @Localizer["RemoveFromSourceDesc"]
                                 </p>
                             </div>
                         </label>
@@ -168,12 +171,13 @@
                 <!-- Submit -->
                 <div class="flex items-center justify-between gap-4">
                     <a asp-action="Index" class="px-5 py-3 bg-slate-700/50 text-slate-300 rounded-lg hover:bg-slate-700 transition-all text-sm">
-                        Cancel
+                        @Localizer["Cancel"]
                     </a>
                     <button type="submit"
                             onclick="return confirmTransfer()"
-                            class="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all text-sm font-bold">
-                        <i class="fas fa-exchange-alt mr-2"></i>Execute Transfer
+                            class="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all text-sm font-bold flex items-center gap-2">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>@Localizer["ExecuteTransfer"]</span>
                     </button>
                 </div>
             </form>
@@ -182,53 +186,53 @@
         <!-- Info Sidebar -->
         <div class="space-y-5">
             <div class="glass-card rounded-xl p-5">
-                <h4 class="text-white font-bold mb-4 flex items-center">
-                    <i class="fas fa-info-circle mr-2 text-blue-400"></i>
-                    How It Works
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-info-circle text-blue-400"></i>
+                    <span>@Localizer["HowItWorks"]</span>
                 </h4>
                 <ol class="space-y-3 text-sm text-slate-400">
-                    <li class="flex items-start space-x-2">
+                    <li class="flex items-start gap-2">
                         <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">1</span>
-                        <span>All students enrolled in the <strong class="text-white">source</strong> course are identified.</span>
+                        <span>@(isRtl ? "تمام دانشجویان ثبت‌نام‌شده در دوره مبدا شناسایی می‌شوند." : "All students enrolled in the source course are identified.")</span>
                     </li>
-                    <li class="flex items-start space-x-2">
+                    <li class="flex items-start gap-2">
                         <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">2</span>
-                        <span>New enrollments are created in the <strong class="text-white">destination</strong> course for each student (unless already enrolled and override is off).</span>
+                        <span>@(isRtl ? "ثبت‌نام‌های جدید در دوره مقصد برای هر دانشجو ایجاد می‌شود." : "New enrollments are created in the destination course for each student.")</span>
                     </li>
-                    <li class="flex items-start space-x-2">
+                    <li class="flex items-start gap-2">
                         <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">3</span>
-                        <span>New enrollments start at <strong class="text-white">0% progress</strong> in the destination. Only payment info is optionally copied.</span>
+                        <span>@(isRtl ? "ثبت‌نام‌های جدید با ۰٪ پیشرفت در مقصد آغاز می‌شوند." : "New enrollments start at 0% progress in the destination.")</span>
                     </li>
-                    <li class="flex items-start space-x-2">
+                    <li class="flex items-start gap-2">
                         <span class="w-5 h-5 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">4</span>
-                        <span>If <em>Remove from source</em> is enabled, the source enrollment and video progress are permanently deleted.</span>
+                        <span>@(isRtl ? "در صورت فعال بودن «حذف از مبدا»، ثبت‌نام قبلی و پیشرفت ویدیوها پاک خواهد شد." : "If Remove from source is enabled, the source enrollment and video progress are permanently deleted.")</span>
                     </li>
                 </ol>
             </div>
 
             <div class="glass-card rounded-xl p-5">
-                <h4 class="text-white font-bold mb-4 flex items-center">
-                    <i class="fas fa-bomb mr-2 text-red-400"></i>
-                    Bulk Revoke
+                <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-bomb text-red-400"></i>
+                    <span>@Localizer["BulkRevoke"]</span>
                 </h4>
                 <p class="text-slate-400 text-sm mb-4">
-                    Remove <strong class="text-white">all students</strong> from a course at once. This also deletes their video progress.
-                    Use with caution.
+                    @Localizer["BulkRevokeDesc"]
                 </p>
                 <div class="space-y-2">
                     <select id="revokeSelect"
                             class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-red-500 text-sm">
-                        <option value="">— select course —</option>
+                        <option value="">@Localizer["SelectCourse"]</option>
                         @foreach (var c in Model.AvailableCourses)
                         {
                             <option value="@c.CourseId" data-count="@c.EnrollmentCount">
-                                @c.Title (@c.EnrollmentCount enrolled)
+                                @c.Title (@c.EnrollmentCount @(isRtl ? "دانشجو" : "enrolled"))
                             </option>
                         }
                     </select>
                     <button onclick="executeBulkRevoke()"
-                            class="w-full px-4 py-2.5 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors text-sm font-medium">
-                        <i class="fas fa-user-slash mr-2"></i>Revoke All Enrollments
+                            class="w-full px-4 py-2.5 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors text-sm font-medium flex items-center justify-center gap-2">
+                        <i class="fas fa-user-slash"></i>
+                        <span>@Localizer["RevokeAllEnrollments"]</span>
                     </button>
                 </div>
                 <div id="revokeResult" class="hidden mt-3 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-sm"></div>

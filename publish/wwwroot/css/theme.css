@@ -613,3 +613,257 @@ html.theme-transitioning *::after {
     color: #334155 !important;
 }
 
+/* ==========================================================================
+   Farsi Font: B Nazanin (ONLY and ONLY for Farsi)
+   ========================================================================== */
+@font-face {
+    font-family: 'B Nazanin';
+    src: url('/fonts/BNazanin.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+html[lang^="fa"],
+html[lang^="fa"] body,
+html[lang^="fa"] h1, html[lang^="fa"] h2, html[lang^="fa"] h3,
+html[lang^="fa"] h4, html[lang^="fa"] h5, html[lang^="fa"] h6,
+html[lang^="fa"] p, html[lang^="fa"] a, html[lang^="fa"] span,
+html[lang^="fa"] button, html[lang^="fa"] input, html[lang^="fa"] select,
+html[lang^="fa"] textarea, html[lang^="fa"] label, html[lang^="fa"] td,
+html[lang^="fa"] th, html[lang^="fa"] div {
+    font-family: 'B Nazanin', Tahoma, 'Vazirmatn', sans-serif !important;
+}
+
+/* ==========================================================================
+   Admin Area Light Mode Styling
+   ========================================================================== */
+[data-theme="light"] body {
+    background-color: #f8fafc !important;
+    color: #334155 !important;
+}
+
+[data-theme="light"] .ambient-grid {
+    background-image: linear-gradient(to right, rgba(66, 114, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(66, 114, 255, 0.05) 1px, transparent 1px) !important;
+}
+
+[data-theme="light"] .glow-orb-1,
+[data-theme="light"] .glow-orb-2 {
+    opacity: 0.15 !important;
+}
+
+/* Admin Glass Panels & Cards */
+[data-theme="light"] .glass-panel {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(226, 232, 240, 0.95) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03) !important;
+}
+
+[data-theme="light"] .bg-dark-bg,
+[data-theme="light"] .bg-dark-bg\/40,
+[data-theme="light"] .bg-dark-bg\/60,
+[data-theme="light"] .bg-dark-bg\/80,
+[data-theme="light"] .bg-dark-bg\/90 {
+    background-color: #ffffff !important;
+}
+
+[data-theme="light"] aside#sidebar {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] aside#sidebar h1 {
+    color: #0f172a !important;
+}
+
+[data-theme="light"] aside#sidebar .menu-item {
+    color: #475569 !important;
+}
+
+[data-theme="light"] aside#sidebar .menu-item:hover {
+    background: linear-gradient(90deg, rgba(66, 234, 255, 0.12) 0%, transparent 100%) !important;
+    color: #0284c7 !important;
+}
+
+[data-theme="light"] aside#sidebar .sidebar-active {
+    background: linear-gradient(90deg, rgba(66, 114, 255, 0.15) 0%, rgba(66, 234, 255, 0.05) 100%) !important;
+    color: #0284c7 !important;
+}
+
+[data-theme="light"] aside#sidebar .border-t {
+    border-color: #e2e8f0 !important;
+}
+
+/* Admin Tables & Content Containers */
+[data-theme="light"] table {
+    color: #1e293b !important;
+}
+
+[data-theme="light"] thead tr,
+[data-theme="light"] th {
+    background-color: #f1f5f9 !important;
+    color: #475569 !important;
+    border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] td {
+    border-color: #e2e8f0 !important;
+    color: #334155 !important;
+}
+
+[data-theme="light"] tbody tr:hover {
+    background-color: #f8fafc !important;
+}
+
+/* Admin & General Form Inputs in Light Mode */
+[data-theme="light"] input[type="text"],
+[data-theme="light"] input[type="number"],
+[data-theme="light"] input[type="email"],
+[data-theme="light"] input[type="password"],
+[data-theme="light"] input[type="search"],
+[data-theme="light"] input[type="url"],
+[data-theme="light"] input[type="tel"],
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Admin Cards & Subtle Containers */
+[data-theme="light"] .bg-white\/\[0\.02\],
+[data-theme="light"] .bg-white\/\[0\.03\],
+[data-theme="light"] .bg-white\/\[0\.05\],
+[data-theme="light"] .bg-white\/5 {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .border-white\/5,
+[data-theme="light"] .border-white\/10,
+[data-theme="light"] .border-white\/\[0\.05\] {
+    border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .text-white {
+    color: #0f172a !important;
+}
+
+/* Account Pages Liquid Glass in Light Mode */
+[data-theme="light"] .liquid-glass {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(226, 232, 240, 0.9) !important;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .bg-slate-900\/40,
+[data-theme="light"] .bg-slate-900\/50,
+[data-theme="light"] .bg-slate-900\/60 {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .border-slate-800,
+[data-theme="light"] .border-slate-800\/60 {
+    border-color: #e2e8f0 !important;
+}
+
+/* ==========================================================================
+   Language Dropdown & Z-Index Layering
+   ========================================================================== */
+.lang-switcher-container {
+    position: relative !important;
+    z-index: 100 !important;
+}
+
+.lang-dropdown-menu {
+    z-index: 9999 !important;
+}
+
+/* Language Switcher in Light Mode */
+[data-theme="light"] .lang-switcher-btn,
+.light .lang-switcher-btn {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #1e293b !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] .lang-switcher-btn:hover,
+.light .lang-switcher-btn:hover {
+    background-color: #f8fafc !important;
+    border-color: #0284c7 !important;
+}
+
+[data-theme="light"] .lang-dropdown-menu,
+.light .lang-dropdown-menu {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-theme="light"] .lang-dropdown-menu a,
+.light .lang-dropdown-menu a {
+    color: #334155 !important;
+}
+
+[data-theme="light"] .lang-dropdown-menu a:hover,
+.light .lang-dropdown-menu a:hover {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+}
+
+[data-theme="light"] .lang-dropdown-menu a.bg-brand-blue\/20,
+.light .lang-dropdown-menu a.bg-brand-blue\/20 {
+    background-color: rgba(2, 132, 199, 0.12) !important;
+    color: #0284c7 !important;
+}
+
+/* ==========================================================================
+   Persian (Farsi) Dedicated Typography & Font Scaling (+3px to 4px)
+   ONLY and ONLY active for Farsi (lang="fa" or lang="fa-IR")
+   ========================================================================== */
+@font-face {
+    font-family: 'B Nazanin';
+    src: url('/fonts/BNazanin.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+html[lang^="fa"],
+html[lang="fa"],
+html[lang="fa-IR"] {
+    font-size: 19px !important; /* +3px larger base size, scaling rem units cleanly */
+}
+
+html[lang^="fa"] body,
+html[lang^="fa"] h1,
+html[lang^="fa"] h2,
+html[lang^="fa"] h3,
+html[lang^="fa"] h4,
+html[lang^="fa"] h5,
+html[lang^="fa"] h6,
+html[lang^="fa"] p,
+html[lang^="fa"] a,
+html[lang^="fa"] span,
+html[lang^="fa"] button,
+html[lang^="fa"] input,
+html[lang^="fa"] select,
+html[lang^="fa"] textarea,
+html[lang^="fa"] label,
+html[lang^="fa"] th,
+html[lang^="fa"] td,
+html[lang^="fa"] li,
+html[lang^="fa"] div {
+    font-family: 'B Nazanin', Tahoma, sans-serif !important;
+}
+
+
+

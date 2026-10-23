@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = Model.Title;
+    var cultureName = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var isFarsi = cultureName.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
+    var isArabic = cultureName.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
     var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
     var isEnrolled = (bool)ViewBag.IsEnrolled;
     var videos = ViewBag.Videos as List<Domain.Entities.Course.CourseVideo>;
@@ -54,7 +57,7 @@
 <div class="max-w-7xl mx-auto space-y-8 pb-12 mt-4 px-4 sm:px-6 lg:px-8">
     <a asp-area="" asp-controller="Courses" asp-action="Index" class="group inline-flex items-center px-4 py-2 rounded-full bg-custom-navy/20 text-custom-snow/80 hover:text-custom-gold hover:bg-custom-navy/40 border border-custom-gold/20 hover:border-custom-gold/50 transition-all duration-300 backdrop-blur-md gap-2">
         <i class="fas @(isRtl ? "fa-arrow-right" : "fa-arrow-left") transform group-hover:-translate-x-1 transition-transform"></i>
-        <span class="font-medium">@(isRtl ? "العودة إلى الدورات" : "Back to Courses")</span>
+        <span class="font-medium">@(isFarsi ? "بازگشت به دوره‌ها" : (isArabic ? "العودة إلى الدورات" : "Back to Courses"))</span>
     </a>
 
     <div class="relative rounded-3xl overflow-hidden bg-custom-dark/60 border border-custom-gold/20 backdrop-blur-xl shadow-[0_8px_32px_rgba(18,60,118,0.3)]">
@@ -266,7 +269,7 @@
                                 <a href="/Admin/Courses/Details/@Model.CourseId"
                                    class="flex items-center justify-center w-full px-6 py-3.5 rounded-2xl bg-gradient-to-r from-brand-cyan to-brand-blue hover:from-cyan-400 hover:to-blue-500 text-dark-bg font-extrabold text-base transition-all duration-300 transform hover:-translate-y-0.5 shadow-[0_0_20px_rgba(66,234,255,0.4)] gap-2.5">
                                     <i class="fas fa-sliders text-sm"></i>
-                                    <span>@(isRtl ? "مدیریت این دوره در پنل ادمین" : "Manage in Admin Panel")</span>
+                                    <span>@(isFarsi ? "مدیریت این دوره در پنل مدیریت" : (isArabic ? "إدارة هذه الدورة في لوحة التحكم" : "Manage in Admin Panel"))</span>
                                 </a>
                             }
                             <form asp-area="" asp-controller="Courses" asp-action="Enroll" method="post" class="w-full">
@@ -276,12 +279,12 @@
                                     <i class="fas fa-user-plus group-hover:scale-110 transition-transform text-lg"></i>
                                     @if (Model.EffectivePrice == 0)
                                     {
-                                        <span>@(isRtl ? "سجل الآن مجاناً" : "Enroll Now for Free")</span>
+                                        <span>@(isFarsi ? "ثبت‌نام رایگان در دوره" : (isArabic ? "سجل الآن مجاناً" : "Enroll Now for Free"))</span>
                                     }
                                     else if (Model.HasActiveDiscount)
                                     {
                                         <span class="flex items-center gap-2.5 flex-wrap justify-center">
-                                            <span>@(isRtl ? "سجل الآن مقابل" : "Enroll Now for")</span>
+                                            <span>@(isFarsi ? "ثبت‌نام با مبلغ" : (isArabic ? "سجل الآن مقابل" : "Enroll Now for"))</span>
                                             <span class="px-2.5 py-0.5 rounded-xl bg-custom-navy text-custom-gold font-extrabold text-base shadow-sm">$@Model.EffectivePrice.ToString("N0")</span>
                                             <span class="text-sm line-through opacity-70">($@Model.Price.ToString("N0"))</span>
                                             <span class="text-xs bg-emerald-600 text-white px-2 py-0.5 rounded-full font-black">-@Model.DiscountPercent%</span>
@@ -290,7 +293,7 @@
                                     else
                                     {
                                         <span class="flex items-center gap-2.5 flex-wrap justify-center">
-                                            <span>@(isRtl ? "سجل الآن" : "Enroll Now")</span>
+                                            <span>@(isFarsi ? "ثبت‌نام در دوره" : (isArabic ? "سجل الآن" : "Enroll Now"))</span>
                                             <span class="px-3 py-1 rounded-xl bg-custom-navy text-custom-gold font-extrabold text-base shadow-sm">$@Model.Price.ToString("N0")</span>
                                         </span>
                                     }

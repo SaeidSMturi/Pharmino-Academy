@@ -1,0 +1,260 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <xs:schema id="root">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xs:element name="root" ns1:IsDataSet="true">
+      <xs:complexType>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element name="metadata">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" />
+              </xs:sequence>
+              <xs:attribute name="name" use="required" type="xsd:string" />
+              <xs:attribute name="type" type="xsd:string" />
+              <xs:attribute name="mimetype" type="xsd:string" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="assembly">
+            <xs:complexType>
+              <xs:attribute name="alias" type="xsd:string" />
+              <xs:attribute name="name" type="xsd:string" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="data">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+                <xs:element name="comment" type="xsd:string" minOccurs="0" ns1:Ordinal="2" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" ns1:Ordinal="1" />
+              <xs:attribute name="type" type="xsd:string" ns1:Ordinal="3" />
+              <xs:attribute name="mimetype" type="xsd:string" ns1:Ordinal="4" />
+              <xs:attribute ref="xml:space" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="resheader">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="value" type="xsd:string" minOccurs="0" ns1:Ordinal="1" />
+              </xs:sequence>
+              <xs:attribute name="name" type="xsd:string" use="required" />
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PageTitle" xml:space="preserve">
+    <value>صفحه اصلی | آموزش تخصصی داروسازی فارمینو</value>
+  </data>
+  <data name="Courses" xml:space="preserve">
+    <value>دوره‌ها</value>
+  </data>
+  <data name="Features" xml:space="preserve">
+    <value>امکانات</value>
+  </data>
+  <data name="Testimonials" xml:space="preserve">
+    <value>دیدگاه‌های دانشجویان</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>تماس با ما</value>
+  </data>
+  <data name="PlatformTitle" xml:space="preserve">
+    <value>سامانه آموزش تخصصی داروسازی</value>
+  </data>
+  <data name="MainHeroHeading1" xml:space="preserve">
+    <value>تسلط کامل بر</value>
+  </data>
+  <data name="PearsonVue" xml:space="preserve">
+    <value>پرسون ویو (Pearson VUE)</value>
+  </data>
+  <data name="MainHeroHeading2" xml:space="preserve">
+    <value>آزمون تخصصی داروسازی عمان</value>
+  </data>
+  <data name="MainHeroDescription" xml:space="preserve">
+    <value>به آکادمی فارمینو بپیوندید و از آموزش‌های جامع قبولی در آزمون پرومتریک OMSB بهره‌مند شوید. آموزش تخصصی، متدهای اثبات‌شده و همراهی کامل تا دریافت پروانه کار.</value>
+  </data>
+  <data name="StartJourney" xml:space="preserve">
+    <value>شروع یادگیری</value>
+  </data>
+  <data name="LearnMore" xml:space="preserve">
+    <value>اطلاعات بیشتر</value>
+  </data>
+  <data name="LatestCourses" xml:space="preserve">
+    <value>جدیدترین دوره‌ها</value>
+  </data>
+  <data name="LatestCoursesSub" xml:space="preserve">
+    <value>جدیدترین محتواهای آموزشی برای ارتقای مهارت و دانش حرفه‌ای شما. در تازه‌ترین دوره‌ها ثبت‌نام کنید.</value>
+  </data>
+  <data name="ViewCourse" xml:space="preserve">
+    <value>مشاهده دوره</value>
+  </data>
+  <data name="ExploreAll" xml:space="preserve">
+    <value>مشاهده تمامی دوره‌ها</value>
+  </data>
+  <data name="ModernPlatform" xml:space="preserve">
+    <value>سامانه نوین و پیشرفته</value>
+  </data>
+  <data name="ModernPlatformSub" xml:space="preserve">
+    <value>هر آنچه برای یادگیری اصولی نیاز دارید در یک محیط امن، منظم و حرفه‌ای.</value>
+  </data>
+  <data name="SecureContent" xml:space="preserve">
+    <value>محتوای محافظت‌شده</value>
+  </data>
+  <data name="SecureContentText" xml:space="preserve">
+    <value>جزوات PDF اختصاصی و پخش ویدیویی امن و ضد کپی.</value>
+  </data>
+  <data name="GlobalAccess" xml:space="preserve">
+    <value>دسترسی همه‌جانبه</value>
+  </data>
+  <data name="GlobalAccessText" xml:space="preserve">
+    <value>مطالعه و تماشای دروس در هر زمان و از سراسر جهان بدون محدودیت.</value>
+  </data>
+  <data name="ProgressTracking" xml:space="preserve">
+    <value>پایش و ارزیابی پیشرفت</value>
+  </data>
+  <data name="ProgressTrackingText" xml:space="preserve">
+    <value>بررسی مستمر روند یادگیری و میزان آمادگی برای شرکت در آزمون.</value>
+  </data>
+  <data name="ExpertInstructors" xml:space="preserve">
+    <value>اساتید مجرب و داروسازان برتر</value>
+  </data>
+  <data name="ExpertInstructorsText" xml:space="preserve">
+    <value>یادگیری مستقیم از داروسازان با تجربه و متخصص.</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>خوش آمدید</value>
+  </data>
+  <data name="StudentAccount" xml:space="preserve">
+    <value>حساب کاربری دانشجو</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>ورود به حساب</value>
+  </data>
+  <data name="SignUp" xml:space="preserve">
+    <value>ثبت‌نام</value>
+  </data>
+  <data name="CreateAccount" xml:space="preserve">
+    <value>ایجاد حساب کاربری</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>داشبورد</value>
+  </data>
+  <data name="AdminPanel" xml:space="preserve">
+    <value>پنل مدیریت</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>خروج از حساب</value>
+  </data>
+  <data name="SiteName" xml:space="preserve">
+    <value>آکادمی فارمینو</value>
+  </data>
+  <data name="MyCourses" xml:space="preserve">
+    <value>دوره‌های من</value>
+  </data>
+  <data name="ProfileSettings" xml:space="preserve">
+    <value>تنظیمات پروفایل</value>
+  </data>
+  <data name="AccountSettings" xml:space="preserve">
+    <value>تنظیمات حساب کاربری</value>
+  </data>
+  <data name="ReadyToStart" xml:space="preserve">
+    <value>آماده آغاز</value>
+  </data>
+  <data name="SuccessJourney" xml:space="preserve">
+    <value>مسیر موفقیت هستید؟</value>
+  </data>
+  <data name="JoinPharmacistsDescription" xml:space="preserve">
+    <value>به جمع صدها داروساز موفقی بپیوندید که با دوره‌های هدفمند ما موفق به دریافت پروانه کار داروسازی شده‌اند.</value>
+  </data>
+  <data name="EnrollNow" xml:space="preserve">
+    <value>ثبت‌نام در دوره</value>
+  </data>
+  <data name="SuccessStories" xml:space="preserve">
+    <value>داستان‌های موفقیت</value>
+  </data>
+  <data name="StudentSuccessStoriesText" xml:space="preserve">
+    <value>تجربیات واقعی همکاران و داروسازانی که با فارمینو به هدف خود رسیدند.</value>
+  </data>
+  <data name="Student" xml:space="preserve">
+    <value>دانشجو</value>
+  </data>
+	
+	<data name="ReadyToStart" xml:space="preserve">
+    <value>آماده آغاز</value>
+  </data>
+	<data name="SuccessJourney" xml:space="preserve">
+    <value>مسیر موفقیت هستید؟</value>
+  </data>
+	<data name="JoinPharmacistsDescription" xml:space="preserve">
+    <value>به جمع صدها داروساز موفقی بپیوندید که با دوره‌های هدفمند ما موفق به دریافت پروانه کار داروسازی شده‌اند.</value>
+  </data>
+	<data name="EnrollNow" xml:space="preserve">
+    <value>ثبت‌نام در دوره</value>
+  </data>
+
+	
+	<data name="Student" xml:space="preserve">
+    <value>دانشجو</value>
+  </data>
+	<data name="SuccessStories" xml:space="preserve">
+    <value>داستان‌های موفقیت</value>
+  </data>
+	<data name="StudentSuccessStoriesText" xml:space="preserve">
+    <value>تجربیات واقعی همکاران و داروسازانی که با فارمینو به هدف خود رسیدند.</value>
+  </data>
+
+	<data name="Testimonial1Initial" xml:space="preserve">
+    <value>الف</value>
+  </data>
+	<data name="Testimonial1Name" xml:space="preserve">
+    <value>احمد ر.</value>
+  </data>
+	<data name="Testimonial1Title" xml:space="preserve">
+    <value>داروساز بالینی</value>
+  </data>
+	<data name="Testimonial1Quote" xml:space="preserve">
+    <value>جزوات و منابع ارائه شده فوق‌العاده جامع و دقیق بودند. سازمان‌دهی فصول و سوالات شبیه‌ساز دقیقاً مانند آزمون اصلی OMSB تنظیم شده بودند.</value>
+  </data>
+
+	<data name="Testimonial2Initial" xml:space="preserve">
+    <value>س</value>
+  </data>
+	<data name="Testimonial2Name" xml:space="preserve">
+    <value>سارا م.</value>
+  </data>
+	<data name="Testimonial2Title" xml:space="preserve">
+    <value>داروساز بیمارستانی</value>
+  </data>
+	<data name="Testimonial2Quote" xml:space="preserve">
+    <value>مطالعه به تنهایی واقعاً استرس‌زا بود، اما رهنمودها و ویدیوهای آکادمی فارمینو همه‌چیز را شفاف و دست‌یافتنی کرد.</value>
+  </data>
+
+	<data name="Testimonial3Initial" xml:space="preserve">
+    <value>م</value>
+  </data>
+	<data name="Testimonial3Name" xml:space="preserve">
+    <value>محمد ت.</value>
+  </data>
+	<data name="Testimonial3Title" xml:space="preserve">
+    <value>داروساز داروخانه</value>
+  </data>
+	<data name="Testimonial3Quote" xml:space="preserve">
+    <value>قبولی در نخستین تلاش با نمره عالی باورنکردنی بود. پشتیبانی دلسوزانه و محتوای به‌روز اعتماد به نفس واقعی به من بخشید.</value>
+  </data>
+</root>

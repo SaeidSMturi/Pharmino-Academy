@@ -1,22 +1,23 @@
 @model Web.Areas.Admin.ViewModels.SeoDashboardViewModel
 @{
-    ViewData["Title"] = "SEO Health Dashboard";
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Localizer["SeoHealthDashboard"].Value;
 }
 
 <!-- Loading Overlay -->
 <div class="fixed inset-0 z-[9999] bg-dark-bg/80 backdrop-blur-md hidden items-center justify-center flex-col transition-all duration-300" id="loadingOverlay">
     <div class="w-16 h-16 border-4 border-brand-blue/20 border-top-4 border-t-brand-cyan rounded-full animate-spin shadow-[0_0_20px_#42EAFF] mb-5"></div>
-    <div class="text-white text-base font-black tracking-wide uppercase font-sans animate-pulse" id="loadingText">Scanning SEO...</div>
+    <div class="text-white text-base font-black tracking-wide uppercase font-sans animate-pulse" id="loadingText">@Localizer["ScanningSeo"]</div>
 </div>
 
-<div class="animate-[fadeIn_0.4s_ease_forwards] w-full" dir="ltr">
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start" dir="@(isRtl ? "rtl" : "ltr")">
     
     <!-- Global Noindex Warning Banner -->
     @if (Model.IsGlobalNoindexActive)
     {
         <div class="mb-8 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center gap-3 shadow-[0_0_25px_rgba(244,63,94,0.2)] animate-pulse tracking-wide font-sans text-sm font-bold text-center">
             <i class="fa fa-exclamation-triangle text-base drop-shadow-[0_0_6px_#f43f5e]"></i>
-            <span>WARNING: Search engine indexing is currently disabled for this site (Noindex active).</span>
+            <span>@Localizer["GlobalNoindexWarning"]</span>
         </div>
     }
 
@@ -25,17 +26,17 @@
         <div>
             <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide flex items-center gap-3">
                 <i class="fa fa-chart-line text-brand-cyan drop-shadow-[0_0_8px_#42EAFF]"></i>
-                SEO Management
+                @Localizer["SeoManagement"]
             </h1>
-            <p class="text-slate-400 text-sm font-medium">Scan pages, optimize search metadata, and manage sitemaps.</p>
+            <p class="text-slate-400 text-sm font-medium">@Localizer["SeoManagementSub"]</p>
         </div>
         
         <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full md:w-auto justify-end">
             <button class="w-full sm:w-auto text-center px-5 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue rounded-xl text-dark-bg font-extrabold hover:shadow-[0_0_20px_rgba(66,234,255,0.4)] hover:scale-[1.02] transition-all duration-300 text-xs flex items-center justify-center gap-2" onclick="triggerScan()">
-                <i class="fa fa-refresh text-sm"></i> Scan All Pages
+                <i class="fa fa-refresh text-sm"></i> @Localizer["ScanAllPages"]
             </button>
             <button class="w-full sm:w-auto text-center px-5 py-2.5 bg-brand-blue/10 border border-brand-blue/20 text-brand-blue rounded-xl hover:bg-brand-blue hover:text-white transition-all text-xs font-bold flex items-center justify-center gap-2" onclick="generateSitemaps()">
-                <i class="fa fa-sitemap text-sm"></i> Rebuild Sitemap
+                <i class="fa fa-sitemap text-sm"></i> @Localizer["RebuildSitemap"]
             </button>
         </div>
     </div>
@@ -46,7 +47,7 @@
         <!-- Health Score Card -->
         <div class="md:col-span-4 lg:col-span-3">
             <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] text-center flex flex-col justify-between h-100 min-h-[240px]">
-                <h3 class="text-[11px] font-bold uppercase tracking-widest text-slate-500 border-b border-white/[0.03] pb-2 mb-4">SEO Health Score</h3>
+                <h3 class="text-[11px] font-bold uppercase tracking-widest text-slate-500 border-b border-white/[0.03] pb-2 mb-4">@Localizer["SeoHealthScore"]</h3>
                 <div class="flex flex-col items-center justify-center relative py-2">
                     @{
                         string scoreColor = Model.HealthScore >= 80 ? "border-emerald-500 text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]" : 
@@ -57,7 +58,7 @@
                         <span class="text-4xl font-black font-mono tracking-tighter">@Model.HealthScore</span>
                     </div>
                 </div>
-                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-3">Overall Site Score</div>
+                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-3">@Localizer["OverallSiteScore"]</div>
             </div>
         </div>
 
@@ -65,30 +66,30 @@
         <div class="md:col-span-8 lg:col-span-4">
             <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] flex flex-col justify-between h-100">
                 <div>
-                    <h3 class="text-[11px] font-bold uppercase tracking-widest text-slate-500 border-b border-white/[0.03] pb-2 mb-5">SEO Status</h3>
+                    <h3 class="text-[11px] font-bold uppercase tracking-widest text-slate-500 border-b border-white/[0.03] pb-2 mb-5">@Localizer["SeoStatus"]</h3>
                     
                     <div class="space-y-3.5">
-                        <div class="flex justify-between align-items-center text-xs font-semibold">
+                        <div class="flex justify-between items-center text-xs font-semibold">
                             <span class="text-slate-400">Robots.txt:</span>
                             @if (Model.HasRobotsTxt)
                             {
-                                <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">Active</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">@Localizer["Active"]</span>
                             }
                             else
                             {
-                                <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">Missing</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">@Localizer["Missing"]</span>
                             }
                         </div>
 
-                        <div class="flex justify-between align-items-center text-xs font-semibold">
+                        <div class="flex justify-between items-center text-xs font-semibold">
                             <span class="text-slate-400">Sitemap Index:</span>
                             @if (Model.HasSitemapIndex)
                             {
-                                <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">Generated</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">@Localizer["Generated"]</span>
                             }
                             else
                             {
-                                <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">Missing</span>
+                                <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">@Localizer["Missing"]</span>
                             }
                         </div>
                     </div>
@@ -96,9 +97,9 @@
 
                 <!-- Global Noindex Switch -->
                 <div class="mt-6 flex items-center justify-between bg-white/[0.01] border border-white/5 p-4 rounded-2xl">
-                    <div class="min-w-0 flex-1 pr-2">
-                        <div class="text-xs font-bold text-slate-300 uppercase tracking-wide">Disable Search Indexing</div>
-                        <div class="text-[10px] text-slate-500 font-medium mt-0.5 leading-relaxed">Block search engines from indexing this site (Noindex)</div>
+                    <div class="min-w-0 flex-1 @(isRtl ? "pl-2" : "pr-2")">
+                        <div class="text-xs font-bold text-slate-300 uppercase tracking-wide">@Localizer["DisableSearchIndexing"]</div>
+                        <div class="text-[10px] text-slate-500 font-medium mt-0.5 leading-relaxed">@Localizer["DisableSearchIndexingSub"]</div>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer select-none flex-shrink-0">
                         <input type="checkbox" id="globalNoindexToggle" class="sr-only peer" @(Model.IsGlobalNoindexActive ? "checked" : "") onchange="toggleNoindex(this.checked)">
@@ -111,27 +112,27 @@
         <!-- Issues Overview -->
         <div class="md:col-span-12 lg:col-span-5">
             <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] h-100">
-                <h3 class="text-[11px] font-bold uppercase tracking-widest text-slate-500 border-b border-white/[0.03] pb-2 mb-4">Issues Overview</h3>
+                <h3 class="text-[11px] font-bold uppercase tracking-widest text-slate-500 border-b border-white/[0.03] pb-2 mb-4">@Localizer["IssuesOverview"]</h3>
                 <div class="grid grid-cols-2 gap-4 font-mono">
                     
                     <div class="bg-white/[0.01] border border-white/[0.02] p-3.5 rounded-2xl transition-colors hover:bg-white/[0.02]">
                         <div class="text-2xl font-black text-rose-400">@Model.TotalUnresolvedErrors</div>
-                        <div class="text-[10px] text-slate-500 font-sans font-bold uppercase mt-1">404 & Server Errors</div>
+                        <div class="text-[10px] text-slate-500 font-sans font-bold uppercase mt-1">@Localizer["Errors404AndServer"]</div>
                     </div>
 
                     <a href="@Url.Action("ImageAlts", "Seo", new { area = "Admin" })" class="bg-white/[0.01] border border-white/[0.02] p-3.5 rounded-2xl transition-colors hover:bg-white/[0.02] block">
                         <div class="text-2xl font-black text-brand-yellow">@Model.TotalImagesMissingAlt</div>
-                        <div class="text-[10px] text-slate-500 font-sans font-bold uppercase mt-1">Missing Alt Text</div>
+                        <div class="text-[10px] text-slate-500 font-sans font-bold uppercase mt-1">@Localizer["MissingAltText"]</div>
                     </a>
 
                     <div class="bg-white/[0.01] border border-white/[0.02] p-3.5 rounded-2xl transition-colors hover:bg-white/[0.02]">
                         <div class="text-2xl font-black text-brand-blue">@Model.PagesMissingMetaDescription</div>
-                        <div class="text-[10px] text-slate-500 font-sans font-bold uppercase mt-1">Missing Meta Desc</div>
+                        <div class="text-[10px] text-slate-500 font-sans font-bold uppercase mt-1">@Localizer["MissingMetaDesc"]</div>
                     </div>
 
                     <div class="bg-white/[0.01] border border-white/[0.02] p-3.5 rounded-2xl transition-colors hover:bg-white/[0.02]">
                         <div class="text-2xl font-black text-brand-orange">@(Model.PagesMissingH1 + Model.PagesMultipleH1)</div>
-                        <div class="text-[10px] text-slate-500 font-sans font-bold uppercase mt-1">H1 Heading Issues</div>
+                        <div class="text-[10px] text-slate-500 font-sans font-bold uppercase mt-1">@Localizer["H1HeadingIssues"]</div>
                     </div>
 
                 </div>
@@ -144,33 +145,33 @@
         <!-- Redirects -->
         <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] text-center flex flex-col justify-between min-h-[160px]">
             <div class="space-y-1">
-                <h3 class="text-sm font-bold text-white">URL Redirects</h3>
-                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">Manage 301/302 redirects to route old or broken URLs to new pages.</p>
+                <h3 class="text-sm font-bold text-white">@Localizer["UrlRedirects"]</h3>
+                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">@Localizer["UrlRedirectsSub"]</p>
             </div>
             <a href="@Url.Action("Redirects", "Seo", new { area = "Admin" })" class="mt-4 w-100 text-center px-4 py-2 bg-white/5 border border-white/5 text-slate-300 hover:text-white hover:bg-white/10 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5">
-                <i class="fa fa-random text-[10px]"></i> Manage Redirects (@Model.Redirects.Count)
+                <i class="fa fa-random text-[10px]"></i> @Localizer["ManageRedirects"] (@Model.Redirects.Count)
             </a>
         </div>
 
         <!-- Technical Errors -->
         <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] text-center flex flex-col justify-between min-h-[160px]">
             <div class="space-y-1">
-                <h3 class="text-sm font-bold text-white">SEO Errors</h3>
-                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">Review broken 404 links, 500 server errors, and page issues.</p>
+                <h3 class="text-sm font-bold text-white">@Localizer["SeoErrors"]</h3>
+                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">@Localizer["SeoErrorsSub"]</p>
             </div>
             <a href="@Url.Action("Errors", "Seo", new { area = "Admin" })" class="mt-4 w-100 text-center px-4 py-2 bg-rose-500/10 text-rose-400 border border-rose-500/10 hover:bg-rose-500 hover:text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5">
-                <i class="fa fa-bug text-[10px]"></i> View Errors (@Model.TotalUnresolvedErrors)
+                <i class="fa fa-bug text-[10px]"></i> @Localizer["ViewErrors"] (@Model.TotalUnresolvedErrors)
             </a>
         </div>
 
         <!-- Alt Tag Optimizer -->
         <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] text-center flex flex-col justify-between min-h-[160px]">
             <div class="space-y-1">
-                <h3 class="text-sm font-bold text-white">Image Alt Text</h3>
-                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">Add missing descriptive alt text for images to improve accessibility and SEO.</p>
+                <h3 class="text-sm font-bold text-white">@Localizer["ImageAltText"]</h3>
+                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">@Localizer["ImageAltTextSub"]</p>
             </div>
             <a href="@Url.Action("ImageAlts", "Seo", new { area = "Admin" })" class="mt-4 w-100 text-center px-4 py-2 bg-brand-blue/10 border border-brand-blue/10 hover:bg-brand-blue hover:text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5">
-                <i class="fa fa-image text-[10px]"></i> Manage Image Alts (@Model.TotalImagesMissingAlt)
+                <i class="fa fa-image text-[10px]"></i> @Localizer["ManageImageAlts"] (@Model.TotalImagesMissingAlt)
             </a>
         </div>
     </div>
@@ -180,44 +181,44 @@
         <!-- Page SEO Manager -->
         <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] text-center flex flex-col justify-between min-h-[160px]">
             <div class="space-y-1">
-                <h3 class="text-sm font-bold text-white">Page SEO</h3>
-                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">Customize title tags, meta descriptions, canonical URLs, and social tags.</p>
+                <h3 class="text-sm font-bold text-white">@Localizer["PageSeo"]</h3>
+                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">@Localizer["PageSeoSub"]</p>
             </div>
             <a href="@Url.Action("PageSeos", "Seo", new { area = "Admin" })" class="mt-4 w-100 text-center px-4 py-2 bg-brand-cyan/20 border border-brand-cyan/30 text-brand-cyan hover:bg-brand-cyan hover:text-dark-bg text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(66,234,255,0.2)]">
-                <i class="fa fa-tags text-[10px]"></i> Page SEO
+                <i class="fa fa-tags text-[10px]"></i> @Localizer["PageSeo"]
             </a>
         </div>
 
         <!-- On-Page Analyzer -->
         <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] text-center flex flex-col justify-between min-h-[160px]">
             <div class="space-y-1">
-                <h3 class="text-sm font-bold text-white">Page Analyzer</h3>
-                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">Analyze headings, keyword density, meta tags, and structured data for any URL.</p>
+                <h3 class="text-sm font-bold text-white">@Localizer["PageAnalyzer"]</h3>
+                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">@Localizer["PageAnalyzerSub"]</p>
             </div>
             <a href="@Url.Action("Analyzer", "Seo", new { area = "Admin" })" class="mt-4 w-100 text-center px-4 py-2 bg-brand-cyan/10 border border-brand-cyan/10 hover:bg-brand-cyan hover:text-dark-bg text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5">
-                <i class="fa fa-search text-[10px]"></i> Page Analyzer
+                <i class="fa fa-search text-[10px]"></i> @Localizer["PageAnalyzer"]
             </a>
         </div>
 
         <!-- Robots.txt Editor -->
         <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] text-center flex flex-col justify-between min-h-[160px]">
             <div class="space-y-1">
-                <h3 class="text-sm font-bold text-white">Robots.txt</h3>
-                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">View and edit search crawler rules in your robots.txt file.</p>
+                <h3 class="text-sm font-bold text-white">@Localizer["RobotsTxt"]</h3>
+                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">@Localizer["RobotsTxtSub"]</p>
             </div>
             <a href="@Url.Action("RobotsTxt", "Seo", new { area = "Admin" })" class="mt-4 w-100 text-center px-4 py-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 hover:bg-emerald-500 hover:text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5">
-                <i class="fa fa-file-alt text-[10px]"></i> Edit Robots.txt
+                <i class="fa fa-file-alt text-[10px]"></i> @Localizer["EditRobotsTxt"]
             </a>
         </div>
 
         <!-- Sitemap Settings -->
         <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] text-center flex flex-col justify-between min-h-[160px]">
             <div class="space-y-1">
-                <h3 class="text-sm font-bold text-white">Sitemap Settings</h3>
-                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">Configure sitemap update frequency, priority levels, and custom URLs.</p>
+                <h3 class="text-sm font-bold text-white">@Localizer["SitemapSettings"]</h3>
+                <p class="text-slate-500 text-[11px] font-medium leading-relaxed">@Localizer["SitemapSettingsSub"]</p>
             </div>
             <a href="@Url.Action("SitemapSettings", "Seo", new { area = "Admin" })" class="mt-4 w-100 text-center px-4 py-2 bg-brand-yellow/10 border border-brand-yellow/10 hover:bg-brand-yellow hover:text-dark-bg text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5">
-                <i class="fa fa-cog text-[10px]"></i> Sitemap Settings
+                <i class="fa fa-cog text-[10px]"></i> @Localizer["SitemapSettings"]
             </a>
         </div>
     </div>
@@ -226,21 +227,21 @@
     <div class="w-full">
         <div class="p-5 rounded-3xl bg-white/[0.01] border border-white/[0.04] shadow-xl">
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-5 flex items-center gap-2">
-                <i class="fa fa-list-check text-brand-cyan"></i> Scanned Pages (@Model.PageScans.Count)
+                <i class="fa fa-list-check text-brand-cyan"></i> @Localizer["ScannedPages"] (@Model.PageScans.Count)
             </h3>
 
             <div class="w-full overflow-x-auto custom-scrollbar">
-                <table class="w-full text-left border-collapse text-sm">
+                <table class="w-full text-start border-collapse text-sm">
                     <thead>
                         <tr class="border-b border-white/5 text-slate-500 text-[10px] font-bold uppercase tracking-widest bg-white/[0.01]">
-                            <th class="py-3.5 px-3 font-bold">Page URL</th>
-                            <th class="py-3.5 px-3 font-bold">Status</th>
-                            <th class="py-3.5 px-3 font-bold">Title</th>
-                            <th class="py-3.5 px-3 font-bold">Meta Description</th>
-                            <th class="py-3.5 px-3 font-bold">H1 Tag</th>
-                            <th class="py-3.5 px-3 font-bold">Missing Alts</th>
-                            <th class="py-3.5 px-3 font-bold">Index Status</th>
-                            <th class="py-3.5 px-3 font-bold text-center">Actions</th>
+                            <th class="py-3.5 px-3 font-bold text-start">@Localizer["PageUrl"]</th>
+                            <th class="py-3.5 px-3 font-bold text-start">@Localizer["Status"]</th>
+                            <th class="py-3.5 px-3 font-bold text-start">@Localizer["Title"]</th>
+                            <th class="py-3.5 px-3 font-bold text-start">@Localizer["MetaDescription"]</th>
+                            <th class="py-3.5 px-3 font-bold text-start">@Localizer["H1Tag"]</th>
+                            <th class="py-3.5 px-3 font-bold text-start">@Localizer["MissingAlts"]</th>
+                            <th class="py-3.5 px-3 font-bold text-start">@Localizer["IndexStatus"]</th>
+                            <th class="py-3.5 px-3 font-bold text-center">@Localizer["Actions"]</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-white/[0.02]">
@@ -248,7 +249,7 @@
                         {
                             <tr>
                                 <td colspan="8" class="text-center text-slate-500 text-xs font-medium py-10">
-                                    No pages scanned yet. Click "Scan All Pages" above to scan your site.
+                                    @Localizer["NoPagesScannedYet"]
                                 </td>
                             </tr>
                         }
@@ -257,8 +258,8 @@
                             @foreach (var scan in Model.PageScans)
                             {
                                 <tr class="hover:bg-white/[0.01] transition-colors duration-200 group">
-                                    <td class="py-4 px-3 text-xs font-bold text-white truncate max-w-[160px]" title="@scan.Url">@scan.Url</td>
-                                    <td class="py-4 px-3 whitespace-nowrap">
+                                    <td class="py-4 px-3 text-xs font-bold text-white truncate max-w-[160px] text-start" title="@scan.Url" dir="ltr">@scan.Url</td>
+                                    <td class="py-4 px-3 whitespace-nowrap text-start">
                                         @if (scan.ResponseStatus != null && scan.ResponseStatus.Contains("Success"))
                                         {
                                             <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">200 OK</span>
@@ -268,48 +269,48 @@
                                             <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">@scan.ResponseStatus</span>
                                         }
                                     </td>
-                                    <td class="py-4 px-3 text-xs text-slate-300 font-medium truncate max-w-[180px]" title="@scan.Title">
-                                        @(scan.Title ?? "Missing Title")
+                                    <td class="py-4 px-3 text-xs text-slate-300 font-medium truncate max-w-[180px] text-start" title="@scan.Title">
+                                        @(scan.Title ?? "-")
                                     </td>
-                                    <td class="py-4 px-3 whitespace-nowrap">
+                                    <td class="py-4 px-3 whitespace-nowrap text-start">
                                         @if (string.IsNullOrWhiteSpace(scan.MetaDescription))
                                         {
-                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">Missing</span>
+                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">@Localizer["Missing"]</span>
                                         }
                                         else if (scan.MetaDescription.Length < 120 || scan.MetaDescription.Length > 160)
                                         {
-                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded" title="@scan.MetaDescription">Length (@scan.MetaDescription.Length)</span>
+                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded" title="@scan.MetaDescription">@scan.MetaDescription.Length</span>
                                         }
                                         else
                                         {
-                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded" title="@scan.MetaDescription">Good (@scan.MetaDescription.Length)</span>
+                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded" title="@scan.MetaDescription">OK (@scan.MetaDescription.Length)</span>
                                         }
                                     </td>
-                                    <td class="py-4 px-3 whitespace-nowrap">
+                                    <td class="py-4 px-3 whitespace-nowrap text-start">
                                         @if (scan.H1Count == 0)
                                         {
-                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">Missing</span>
+                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">@Localizer["Missing"]</span>
                                         }
                                         else if (scan.H1Count > 1)
                                         {
-                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded">Multiple (@scan.H1Count)</span>
+                                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded">(@scan.H1Count)</span>
                                         }
                                         else
                                         {
                                             <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">OK (1)</span>
                                         }
                                     </td>
-                                    <td class="py-4 px-3 whitespace-nowrap font-mono text-xs text-slate-400">
+                                    <td class="py-4 px-3 whitespace-nowrap font-mono text-xs text-slate-400 text-start">
                                         @if (scan.MissingAltCount > 0)
                                         {
-                                            <span class="text-brand-yellow font-bold">@scan.MissingAltCount Missing</span>
+                                            <span class="text-brand-yellow font-bold">@scan.MissingAltCount</span>
                                         }
                                         else
                                         {
                                             <span class="text-emerald-400 font-bold">0</span>
                                         }
                                     </td>
-                                    <td class="py-4 px-3 whitespace-nowrap">
+                                    <td class="py-4 px-3 whitespace-nowrap text-start">
                                         @if (scan.HasNoIndex)
                                         {
                                             <span class="px-2 py-0.5 text-[9px] font-bold uppercase bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded">Noindex</span>
@@ -322,7 +323,7 @@
                                     <td class="py-4 px-3 whitespace-nowrap text-center">
                                         <a href="@Url.Action("Analyzer", "Seo", new { area = "Admin", url = scan.Url })"
                                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan rounded-lg hover:bg-brand-cyan hover:text-dark-bg transition-all duration-200 text-[11px] font-bold shadow-[0_0_10px_rgba(66,234,255,0.05)] hover:shadow-[0_0_15px_rgba(66,234,255,0.2)]">
-                                            <i class="fa fa-chart-simple text-[10px]"></i> Analyze
+                                            <i class="fa fa-chart-simple text-[10px]"></i> @Localizer["PageAnalyzer"]
                                         </a>
                                     </td>
                                 </tr>
@@ -350,7 +351,7 @@
     }
 
     function triggerScan() {
-        showLoading("Scanning website pages...");
+        showLoading("@Localizer["ScanningSeo"]");
         
         fetch('@Url.Action("TriggerCrawl", "Seo", new { area = "Admin" })', {
             method: 'POST',
@@ -373,7 +374,7 @@
     }
 
     function generateSitemaps() {
-        showLoading("Generating sitemaps...");
+        showLoading("@Localizer["RebuildSitemap"]...");
         
         fetch('@Url.Action("GenerateSitemaps", "Seo", new { area = "Admin" })', {
             method: 'POST',
@@ -396,7 +397,7 @@
     }
 
     function toggleNoindex(isChecked) {
-        showLoading("Updating search indexing setting...");
+        showLoading("@Localizer["DisableSearchIndexing"]...");
         
         fetch('@Url.Action("ToggleGlobalNoindex", "Seo", new { area = "Admin" })?noindex=' + isChecked, {
             method: 'POST',
