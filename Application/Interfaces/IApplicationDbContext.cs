@@ -27,6 +27,7 @@ namespace Application.Interfaces
         DbSet<RolePermission> RolePermissions { get; set; }
         DbSet<UserRole> UserRoles { get; set; }
         DbSet<Course> Courses { get; set; }
+        DbSet<CourseBundleItem> CourseBundleItems { get; set; }
         DbSet<CourseEnrollment> CourseEnrollments { get; set; }
         DbSet<CourseVideo> CourseVideos { get; set; }
         DbSet<CoursePdf> CoursePdfs { get; set; }

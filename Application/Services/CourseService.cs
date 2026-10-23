@@ -1,5 +1,4 @@
 using Application.Interfaces;
-using Application.Interfaces;
 using Domain.Entities.Course;
 using Microsoft.EntityFrameworkCore;
 
@@ -65,8 +64,19 @@ namespace Application.Services
 
         public async Task<bool> IsUserEnrolledAsync(int userId, int courseId)
         {
-            return await _context.CourseEnrollments
+            // 1. بررسی ثبت‌نام مستقیم در این دوره
+            var directEnrollment = await _context.CourseEnrollments
                 .AnyAsync(e => e.UserId == userId && e.CourseId == courseId);
+
+            if (directEnrollment)
+                return true;
+
+            // 2. بررسی ثبت‌نام کاربر در هر پکیج/باندلی که شامل این دوره باشد
+            var bundleEnrollment = await _context.CourseBundleItems
+                .AnyAsync(b => b.CourseId == courseId &&
+                               _context.CourseEnrollments.Any(e => e.UserId == userId && e.CourseId == b.BundleId));
+
+            return bundleEnrollment;
         }
 
         public async Task<CourseEnrollment?> GetUserEnrollmentAsync(int userId, int courseId)
@@ -85,12 +95,14 @@ namespace Application.Services
             if (existingEnrollment != null)
                 return false;
 
+            var requiredPrice = course.EffectivePrice;
+
             var enrollment = new CourseEnrollment
             {
                 UserId = userId,
                 CourseId = courseId,
                 EnrollmentDate = DateTime.UtcNow,
-                IsPaid = paymentAmount >= course.Price,
+                IsPaid = paymentAmount >= requiredPrice,
                 PaymentAmount = paymentAmount,
                 PaymentDate = paymentAmount > 0 ? DateTime.UtcNow : null,
                 ProgressPercentage = 0,
@@ -297,7 +309,84 @@ namespace Application.Services
             }
         }
 
+        #endregion
 
+        #region Bundle Operations
+
+        public async Task<List<Course>> GetBundleCoursesAsync(int bundleId)
+        {
+            return await _context.CourseBundleItems
+                .Where(b => b.BundleId == bundleId)
+                .OrderBy(b => b.OrderIndex)
+                .ThenBy(b => b.AddedDate)
+                .Include(b => b.Course)
+                    .ThenInclude(c => c.Videos.Where(v => v.IsActive))
+                .Include(b => b.Course)
+                    .ThenInclude(c => c.Pdfs.Where(p => p.IsActive))
+                .Select(b => b.Course)
+                .ToListAsync();
+        }
+
+        public async Task<List<Course>> GetAvailableCoursesForBundleAsync(int bundleId)
+        {
+            var alreadyIncludedIds = await _context.CourseBundleItems
+                .Where(b => b.BundleId == bundleId)
+                .Select(b => b.CourseId)
+                .ToListAsync();
+
+            return await _context.Courses
+                .Where(c => c.CourseId != bundleId && !c.IsBundle && c.IsActive && !alreadyIncludedIds.Contains(c.CourseId))
+                .OrderBy(c => c.Title)
+                .ToListAsync();
+        }
+
+        public async Task<bool> AddCourseToBundleAsync(int bundleId, int courseId)
+        {
+            if (bundleId == courseId)
+                return false;
+
+            var bundle = await _context.Courses.FirstOrDefaultAsync(c => c.CourseId == bundleId && c.IsBundle);
+            var course = await _context.Courses.FirstOrDefaultAsync(c => c.CourseId == courseId);
+
+            if (bundle == null || course == null)
+                return false;
+
+            var exists = await _context.CourseBundleItems
+                .AnyAsync(b => b.BundleId == bundleId && b.CourseId == courseId);
+
+            if (exists)
+                return false;
+
+            var maxOrder = await _context.CourseBundleItems
+                .Where(b => b.BundleId == bundleId)
+                .Select(b => (int?)b.OrderIndex)
+                .MaxAsync() ?? 0;
+
+            var item = new CourseBundleItem
+            {
+                BundleId = bundleId,
+                CourseId = courseId,
+                OrderIndex = maxOrder + 1,
+                AddedDate = DateTime.UtcNow
+            };
+
+            _context.CourseBundleItems.Add(item);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveCourseFromBundleAsync(int bundleId, int courseId)
+        {
+            var item = await _context.CourseBundleItems
+                .FirstOrDefaultAsync(b => b.BundleId == bundleId && b.CourseId == courseId);
+
+            if (item == null)
+                return false;
+
+            _context.CourseBundleItems.Remove(item);
+            await _context.SaveChangesAsync();
+            return true;
+        }
 
         #endregion
     }

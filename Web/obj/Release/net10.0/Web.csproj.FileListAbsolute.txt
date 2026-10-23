@@ -633,3 +633,11 @@ C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\opb8szq0ka-
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\jrbsexuqkk-{0}-01te2tn2yu-01te2tn2yu.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\opb8szq0ka-{0}-tivxt5ldv9-tivxt5ldv9.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\jrbsexuqkk-{0}-01te2tn2yu-01te2tn2yu.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\publish\web.config
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\publish\AppData\VideoEngine\version.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\publish\appsettings.Development.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\publish\appsettings.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\publish\dotnet-tools.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\publish\Web.deps.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\publish\Web.runtimeconfig.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\publish\Web.staticwebassets.endpoints.json

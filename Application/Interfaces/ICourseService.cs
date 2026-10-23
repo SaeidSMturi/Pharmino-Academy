@@ -23,6 +23,12 @@ namespace Application.Interfaces
         // 🎬 Video Progress Tracking
         Task SaveVideoProgressAsync(int userId, int videoId, double position, double duration, bool completed);
         Task<VideoProgressDto?> GetVideoProgressAsync(int userId, int videoId);
+
+        // 📦 Bundle Operations
+        Task<List<Course>> GetBundleCoursesAsync(int bundleId);
+        Task<List<Course>> GetAvailableCoursesForBundleAsync(int bundleId);
+        Task<bool> AddCourseToBundleAsync(int bundleId, int courseId);
+        Task<bool> RemoveCourseFromBundleAsync(int bundleId, int courseId);
     }
 
     /// <summary>

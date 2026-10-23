@@ -41,7 +41,11 @@ namespace Web.Controllers
                     Price = c.Price,
                     DurationHours = c.DurationHours ?? 0,
                     ImageName = c.ImageName,
-                    VideoCount = c.Videos.Count(v => v.IsActive)
+                    VideoCount = c.Videos.Count(v => v.IsActive),
+                    IsBundle = c.IsBundle,
+                    DiscountPrice = c.DiscountPrice,
+                    IsDiscountActive = c.IsDiscountActive,
+                    SubCourseCount = c.BundleCourses.Count
                 })
                 .Take(6)
                 .ToListAsync();

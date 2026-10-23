@@ -10,6 +10,8 @@
     var hlsExists = ViewBag.HlsExists as Dictionary<int, bool> ?? new Dictionary<int, bool>();
     var enrolledUserIds = Model.Enrollments?.Select(e => e.UserId).ToHashSet() ?? new HashSet<int>();
     var allUsersRaw = ViewBag.AllUsers as System.Collections.IEnumerable;
+    var bundleCourses = ViewBag.BundleCourses as List<Domain.Entities.Course.Course> ?? new List<Domain.Entities.Course.Course>();
+    var availableCourses = ViewBag.AvailableCourses as List<Domain.Entities.Course.Course> ?? new List<Domain.Entities.Course.Course>();
 }
 
 @functions {
@@ -101,7 +103,13 @@
                 }
 
                 <div class="p-6 md:p-8">
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-wrap items-center gap-2">
+                        @if (Model.IsBundle)
+                        {
+                            <span class="px-3 py-1.5 text-[10px] font-black tracking-wide rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 text-white uppercase shadow-md">
+                                <i class="fas fa-cubes @(isRtl ? "ml-1.5" : "mr-1.5")"></i>Course Bundle
+                            </span>
+                        }
                         @if (Model.IsActive)
                         {
                             <span class="px-3 py-1.5 text-[10px] font-bold tracking-wide rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">
@@ -114,6 +122,12 @@
                                 <i class="fas fa-circle-xmark @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["Inactive"]
                             </span>
                         }
+                        @if (Model.HasActiveDiscount)
+                        {
+                            <span class="px-3 py-1.5 text-[10px] font-black tracking-wide rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase">
+                                <i class="fas fa-tag @(isRtl ? "ml-1.5" : "mr-1.5")"></i>Save @Model.DiscountPercent%
+                            </span>
+                        }
                     </div>
 
                     <h2 class="text-2xl font-bold text-white mb-4">@Model.Title</h2>
@@ -124,7 +138,17 @@
                             <i class="fas fa-tag text-brand-yellow text-sm"></i>
                             <div>
                                 <span class="text-[10px] text-slate-500 block uppercase font-bold">@Localizer["CoursePricing"]</span>
-                                <span class="text-white font-mono font-bold">$@Model.Price.ToString("N0")</span>
+                                @if (Model.HasActiveDiscount)
+                                {
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-slate-400 line-through font-mono text-[11px]">$@Model.Price.ToString("N0")</span>
+                                        <span class="text-emerald-400 font-mono font-bold">$@Model.DiscountPrice.Value.ToString("N0")</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-white font-mono font-bold">$@Model.Price.ToString("N0")</span>
+                                }
                             </div>
                         </div>
                         <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") bg-white/[0.01] border border-white/[0.02] p-3 rounded-xl">
@@ -134,13 +158,26 @@
                                 <span class="text-white">@(Model.DurationHours ?? 0) @Localizer["Hours"]</span>
                             </div>
                         </div>
-                        <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") bg-white/[0.01] border border-white/[0.02] p-3 rounded-xl">
-                            <i class="fas fa-video text-brand-cyan text-sm"></i>
-                            <div>
-                                <span class="text-[10px] text-slate-500 block uppercase font-bold">@Localizer["CourseVideos"]</span>
-                                <span class="text-white">@videos.Count @Localizer["VideosAbbr"]</span>
+                        @if (Model.IsBundle)
+                        {
+                            <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") bg-purple-500/5 border border-purple-500/20 p-3 rounded-xl">
+                                <i class="fas fa-cubes text-purple-400 text-sm"></i>
+                                <div>
+                                    <span class="text-[10px] text-slate-500 block uppercase font-bold">Included Courses</span>
+                                    <span class="text-purple-300 font-bold">@bundleCourses.Count Courses</span>
+                                </div>
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") bg-white/[0.01] border border-white/[0.02] p-3 rounded-xl">
+                                <i class="fas fa-video text-brand-cyan text-sm"></i>
+                                <div>
+                                    <span class="text-[10px] text-slate-500 block uppercase font-bold">@Localizer["CourseVideos"]</span>
+                                    <span class="text-white">@videos.Count @Localizer["VideosAbbr"]</span>
+                                </div>
+                            </div>
+                        }
                         <div class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2") bg-white/[0.01] border border-white/[0.02] p-3 rounded-xl">
                             <i class="fas fa-users text-brand-orange text-sm"></i>
                             <div>
@@ -152,11 +189,121 @@
                 </div>
             </div>
 
-            <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                    <h3 class="text-base font-bold text-white flex items-center">
-                        <i class="fas fa-video @(isRtl ? "ml-3" : "mr-3") text-brand-cyan text-lg"></i> @Localizer["CourseVideos"] (@videos.Count)
-                    </h3>
+            @if (Model.IsBundle)
+            {
+                <!-- BUNDLE MANAGEMENT HUB -->
+                <div class="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-purple-500/5 via-white/[0.02] to-indigo-500/5 border border-purple-500/20 shadow-2xl backdrop-blur-xl">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-white/5">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                                    <i class="fas fa-cubes @(isRtl ? "ml-1.5" : "mr-1.5")"></i>Course Bundle Hub
+                                </span>
+                                <span class="text-xs text-slate-400 font-medium">@(bundleCourses.Count) Courses Attached</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-white">@(isRtl ? "دوره‌های زیرمجموعه این پکیج" : "Included Courses in this Bundle")</h3>
+                            <p class="text-slate-400 text-xs mt-1">
+                                @(isRtl ? "دانشجویانی که این پکیج را تهیه کنند، به تمام ویدیوها و فایل‌های زیردوره‌های زیر دسترسی نامحدود خواهند داشت." : "Students enrolled in this bundle automatically receive full access to all courses listed below.")
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" onclick="openAttachCourseModal()"
+                                    class="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl text-white font-extrabold hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all text-xs flex items-center justify-center">
+                                <i class="fas fa-plus @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@(isRtl ? "افزودن دوره به پکیج" : "Attach Course to Bundle")
+                            </button>
+                            <a asp-action="Create" class="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-slate-300 hover:text-white font-bold text-xs transition-all flex items-center justify-center">
+                                <i class="fas fa-circle-plus @(isRtl ? "ml-1.5" : "mr-1.5") text-purple-400"></i>@(isRtl ? "ایجاد دوره جدید" : "Create New Course")
+                            </a>
+                        </div>
+                    </div>
+
+                    @if (bundleCourses.Any())
+                    {
+                        <div class="space-y-4">
+                            @for (int i = 0; i < bundleCourses.Count; i++)
+                            {
+                                var sub = bundleCourses[i];
+                                <div class="p-5 rounded-2xl bg-white/[0.01] border border-white/[0.05] hover:border-purple-500/30 hover:bg-white/[0.02] transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-5 group">
+                                    <div class="flex items-center gap-4 flex-1 min-w-0">
+                                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-300 font-mono font-bold text-sm flex items-center justify-center shrink-0">
+                                            @(i + 1)
+                                        </div>
+                                        <div class="w-16 h-16 rounded-xl bg-dark-bg border border-white/10 overflow-hidden shrink-0">
+                                            @if (!string.IsNullOrEmpty(sub.ImageName) && sub.ImageName != "default.jpg")
+                                            {
+                                                <img src="~/uploads/courses/@sub.ImageName" alt="@sub.Title" class="w-full h-full object-cover" />
+                                            }
+                                            else
+                                            {
+                                                <div class="w-full h-full flex items-center justify-center text-slate-600 bg-gradient-to-br from-purple-500/10 to-indigo-500/10">
+                                                    <i class="fas fa-graduation-cap text-2xl text-purple-400/40"></i>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                                <h4 class="text-white font-bold text-base truncate group-hover:text-purple-300 transition-colors">@sub.Title</h4>
+                                                @if (sub.IsActive)
+                                                {
+                                                    <span class="px-2 py-0.5 text-[9px] font-bold rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Active</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="px-2 py-0.5 text-[9px] font-bold rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">Inactive</span>
+                                                }
+                                            </div>
+                                            <p class="text-slate-400 text-xs line-clamp-1 mb-2 font-medium">@sub.Description</p>
+                                            <div class="flex flex-wrap items-center gap-3 text-[11px] text-slate-400 font-medium">
+                                                <span class="flex items-center gap-1"><i class="fas fa-video text-brand-cyan"></i> @(sub.Videos?.Count ?? 0) Videos</span>
+                                                <span class="flex items-center gap-1"><i class="far fa-clock text-brand-blue"></i> @(sub.DurationHours ?? 0) hrs</span>
+                                                <span class="flex items-center gap-1"><i class="fas fa-file-pdf text-brand-orange"></i> @(sub.Pdfs?.Count ?? 0) PDFs</span>
+                                                <span class="font-mono font-bold text-brand-yellow">$@sub.Price.ToString("N0")</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-2 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-white/5">
+                                        <a asp-action="Details" asp-route-id="@sub.CourseId"
+                                           class="px-4 py-2 rounded-xl bg-brand-cyan/10 hover:bg-brand-cyan text-brand-cyan hover:text-dark-bg border border-brand-cyan/20 text-xs font-bold transition-all flex items-center gap-1.5"
+                                           title="Manage videos, PDFs and streams for this course">
+                                            <i class="fas fa-sliders text-xs"></i>
+                                            <span>@(isRtl ? "مدیریت ویدیوها و محتوا" : "Manage Content")</span>
+                                        </a>
+                                        <button type="button" onclick="removeCourseFromBundle(@Model.CourseId, @sub.CourseId, '@Html.Raw(sub.Title.Replace("'", "\\'"))')"
+                                                class="p-2 w-9 h-9 rounded-xl bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white border border-rose-500/20 transition-all flex items-center justify-center"
+                                                title="@(isRtl ? "حذف از پکیج" : "Remove from Bundle")">
+                                            <i class="fas fa-trash text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="bg-white/[0.01] border border-white/10 border-dashed rounded-3xl p-12 text-center">
+                            <div class="w-16 h-16 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center mx-auto mb-4 text-2xl">
+                                <i class="fas fa-cubes"></i>
+                            </div>
+                            <h4 class="text-white text-base font-bold mb-2">@(isRtl ? "هنوز دوره‌ای به این پکیج اضافه نشده است" : "No courses attached to this bundle yet")</h4>
+                            <p class="text-slate-400 text-xs max-w-md mx-auto mb-6 leading-relaxed">
+                                @(isRtl ? "می‌توانید دوره‌های موجود را انتخاب کرده و به این پکیج پیوست کنید یا دوره جدیدی بسازید." : "Select from your existing courses to attach them into this bundle package, or create a new one.")
+                            </p>
+                            <button type="button" onclick="openAttachCourseModal()"
+                                    class="px-6 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl text-white font-extrabold text-xs shadow-lg hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all">
+                                <i class="fas fa-plus @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@(isRtl ? "افزودن اولین دوره" : "Attach First Course")
+                            </button>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                        <h3 class="text-base font-bold text-white flex items-center">
+                            <i class="fas fa-video @(isRtl ? "ml-3" : "mr-3") text-brand-cyan text-lg"></i> @Localizer["CourseVideos"] (@videos.Count)
+                        </h3>
                     <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                         <button type="button" onclick="createTestVideo()"
                                 class="w-full sm:w-auto text-center px-4 py-2 bg-amber-500/20 border border-amber-500/30 text-amber-400 rounded-xl font-extrabold hover:bg-amber-500 hover:text-dark-bg transition-all text-xs flex items-center justify-center">
@@ -338,6 +485,7 @@
                     </div>
                 }
             </div>
+            }
 
             <div class="p-6 md:p-8 rounded-3xl bg-white/[0.02] border border-white/[0.05] shadow-2xl">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -504,6 +652,58 @@
         </div>
     </div>
 </div>
+
+@if (Model.IsBundle)
+{
+    <div id="attachCourseModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-dark-bg/80 backdrop-blur-md transition-all p-4" dir="@(isRtl ? "rtl" : "ltr")">
+        <div class="bg-[#0B0D14]/95 border border-purple-500/30 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-[fadeIn_0.3s_ease_forwards] text-start">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-white/5 bg-white/[0.01]">
+                <h4 class="text-white font-bold text-base flex items-center">
+                    <i class="fas fa-cubes @(isRtl ? "ml-2.5" : "mr-2.5") text-purple-400 shadow-[0_0_8px_rgba(168,85,247,0.4)]"></i>
+                    @(isRtl ? "افزودن دوره به این پکیج" : "Attach Course to Bundle")
+                </h4>
+                <button onclick="closeAttachCourseModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fas fa-times text-sm"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    @(isRtl ? "یک دوره موجود را انتخاب کنید تا به عنوان زیرمجموعه به این پکیج افزوده شود. دانشجویان پکیج به این دوره دسترسی کامل خواهند داشت." : "Select an active course to attach into this bundle. Students enrolled in this bundle will get immediate full access to all its content.")
+                </p>
+                @if (availableCourses.Any())
+                {
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">
+                            @(isRtl ? "انتخاب از دوره‌های موجود" : "Select Course")
+                        </label>
+                        <select id="attachCourseSelect" class="w-full px-4 py-3 bg-dark-bg border border-white/10 rounded-xl text-white text-sm font-medium focus:border-purple-400 focus:outline-none">
+                            @foreach (var c in availableCourses)
+                            {
+                                <option value="@c.CourseId">@c.Title (@(c.Videos?.Count ?? 0) @Localizer["VideosAbbr"], $@c.Price.ToString("N0"))</option>
+                            }
+                        </select>
+                    </div>
+                }
+                else
+                {
+                    <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs flex items-center gap-2">
+                        <i class="fas fa-circle-info text-sm"></i>
+                        <span>@(isRtl ? "همه دوره‌های موجود در حال حاضر در این پکیج پیوست شده‌اند یا دوره دیگری موجود نیست." : "All existing courses are already attached to this bundle or no other active course exists.")</span>
+                    </div>
+                }
+            </div>
+            <div class="px-6 py-4 border-t border-white/5 flex justify-end @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01]">
+                <button onclick="closeAttachCourseModal()" class="px-4 py-2 bg-white/5 text-slate-300 rounded-xl hover:bg-white/10 transition-colors text-xs font-bold">@Localizer["Cancel"]</button>
+                @if (availableCourses.Any())
+                {
+                    <button id="btnConfirmAttach" onclick="submitAttachCourse(@Model.CourseId)" class="px-5 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl hover:shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all text-xs font-black">
+                        <i class="fas fa-plus @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@(isRtl ? "پیوست به پکیج" : "Attach to Bundle")
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+}
 
 <div id="studentEnrollModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-dark-bg/80 backdrop-blur-md transition-all p-4" dir="@(isRtl ? "rtl" : "ltr")">
     <div class="bg-[#0B0D14]/90 border border-white/10 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-[fadeIn_0.3s_ease_forwards] text-start">
@@ -968,6 +1168,97 @@
                 alert('Connection error: ' + error.message);
                 btn.innerHTML = originalText;
                 btn.disabled = false;
+            }
+        }
+
+        // 📦 Bundle Operations
+        function openAttachCourseModal() {
+            const modal = document.getElementById('attachCourseModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeAttachCourseModal() {
+            const modal = document.getElementById('attachCourseModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        async function submitAttachCourse(bundleId) {
+            const select = document.getElementById('attachCourseSelect');
+            if (!select || !select.value) {
+                alert('Please select a course to attach.');
+                return;
+            }
+
+            const courseId = parseInt(select.value);
+            const btn = document.getElementById('btnConfirmAttach');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1.5"></i> Attaching...';
+            btn.disabled = true;
+
+            try {
+                const formData = new URLSearchParams({
+                    bundleId: bundleId,
+                    courseId: courseId
+                });
+
+                const response = await fetch('/Admin/Courses/AddCourseToBundle', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.message || 'Failed to attach course.');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                alert('Network error: ' + err.message);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        async function removeCourseFromBundle(bundleId, courseId, title) {
+            if (!confirm(`Are you sure you want to remove "${title}" from this bundle?`)) {
+                return;
+            }
+
+            try {
+                const formData = new URLSearchParams({
+                    bundleId: bundleId,
+                    courseId: courseId
+                });
+
+                const response = await fetch('/Admin/Courses/RemoveCourseFromBundle', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.message || 'Failed to remove course from bundle.');
+                }
+            } catch (err) {
+                alert('Network error: ' + err.message);
             }
         }
     </script>

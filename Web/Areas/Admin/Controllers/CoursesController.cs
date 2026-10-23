@@ -29,6 +29,7 @@ namespace Web.Areas.Admin.Controllers
         private readonly IHlsProcessingService _hlsService;
         private readonly ILogger<CoursesController> _logger;
         private readonly IStorageService _storageService;
+        private readonly ICourseService _courseService;
 
         public class IdRequest
         {
@@ -40,7 +41,9 @@ namespace Web.Areas.Admin.Controllers
             IWebHostEnvironment environment,
             IOptions<UploadLimitsOptions> uploadLimits,
             IHlsProcessingService hlsService,
-            ILogger<CoursesController> logger, IStorageService storageService)
+            ILogger<CoursesController> logger,
+            IStorageService storageService,
+            ICourseService courseService)
         {
             _context = context;
             _environment = environment;
@@ -48,6 +51,7 @@ namespace Web.Areas.Admin.Controllers
             _hlsService = hlsService;
             _logger = logger;
             _storageService = storageService;
+            _courseService = courseService;
         }
 
         [Permission("Courses.View")]
@@ -185,6 +189,15 @@ namespace Web.Areas.Admin.Controllers
                 .ToListAsync();
             ViewBag.AllUsers = allUsers;
 
+            // بارگذاری دوره‌های متصل به پکیج (در صورت باندل بودن)
+            if (course.IsBundle)
+            {
+                var bundleCourses = await _courseService.GetBundleCoursesAsync(course.CourseId);
+                var availableCourses = await _courseService.GetAvailableCoursesForBundleAsync(course.CourseId);
+                ViewBag.BundleCourses = bundleCourses;
+                ViewBag.AvailableCourses = availableCourses;
+            }
+
             _logger.LogInformation("Successfully compiled metadata for Course ID: {CourseId}. Videos: {VideoCount}, PDFs: {PdfCount}, Enrollments: {EnrollmentCount}. Action completed by User {UserId}.",
                 id, course.Videos?.Count ?? 0, course.Pdfs?.Count ?? 0, course.Enrollments?.Count ?? 0, currentUserId);
 
@@ -312,7 +325,7 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         [Permission("Courses.Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind(nameof(Course.Title), nameof(Course.Description), nameof(Course.Price), nameof(Course.IsActive))] Course course, IFormFile? ImageFile)
+        public async Task<IActionResult> Create([Bind(nameof(Course.Title), nameof(Course.Description), nameof(Course.Price), nameof(Course.IsActive), nameof(Course.IsBundle), nameof(Course.DiscountPrice), nameof(Course.IsDiscountActive))] Course course, IFormFile? ImageFile)
         {
             var currentUserId = User.GetUserId();
             _logger.LogInformation("User {UserId} is attempting to create a new course titled: '{Title}'.", currentUserId, course?.Title);
@@ -326,6 +339,8 @@ namespace Web.Areas.Admin.Controllers
             ModelState.Remove("Videos");
             ModelState.Remove("Pdfs");
             ModelState.Remove("Enrollments");
+            ModelState.Remove("BundleCourses");
+            ModelState.Remove("IncludedInBundles");
             ModelState.Remove("CreateDate");
             ModelState.Remove("LastUpdate");
             ModelState.Remove("DurationHours");
@@ -360,10 +375,18 @@ namespace Web.Areas.Admin.Controllers
                     return View(course);
                 }
 
-                var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads", "courses");
+                var webRoot = !string.IsNullOrWhiteSpace(_environment.WebRootPath)
+                    ? _environment.WebRootPath
+                    : Path.Combine(_environment.ContentRootPath, "wwwroot");
+
+                var uploadsFolder = Path.Combine(webRoot, "uploads", "courses");
                 try
                 {
-                    Directory.CreateDirectory(uploadsFolder);
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
                     var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
                     var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
@@ -378,7 +401,7 @@ namespace Web.Areas.Admin.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "IO exception occurred while executing file stream write for new course cover image. Admin User: {UserId}.", currentUserId);
-                    TempData["ErrorMessage"] = "Server error processing cover image.";
+                    TempData["ErrorMessage"] = $"Server error processing cover image: {ex.Message}";
                     return View(course);
                 }
             }
@@ -411,7 +434,7 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         [Permission("Courses.Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind(nameof(Course.CourseId), nameof(Course.Title), nameof(Course.Description), nameof(Course.Price), nameof(Course.IsActive))] Course course, IFormFile? ImageFile)
+        public async Task<IActionResult> Edit([Bind(nameof(Course.CourseId), nameof(Course.Title), nameof(Course.Description), nameof(Course.Price), nameof(Course.IsActive), nameof(Course.IsBundle), nameof(Course.DiscountPrice), nameof(Course.IsDiscountActive))] Course course, IFormFile? ImageFile)
         {
             var currentUserId = User.GetUserId();
             _logger.LogInformation("User {UserId} is trying to commit edits for Course ID: {CourseId}.", currentUserId, course?.CourseId);
@@ -424,6 +447,8 @@ namespace Web.Areas.Admin.Controllers
             ModelState.Remove("Videos");
             ModelState.Remove("Pdfs");
             ModelState.Remove("Enrollments");
+            ModelState.Remove("BundleCourses");
+            ModelState.Remove("IncludedInBundles");
             ModelState.Remove("DurationHours");
 
             if (!ModelState.IsValid)
@@ -445,8 +470,13 @@ namespace Web.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var checkImgFolder = Path.Combine(_environment.WebRootPath, "uploads", "courses", existingCourse.CourseId.ToString(), existingCourse.ImageName);
-            bool localImageExists = System.IO.File.Exists(checkImgFolder);
+            var webRoot = !string.IsNullOrWhiteSpace(_environment.WebRootPath)
+                ? _environment.WebRootPath
+                : Path.Combine(_environment.ContentRootPath, "wwwroot");
+
+            var checkImgFolder = Path.Combine(webRoot, "uploads", "courses", existingCourse.ImageName ?? "");
+            var checkImgSubFolder = Path.Combine(webRoot, "uploads", "courses", existingCourse.CourseId.ToString(), existingCourse.ImageName ?? "");
+            bool localImageExists = existingCourse.ImageName == "default.jpg" || System.IO.File.Exists(checkImgFolder) || System.IO.File.Exists(checkImgSubFolder);
             ViewBag.ImageExists = localImageExists;
 
             if (!localImageExists && ImageFile == null)
@@ -475,10 +505,13 @@ namespace Web.Areas.Admin.Controllers
                     return View(course);
                 }
 
-                var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads", "courses");
+                var uploadsFolder = Path.Combine(webRoot, "uploads", "courses");
                 try
                 {
-                    Directory.CreateDirectory(uploadsFolder);
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
 
                     // حذف تصویر قدیمی در صورت لزوم
                     if (!string.IsNullOrEmpty(existingCourse.ImageName) && existingCourse.ImageName != "default.jpg")
@@ -505,7 +538,7 @@ namespace Web.Areas.Admin.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Storage interaction error occurred while substituting cover graphics payload on disk. Course ID: {CourseId}.", course.CourseId);
-                    TempData["ErrorMessage"] = "Server error updating the cover image.";
+                    TempData["ErrorMessage"] = $"Server error updating the cover image: {ex.Message}";
                     return View(course);
                 }
             }
@@ -517,6 +550,9 @@ namespace Web.Areas.Admin.Controllers
             existingCourse.Description = course.Description;
             existingCourse.Price = course.Price;
             existingCourse.IsActive = course.IsActive;
+            existingCourse.IsBundle = course.IsBundle;
+            existingCourse.DiscountPrice = course.DiscountPrice;
+            existingCourse.IsDiscountActive = course.IsDiscountActive;
             existingCourse.LastUpdate = DateTime.UtcNow;
 
             try
@@ -534,5 +570,55 @@ namespace Web.Areas.Admin.Controllers
             TempData["SuccessMessage"] = "Course updated successfully";
             return RedirectToAction(nameof(Details), new { id = course.CourseId });
         }
+
+        #region Bundle Course Management Endpoints
+
+        [HttpPost]
+        [Permission("Courses.Edit")]
+        public async Task<IActionResult> AddCourseToBundle(int bundleId, int courseId)
+        {
+            var currentUserId = User.GetUserId();
+            _logger.LogInformation("User {UserId} requested adding Course {CourseId} to Bundle {BundleId}", currentUserId, courseId, bundleId);
+
+            if (bundleId <= 0 || courseId <= 0)
+            {
+                return Json(new { success = false, message = "Invalid parameters." });
+            }
+
+            var success = await _courseService.AddCourseToBundleAsync(bundleId, courseId);
+            if (success)
+            {
+                _logger.LogInformation("AUDIT: Course {CourseId} attached to Bundle {BundleId} by User {UserId}", courseId, bundleId, currentUserId);
+                TempData["SuccessMessage"] = "Course added to bundle successfully.";
+                return Json(new { success = true, message = "Course attached to bundle successfully." });
+            }
+
+            return Json(new { success = false, message = "Unable to add course to bundle. It may already be attached or invalid." });
+        }
+
+        [HttpPost]
+        [Permission("Courses.Edit")]
+        public async Task<IActionResult> RemoveCourseFromBundle(int bundleId, int courseId)
+        {
+            var currentUserId = User.GetUserId();
+            _logger.LogInformation("User {UserId} requested removing Course {CourseId} from Bundle {BundleId}", currentUserId, courseId, bundleId);
+
+            if (bundleId <= 0 || courseId <= 0)
+            {
+                return Json(new { success = false, message = "Invalid parameters." });
+            }
+
+            var success = await _courseService.RemoveCourseFromBundleAsync(bundleId, courseId);
+            if (success)
+            {
+                _logger.LogInformation("AUDIT: Course {CourseId} removed from Bundle {BundleId} by User {UserId}", courseId, bundleId, currentUserId);
+                TempData["SuccessMessage"] = "Course removed from bundle successfully.";
+                return Json(new { success = true, message = "Course removed from bundle successfully." });
+            }
+
+            return Json(new { success = false, message = "Unable to remove course from bundle." });
+        }
+
+        #endregion
     }
 }

@@ -99,7 +99,13 @@
                         </div>
                     }
 
-                    <div class="absolute top-4 @(isRtl ? "right-4" : "left-4") z-10">
+                    <div class="absolute top-4 @(isRtl ? "right-4" : "left-4") z-10 flex items-center gap-1.5">
+                        @if (course.IsBundle)
+                        {
+                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wide rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 text-white backdrop-blur-md shadow-md uppercase">
+                                <i class="fas fa-cubes @(isRtl ? "ml-1" : "mr-1") text-[9px]"></i>Bundle
+                            </span>
+                        }
                         @if (course.IsActive)
                         {
                             <span class="px-2.5 py-1 text-[10px] font-bold tracking-wide rounded-lg bg-emerald-500/90 text-dark-bg backdrop-blur-md shadow-md uppercase">
@@ -120,18 +126,39 @@
                     <p class="text-slate-400 text-xs font-medium line-clamp-2 mb-6 flex-1 leading-relaxed">@course.Description</p>
 
                     <div class="flex items-center justify-between text-xs font-semibold text-slate-400 mb-6 pb-4 border-b border-white/5 gap-2">
-                        <div class="flex items-center bg-white/[0.02] px-2.5 py-1.5 rounded-lg border border-white/[0.02]">
-                            <i class="fas fa-video text-brand-cyan @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i>
-                            <span>@(course.Videos?.Count ?? 0) @Localizer["VideosAbbr"]</span>
-                        </div>
+                        @if (course.IsBundle)
+                        {
+                            <div class="flex items-center bg-purple-500/10 text-purple-300 px-2.5 py-1.5 rounded-lg border border-purple-500/20">
+                                <i class="fas fa-cubes @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i>
+                                <span>@(course.BundleCourses?.Count ?? 0) @(isRtl ? "دوره" : "Courses")</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="flex items-center bg-white/[0.02] px-2.5 py-1.5 rounded-lg border border-white/[0.02]">
+                                <i class="fas fa-video text-brand-cyan @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i>
+                                <span>@(course.Videos?.Count ?? 0) @Localizer["VideosAbbr"]</span>
+                            </div>
+                        }
                         <div class="flex items-center bg-white/[0.02] px-2.5 py-1.5 rounded-lg border border-white/[0.02]">
                             <i class="far fa-clock text-brand-blue @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i>
                             <span>@(course.DurationHours ?? 0) @Localizer["Hours"]</span>
                         </div>
-                        <div class="flex items-center bg-brand-yellow/10 text-brand-yellow px-2.5 py-1.5 rounded-lg border border-brand-yellow/10">
-                            <i class="fas fa-tag @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i>
-                            <span class="font-mono font-bold">$@course.Price.ToString("N0")</span>
-                        </div>
+                        @if (course.HasActiveDiscount)
+                        {
+                            <div class="flex items-center bg-emerald-500/10 text-emerald-400 px-2.5 py-1.5 rounded-lg border border-emerald-500/20" title="Discount active: -@course.DiscountPercent%">
+                                <i class="fas fa-tag @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i>
+                                <span class="font-mono text-slate-400 line-through text-[10px] @(isRtl ? "ml-1" : "mr-1")">$@course.Price.ToString("N0")</span>
+                                <span class="font-mono font-bold">$@course.DiscountPrice.Value.ToString("N0")</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="flex items-center bg-brand-yellow/10 text-brand-yellow px-2.5 py-1.5 rounded-lg border border-brand-yellow/10">
+                                <i class="fas fa-tag @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i>
+                                <span class="font-mono font-bold">$@course.Price.ToString("N0")</span>
+                            </div>
+                        }
                     </div>
 
                     <div class="grid grid-cols-2 gap-2 mt-auto">

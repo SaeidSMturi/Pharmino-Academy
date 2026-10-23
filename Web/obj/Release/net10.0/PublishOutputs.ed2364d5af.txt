@@ -1,9 +1,17 @@
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\Web.exe
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\publish\web.config
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\web.config
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\AppData\VideoEngine\version.json
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\appsettings.Development.json
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\appsettings.json
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\dotnet-tools.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\publish\AppData\VideoEngine\version.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\publish\appsettings.Development.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\publish\appsettings.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\publish\dotnet-tools.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\publish\Web.deps.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\publish\Web.runtimeconfig.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\publish\Web.staticwebassets.endpoints.json
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\Assets\Fonts\DejaVuSans-Bold.ttf
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\Assets\Fonts\DejaVuSansMono.ttf
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\Web.dll

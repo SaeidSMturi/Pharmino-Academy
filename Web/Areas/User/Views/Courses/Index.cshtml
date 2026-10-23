@@ -61,9 +61,17 @@
                             </div>
                         }
                         <!-- Premium Float Tag -->
-                        <span class="absolute top-4 @(isRtl ? "left-4" : "right-4") px-3 py-1.5 rounded-xl bg-brand-cyan text-brand-dark text-[10px] font-extrabold shadow-lg shadow-brand-cyan/20 tracking-wider">
-                            <i class="fas fa-check-circle @(isRtl ? "ml-1" : "mr-1")"></i> @Localizer["Enrolled"]
-                        </span>
+                        <div class="absolute top-4 @(isRtl ? "left-4" : "right-4") flex items-center gap-1.5">
+                            @if (course.IsBundle)
+                            {
+                                <span class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-[10px] font-black shadow-lg shadow-purple-500/20 tracking-wider">
+                                    <i class="fas fa-cubes @(isRtl ? "ml-1" : "mr-1")"></i> @(isRtl ? "پکیج" : "Bundle")
+                                </span>
+                            }
+                            <span class="px-3 py-1.5 rounded-xl bg-brand-cyan text-brand-dark text-[10px] font-extrabold shadow-lg shadow-brand-cyan/20 tracking-wider">
+                                <i class="fas fa-check-circle @(isRtl ? "ml-1" : "mr-1")"></i> @Localizer["Enrolled"]
+                            </span>
+                        </div>
                     </div>
 
                     <!-- Course Content Wrapper -->

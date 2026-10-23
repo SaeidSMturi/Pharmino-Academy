@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QSX+ByRMlrE=",
+  "dgSpecHash": "whFKJJGHptQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\user\\Desktop\\Pharmacists\\Infrastructure\\Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\awssdk.core\\4.0.9.4\\awssdk.core.4.0.9.4.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\awssdk.s3\\4.0.25.1\\awssdk.s3.4.0.25.1.nupkg.sha512",
@@ -61,9 +61,9 @@
       "code": "NU1902",
       "level": "Warning",
       "message": "Package 'System.Security.Cryptography.Pkcs' 9.0.4 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-2fmv-rv2c-59x7",
-      "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj",
+      "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Infrastructure\\Infrastructure.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj",
+      "filePath": "C:\\Users\\user\\Desktop\\Pharmacists\\Infrastructure\\Infrastructure.csproj",
       "libraryId": "System.Security.Cryptography.Pkcs",
       "targetGraphs": [
         "net10.0"
@@ -73,9 +73,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'System.Security.Cryptography.Pkcs' 9.0.4 has a known high severity vulnerability, https://github.com/advisories/GHSA-846f-f764-76mx",
-      "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj",
+      "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Infrastructure\\Infrastructure.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj",
+      "filePath": "C:\\Users\\user\\Desktop\\Pharmacists\\Infrastructure\\Infrastructure.csproj",
       "libraryId": "System.Security.Cryptography.Pkcs",
       "targetGraphs": [
         "net10.0"

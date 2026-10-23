@@ -1,0 +1,204 @@
+@model Domain.Entities.Course.Course
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = Model.Title;
+    var bundleCourses = ViewBag.BundleCourses as List<Domain.Entities.Course.Course> ?? new List<Domain.Entities.Course.Course>();
+    var enrollment = ViewBag.Enrollment as Domain.Entities.Course.CourseEnrollment;
+
+    var totalVideos = bundleCourses.Sum(c => c.Videos?.Count(v => v.IsActive) ?? 0);
+    var totalDuration = bundleCourses.Sum(c => c.DurationHours ?? 0);
+    var totalPdfs = bundleCourses.Sum(c => c.Pdfs?.Count(p => p.IsActive) ?? 0);
+}
+
+<div class="space-y-8 pb-12 animate-fade-in-up" dir="@(isRtl ? "rtl" : "ltr")">
+    <div>
+        <a href="@Url.Action("Index")" class="group inline-flex items-center px-5 py-2.5 rounded-xl bg-white/5 text-slate-300 hover:text-brand-cyan border border-white/5 hover:border-brand-cyan/30 transition-all duration-300 shadow-lg backdrop-blur-md">
+            <i class="fas @(isRtl ? "fa-arrow-right ml-2.5" : "fa-arrow-left mr-2.5") transform @(isRtl ? "group-hover:translate-x-1" : "group-hover:-translate-x-1") transition-transform"></i>
+            <span class="font-semibold text-sm">@Localizer["BackToMyCourses"]</span>
+        </a>
+    </div>
+
+    <!-- Bundle Hero Panel -->
+    <div class="glass-panel rounded-[2rem] p-6 lg:p-10 relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
+            <div class="lg:col-span-4">
+                <div class="relative w-full aspect-video lg:aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl group border border-purple-500/20">
+                    @if (!string.IsNullOrEmpty(Model.ImageName) && Model.ImageName != "default.jpg")
+                    {
+                        <img src="~/uploads/courses/@Model.ImageName" alt="@Model.Title" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-transparent to-transparent"></div>
+                    }
+                    else
+                    {
+                        <div class="w-full h-full bg-gradient-to-br from-purple-500/20 via-indigo-500/10 to-brand-cyan/10 flex items-center justify-center">
+                            <i class="fas fa-cubes text-purple-400 text-6xl drop-shadow-lg animate-pulse"></i>
+                        </div>
+                    }
+                    <div class="absolute top-4 @(isRtl ? "right-4" : "left-4") bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center shadow-lg shadow-purple-500/30">
+                        <i class="fas fa-cubes @(isRtl ? "ml-1.5" : "mr-1.5")"></i> @(isRtl ? "پکیج آموزشی" : "Course Bundle")
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8 flex flex-col justify-center">
+                <div class="inline-flex items-center gap-2 mb-3">
+                    <span class="px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                        @(isRtl ? "دسترسی کامل فعال" : "All-In-One Access Active")
+                    </span>
+                    @if (enrollment != null)
+                    {
+                        <span class="text-xs text-slate-400 font-medium">
+                            <i class="far fa-calendar-check @(isRtl ? "ml-1" : "mr-1") text-purple-400"></i>
+                            @(isRtl ? "تاریخ ثبت‌نام:" : "Enrolled on:") @enrollment.EnrollmentDate.ToString("yyyy/MM/dd")
+                        </span>
+                    }
+                </div>
+
+                <h1 class="text-2xl md:text-4xl font-extrabold text-white mb-4 tracking-tight leading-tight">
+                    @Model.Title
+                </h1>
+
+                <p class="text-slate-400 text-sm md:text-base mb-8 leading-relaxed max-w-3xl">
+                    @Model.Description
+                </p>
+
+                <!-- Bundle Stats Counter -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="p-4 rounded-xl bg-purple-500/10 border border-purple-500/20 flex flex-col items-center justify-center text-center group">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center mb-2 text-purple-400">
+                            <i class="fas fa-cubes text-base"></i>
+                        </div>
+                        <div class="text-white font-extrabold text-lg">@bundleCourses.Count</div>
+                        <div class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">@(isRtl ? "دوره‌های پکیج" : "Included Courses")</div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 flex flex-col items-center justify-center text-center group">
+                        <div class="w-10 h-10 rounded-xl bg-brand-cyan/20 flex items-center justify-center mb-2 text-brand-cyan">
+                            <i class="fas fa-video text-base"></i>
+                        </div>
+                        <div class="text-white font-extrabold text-lg">@totalVideos</div>
+                        <div class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">@(isRtl ? "درس‌های ویدیویی" : "Total Lessons")</div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-brand-blue/10 border border-brand-blue/20 flex flex-col items-center justify-center text-center group">
+                        <div class="w-10 h-10 rounded-xl bg-brand-blue/20 flex items-center justify-center mb-2 text-brand-blue">
+                            <i class="far fa-clock text-base"></i>
+                        </div>
+                        <div class="text-white font-extrabold text-lg">@totalDuration</div>
+                        <div class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">@(isRtl ? "ساعت آموزش" : "Total Hours")</div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-brand-orange/10 border border-brand-orange/20 flex flex-col items-center justify-center text-center group">
+                        <div class="w-10 h-10 rounded-xl bg-brand-orange/20 flex items-center justify-center mb-2 text-brand-orange">
+                            <i class="fas fa-file-pdf text-base"></i>
+                        </div>
+                        <div class="text-white font-extrabold text-lg">@totalPdfs</div>
+                        <div class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">@(isRtl ? "فایل‌های جزوه" : "PDF Handouts")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Included Courses Section -->
+    <div class="space-y-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-xl md:text-2xl font-extrabold text-white flex items-center gap-3">
+                    <i class="fas fa-layer-group text-purple-400"></i>
+                    <span>@(isRtl ? "دوره‌های موجود در این پکیج" : "Included Courses in this Bundle")</span>
+                </h2>
+                <p class="text-slate-400 text-xs md:text-sm mt-1">
+                    @(isRtl ? "هر دوره را برای مشاهده سرفصل‌ها، تماشای ویدیوها و دانلود فایل‌های PDF انتخاب کنید." : "Choose any course below to start watching video lessons and downloading PDF resources.")
+                </p>
+            </div>
+            <span class="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 font-bold">
+                @bundleCourses.Count @(isRtl ? "دوره" : "Courses")
+            </span>
+        </div>
+
+        @if (bundleCourses.Any())
+        {
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @for (int i = 0; i < bundleCourses.Count; i++)
+                {
+                    var course = bundleCourses[i];
+                    var videoCount = course.Videos?.Count(v => v.IsActive) ?? 0;
+                    var pdfCount = course.Pdfs?.Count(p => p.IsActive) ?? 0;
+
+                    <div class="glass-panel rounded-2xl overflow-hidden hover:border-purple-500/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full group shadow-xl">
+                        <!-- Thumbnail & Order Badge -->
+                        <div class="h-48 bg-brand-dark relative overflow-hidden shrink-0 border-b border-white/5">
+                            @if (!string.IsNullOrEmpty(course.ImageName) && course.ImageName != "default.jpg")
+                            {
+                                <img src="~/uploads/courses/@course.ImageName" alt="@course.Title" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                                <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-transparent to-transparent"></div>
+                            }
+                            else
+                            {
+                                <div class="w-full h-full bg-gradient-to-br from-purple-500/10 to-brand-cyan/10 flex items-center justify-center">
+                                    <i class="fas fa-book-open text-slate-600 text-5xl opacity-40"></i>
+                                </div>
+                            }
+
+                            <!-- Course Number Tag -->
+                            <span class="absolute top-4 @(isRtl ? "right-4" : "left-4") px-3 py-1 rounded-xl bg-purple-500/90 text-white text-xs font-black shadow-lg shadow-purple-500/30">
+                                @(isRtl ? $"بخش {i + 1}" : $"Part {i + 1}")
+                            </span>
+
+                            <span class="absolute top-4 @(isRtl ? "left-4" : "right-4") px-3 py-1 rounded-xl bg-emerald-500/90 text-dark-bg text-[10px] font-black uppercase tracking-wider shadow-md">
+                                <i class="fas fa-unlock @(isRtl ? "ml-1" : "mr-1")"></i> @(isRtl ? "آنلاک شده" : "Unlocked")
+                            </span>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="p-6 flex flex-col flex-1 justify-between">
+                            <div>
+                                <h3 class="text-base font-bold text-white group-hover:text-purple-300 transition-colors line-clamp-2 min-h-[3rem] mb-2">
+                                    @course.Title
+                                </h3>
+                                <p class="text-slate-400 text-xs leading-relaxed line-clamp-3 mb-6 min-h-[3.5rem]">
+                                    @course.Description
+                                </p>
+                            </div>
+
+                            <div class="space-y-4 pt-4 border-t border-white/5">
+                                <div class="flex items-center justify-between text-xs font-semibold text-slate-400">
+                                    <span class="flex items-center gap-1.5 bg-white/[0.02] px-2.5 py-1 rounded-lg border border-white/[0.05]">
+                                        <i class="fas fa-video text-brand-cyan text-[11px]"></i>
+                                        <span>@videoCount @Localizer["VideosAbbr"]</span>
+                                    </span>
+                                    <span class="flex items-center gap-1.5 bg-white/[0.02] px-2.5 py-1 rounded-lg border border-white/[0.05]">
+                                        <i class="far fa-clock text-brand-blue text-[11px]"></i>
+                                        <span>@(course.DurationHours ?? 0) @(isRtl ? "ساعت" : "hrs")</span>
+                                    </span>
+                                    <span class="flex items-center gap-1.5 bg-white/[0.02] px-2.5 py-1 rounded-lg border border-white/[0.05]">
+                                        <i class="fas fa-file-pdf text-brand-orange text-[11px]"></i>
+                                        <span>@pdfCount PDFs</span>
+                                    </span>
+                                </div>
+
+                                <a href="/User/Course/@course.CourseId"
+                                   class="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-extrabold text-xs transition-all duration-300 shadow-lg shadow-purple-500/20 hover:scale-[1.02]">
+                                    <i class="fas fa-play @(isRtl ? "ml-2" : "mr-2") text-xs"></i>
+                                    <span>@(isRtl ? "ورود به دوره و شروع یادگیری" : "Start Learning Course")</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="glass-panel rounded-3xl p-12 text-center max-w-xl mx-auto">
+                <i class="fas fa-box-open text-4xl text-slate-600 mb-3 block"></i>
+                <h4 class="text-white text-base font-bold mb-1">@(isRtl ? "هیچ دوره‌ای در این پکیج ثبت نشده است" : "No courses inside this bundle yet")</h4>
+                <p class="text-slate-400 text-xs">@(isRtl ? "محتوای این پکیج به زودی توسط اساتید تکمیل خواهد شد." : "The instructor is currently preparing courses for this bundle.")</p>
+            </div>
+        }
+    </div>
+</div>

@@ -87,6 +87,14 @@ namespace Web.Areas.User.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            if (course.IsBundle)
+            {
+                var bundleCourses = await _courseService.GetBundleCoursesAsync(id);
+                ViewBag.BundleCourses = bundleCourses;
+                ViewBag.Enrollment = await _courseService.GetUserEnrollmentAsync(userId, id);
+                return View("BundleDetails", course);
+            }
+
             ViewBag.Videos = await _courseService.GetCourseVideosAsync(id, userId);
             ViewBag.Pdfs = await _courseService.GetCoursePdfsAsync(id, userId);
             ViewBag.Enrollment = await _courseService.GetUserEnrollmentAsync(userId, id);

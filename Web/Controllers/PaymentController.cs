@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Application.DTOs.Payment;
@@ -83,7 +83,8 @@ namespace Web.Controllers
                 selectedCurrency = "USD";
             }
 
-            var localAmount = CurrencyHelper.ConvertFromUsd(course.Price, selectedCurrency);
+            var effectivePrice = course.EffectivePrice;
+            var localAmount = CurrencyHelper.ConvertFromUsd(effectivePrice, selectedCurrency);
 
             var returnUrl = Url.Action("PayPalCallback", "Payment", new { courseId }, Request.Scheme);
             var cancelUrl = Url.Action("PayPalCancel", "Payment", new { courseId }, Request.Scheme);
@@ -94,7 +95,7 @@ namespace Web.Controllers
                 return RedirectToAction("Checkout", new { courseId });
             }
 
-            var approvalUrl = await _payPalService.CreateOrderAsync(userId, courseId, localAmount, selectedCurrency, course.Price, returnUrl, cancelUrl);
+            var approvalUrl = await _payPalService.CreateOrderAsync(userId, courseId, localAmount, selectedCurrency, effectivePrice, returnUrl, cancelUrl);
             if (string.IsNullOrEmpty(approvalUrl))
             {
                 TempData["ErrorMessage"] = "Error connecting to the payment gateway.";

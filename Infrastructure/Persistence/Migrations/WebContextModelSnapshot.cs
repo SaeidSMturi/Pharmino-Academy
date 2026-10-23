@@ -38,6 +38,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<decimal?>("DiscountPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int?>("DurationHours")
                         .HasColumnType("int");
 
@@ -46,6 +49,12 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsBundle")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDiscountActive")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdate")
@@ -62,6 +71,36 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasKey("CourseId");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Course.CourseBundleItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("BundleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderIndex")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("BundleId", "CourseId")
+                        .IsUnique();
+
+                    b.ToTable("CourseBundleItems");
                 });
 
             modelBuilder.Entity("Domain.Entities.Course.CourseEnrollment", b =>
@@ -2146,6 +2185,25 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Visitors");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Course.CourseBundleItem", b =>
+                {
+                    b.HasOne("Domain.Entities.Course.Course", "Bundle")
+                        .WithMany("BundleCourses")
+                        .HasForeignKey("BundleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Course.Course", "Course")
+                        .WithMany("IncludedInBundles")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Bundle");
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("Domain.Entities.Course.CourseEnrollment", b =>
                 {
                     b.HasOne("Domain.Entities.Course.Course", "Course")
@@ -2374,7 +2432,11 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Course.Course", b =>
                 {
+                    b.Navigation("BundleCourses");
+
                     b.Navigation("Enrollments");
+
+                    b.Navigation("IncludedInBundles");
 
                     b.Navigation("Pdfs");
 

@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
 @model Domain.Entities.Course.Course
@@ -8,6 +8,7 @@
     var isEnrolled = (bool)ViewBag.IsEnrolled;
     var videos = ViewBag.Videos as List<Domain.Entities.Course.CourseVideo>;
     var pdfs = ViewBag.Pdfs as List<Domain.Entities.Course.CoursePdf>;
+    var bundleCourses = ViewBag.BundleCourses as List<Domain.Entities.Course.Course>;
     var isAuthenticated = (bool)ViewBag.IsAuthenticated;
 }
 
@@ -80,10 +81,39 @@
                             <i class="fas fa-graduation-cap text-custom-gold/50 text-7xl drop-shadow-lg"></i>
                         </div>
                     }
+                    <div class="absolute top-4 right-4 flex flex-col gap-1.5 items-end z-20">
+                        @if (Model.IsBundle)
+                        {
+                            <span class="px-3.5 py-1 text-xs font-black uppercase tracking-wider rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg flex items-center gap-1.5">
+                                <i class="fas fa-layer-group"></i> Course Bundle
+                            </span>
+                        }
+                        @if (Model.HasActiveDiscount)
+                        {
+                            <span class="px-3 py-1 text-xs font-black uppercase tracking-wider rounded-full bg-gradient-to-r from-rose-500 to-amber-500 text-white shadow-lg animate-pulse">
+                                -@Model.DiscountPercent% OFF
+                            </span>
+                        }
+                    </div>
                 </div>
             </div>
 
             <div class="lg:col-span-7 flex flex-col justify-center">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                    @if (Model.IsBundle)
+                    {
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                            <i class="fas fa-layer-group"></i> Complete Package (@(bundleCourses?.Count ?? 0) Courses)
+                        </span>
+                    }
+                    @if (Model.HasActiveDiscount)
+                    {
+                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                            <i class="fas fa-bolt"></i> Limited Discount
+                        </span>
+                    }
+                </div>
+
                 <h1 class="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-custom-snow to-custom-gold mb-4 leading-tight">
                     @Model.Title
                 </h1>
@@ -92,6 +122,17 @@
                 </p>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    @if (Model.IsBundle)
+                    {
+                        <div class="p-4 rounded-2xl bg-purple-500/10 border border-purple-500/20 hover:bg-purple-500/20 hover:border-purple-500/40 transition-all flex flex-col items-center justify-center text-center group">
+                            <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center mb-2 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(168,85,247,0.4)] transition-all">
+                                <i class="fas fa-layer-group text-purple-400 text-lg"></i>
+                            </div>
+                            <div class="text-custom-snow font-bold text-lg">@(bundleCourses?.Count ?? 0)</div>
+                            <div class="text-custom-snow/50 text-xs uppercase tracking-wider">Sub-Courses</div>
+                        </div>
+                    }
+
                     @if (Model.DurationHours.HasValue && Model.DurationHours.Value > 0)
                     {
                         <div class="p-4 rounded-2xl bg-custom-navy/20 border border-custom-gold/10 hover:bg-custom-navy/40 hover:border-custom-gold/30 transition-all flex flex-col items-center justify-center text-center group">
@@ -111,20 +152,37 @@
                         <div class="text-custom-snow/50 text-xs uppercase tracking-wider">@Localizer["Videos"]</div>
                     </div>
 
-                    <div class="p-4 rounded-2xl bg-custom-navy/20 border border-custom-gold/10 hover:bg-custom-navy/40 hover:border-custom-gold/30 transition-all flex flex-col items-center justify-center text-center group">
-                        <div class="w-10 h-10 rounded-full bg-[#ff6b6b]/10 flex items-center justify-center mb-2 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(255,107,107,0.3)] transition-all">
-                            <i class="fas fa-file-pdf text-[#ff6b6b] text-lg"></i>
+                    @if (!Model.IsBundle)
+                    {
+                        <div class="p-4 rounded-2xl bg-custom-navy/20 border border-custom-gold/10 hover:bg-custom-navy/40 hover:border-custom-gold/30 transition-all flex flex-col items-center justify-center text-center group">
+                            <div class="w-10 h-10 rounded-full bg-[#ff6b6b]/10 flex items-center justify-center mb-2 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(255,107,107,0.3)] transition-all">
+                                <i class="fas fa-file-pdf text-[#ff6b6b] text-lg"></i>
+                            </div>
+                            <div class="text-custom-snow font-bold text-lg">@(pdfs?.Count ?? 0)</div>
+                            <div class="text-custom-snow/50 text-xs uppercase tracking-wider">@Localizer["PDFs"]</div>
                         </div>
-                        <div class="text-custom-snow font-bold text-lg">@(pdfs?.Count ?? 0)</div>
-                        <div class="text-custom-snow/50 text-xs uppercase tracking-wider">@Localizer["PDFs"]</div>
-                    </div>
+                    }
 
                     <div class="p-4 rounded-2xl bg-custom-navy/20 border border-custom-gold/10 hover:bg-custom-navy/40 hover:border-custom-gold/30 transition-all flex flex-col items-center justify-center text-center group">
                         <div class="w-10 h-10 rounded-full bg-[#4ade80]/10 flex items-center justify-center mb-2 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(74,222,128,0.3)] transition-all">
                             <i class="fas fa-tag text-[#4ade80] text-lg"></i>
                         </div>
                         <div class="text-custom-snow font-bold text-lg">
-                            @(Model.Price == 0 ? Localizer["Free"] : $"${Model.Price:N0}")
+                            @if (Model.HasActiveDiscount)
+                            {
+                                <div>
+                                    <span class="text-emerald-400 font-black">$@Model.EffectivePrice.ToString("N0")</span>
+                                    <span class="text-xs text-custom-snow/40 line-through block">$@Model.Price.ToString("N0")</span>
+                                </div>
+                            }
+                            else if (Model.Price == 0)
+                            {
+                                <span>@Localizer["Free"]</span>
+                            }
+                            else
+                            {
+                                <span>$@Model.Price.ToString("N0")</span>
+                            }
                         </div>
                         <div class="text-custom-snow/50 text-xs uppercase tracking-wider">@Localizer["Price"]</div>
                     </div>
@@ -146,9 +204,17 @@
                             @Html.AntiForgeryToken()
                             <button type="submit" class="flex items-center justify-center w-full px-8 py-4 rounded-2xl bg-custom-gold hover:bg-[#c2b869] text-custom-navy font-bold text-lg transition-all duration-300 transform hover:-translate-y-1 shadow-[0_0_20px_rgba(225,215,136,0.4)] group border border-custom-gold">
                                 <i class="fas fa-user-plus mr-3 group-hover:scale-110 transition-transform"></i>
-                                @if (Model.Price == 0)
+                                @if (Model.EffectivePrice == 0)
                                 {
                                     <span>@Localizer["EnrollNowForFree"]</span>
+                                }
+                                else if (Model.HasActiveDiscount)
+                                {
+                                    <span class="flex items-center gap-2">
+                                        <span>Enroll Now for $@Model.EffectivePrice.ToString("N0")</span>
+                                        <span class="text-sm line-through opacity-70">($@Model.Price.ToString("N0"))</span>
+                                        <span class="text-xs bg-custom-navy text-custom-gold px-2 py-0.5 rounded-full font-black">-@Model.DiscountPercent%</span>
+                                    </span>
                                 }
                                 else
                                 {
@@ -173,6 +239,82 @@
             </div>
         </div>
     </div>
+
+    @if (Model.IsBundle && bundleCourses != null && bundleCourses.Any())
+    {
+        <div class="rounded-3xl bg-custom-dark/60 border border-purple-500/30 p-8 backdrop-blur-xl shadow-[0_8px_32px_rgba(88,28,135,0.2)]">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-purple-500/20">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center mr-4 border border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+                        <i class="fas fa-cubes text-purple-400 text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-custom-snow flex items-center gap-2">
+                            Included Sub-Courses
+                            <span class="text-xs px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 font-semibold">
+                                @bundleCourses.Count Courses in this Bundle
+                            </span>
+                        </h2>
+                        <p class="text-sm text-custom-snow/60 mt-0.5">Enrolling in this bundle unlocks complete lifetime access to every sub-course below.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach (var subCourse in bundleCourses)
+                {
+                    <div class="rounded-2xl bg-custom-navy/20 border border-purple-500/20 hover:border-purple-500/50 p-5 transition-all duration-300 hover:bg-custom-navy/40 flex flex-col justify-between group">
+                        <div>
+                            <div class="h-40 rounded-xl overflow-hidden mb-4 bg-custom-dark relative">
+                                @if (!string.IsNullOrEmpty(subCourse.ImageName) && subCourse.ImageName != "default.jpg")
+                                {
+                                    <img src="~/uploads/courses/@subCourse.ImageName" alt="@subCourse.Title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                }
+                                else
+                                {
+                                    <div class="w-full h-full flex items-center justify-center bg-purple-950/30">
+                                        <i class="fas fa-graduation-cap text-purple-400/40 text-5xl"></i>
+                                    </div>
+                                }
+                                <div class="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-600 text-white shadow">
+                                    Included
+                                </div>
+                            </div>
+
+                            <h3 class="text-lg font-bold text-custom-snow group-hover:text-purple-300 transition-colors line-clamp-1 mb-2">
+                                @subCourse.Title
+                            </h3>
+                            <p class="text-xs text-custom-snow/60 line-clamp-2 mb-4 leading-relaxed">
+                                @subCourse.Description
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-purple-500/20 flex items-center justify-between">
+                            <div class="flex items-center gap-3 text-xs text-custom-snow/60 font-medium">
+                                <span class="flex items-center gap-1"><i class="far fa-clock text-custom-gold/80"></i> @subCourse.DurationHours hr</span>
+                                <span class="flex items-center gap-1"><i class="fas fa-video text-custom-cyan/80"></i> @subCourse.Videos.Count vids</span>
+                            </div>
+
+                            @if (isEnrolled)
+                            {
+                                <a asp-area="User" asp-controller="Courses" asp-action="MyCourseDetails" asp-route-id="@subCourse.CourseId"
+                                   class="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all shadow-[0_0_15px_rgba(168,85,247,0.4)] flex items-center gap-1.5">
+                                    <i class="fas fa-play text-[10px]"></i> Open
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-area="" asp-controller="Courses" asp-action="Details" asp-route-id="@subCourse.CourseId"
+                                   class="px-3 py-1.5 rounded-xl bg-custom-navy/40 hover:bg-custom-navy text-custom-snow/80 hover:text-white text-xs font-semibold border border-custom-gold/20 transition-all flex items-center gap-1">
+                                    <i class="fas fa-external-link-alt text-[10px]"></i> View
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>

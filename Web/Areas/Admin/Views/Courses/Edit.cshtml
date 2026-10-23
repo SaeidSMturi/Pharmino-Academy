@@ -105,6 +105,47 @@
                 </div>
             </div>
 
+            <!-- Course Type Selector -->
+            <div class="space-y-4 pt-2">
+                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                    @(isRtl ? "نوع دوره" : "Course Type") <span class="text-brand-orange">*</span>
+                </label>
+                <input type="hidden" asp-for="IsBundle" id="IsBundleInput" value="@(Model.IsBundle ? "true" : "false")" />
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div id="typeSingleCard" onclick="selectCourseType(false)"
+                         class="cursor-pointer p-5 rounded-2xl border-2 transition-all duration-300 relative flex items-start gap-4 @(!Model.IsBundle ? "border-brand-cyan bg-brand-cyan/10 shadow-[0_0_20px_rgba(66,234,255,0.15)]" : "border-white/5 bg-white/[0.01] hover:border-brand-cyan/40 hover:bg-brand-cyan/5")">
+                        <div class="w-12 h-12 rounded-xl bg-brand-cyan/20 text-brand-cyan flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-white font-bold text-sm">@(isRtl ? "دوره تکی (استاندارد)" : "Single Course")</h4>
+                                <i id="typeSingleCheck" class="fas @(!Model.IsBundle ? "fa-circle-check text-brand-cyan" : "fa-circle text-slate-600") text-base"></i>
+                            </div>
+                            <p class="text-slate-400 text-xs mt-1 leading-relaxed">
+                                @(isRtl ? "دوره استاندارد شامل ویدیوهای آموزشی و فایل‌های PDF مستقیم." : "Standard individual course containing video lessons and downloadable PDFs.")
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="typeBundleCard" onclick="selectCourseType(true)"
+                         class="cursor-pointer p-5 rounded-2xl border-2 transition-all duration-300 relative flex items-start gap-4 @(Model.IsBundle ? "border-purple-500 bg-purple-500/10 shadow-[0_0_20px_rgba(168,85,247,0.2)]" : "border-white/5 bg-white/[0.01] hover:border-purple-500/40 hover:bg-purple-500/5")">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl shrink-0">
+                            <i class="fas fa-cubes"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-white font-bold text-sm">@(isRtl ? "پکیج / باندل دوره‌ها" : "Course Bundle / Package")</h4>
+                                <i id="typeBundleCheck" class="fas @(Model.IsBundle ? "fa-circle-check text-purple-400" : "fa-circle text-slate-600") text-base"></i>
+                            </div>
+                            <p class="text-slate-400 text-xs mt-1 leading-relaxed">
+                                @(isRtl ? "پکیج چند دوره که شامل چندین زیردوره مجزا است با مدیریت اختصاصی و ثبت‌نام یکپارچه." : "Multi-course bundle with separate sub-courses, unified enrollment, and package discount.")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="pt-6">
                 <h3 class="text-sm font-bold text-brand-yellow uppercase tracking-widest mb-6 flex items-center">
                     <i class="fas fa-coins @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["CoursePricing"]
@@ -112,13 +153,42 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                        <label asp-for="Price" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">@Localizer["PriceUSD"] <span class="text-brand-orange">*</span></label>
+                        <label asp-for="Price" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
+                            @Localizer["PriceUSD"] (@(isRtl ? "قیمت اصلی" : "Base Price")) <span class="text-brand-orange">*</span>
+                        </label>
                         <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
-                            <input asp-for="Price" type="number" step="0.01" min="0" class="w-full bg-transparent px-4 py-3.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-bold font-mono" placeholder="0" />
+                            <input asp-for="Price" id="regularPriceInput" type="number" step="0.01" min="0" oninput="updateDiscountPreview()" class="w-full bg-transparent px-4 py-3.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-bold font-mono" placeholder="0" />
                             <i class="fas fa-tag absolute @(isRtl ? "right-2" : "left-2") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-brand-cyan transition-colors text-sm"></i>
                         </div>
                         <span asp-validation-for="Price" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
                         <p class="text-xs text-slate-500 mt-2 ml-1">@Localizer["SetPriceZeroFree"]</p>
+                    </div>
+
+                    <!-- Discount Section -->
+                    <div class="space-y-3 p-4 rounded-2xl bg-white/[0.01] border border-white/5">
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-2.5") cursor-pointer">
+                                <input asp-for="IsDiscountActive" id="isDiscountActiveCheckbox" type="checkbox" onchange="toggleDiscountSection()" class="w-4 h-4 rounded border-white/10 bg-dark-bg text-brand-yellow focus:ring-brand-yellow/20" />
+                                <span class="text-xs font-bold text-slate-300">
+                                    @(isRtl ? "فعال‌سازی تخفیف ویژه" : "Enable Special Discount")
+                                </span>
+                            </label>
+                            <span id="discountBadge" class="@(Model.IsDiscountActive ? "" : "hidden") px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                                Discount Active
+                            </span>
+                        </div>
+
+                        <div id="discountPriceWrapper" class="space-y-2 @(!Model.IsDiscountActive ? "opacity-50 pointer-events-none" : "") transition-all duration-300">
+                            <label asp-for="DiscountPrice" class="block text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+                                @(isRtl ? "قیمت با تخفیف (دلار)" : "Discounted Price (USD)")
+                            </label>
+                            <div class="relative group border-b border-white/10 focus-within:border-emerald-400/80 transition-colors">
+                                <input asp-for="DiscountPrice" id="discountPriceInput" type="number" step="0.01" min="0" oninput="updateDiscountPreview()" class="w-full bg-transparent px-4 py-2.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-bold font-mono text-emerald-400" placeholder="0.00" />
+                                <i class="fas fa-percent absolute @(isRtl ? "right-2" : "left-2") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-emerald-400 transition-colors text-xs"></i>
+                            </div>
+                            <span asp-validation-for="DiscountPrice" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
+                            <div id="discountSavingsCalc" class="text-[11px] text-emerald-400/90 font-medium hidden"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -163,6 +233,58 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
+        function selectCourseType(isBundle) {
+            document.getElementById('IsBundleInput').value = isBundle ? 'true' : 'false';
+            const singleCard = document.getElementById('typeSingleCard');
+            const bundleCard = document.getElementById('typeBundleCard');
+            const singleCheck = document.getElementById('typeSingleCheck');
+            const bundleCheck = document.getElementById('typeBundleCheck');
+
+            if (isBundle) {
+                bundleCard.className = 'cursor-pointer p-5 rounded-2xl border-2 transition-all duration-300 relative flex items-start gap-4 border-purple-500 bg-purple-500/10 shadow-[0_0_20px_rgba(168,85,247,0.2)]';
+                bundleCheck.className = 'fas fa-circle-check text-purple-400 text-base';
+                singleCard.className = 'cursor-pointer p-5 rounded-2xl border-2 transition-all duration-300 relative flex items-start gap-4 border-white/5 bg-white/[0.01] hover:border-brand-cyan/40 hover:bg-brand-cyan/5';
+                singleCheck.className = 'fas fa-circle text-slate-600 text-base';
+            } else {
+                singleCard.className = 'cursor-pointer p-5 rounded-2xl border-2 transition-all duration-300 relative flex items-start gap-4 border-brand-cyan bg-brand-cyan/10 shadow-[0_0_20px_rgba(66,234,255,0.15)]';
+                singleCheck.className = 'fas fa-circle-check text-brand-cyan text-base';
+                bundleCard.className = 'cursor-pointer p-5 rounded-2xl border-2 transition-all duration-300 relative flex items-start gap-4 border-white/5 bg-white/[0.01] hover:border-purple-500/40 hover:bg-purple-500/5';
+                bundleCheck.className = 'fas fa-circle text-slate-600 text-base';
+            }
+        }
+
+        function toggleDiscountSection() {
+            const chk = document.getElementById('isDiscountActiveCheckbox');
+            const wrapper = document.getElementById('discountPriceWrapper');
+            const badge = document.getElementById('discountBadge');
+
+            if (chk.checked) {
+                wrapper.classList.remove('opacity-50', 'pointer-events-none');
+                badge.classList.remove('hidden');
+                document.getElementById('discountPriceInput').focus();
+            } else {
+                wrapper.classList.add('opacity-50', 'pointer-events-none');
+                badge.classList.add('hidden');
+            }
+            updateDiscountPreview();
+        }
+
+        function updateDiscountPreview() {
+            const regular = parseFloat(document.getElementById('regularPriceInput').value) || 0;
+            const discount = parseFloat(document.getElementById('discountPriceInput').value) || 0;
+            const isDiscountActive = document.getElementById('isDiscountActiveCheckbox').checked;
+            const calcEl = document.getElementById('discountSavingsCalc');
+
+            if (isDiscountActive && regular > 0 && discount > 0 && discount < regular) {
+                const diff = regular - discount;
+                const pct = Math.round((diff / regular) * 100);
+                calcEl.textContent = `🎉 Save $${diff.toFixed(2)} (${pct}% discount) — Final Price: $${discount.toFixed(2)}`;
+                calcEl.classList.remove('hidden');
+            } else {
+                calcEl.classList.add('hidden');
+            }
+        }
+
         document.querySelector('input[type="file"]')?.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -175,6 +297,11 @@
                 }
                 reader.readAsDataURL(file);
             }
+        });
+
+        // Initialize state on load
+        document.addEventListener('DOMContentLoaded', function () {
+            updateDiscountPreview();
         });
     </script>
 }

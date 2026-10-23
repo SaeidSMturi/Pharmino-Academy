@@ -64,6 +64,7 @@ namespace Infrastructure.Persistence
         #region Course
 
         public DbSet<Course> Courses { get; set; }
+        public DbSet<CourseBundleItem> CourseBundleItems { get; set; }
         public DbSet<CourseEnrollment> CourseEnrollments { get; set; }
         public DbSet<CourseVideo> CourseVideos { get; set; }
         public DbSet<CoursePdf> CoursePdfs { get; set; }
@@ -113,6 +114,24 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+
+            modelBuilder.Entity<CourseBundleItem>(entity =>
+            {
+                entity.HasKey(b => b.Id);
+
+                entity.HasOne(b => b.Bundle)
+                    .WithMany(c => c.BundleCourses)
+                    .HasForeignKey(b => b.BundleId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(b => b.Course)
+                    .WithMany(c => c.IncludedInBundles)
+                    .HasForeignKey(b => b.CourseId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasIndex(b => new { b.BundleId, b.CourseId })
+                    .IsUnique();
+            });
 
             // Force all DateTime properties to be stored/read as UTC
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())

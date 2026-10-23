@@ -142,6 +142,11 @@ namespace Web.Controllers
                     pdfs = course.Pdfs.Where(p => p.Price == 0).ToList();
                 }
 
+                if (course.IsBundle)
+                {
+                    ViewBag.BundleCourses = await _courseService.GetBundleCoursesAsync(id);
+                }
+
                 ViewBag.IsEnrolled = isEnrolled;
                 ViewBag.IsAuthenticated = isAuthenticated;
                 ViewBag.Videos = videos;
@@ -253,7 +258,7 @@ namespace Web.Controllers
                     return RedirectToAction(nameof(Details), new { id = courseId });
                 }
 
-                if (course.Price == 0)
+                if (course.EffectivePrice == 0)
                 {
                     var enrolled = await _courseService.EnrollUserInCourseAsync(userId, courseId, 0);
                     if (enrolled)
