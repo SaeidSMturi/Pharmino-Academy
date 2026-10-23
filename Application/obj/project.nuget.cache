@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zbRJ3ak1+lY=",
+  "dgSpecHash": "HI0odDGFmBU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\Desktop\\Pharmacists\\Application\\Application.csproj",
+  "projectFilePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\microsoft.entityframeworkcore\\10.0.10\\microsoft.entityframeworkcore.10.0.10.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\10.0.10\\microsoft.entityframeworkcore.abstractions.10.0.10.nupkg.sha512",

@@ -22,8 +22,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Web",
+              "DocumentMoniker": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
+              "RelativeDocumentMoniker": "Web\\Web.csproj",
+              "ToolTip": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
+              "RelativeToolTip": "Web\\Web.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-10-18T18:25:14.359Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -38,25 +50,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Web",
-              "DocumentMoniker": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
-              "RelativeDocumentMoniker": "Web\\Web.csproj",
-              "ToolTip": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
-              "RelativeToolTip": "Web\\Web.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-10-18T18:25:14.359Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\appsettings.json",
               "RelativeDocumentMoniker": "Web\\appsettings.json",
               "ToolTip": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\appsettings.json",
               "RelativeToolTip": "Web\\appsettings.json",
-              "ViewState": "AgIAABsAAAAAAAAAAABVwCYAAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAAACYAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-10-18T17:55:58.219Z",
               "EditorCaption": ""
@@ -69,9 +69,10 @@
               "RelativeDocumentMoniker": "Web\\Web.csproj",
               "ToolTip": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
               "RelativeToolTip": "Web\\Web.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAABIAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-10-12T19:44:17.117Z"
+              "WhenOpened": "2026-10-12T19:44:17.117Z",
+              "EditorCaption": ""
             }
           ]
         }

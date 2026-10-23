@@ -622,7 +622,6 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\static
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\staticwebassets.development.json
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\staticwebassets.build.endpoints.json
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\swae.build.ex.cache
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\Web.csproj.Up2Date
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\Web.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\refint\Web.dll
@@ -649,3 +648,5 @@ C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\publish\dotnet-tools.jso
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\publish\Web.deps.json
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\publish\Web.runtimeconfig.json
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\publish\Web.staticwebassets.endpoints.json
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\ar\Web.resources.cs
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\en\Web.resources.cs
