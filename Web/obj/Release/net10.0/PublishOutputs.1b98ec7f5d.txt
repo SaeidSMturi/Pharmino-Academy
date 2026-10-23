@@ -61,6 +61,7 @@ C:\Users\user\Desktop\Pharmacists\publish\System.ClientModel.dll
 C:\Users\user\Desktop\Pharmacists\publish\System.Configuration.ConfigurationManager.dll
 C:\Users\user\Desktop\Pharmacists\publish\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\user\Desktop\Pharmacists\publish\System.Memory.Data.dll
+C:\Users\user\Desktop\Pharmacists\publish\System.Security.Cryptography.Pkcs.dll
 C:\Users\user\Desktop\Pharmacists\publish\System.Security.Cryptography.ProtectedData.dll
 C:\Users\user\Desktop\Pharmacists\publish\WebMarkupMin.AspNet.Common.dll
 C:\Users\user\Desktop\Pharmacists\publish\WebMarkupMin.AspNetCoreLatest.dll
@@ -101,6 +102,7 @@ C:\Users\user\Desktop\Pharmacists\publish\runtimes\win\lib\net9.0\Microsoft.Data
 C:\Users\user\Desktop\Pharmacists\publish\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\user\Desktop\Pharmacists\publish\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\user\Desktop\Pharmacists\publish\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\user\Desktop\Pharmacists\publish\runtimes\win\lib\net10.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\user\Desktop\Pharmacists\publish\Application.dll
 C:\Users\user\Desktop\Pharmacists\publish\Domain.dll
 C:\Users\user\Desktop\Pharmacists\publish\Infrastructure.dll

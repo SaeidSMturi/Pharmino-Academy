@@ -61,6 +61,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubT
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\System.Configuration.ConfigurationManager.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\System.Memory.Data.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\System.Security.Cryptography.Pkcs.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\System.Security.Cryptography.ProtectedData.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\WebMarkupMin.AspNet.Common.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\WebMarkupMin.AspNetCoreLatest.dll
@@ -101,6 +102,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubT
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\runtimes\win\lib\net10.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\Application.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\Domain.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\Infrastructure.dll

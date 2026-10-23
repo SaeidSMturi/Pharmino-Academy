@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Domain.Configuration;
 using Infrastructure.Persistence;
 using Domain.Entities.Course;
@@ -23,6 +24,7 @@ public class CoursePdfsController : AdminBaseController
     private readonly UploadLimitsOptions _uploadLimits;
     private readonly ILogger<CoursePdfsController> _logger;
     private readonly IPdfFileLocator _pdfLocator;
+    private readonly IStorageService _storageService;
 
     public class IdRequest
     {
@@ -34,19 +36,20 @@ public class CoursePdfsController : AdminBaseController
         public int Id { get; set; }
     }
 
-    // تزریق ILogger به کانستراکتور
     public CoursePdfsController(
         WebContext context,
         IWebHostEnvironment environment,
         Microsoft.Extensions.Options.IOptions<UploadLimitsOptions> uploadLimits,
         ILogger<CoursePdfsController> logger,
-        IPdfFileLocator pdfLocator)
+        IPdfFileLocator pdfLocator,
+        IStorageService storageService)
     {
         _context = context;
         _environment = environment;
         _uploadLimits = uploadLimits.Value;
         _logger = logger;
         _pdfLocator = pdfLocator;
+        _storageService = storageService;
     }
 
     [Permission("Courses.View")]
@@ -220,6 +223,18 @@ public class CoursePdfsController : AdminBaseController
                 await PdfFile.CopyToAsync(fileStream);
             }
             _logger.LogInformation("Physical file saved successfully to path: {FilePath}", filePath);
+
+            // Upload PDF to cloud bucket storage (DigitalOcean Spaces / S3)
+            try
+            {
+                var bucketDir = $"uploads/courses/{pdf.CourseId}/pdfs";
+                await _storageService.UploadPhysicalFileAsync(filePath, bucketDir, uniqueFileName);
+                _logger.LogInformation("PDF uploaded successfully to cloud bucket: {BucketDir}/{FileName}", bucketDir, uniqueFileName);
+            }
+            catch (Exception cloudEx)
+            {
+                _logger.LogError(cloudEx, "Warning: Failed to upload PDF {FileName} to cloud bucket, but local copy succeeded.", uniqueFileName);
+            }
         }
         catch (Exception ex)
         {
@@ -310,12 +325,23 @@ public class CoursePdfsController : AdminBaseController
                     catch (Exception fileEx)
                     {
                         _logger.LogError(fileEx, "Failed to delete physical file from disk during record deletion. Path: {PdfPath}", pdfPath);
-                        // تصمیم‌گیری برای ادامه کار بسته به سیاست پروژه است، در اینجا عملیات حذف دیتابیس ادامه پیدا می‌کند.
                     }
                 }
                 else
                 {
                     _logger.LogWarning("Physical file not found on disk during deletion. File: {FileName}", pdf.FileName);
+                }
+
+                // Delete from cloud bucket storage
+                try
+                {
+                    var bucketDir = $"uploads/courses/{pdf.CourseId}/pdfs";
+                    await _storageService.DeleteFileAsync(bucketDir, pdf.FileName);
+                    _logger.LogInformation("Deleted PDF from cloud bucket: {BucketDir}/{FileName}", bucketDir, pdf.FileName);
+                }
+                catch (Exception cloudEx)
+                {
+                    _logger.LogError(cloudEx, "Failed to delete PDF from cloud bucket: {FileName}", pdf.FileName);
                 }
             }
 

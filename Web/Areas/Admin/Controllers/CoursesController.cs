@@ -64,6 +64,8 @@ namespace Web.Areas.Admin.Controllers
             {
                 var courses = await _context.Courses
                     .Include(c => c.Videos)
+                    .Include(c => c.BundleCourses)
+                        .ThenInclude(bc => bc.Course)
                     .OrderByDescending(c => c.CreateDate)
                     .ToListAsync();
 
@@ -110,10 +112,10 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [Permission("Courses.View")]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, int? bundleId = null)
         {
             var currentUserId = User.GetUserId();
-            _logger.LogInformation("User {UserId} requested extensive details for Course ID: {CourseId}", currentUserId, id);
+            _logger.LogInformation("User {UserId} requested extensive details for Course ID: {CourseId}, BundleContext: {BundleId}", currentUserId, id, bundleId);
 
             var course = await _context.Courses
                  .Include(c => c.Videos.OrderBy(v => v.OrderIndex))
@@ -127,6 +129,30 @@ namespace Web.Areas.Admin.Controllers
                 _logger.LogWarning("Details request failed. Course ID {CourseId} not found for User {UserId}.", id, currentUserId);
                 TempData["ErrorMessage"] = "Course not found";
                 return RedirectToAction(nameof(Index));
+            }
+
+            // Contextual navigation: Track if admin came from or belongs to a bundle
+            if (bundleId.HasValue && bundleId.Value > 0)
+            {
+                ViewBag.BundleId = bundleId.Value;
+                var bundle = await _context.Courses.AsNoTracking().FirstOrDefaultAsync(c => c.CourseId == bundleId.Value);
+                if (bundle != null)
+                {
+                    ViewBag.BundleTitle = bundle.Title;
+                }
+            }
+            else
+            {
+                var parentBundle = await _context.CourseBundleItems
+                    .Include(bi => bi.Bundle)
+                    .Where(bi => bi.CourseId == id)
+                    .Select(bi => new { bi.BundleId, bi.Bundle.Title })
+                    .FirstOrDefaultAsync();
+                if (parentBundle != null)
+                {
+                    ViewBag.BundleId = parentBundle.BundleId;
+                    ViewBag.BundleTitle = parentBundle.Title;
+                }
             }
 
             // مسیر پیش‌فرض دایرکتوری برای ویدیوهای این دوره
@@ -430,6 +456,16 @@ namespace Web.Areas.Admin.Controllers
                         await ImageFile.CopyToAsync(fileStream);
                     }
 
+                    try
+                    {
+                        await _storageService.UploadPhysicalFileAsync(filePath, "uploads/courses", uniqueFileName);
+                        _logger.LogInformation("Course cover image uploaded to cloud storage bucket: uploads/courses/{UniqueName}", uniqueFileName);
+                    }
+                    catch (Exception s3Ex)
+                    {
+                        _logger.LogWarning(s3Ex, "Failed to upload course cover image to bucket, file saved locally.");
+                    }
+
                     course.ImageName = uniqueFileName;
                     _logger.LogInformation("Course cover image safely processed and saved on disk as: {UniqueName}", uniqueFileName);
                 }
@@ -511,7 +547,10 @@ namespace Web.Areas.Admin.Controllers
 
             var checkImgFolder = Path.Combine(webRoot, "uploads", "courses", existingCourse.ImageName ?? "");
             var checkImgSubFolder = Path.Combine(webRoot, "uploads", "courses", existingCourse.CourseId.ToString(), existingCourse.ImageName ?? "");
-            bool localImageExists = existingCourse.ImageName == "default.jpg" || System.IO.File.Exists(checkImgFolder) || System.IO.File.Exists(checkImgSubFolder);
+            bool localImageExists = existingCourse.ImageName == "default.jpg" || 
+                                    System.IO.File.Exists(checkImgFolder) || 
+                                    System.IO.File.Exists(checkImgSubFolder) ||
+                                    (!string.IsNullOrEmpty(existingCourse.ImageName) && await _storageService.FileExistsAsync("uploads/courses", existingCourse.ImageName));
             ViewBag.ImageExists = localImageExists;
 
             if (!localImageExists && ImageFile == null)
@@ -549,13 +588,14 @@ namespace Web.Areas.Admin.Controllers
                     }
 
                     // حذف تصویر قدیمی در صورت لزوم
-                    if (!string.IsNullOrEmpty(existingCourse.ImageName) && existingCourse.ImageName != "default.jpg")
+                    var oldImageName = existingCourse.ImageName;
+                    if (!string.IsNullOrEmpty(oldImageName) && oldImageName != "default.jpg")
                     {
-                        var oldImagePath = Path.Combine(uploadsFolder, existingCourse.ImageName);
+                        var oldImagePath = Path.Combine(uploadsFolder, oldImageName);
                         if (System.IO.File.Exists(oldImagePath))
                         {
                             System.IO.File.Delete(oldImagePath);
-                            _logger.LogInformation("Purged archaic cover image file: '{OldImage}' from disk storage for Course ID: {CourseId}", existingCourse.ImageName, course.CourseId);
+                            _logger.LogInformation("Purged archaic cover image file: '{OldImage}' from disk storage for Course ID: {CourseId}", oldImageName, course.CourseId);
                         }
                     }
 
@@ -565,6 +605,20 @@ namespace Web.Areas.Admin.Controllers
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await ImageFile.CopyToAsync(fileStream);
+                    }
+
+                    try
+                    {
+                        await _storageService.UploadPhysicalFileAsync(filePath, "uploads/courses", uniqueFileName);
+                        _logger.LogInformation("Replacement course cover uploaded to cloud storage bucket: uploads/courses/{UniqueName}", uniqueFileName);
+                        if (!string.IsNullOrEmpty(oldImageName) && oldImageName != "default.jpg")
+                        {
+                            try { await _storageService.DeleteFileAsync("uploads/courses", oldImageName); } catch { }
+                        }
+                    }
+                    catch (Exception s3Ex)
+                    {
+                        _logger.LogWarning(s3Ex, "Failed to upload replacement cover image to bucket, saved locally.");
                     }
 
                     existingCourse.ImageName = uniqueFileName;
@@ -604,7 +658,7 @@ namespace Web.Areas.Admin.Controllers
             }
 
             TempData["SuccessMessage"] = "Course updated successfully";
-            return RedirectToAction(nameof(Details), new { id = course.CourseId });
+            return RedirectToAction(nameof(Details), "Courses", new { area = "Admin", id = course.CourseId });
         }
 
         #region Bundle Course Management Endpoints

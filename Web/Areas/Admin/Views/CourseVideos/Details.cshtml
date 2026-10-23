@@ -3,7 +3,7 @@
 @{
     var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
     ViewData["Title"] = Localizer["VideoDetails"].Value;
-    var streamUrl = Url.Action("StreamVideo", "CourseVideos", new { Area = "Admin", id = Model.VideoId });
+    var streamUrl = ViewBag.StreamUrl as string ?? Url.Action("StreamVideo", "CourseVideos", new { Area = "Admin", id = Model.VideoId });
 }
 
 <div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start" dir="@(isRtl ? "rtl" : "ltr")">
@@ -35,7 +35,7 @@
                class="w-full sm:w-auto text-center px-5 py-2.5 bg-brand-blue/10 border border-brand-blue/20 text-brand-blue rounded-xl hover:bg-brand-blue hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg whitespace-nowrap">
                 <i class="fas fa-edit @(isRtl ? "ml-2" : "mr-2") text-xs"></i>@Localizer["Edit"]
             </a>
-            <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId"
+            <a href="/Admin/Courses/Details/@Model.CourseId@(ViewBag.BundleId != null ? "?bundleId=" + ViewBag.BundleId : "")"
                class="w-full sm:w-auto text-center px-5 py-2.5 bg-white/5 border border-white/5 text-slate-300 rounded-xl hover:bg-white/10 hover:text-white transition-all text-sm font-bold flex items-center justify-center shadow-lg whitespace-nowrap">
                 <i class="fas @(isRtl ? "fa-arrow-right ml-2" : "fa-arrow-left mr-2") text-xs"></i>@Localizer["Back"]
             </a>
@@ -172,7 +172,7 @@
                     }
                     <div class="p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
                         <span class="text-slate-500 block mb-1 uppercase tracking-wider text-[10px]"><i class="fas fa-book @(isRtl ? "ml-1.5" : "mr-1.5") text-slate-500"></i>@Localizer["CourseTitle"]</span>
-                        <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId"
+                        <a href="/Admin/Courses/Details/@Model.CourseId"
                            class="text-brand-cyan hover:underline transition-colors font-bold text-xs">
                             @Model.Course?.Title
                         </a>

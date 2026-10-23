@@ -1,4 +1,4 @@
-﻿@model Domain.Entities.Course.CourseVideo
+@model Domain.Entities.Course.CourseVideo
 
 @{
     ViewData["Title"] = Model.Title;
@@ -91,10 +91,20 @@
 
     <!-- Navigation Bar / Breadcrumb Layout -->
     <div class="flex items-center justify-between">
-        <a href="@Url.Action("MyCourseDetails", new { id = courseId })" class="group inline-flex items-center px-4 py-2 rounded-xl bg-white/5 text-slate-400 hover:text-brand-cyan border border-white/5 hover:border-brand-cyan/20 transition-all duration-300">
-            <i class="fas fa-chevron-left mr-2 text-xs transform group-hover:-translate-x-0.5 transition-transform"></i>
-            <span class="text-xs font-bold uppercase tracking-wider">Back to Module</span>
-        </a>
+        @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.HasClaim(c => c.Type == "Permission" && (c.Value == "Courses.View" || c.Value == "SuperAdmin")))
+        {
+            <a href="@Url.Action("Details", "Courses", new { area = "Admin", id = courseId })" class="group inline-flex items-center px-4 py-2 rounded-xl bg-brand-cyan/10 text-brand-cyan hover:bg-brand-cyan hover:text-dark-bg border border-brand-cyan/20 transition-all duration-300">
+                <i class="fas fa-arrow-left mr-2 text-xs transform group-hover:-translate-x-0.5 transition-transform"></i>
+                <span class="text-xs font-bold uppercase tracking-wider">Back to Admin Course</span>
+            </a>
+        }
+        else
+        {
+            <a href="@Url.Action("MyCourseDetails", new { id = courseId })" class="group inline-flex items-center px-4 py-2 rounded-xl bg-white/5 text-slate-400 hover:text-brand-cyan border border-white/5 hover:border-brand-cyan/20 transition-all duration-300">
+                <i class="fas fa-chevron-left mr-2 text-xs transform group-hover:-translate-x-0.5 transition-transform"></i>
+                <span class="text-xs font-bold uppercase tracking-wider">Back to Module</span>
+            </a>
+        }
         <span class="text-xs font-bold text-slate-500 uppercase tracking-widest hidden md:inline-block">HLS Core Interface v1.5</span>
     </div>
 

@@ -17,6 +17,9 @@ namespace Application.Services
         {
             return await _context.Courses
                 .Where(c => c.IsActive && c.IsListedForSale)
+                .Include(c => c.Videos)
+                .Include(c => c.BundleCourses)
+                    .ThenInclude(bc => bc.Course)
                 .OrderByDescending(c => c.CreateDate)
                 .ToListAsync();
         }
@@ -122,7 +125,17 @@ namespace Application.Services
                 .Include(v => v.Course)
                 .FirstOrDefaultAsync(v => v.VideoId == videoId);
 
-            if (video == null || !video.IsActive || !video.Course.IsActive)
+            if (video == null)
+                return false;
+
+            // Admin / Staff bypass enrollment requirement
+            var hasAdminRole = await _context.UserRoles
+                .AnyAsync(ur => ur.UserId == userId && ur.Role.IsActive &&
+                    (ur.Role.RoleName == "SuperAdmin" || ur.Role.RoleName == "Admin" || ur.Role.RoleName == "CourseManager" || ur.Role.RoleName == "IT"));
+            if (hasAdminRole)
+                return true;
+
+            if (!video.IsActive || !video.Course.IsActive)
                 return false;
 
             // اگر ویدیو رایگان است
@@ -139,7 +152,17 @@ namespace Application.Services
                 .Include(p => p.Course)
                 .FirstOrDefaultAsync(p => p.PdfId == pdfId);
 
-            if (pdf == null || !pdf.IsActive || !pdf.Course.IsActive)
+            if (pdf == null)
+                return false;
+
+            // Admin / Staff bypass enrollment requirement
+            var hasAdminRole = await _context.UserRoles
+                .AnyAsync(ur => ur.UserId == userId && ur.Role.IsActive &&
+                    (ur.Role.RoleName == "SuperAdmin" || ur.Role.RoleName == "Admin" || ur.Role.RoleName == "CourseManager" || ur.Role.RoleName == "IT"));
+            if (hasAdminRole)
+                return true;
+
+            if (!pdf.IsActive || !pdf.Course.IsActive)
                 return false;
 
             // اگر PDF رایگان است
@@ -154,14 +177,14 @@ namespace Application.Services
         {
             return await _context.CourseVideos
                 .Include(v => v.Course)
-                .FirstOrDefaultAsync(v => v.VideoId == videoId && v.IsActive);
+                .FirstOrDefaultAsync(v => v.VideoId == videoId);
         }
 
         public async Task<CoursePdf?> GetPdfByIdAsync(int pdfId)
         {
             return await _context.CoursePdfs
                 .Include(p => p.Course)
-                .FirstOrDefaultAsync(p => p.PdfId == pdfId && p.IsActive);
+                .FirstOrDefaultAsync(p => p.PdfId == pdfId);
         }
 
         public async Task<List<CourseVideo>> GetCourseVideosAsync(int courseId, int userId)

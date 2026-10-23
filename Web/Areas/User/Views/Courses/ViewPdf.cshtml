@@ -1,4 +1,4 @@
-﻿@model Domain.Entities.Course.CoursePdf
+@model Domain.Entities.Course.CoursePdf
 
 @{
     ViewData["Title"] = ViewBag.PdfTitle;
@@ -13,10 +13,20 @@
 
     <!-- Top Action Bar -->
     <div class="flex items-center justify-between px-1">
-        <a asp-area="User" asp-controller="Courses" asp-action="MyCourseDetails" asp-route-id="@courseId" class="group inline-flex items-center px-4 py-2 rounded-xl bg-white/5 text-slate-400 hover:text-brand-cyan border border-white/5 hover:border-brand-cyan/20 transition-all duration-300">
-            <i class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-0.5 transition-transform"></i>
-            <span class="text-xs font-bold uppercase tracking-wider">Back to <span class="text-slate-300 group-hover:text-brand-cyan transition-colors ml-1">@courseTitle</span></span>
-        </a>
+        @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.HasClaim(c => c.Type == "Permission" && (c.Value == "Courses.View" || c.Value == "SuperAdmin")))
+        {
+            <a asp-area="Admin" asp-controller="Courses" asp-action="Details" asp-route-id="@courseId" class="group inline-flex items-center px-4 py-2 rounded-xl bg-brand-cyan/10 text-brand-cyan hover:bg-brand-cyan hover:text-dark-bg border border-brand-cyan/20 transition-all duration-300">
+                <i class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-0.5 transition-transform"></i>
+                <span class="text-xs font-bold uppercase tracking-wider">Back to Admin Course</span>
+            </a>
+        }
+        else
+        {
+            <a asp-area="User" asp-controller="Courses" asp-action="MyCourseDetails" asp-route-id="@courseId" class="group inline-flex items-center px-4 py-2 rounded-xl bg-white/5 text-slate-400 hover:text-brand-cyan border border-white/5 hover:border-brand-cyan/20 transition-all duration-300">
+                <i class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-0.5 transition-transform"></i>
+                <span class="text-xs font-bold uppercase tracking-wider">Back to <span class="text-slate-300 group-hover:text-brand-cyan transition-colors ml-1">@courseTitle</span></span>
+            </a>
+        }
         <div class="flex items-center gap-2 text-[10px] bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan px-3 py-1.5 rounded-xl font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(66,234,255,0.1)]">
             <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse"></span>
             Cryptographic Node Stream
@@ -151,7 +161,7 @@
         const streamToken = encodeURIComponent('@ViewBag.StreamToken');
         const infoUrl = '@Url.Action("PdfInfo")' + '?token=' + streamToken;
         const pageUrl = n => '@Url.Action("PdfPage")' + '?token=' + streamToken + '&page=' + n;
-        const backUrl = '@Url.Action("MyCourseDetails", new { id = Model.CourseId })';
+        const backUrl = '@(User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.HasClaim(c => c.Type == "Permission" && (c.Value == "Courses.View" || c.Value == "SuperAdmin")) ? Url.Action("Details", "Courses", new { area = "Admin", id = Model.CourseId }) : Url.Action("MyCourseDetails", new { id = Model.CourseId }))';
 
         // Pages are rendered at 2x PDF points, so natural CSS size = bitmap size / 2.
         const SERVER_SCALE = 2;

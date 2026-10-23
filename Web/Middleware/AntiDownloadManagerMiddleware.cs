@@ -28,6 +28,11 @@ namespace Web.Middleware
             // بررسی مسیرهای محافظت‌شده: هم مسیر MP4 قدیمی و هم مسیرهای HLS جدید
             var path = context.Request.Path;
             var isProtectedPath =
+                path.StartsWithSegments("/Students/Courses/StreamVideo", StringComparison.OrdinalIgnoreCase) ||
+                path.StartsWithSegments("/Students/Hls/Manifest", StringComparison.OrdinalIgnoreCase) ||
+                path.StartsWithSegments("/Students/Hls/Segment", StringComparison.OrdinalIgnoreCase) ||
+                path.StartsWithSegments("/Students/Hls/Key", StringComparison.OrdinalIgnoreCase) ||
+                path.StartsWithSegments("/Students/Courses/PdfPage", StringComparison.OrdinalIgnoreCase) ||
                 path.StartsWithSegments("/User/Courses/StreamVideo", StringComparison.OrdinalIgnoreCase) ||
                 path.StartsWithSegments("/User/Hls/Manifest", StringComparison.OrdinalIgnoreCase) ||
                 path.StartsWithSegments("/User/Hls/Segment", StringComparison.OrdinalIgnoreCase) ||

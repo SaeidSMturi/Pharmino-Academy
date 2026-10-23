@@ -75,6 +75,7 @@ namespace Web.Areas.User.Controllers
             return View(enrolledCourses);
         }
 
+        [HttpGet("/Students/Course/{id}")]
         [HttpGet("/User/Course/{id}")]
         public async Task<IActionResult> MyCourseDetails(int id)
         {
@@ -361,6 +362,7 @@ namespace Web.Areas.User.Controllers
         #endregion
 
         #region PDF Operations
+        [HttpGet("/Students/Course/Pdf/{pdfId}")]
         [HttpGet("/User/Course/Pdf/{pdfId}")]
         public async Task<IActionResult> ViewPdf(int pdfId)
         {

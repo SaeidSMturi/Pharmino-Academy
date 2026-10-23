@@ -261,6 +261,25 @@ namespace Web
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
             app.UseHttpsRedirection();
+
+            // 🔄 Terminology Route Redirect: /User -> /Students
+            app.Use(async (context, next) =>
+            {
+                var requestPath = context.Request.Path.Value ?? string.Empty;
+                if (requestPath.Equals("/User", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Response.Redirect("/Students" + context.Request.QueryString, permanent: false);
+                    return;
+                }
+                if (requestPath.StartsWith("/User/", StringComparison.OrdinalIgnoreCase))
+                {
+                    var newPath = "/Students" + requestPath.Substring(5) + context.Request.QueryString;
+                    context.Response.Redirect(newPath, permanent: false);
+                    return;
+                }
+                await next();
+            });
+
             // 🔒 Course PDFs must never be served as static files; they only go out as watermarked page images.
             //    (Covers any old files still sitting in wwwroot/uploads/courses/{id}/pdfs before they are auto-migrated.)
             app.Use(async (context, next) =>
@@ -275,6 +294,68 @@ namespace Web
                 }
                 await next();
             });
+
+            // 🖼️ Course Covers Persistence & Cache Fallback
+            // Restores missing course covers automatically from S3/Spaces if the app folder is deleted during redeployment
+            app.Use(async (context, next) =>
+            {
+                var requestPath = context.Request.Path.Value ?? string.Empty;
+                if (requestPath.StartsWith("/uploads/courses/", StringComparison.OrdinalIgnoreCase) &&
+                    !requestPath.Contains("/pdfs/", StringComparison.OrdinalIgnoreCase) &&
+                    !requestPath.Contains("/videos/", StringComparison.OrdinalIgnoreCase) &&
+                    !requestPath.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                {
+                    var fileName = Path.GetFileName(requestPath);
+                    if (!string.IsNullOrEmpty(fileName) && fileName != "default.jpg")
+                    {
+                        var env = context.RequestServices.GetRequiredService<IWebHostEnvironment>();
+                        var webRoot = !string.IsNullOrWhiteSpace(env.WebRootPath)
+                            ? env.WebRootPath
+                            : Path.Combine(env.ContentRootPath, "wwwroot");
+                        var localFilePath = Path.Combine(webRoot, "uploads", "courses", fileName);
+
+                        if (!File.Exists(localFilePath))
+                        {
+                            try
+                            {
+                                var storageService = context.RequestServices.GetRequiredService<IStorageService>();
+                                if (await storageService.FileExistsAsync("uploads/courses", fileName))
+                                {
+                                    var bytes = await storageService.ReadFileBytesAsync("uploads/courses", fileName);
+                                    if (bytes != null && bytes.Length > 0)
+                                    {
+                                        var dir = Path.GetDirectoryName(localFilePath);
+                                        if (!Directory.Exists(dir))
+                                        {
+                                            Directory.CreateDirectory(dir!);
+                                        }
+                                        await File.WriteAllBytesAsync(localFilePath, bytes);
+
+                                        var ext = Path.GetExtension(fileName).ToLowerInvariant();
+                                        var contentType = ext switch
+                                        {
+                                            ".png" => "image/png",
+                                            ".gif" => "image/gif",
+                                            ".webp" => "image/webp",
+                                            ".svg" => "image/svg+xml",
+                                            _ => "image/jpeg"
+                                        };
+                                        context.Response.ContentType = contentType;
+                                        await context.Response.Body.WriteAsync(bytes);
+                                        return;
+                                    }
+                                }
+                            }
+                            catch
+                            {
+                                // Pass through if retrieval fails
+                            }
+                        }
+                    }
+                }
+                await next();
+            });
+
             app.UseStaticFiles();
             app.UseWebMarkupMin();
 
@@ -305,6 +386,12 @@ namespace Web
             app.UseAccountLockCheck();
 
             app.UseAuthorization();
+
+            // Student area routing (maps /Students/... to Area: "User")
+            app.MapAreaControllerRoute(
+                name: "students",
+                areaName: "User",
+                pattern: "Students/{controller=Dashboard}/{action=Index}/{id?}");
 
             // Area routing
             app.MapControllerRoute(

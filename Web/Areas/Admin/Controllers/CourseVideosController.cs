@@ -922,7 +922,7 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [Permission("Courses.View")]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, int? bundleId = null)
         {
             _logger.LogInformation("Querying specific item view parameters for Video ID: {VideoId}", id);
 
@@ -937,32 +937,77 @@ namespace Web.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Courses");
             }
 
+            ViewBag.BundleId = bundleId;
+
+            // Prepare stream URL
+            var videoPath = Path.Combine(_environment.WebRootPath, "uploads", "courses", video.CourseId.ToString(), "videos", video.VideoFileName);
+            if (System.IO.File.Exists(videoPath))
+            {
+                ViewBag.StreamUrl = Url.Action("StreamVideo", "CourseVideos", new { Area = "Admin", id = video.VideoId });
+            }
+            else
+            {
+                var directoryPath = $"uploads/courses/{video.CourseId}/videos";
+                try
+                {
+                    if (await _storageService.FileExistsAsync(directoryPath, video.VideoFileName))
+                    {
+                        ViewBag.StreamUrl = await _storageService.GetSecureFileUrlAsync(directoryPath, video.VideoFileName, TimeSpan.FromHours(4));
+                    }
+                    else
+                    {
+                        ViewBag.StreamUrl = Url.Action("StreamVideo", "CourseVideos", new { Area = "Admin", id = video.VideoId });
+                    }
+                }
+                catch
+                {
+                    ViewBag.StreamUrl = Url.Action("StreamVideo", "CourseVideos", new { Area = "Admin", id = video.VideoId });
+                }
+            }
+
             return View(video);
         }
 
         [Permission("Courses.View")]
         public async Task<IActionResult> StreamVideo(int id)
         {
-            _logger.LogInformation("Direct master stream extraction pipeline connection demanded for Video ID: {VideoId} by Admin Surface User.", id);
+            _logger.LogInformation("Direct master stream extraction demanded for Video ID: {VideoId} by Admin.", id);
 
             var video = await _context.CourseVideos.FirstOrDefaultAsync(v => v.VideoId == id);
             if (video == null)
             {
-                _logger.LogWarning("Master direct stream failed. Map entry missing for ID: {VideoId}", id);
+                _logger.LogWarning("Master direct stream failed. Video missing for ID: {VideoId}", id);
                 return NotFound();
             }
 
+            // 1. First check local physical file on disk
             var videoPath = Path.Combine(_environment.WebRootPath, "uploads", "courses", video.CourseId.ToString(), "videos", video.VideoFileName);
-
-            if (!System.IO.File.Exists(videoPath))
+            if (System.IO.File.Exists(videoPath))
             {
-                _logger.LogError("Master direct stream failed. File vanished physically from infrastructure storage array. Target Path: {Path}", videoPath);
-                return NotFound();
+                _logger.LogInformation("Streaming video {VideoId} from physical disk.", id);
+                var localFileStream = new FileStream(videoPath, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, useAsync: true);
+                return File(localFileStream, "video/mp4", enableRangeProcessing: true);
             }
 
-            _logger.LogInformation("Instantiating multi-chunk range processing binary stream for direct feedback delivery pipeline on Video ID: {VideoId}", id);
-            var fileStream = new FileStream(videoPath, FileMode.Open, FileAccess.Read, FileShare.Read, 65536, useAsync: true);
-            return File(fileStream, "video/mp4", enableRangeProcessing: true);
+            // 2. Stream from cloud storage bucket (DigitalOcean Spaces / S3) via high-performance pre-signed URL
+            var directoryPath = $"uploads/courses/{video.CourseId}/videos";
+            try
+            {
+                if (await _storageService.FileExistsAsync(directoryPath, video.VideoFileName))
+                {
+                    var secureUrl = await _storageService.GetSecureFileUrlAsync(directoryPath, video.VideoFileName, TimeSpan.FromHours(4));
+                    _logger.LogInformation("Redirecting admin video {VideoId} to pre-signed S3/Spaces URL.", id);
+                    return Redirect(secureUrl);
+                }
+
+                _logger.LogWarning("Video file {FileName} in {Directory} not found in bucket.", video.VideoFileName, directoryPath);
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to get secure streaming URL for video {VideoId} from cloud bucket.", id);
+                return NotFound();
+            }
         }
     }
 }

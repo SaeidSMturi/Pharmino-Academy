@@ -83,7 +83,10 @@
                     {
                         @if (course.ImageName != "default.jpg")
                         {
-                            <img src="~/uploads/courses/@course.ImageName" alt="@course.Title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <img src="~/uploads/courses/@course.ImageName" alt="@course.Title" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <div style="display:none;" class="w-full h-full bg-gradient-to-br from-brand-blue/10 to-brand-cyan/5 items-center justify-center">
+                                <i class="fas fa-graduation-cap text-5xl text-brand-cyan/30 drop-shadow-[0_0_10px_rgba(66,234,255,0.2)]"></i>
+                            </div>
                         }
                         else
                         {

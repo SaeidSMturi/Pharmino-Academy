@@ -379,11 +379,11 @@
             <!-- Bottom Actions -->
             <div class="p-4 border-t border-white/[0.05] space-y-2">
                 <div class="grid grid-cols-2 gap-2">
-                    <a asp-area="User" asp-controller="Dashboard" asp-action="Index"
+                    <a href="/Students"
                        class="flex items-center justify-center @(isRtl ? "space-x-reverse space-x-2" : "space-x-2") py-2.5 px-2 rounded-xl bg-white/[0.03] hover:bg-brand-blue/15 text-slate-300 hover:text-brand-blue border border-white/[0.05] hover:border-brand-blue/30 transition-all duration-300 text-xs font-semibold group"
-                       title="@Localizer["UserPanel"]">
+                       title="@Localizer["Students"]">
                         <i class="fas fa-graduation-cap text-brand-blue text-xs group-hover:scale-110 transition-transform"></i>
-                        <span class="truncate">@Localizer["UserPanel"]</span>
+                        <span class="truncate">@Localizer["Students"]</span>
                     </a>
                     <a href="/"
                        class="flex items-center justify-center @(isRtl ? "space-x-reverse space-x-2" : "space-x-2") py-2.5 px-2 rounded-xl bg-white/[0.03] hover:bg-brand-cyan/15 text-slate-300 hover:text-brand-cyan border border-white/[0.05] hover:border-brand-cyan/30 transition-all duration-300 text-xs font-semibold group"

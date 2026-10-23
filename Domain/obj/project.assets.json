@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj",
+      "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmacists\\Domain\\Domain.csproj",
       "projectName": "Domain",
-      "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj",
+      "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Domain\\Domain.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\obj\\",
+      "outputPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
