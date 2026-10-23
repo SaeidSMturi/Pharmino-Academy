@@ -641,3 +641,11 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\publ
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\publish\Web.deps.json
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\publish\Web.runtimeconfig.json
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Release\net10.0\publish\Web.staticwebassets.endpoints.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\publish\AppData\VideoEngine\version.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\publish\appsettings.Development.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\publish\appsettings.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\publish\dotnet-tools.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\publish\Web.staticwebassets.endpoints.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\publish\web.config
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\publish\Web.deps.json
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\publish\Web.runtimeconfig.json

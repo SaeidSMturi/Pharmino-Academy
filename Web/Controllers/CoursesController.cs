@@ -250,6 +250,13 @@ namespace Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
+                if (!course.IsListedForSale)
+                {
+                    _logger.LogWarning("User {UserId} attempted to enroll in unlisted course {CourseId}.", userId, courseId);
+                    TempData["ErrorMessage"] = "This course is not available for standalone purchase. Please enroll via its bundle package.";
+                    return RedirectToAction(nameof(Details), new { id = courseId });
+                }
+
                 var isEnrolled = await _courseService.IsUserEnrolledAsync(userId, courseId);
                 if (isEnrolled)
                 {

@@ -1,9 +1,17 @@
 C:\Users\user\Desktop\Pharmacists\publish\Web.exe
+C:\Users\user\Desktop\Pharmacists\publish\publish\web.config
 C:\Users\user\Desktop\Pharmacists\publish\web.config
 C:\Users\user\Desktop\Pharmacists\publish\AppData\VideoEngine\version.json
 C:\Users\user\Desktop\Pharmacists\publish\appsettings.Development.json
 C:\Users\user\Desktop\Pharmacists\publish\appsettings.json
 C:\Users\user\Desktop\Pharmacists\publish\dotnet-tools.json
+C:\Users\user\Desktop\Pharmacists\publish\publish\AppData\VideoEngine\version.json
+C:\Users\user\Desktop\Pharmacists\publish\publish\appsettings.Development.json
+C:\Users\user\Desktop\Pharmacists\publish\publish\appsettings.json
+C:\Users\user\Desktop\Pharmacists\publish\publish\dotnet-tools.json
+C:\Users\user\Desktop\Pharmacists\publish\publish\Web.deps.json
+C:\Users\user\Desktop\Pharmacists\publish\publish\Web.runtimeconfig.json
+C:\Users\user\Desktop\Pharmacists\publish\publish\Web.staticwebassets.endpoints.json
 C:\Users\user\Desktop\Pharmacists\publish\Assets\Fonts\DejaVuSans-Bold.ttf
 C:\Users\user\Desktop\Pharmacists\publish\Assets\Fonts\DejaVuSansMono.ttf
 C:\Users\user\Desktop\Pharmacists\publish\Web.dll

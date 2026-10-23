@@ -195,16 +195,34 @@
 
             <div class="pt-6">
                 <h3 class="text-sm font-bold text-brand-orange uppercase tracking-widest mb-6 flex items-center">
-                    <i class="fas fa-sliders @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["CourseStatus"]
+                    <i class="fas fa-store @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @(isRtl ? "العرض وحالة الدورة" : "Store Visibility & Status")
                 </h3>
 
-                <div class="space-y-2">
-                    <label class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01] border border-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/[0.03] transition-colors group">
-                        <input asp-for="IsActive" type="checkbox" class="w-4 h-4 rounded border-white/10 bg-dark-bg text-brand-cyan focus:ring-brand-cyan/20 focus:ring-offset-0" />
-                        <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition-colors flex items-center">
-                            <i class="fas fa-circle-check @(isRtl ? "ml-2" : "mr-2") text-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.3)]"></i>
-                            @Localizer["PublishCourseImmediately"]
-                        </span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-start @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01] border border-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/[0.03] transition-colors group">
+                        <input asp-for="IsListedForSale" type="checkbox" class="w-5 h-5 rounded border-white/10 bg-dark-bg text-brand-cyan focus:ring-brand-cyan/20 focus:ring-offset-0 mt-0.5" />
+                        <div class="flex-1">
+                            <span class="text-xs font-bold text-slate-300 group-hover:text-white transition-colors flex items-center gap-2">
+                                <i class="fas fa-cart-shopping text-emerald-400"></i>
+                                @(isRtl ? "عرض للبيع في المتجر العام" : "List for Individual Sale in Store")
+                            </span>
+                            <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                                @(isRtl ? "إذا تم إلغاؤه، لن تظهر الدورة في المتجر وستكون حصرية للحزم (الباندل)." : "When unchecked, this course is hidden from standalone purchase and can only be accessed via bundles.")
+                            </p>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01] border border-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/[0.03] transition-colors group">
+                        <input asp-for="IsActive" type="checkbox" class="w-5 h-5 rounded border-white/10 bg-dark-bg text-brand-cyan focus:ring-brand-cyan/20 focus:ring-offset-0 mt-0.5" />
+                        <div class="flex-1">
+                            <span class="text-xs font-bold text-slate-300 group-hover:text-slate-200 transition-colors flex items-center gap-2">
+                                <i class="fas fa-power-off text-brand-cyan"></i>
+                                @(isRtl ? "دورة نشطة (Active)" : "Course Active")
+                            </span>
+                            <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                                @(isRtl ? "يجب أن تكون الدورة نشطة ليتمكن الطلاب ومشتري الحزمة من مشاهدة الفيديوهات." : "Course must be active for students and bundle owners to watch lessons and stream videos.")
+                            </p>
+                        </div>
                     </label>
                 </div>
             </div>

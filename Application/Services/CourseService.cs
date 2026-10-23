@@ -16,7 +16,7 @@ namespace Application.Services
         public async Task<List<Course>> GetActiveCoursesAsync()
         {
             return await _context.Courses
-                .Where(c => c.IsActive)
+                .Where(c => c.IsActive && c.IsListedForSale)
                 .OrderByDescending(c => c.CreateDate)
                 .ToListAsync();
         }
@@ -52,6 +52,8 @@ namespace Application.Services
             return await _context.Courses
                 .Include(c => c.Videos.Where(v => v.IsActive))
                 .Include(c => c.Pdfs.Where(p => p.IsActive))
+                .Include(c => c.IncludedInBundles)
+                    .ThenInclude(b => b.Bundle)
                 .FirstOrDefaultAsync(c => c.CourseId == courseId && c.IsActive);
         }
 

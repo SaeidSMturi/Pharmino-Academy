@@ -57,6 +57,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<bool>("IsDiscountActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsListedForSale")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("datetime2");
 

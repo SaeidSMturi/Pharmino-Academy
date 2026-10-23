@@ -153,7 +153,7 @@ namespace Application.Services
 
             // 3. Generate sitemap_products.xml
             var courses = await _context.Courses
-                .Where(c => c.IsActive)
+                .Where(c => c.IsActive && c.IsListedForSale)
                 .OrderByDescending(c => c.CreateDate)
                 .ToListAsync();
 

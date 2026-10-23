@@ -186,16 +186,23 @@
 
             <div class="pt-6">
                 <h3 class="text-sm font-bold text-brand-orange uppercase tracking-widest mb-6 flex items-center">
-                    <i class="fas fa-sliders @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["CourseStatus"]
+                    <i class="fas fa-store @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @(isRtl ? "عرض للبيع في المتجر" : "Store & Sales Visibility")
                 </h3>
 
-                <div class="space-y-2">
-                    <label class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01] border border-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/[0.03] transition-colors group">
-                        <input asp-for="IsActive" type="checkbox" class="w-4 h-4 rounded border-white/10 bg-dark-bg text-brand-cyan focus:ring-brand-cyan/20 focus:ring-offset-0" />
-                        <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition-colors flex items-center">
-                            <i class="fas fa-circle-check @(isRtl ? "ml-2" : "mr-2") text-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.3)]"></i>
-                            @Localizer["PublishCourseImmediately"]
-                        </span>
+                <input type="hidden" name="IsActive" value="true" />
+
+                <div class="space-y-3">
+                    <label class="flex items-start @(isRtl ? "space-x-reverse" : "space-x-3") bg-white/[0.01] border border-white/5 p-4 rounded-xl cursor-pointer hover:bg-white/[0.03] transition-colors group">
+                        <input asp-for="IsListedForSale" type="checkbox" checked class="w-5 h-5 rounded border-white/10 bg-dark-bg text-brand-cyan focus:ring-brand-cyan/20 focus:ring-offset-0 mt-0.5" />
+                        <div class="flex-1">
+                            <span class="text-xs font-bold text-slate-300 group-hover:text-white transition-colors flex items-center gap-2">
+                                <i class="fas fa-cart-shopping text-emerald-400"></i>
+                                @(isRtl ? "عرض الدورة للبيع الفردي في المتجر العام" : "List course for individual sale in public store")
+                            </span>
+                            <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                                @(isRtl ? "عند تفعيل هذا الخيار، ستظهر الدورة في المتجر العام ويمكن للطلاب شراؤها بشكل منفصل. إذا تم إلغاؤه، فستظل الدورة نشطة وجاهزة لكنها لن تُباع إلا ضمن الحزم (الباندل)." : "When enabled, this course appears in the public course catalog for individual purchase. When unchecked, it stays active and functional but can only be accessed by attaching it to a Bundle package.")
+                            </p>
+                        </div>
                     </label>
                 </div>
             </div>

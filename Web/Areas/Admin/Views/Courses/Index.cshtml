@@ -99,23 +99,29 @@
                         </div>
                     }
 
-                    <div class="absolute top-4 @(isRtl ? "right-4" : "left-4") z-10 flex items-center gap-1.5">
+                    <div class="absolute top-4 @(isRtl ? "right-4" : "left-4") z-10 flex flex-wrap items-center gap-1.5 max-w-[85%]">
                         @if (course.IsBundle)
                         {
                             <span class="px-2.5 py-1 text-[10px] font-bold tracking-wide rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 text-white backdrop-blur-md shadow-md uppercase">
                                 <i class="fas fa-cubes @(isRtl ? "ml-1" : "mr-1") text-[9px]"></i>Bundle
                             </span>
                         }
-                        @if (course.IsActive)
+                        @if (course.IsListedForSale)
                         {
-                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wide rounded-lg bg-emerald-500/90 text-dark-bg backdrop-blur-md shadow-md uppercase">
-                                <i class="fas fa-circle-check @(isRtl ? "ml-1" : "mr-1") text-[9px]"></i>@Localizer["Active"]
+                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wide rounded-lg bg-emerald-500/90 text-dark-bg backdrop-blur-md shadow-md uppercase" title="Visible in public catalog and store">
+                                <i class="fas fa-cart-shopping @(isRtl ? "ml-1" : "mr-1") text-[9px]"></i>Listed for Sale
                             </span>
                         }
                         else
                         {
-                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wide rounded-lg bg-rose-500/90 text-white backdrop-blur-md shadow-md uppercase">
-                                <i class="fas fa-circle-xmark @(isRtl ? "ml-1" : "mr-1") text-[9px]"></i>@Localizer["Inactive"]
+                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wide rounded-lg bg-amber-500/90 text-dark-bg backdrop-blur-md shadow-md uppercase" title="Hidden from public store (Bundle only or private)">
+                                <i class="fas fa-lock @(isRtl ? "ml-1" : "mr-1") text-[9px]"></i>Bundle Only
+                            </span>
+                        }
+                        @if (!course.IsActive)
+                        {
+                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wide rounded-lg bg-rose-500/90 text-white backdrop-blur-md shadow-md uppercase" title="Course is deactivated">
+                                <i class="fas fa-circle-xmark @(isRtl ? "ml-1" : "mr-1") text-[9px]"></i>Disabled
                             </span>
                         }
                     </div>
@@ -170,9 +176,10 @@
                            class="px-3 py-2 bg-brand-blue/10 text-brand-blue border border-brand-blue/10 rounded-xl hover:bg-brand-blue hover:text-white text-xs font-bold transition-all text-center flex items-center justify-center gap-1.5">
                             <i class="fas fa-edit text-[11px]"></i>@Localizer["Edit"]
                         </a>
-                        <button onclick="toggleActive(@course.CourseId, @course.IsActive.ToString().ToLower())"
-                                class="px-3 py-2 bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded-xl hover:bg-brand-yellow hover:text-dark-bg text-xs font-bold transition-all flex items-center justify-center gap-1.5">
-                            <i class="fas fa-@(course.IsActive ? "eye-slash" : "eye") text-[11px]"></i>@(course.IsActive ? Localizer["Deactivate"] : Localizer["Activate"])
+                        <button onclick="toggleListedForSale(@course.CourseId, @course.IsListedForSale.ToString().ToLower())"
+                                class="px-3 py-2 @(course.IsListedForSale ? "bg-amber-500/10 text-amber-300 border border-amber-500/20 hover:bg-amber-500 hover:text-dark-bg" : "bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 hover:bg-emerald-500 hover:text-dark-bg") rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                                title="@(course.IsListedForSale ? "Unlist from store: make bundle-only" : "List for standalone sale in public store")">
+                            <i class="fas fa-@(course.IsListedForSale ? "lock" : "cart-plus") text-[11px]"></i>@(course.IsListedForSale ? "Unlist Sale" : "List for Sale")
                         </button>
                         <button onclick="deleteCourse(@course.CourseId)"
                                 class="px-3 py-2 bg-rose-500/10 text-rose-400 border border-rose-500/10 rounded-xl hover:bg-rose-500 hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5">
@@ -202,7 +209,35 @@
 
 @section Scripts {
     <script>
-        // Toggle course status
+        // Toggle Listed for Sale (Store visibility)
+        async function toggleListedForSale(courseId, isListed) {
+            const promptMsg = isListed 
+                ? 'Are you sure you want to unlist this course from public sale? It will remain active and usable in bundles, but hidden from standalone store purchases.'
+                : 'Are you sure you want to list this course for individual sale in the public catalog?';
+            
+            if (!confirm(promptMsg)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/Admin/Courses/ToggleListedForSale', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: courseId })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.message || 'Operation failed.');
+                }
+            } catch (error) {
+                alert('Connection error while updating store visibility.');
+            }
+        }
+
+        // Toggle course status (Active/Inactive)
         async function toggleActive(courseId, isActive) {
             const action = isActive ? 'deactivate' : 'activate';
             if (!confirm(`Are you sure you want to ${action} this course?`)) {

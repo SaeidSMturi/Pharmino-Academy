@@ -110,9 +110,21 @@
                                 <i class="fas fa-cubes @(isRtl ? "ml-1.5" : "mr-1.5")"></i>Course Bundle
                             </span>
                         }
+                        @if (Model.IsListedForSale)
+                        {
+                            <span class="px-3 py-1.5 text-[10px] font-bold tracking-wide rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase" title="Visible for individual purchase in public catalog">
+                                <i class="fas fa-cart-shopping @(isRtl ? "ml-1.5" : "mr-1.5")"></i>Listed for Sale
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="px-3 py-1.5 text-[10px] font-bold tracking-wide rounded-lg bg-amber-500/10 text-amber-300 border border-amber-500/20 uppercase" title="Hidden from public catalog (Bundle only or private)">
+                                <i class="fas fa-lock @(isRtl ? "ml-1.5" : "mr-1.5")"></i>Bundle Only (Unlisted)
+                            </span>
+                        }
                         @if (Model.IsActive)
                         {
-                            <span class="px-3 py-1.5 text-[10px] font-bold tracking-wide rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase">
+                            <span class="px-3 py-1.5 text-[10px] font-bold tracking-wide rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 uppercase">
                                 <i class="fas fa-circle-check @(isRtl ? "ml-1.5" : "mr-1.5")"></i>@Localizer["Active"]
                             </span>
                         }
@@ -634,6 +646,10 @@
                         <i class="fas fa-plus text-emerald-400 @(isRtl ? "ml-1.5" : "mr-1.5")"></i>
                         <span>@Localizer["AddNewVideo"]</span>
                     </a>
+                    <button type="button" onclick="toggleListedForSale(@Model.CourseId, @Model.IsListedForSale.ToString().ToLower())" class="flex items-center justify-center space-x-2 w-full py-2.5 @(Model.IsListedForSale ? "bg-amber-500/10 text-amber-300 border border-amber-500/20 hover:bg-amber-500 hover:text-dark-bg" : "bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 hover:bg-emerald-500 hover:text-dark-bg") text-xs font-bold rounded-xl transition-all" title="@(Model.IsListedForSale ? "Hide from public catalog (bundle only)" : "List in public catalog for individual purchase")">
+                        <i class="fas fa-@(Model.IsListedForSale ? "lock" : "cart-plus") @(isRtl ? "ml-1.5" : "mr-1.5")"></i>
+                        <span>@(Model.IsListedForSale ? "Unlist from Store (Bundle Only)" : "List for Individual Sale")</span>
+                    </button>
                     <button type="button" onclick="toggleActive(@Model.CourseId, @Model.IsActive.ToString().ToLower())" class="flex items-center justify-center space-x-2 w-full py-2.5 bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/20 text-xs font-bold rounded-xl hover:bg-brand-yellow hover:text-dark-bg transition-all">
                         <i class="fas fa-@(Model.IsActive ? "eye-slash" : "eye") @(isRtl ? "ml-1.5" : "mr-1.5")"></i>
                         <span>@(Model.IsActive ? Localizer["DeactivateCourse"] : Localizer["ActivateCourse"])</span>
@@ -828,6 +844,34 @@
 
 @section Scripts {
     <script>
+        // Toggle Listed for Sale (Store visibility)
+        async function toggleListedForSale(courseId, isListed) {
+            const promptMsg = isListed 
+                ? 'Are you sure you want to unlist this course from public sale? It will remain active and usable in bundles, but hidden from standalone store purchases.'
+                : 'Are you sure you want to list this course for individual sale in the public catalog?';
+            
+            if (!confirm(promptMsg)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/Admin/Courses/ToggleListedForSale', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: courseId })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.message || 'Operation failed.');
+                }
+            } catch (error) {
+                alert('Connection error while updating store visibility.');
+            }
+        }
+
         // Toggle course status
         async function toggleActive(courseId, isActive) {
             if (!confirm(isActive ? 'Are you sure you want to deactivate this course?' : 'Are you sure you want to activate this course?')) {

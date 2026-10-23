@@ -31,7 +31,7 @@ namespace Web.Controllers
         public async Task<IActionResult> Index()
         {
             var latestCourses = await _context.Courses
-                .Where(c => c.IsActive)
+                .Where(c => c.IsActive && c.IsListedForSale)
                 .OrderByDescending(c => c.CreateDate)
                 .Select(c => new HomeCourseDto
                 {

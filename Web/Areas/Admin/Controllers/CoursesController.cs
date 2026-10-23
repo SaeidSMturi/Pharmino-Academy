@@ -323,14 +323,49 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Permission("Courses.Edit")]
+        public async Task<IActionResult> ToggleListedForSale([FromBody] IdRequest? payload, int? id, int? courseId)
+        {
+            var currentUserId = User.GetUserId();
+            var targetId = payload?.Id > 0 ? payload.Id : (id ?? courseId ?? 0);
+            try
+            {
+                var course = await _context.Courses.FirstOrDefaultAsync(c => c.CourseId == targetId);
+                if (course == null)
+                {
+                    return Json(new { success = false, message = "Course not found" });
+                }
+
+                course.IsListedForSale = !course.IsListedForSale;
+                course.LastUpdate = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("AUDIT: Course ID {CourseId} listed for sale modified to {IsListed} by User {UserId}.", targetId, course.IsListedForSale, currentUserId);
+                return Json(new { 
+                    success = true, 
+                    isListed = course.IsListedForSale, 
+                    message = course.IsListedForSale ? "Course listed for public sale" : "Course unlisted from public store (bundle-only)" 
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during ToggleListedForSale execution for Course ID: {CourseId}", targetId);
+                return Json(new { success = false, message = "An internal error occurred." });
+            }
+        }
+
+        [HttpPost]
         [Permission("Courses.Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind(nameof(Course.Title), nameof(Course.Description), nameof(Course.Price), nameof(Course.IsActive), nameof(Course.IsBundle), nameof(Course.DiscountPrice), nameof(Course.IsDiscountActive))] Course course, IFormFile? ImageFile)
+        public async Task<IActionResult> Create([Bind(nameof(Course.Title), nameof(Course.Description), nameof(Course.Price), nameof(Course.IsActive), nameof(Course.IsListedForSale), nameof(Course.IsBundle), nameof(Course.DiscountPrice), nameof(Course.IsDiscountActive))] Course course, IFormFile? ImageFile)
         {
             var currentUserId = User.GetUserId();
             _logger.LogInformation("User {UserId} is attempting to create a new course titled: '{Title}'.", currentUserId, course?.Title);
 
             if (course == null) return BadRequest();
+
+            // All courses are active by default so lessons, video encoding, and bundle attachment work immediately
+            course.IsActive = true;
 
             course.Title = course.Title?.Trim();
             course.Description = course.Description?.Trim();
@@ -434,7 +469,7 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         [Permission("Courses.Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind(nameof(Course.CourseId), nameof(Course.Title), nameof(Course.Description), nameof(Course.Price), nameof(Course.IsActive), nameof(Course.IsBundle), nameof(Course.DiscountPrice), nameof(Course.IsDiscountActive))] Course course, IFormFile? ImageFile)
+        public async Task<IActionResult> Edit([Bind(nameof(Course.CourseId), nameof(Course.Title), nameof(Course.Description), nameof(Course.Price), nameof(Course.IsActive), nameof(Course.IsListedForSale), nameof(Course.IsBundle), nameof(Course.DiscountPrice), nameof(Course.IsDiscountActive))] Course course, IFormFile? ImageFile)
         {
             var currentUserId = User.GetUserId();
             _logger.LogInformation("User {UserId} is trying to commit edits for Course ID: {CourseId}.", currentUserId, course?.CourseId);
@@ -550,6 +585,7 @@ namespace Web.Areas.Admin.Controllers
             existingCourse.Description = course.Description;
             existingCourse.Price = course.Price;
             existingCourse.IsActive = course.IsActive;
+            existingCourse.IsListedForSale = course.IsListedForSale;
             existingCourse.IsBundle = course.IsBundle;
             existingCourse.DiscountPrice = course.DiscountPrice;
             existingCourse.IsDiscountActive = course.IsDiscountActive;

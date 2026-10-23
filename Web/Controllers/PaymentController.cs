@@ -46,6 +46,12 @@ namespace Web.Controllers
                 return RedirectToAction("Index", "Courses");
             }
 
+            if (!course.IsListedForSale)
+            {
+                TempData["ErrorMessage"] = "This course is not available for individual purchase.";
+                return RedirectToAction("Details", "Courses", new { id = courseId });
+            }
+
             var isEnrolled = await _context.CourseEnrollments.AnyAsync(e => e.UserId == userId && e.CourseId == courseId);
             if (isEnrolled)
             {
@@ -76,6 +82,12 @@ namespace Web.Controllers
             {
                 TempData["ErrorMessage"] = "Course not found.";
                 return RedirectToAction("Index", "Courses");
+            }
+
+            if (!course.IsListedForSale)
+            {
+                TempData["ErrorMessage"] = "This course is not available for individual purchase.";
+                return RedirectToAction("Details", "Courses", new { id = courseId });
             }
 
             if (string.IsNullOrEmpty(selectedCurrency) || !CurrencyHelper.Currencies.ContainsKey(selectedCurrency))
