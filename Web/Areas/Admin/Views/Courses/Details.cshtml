@@ -323,6 +323,20 @@
                             <i class="fas fa-video @(isRtl ? "ml-3" : "mr-3") text-brand-cyan text-lg"></i> @Localizer["CourseVideos"] (@videos.Count)
                         </h3>
                     <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                        @if (videos.Count > 1)
+                        {
+                            <button type="button" id="btnToggleOrder" onclick="toggleVideoOrderMode()"
+                                    class="w-full sm:w-auto text-center px-4 py-2 bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan rounded-xl font-bold hover:bg-brand-cyan hover:text-dark-bg transition-all text-xs flex items-center justify-center shadow-[0_0_10px_rgba(66,234,255,0.08)]">
+                                <i class="fas fa-arrow-down-up-across-line @(isRtl ? "ml-1.5" : "mr-1.5") text-sm"></i>
+                                <span id="btnToggleOrderText">@Localizer["ChangeVideoOrder"]</span>
+                            </button>
+                            <button type="button" id="btnCancelOrder" onclick="cancelVideoOrderMode()" style="display: none;"
+                                    class="w-full sm:w-auto text-center px-3 py-2 bg-white/5 border border-white/10 text-slate-300 rounded-xl font-bold hover:bg-white/10 hover:text-white transition-all text-xs flex items-center justify-center">
+                                <i class="fas fa-xmark @(isRtl ? "ml-1.5" : "mr-1.5") text-sm"></i>
+                                <span>@Localizer["Cancel"]</span>
+                            </button>
+                        }
+
                         <button type="button" onclick="createTestVideo()"
                                 class="w-full sm:w-auto text-center px-4 py-2 bg-amber-500/20 border border-amber-500/30 text-amber-400 rounded-xl font-extrabold hover:bg-amber-500 hover:text-dark-bg transition-all text-xs flex items-center justify-center">
                             <i class="fas fa-flask @(isRtl ? "ml-1.5" : "mr-1.5") text-sm"></i> @Localizer["AddTestVideo"]
@@ -335,16 +349,30 @@
                     </div>
                 </div>
 
+                <div id="reorderInfoBanner" class="hidden mb-4 p-3 bg-brand-cyan/10 border border-brand-cyan/20 rounded-xl text-brand-cyan text-xs font-semibold flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-info-circle @(isRtl ? "ml-2" : "mr-2") text-sm"></i>
+                        <span>@Localizer["ReorderHelpText"]</span>
+                    </div>
+                    <span class="text-[11px] text-slate-400">@Localizer["DragToReorder"]</span>
+                </div>
+
                 @if (videos.Any())
                 {
-                    <div class="space-y-3">
+                    <div class="space-y-3" id="videosList">
                         @foreach (var video in videos)
                         {
                             <div class="p-4 rounded-2xl bg-white/[0.01] border border-white/[0.03] hover:bg-white/[0.02] hover:border-white/10 transition-all duration-200 video-item" data-video-id="@video.VideoId">
                                 <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
 
-                                     <div class="flex items-start @(isRtl ? "space-x-reverse" : "space-x-4") flex-1 min-w-0">
-                                        <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center flex-shrink-0 text-brand-cyan font-mono font-bold text-sm">
+                                     <div class="flex items-start @(isRtl ? "space-x-reverse" : "space-x-3") flex-1 min-w-0">
+                                        <div class="video-drag-handle hidden flex-shrink-0 cursor-grab active:cursor-grabbing p-2 text-slate-400 hover:text-brand-cyan select-none items-center justify-center transition-colors rounded-xl hover:bg-white/5" title="@Localizer["DragToReorder"]">
+                                            <svg class="w-5 h-5 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                                <line x1="4" y1="9" x2="20" y2="9"></line>
+                                                <line x1="4" y1="15" x2="20" y2="15"></line>
+                                            </svg>
+                                        </div>
+                                        <div class="w-10 h-10 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center flex-shrink-0 text-brand-cyan font-mono font-bold text-sm video-order-badge">
                                             @video.OrderIndex
                                         </div>
                                         <div class="flex-1 min-w-0">
@@ -849,7 +877,168 @@
 </div>
 
 @section Scripts {
+    <script src="~/lib/sortable.min.js"></script>
     <script>
+        // ── Video Drag-and-Drop Reordering ─────────────────────────────────
+        let isReorderingVideos = false;
+        let sortableVideosInstance = null;
+        let originalVideoOrder = [];
+
+        function toggleVideoOrderMode() {
+            if (!isReorderingVideos) {
+                enterVideoOrderMode();
+            } else {
+                saveVideoOrder();
+            }
+        }
+
+        function enterVideoOrderMode() {
+            isReorderingVideos = true;
+            const list = document.getElementById('videosList');
+            if (!list) return;
+
+            originalVideoOrder = Array.from(list.children);
+
+            document.querySelectorAll('.video-drag-handle').forEach(el => {
+                el.classList.remove('hidden');
+                el.classList.add('flex');
+            });
+
+            list.classList.add('ring-2', 'ring-brand-cyan/40', 'p-3', 'rounded-2xl', 'bg-white/[0.02]');
+
+            const banner = document.getElementById('reorderInfoBanner');
+            if (banner) banner.classList.remove('hidden');
+
+            const btn = document.getElementById('btnToggleOrder');
+            const btnCancel = document.getElementById('btnCancelOrder');
+            if (btn) {
+                btn.classList.remove('bg-brand-cyan/10', 'text-brand-cyan');
+                btn.classList.add('bg-emerald-500', 'text-dark-bg', 'shadow-[0_0_15px_rgba(16,185,129,0.4)]');
+                btn.innerHTML = `<i class="fas fa-check @(isRtl ? "ml-1.5" : "mr-1.5") text-sm"></i> <span>@Localizer["SaveVideoOrder"]</span>`;
+            }
+            if (btnCancel) btnCancel.style.display = 'inline-flex';
+
+            if (typeof Sortable !== 'undefined') {
+                sortableVideosInstance = Sortable.create(list, {
+                    handle: '.video-drag-handle',
+                    animation: 200,
+                    ghostClass: 'opacity-40',
+                    chosenClass: 'bg-white/10',
+                    dragClass: 'scale-[1.02]',
+                    onEnd: function () {
+                        updateOrderBadges();
+                    }
+                });
+            }
+        }
+
+        function updateOrderBadges() {
+            const badges = document.querySelectorAll('#videosList .video-order-badge');
+            badges.forEach((badge, index) => {
+                badge.textContent = index + 1;
+            });
+        }
+
+        function cancelVideoOrderMode() {
+            if (!isReorderingVideos) return;
+            const list = document.getElementById('videosList');
+            if (list && originalVideoOrder.length) {
+                originalVideoOrder.forEach(node => list.appendChild(node));
+                updateOrderBadges();
+            }
+            exitVideoOrderMode();
+        }
+
+        function exitVideoOrderMode() {
+            isReorderingVideos = false;
+            const list = document.getElementById('videosList');
+            if (list) {
+                list.classList.remove('ring-2', 'ring-brand-cyan/40', 'p-3', 'rounded-2xl', 'bg-white/[0.02]');
+            }
+
+            if (sortableVideosInstance) {
+                sortableVideosInstance.destroy();
+                sortableVideosInstance = null;
+            }
+
+            document.querySelectorAll('.video-drag-handle').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('flex');
+            });
+
+            const banner = document.getElementById('reorderInfoBanner');
+            if (banner) banner.classList.add('hidden');
+
+            const btn = document.getElementById('btnToggleOrder');
+            const btnCancel = document.getElementById('btnCancelOrder');
+            if (btn) {
+                btn.classList.remove('bg-emerald-500', 'text-dark-bg', 'shadow-[0_0_15px_rgba(16,185,129,0.4)]');
+                btn.classList.add('bg-brand-cyan/10', 'text-brand-cyan');
+                btn.innerHTML = `<i class="fas fa-arrow-down-up-across-line @(isRtl ? "ml-1.5" : "mr-1.5") text-sm"></i> <span id="btnToggleOrderText">@Localizer["ChangeVideoOrder"]</span>`;
+            }
+            if (btnCancel) btnCancel.style.display = 'none';
+        }
+
+        async function saveVideoOrder() {
+            const list = document.getElementById('videosList');
+            if (!list) return;
+
+            const items = list.querySelectorAll('.video-item');
+            const videoIds = Array.from(items)
+                .map(item => parseInt(item.getAttribute('data-video-id')))
+                .filter(id => !isNaN(id) && id > 0);
+
+            const btn = document.getElementById('btnToggleOrder');
+            const originalHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin @(isRtl ? "ml-1.5" : "mr-1.5")"></i> <span>...</span>`;
+            }
+
+            try {
+                const response = await fetch('/Admin/CourseVideos/UpdateOrder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        courseId: @Model.CourseId,
+                        videoIds: videoIds
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    exitVideoOrderMode();
+                    showOrderToast('@Localizer["VideoOrderUpdated"]');
+                } else {
+                    alert(result.message || '@Localizer["FailedToUpdateOrder"]');
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = originalHtml;
+                    }
+                }
+            } catch (err) {
+                alert('Network error: ' + err.message);
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            }
+        }
+
+        function showOrderToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-6 @(isRtl ? "left-6" : "right-6") z-50 px-5 py-3 rounded-xl bg-emerald-500 text-dark-bg font-extrabold shadow-2xl flex items-center space-x-2 transition-all transform duration-300';
+            toast.innerHTML = `<i class="fas fa-check-circle @(isRtl ? "ml-2" : "mr-2") text-lg"></i> <span>${msg}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
         // Toggle Listed for Sale (Store visibility)
         async function toggleListedForSale(courseId, isListed) {
             const promptMsg = isListed 

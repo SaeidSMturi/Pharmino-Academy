@@ -1,0 +1,252 @@
+@using System.Security.Claims
+@using Application.Interfaces
+@inject IPermissionService _permissionService
+
+@{
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture.Name;
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    var isFarsi = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
+    var isArabic = currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
+
+    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+    var currentUserId = userIdClaim != null ? int.Parse(userIdClaim.Value) : 0;
+    var canViewAdmin = await _permissionService.UserHasPermissionAsync(currentUserId, "Dashboard.View");
+
+    var courseTitle = ViewBag.CourseTitle as string ?? "Course";
+    var courseId = ViewBag.CourseId != null ? (int)ViewBag.CourseId : 0;
+}
+<!DOCTYPE html>
+<html lang="@currentCulture" dir="@(isRtl ? "rtl" : "ltr")">
+<head>
+    <script>
+        (function () {
+            try {
+                var theme = localStorage.getItem('pharmino_theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+                if (theme === 'light') {
+                    document.documentElement.classList.add('light', 'light-theme');
+                } else {
+                    document.documentElement.classList.add('dark', 'dark-theme');
+                }
+            } catch (e) { }
+        })();
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - @courseTitle</title>
+
+    <!-- Tailwind CSS with Advanced Config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            cyan: '#42EAFF',
+                            blue: '#4272FF',
+                            orange: '#FF7E42',
+                            yellow: '#FFB343',
+                            dark: '#030712',
+                            surface: 'rgba(255, 255, 255, 0.03)',
+                            surfaceHover: 'rgba(255, 255, 255, 0.08)'
+                        },
+                        navy: '#123C76',
+                        gold: '#E1D788'
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(16px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+
+    @if (isFarsi)
+    {
+        <style>
+            @@font-face {
+                font-family: 'B Nazanin';
+                src: url('/fonts/BNazanin.ttf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+                font-display: swap;
+            }
+            html {
+                font-size: 19px !important;
+            }
+            body, h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, div, label, th, td {
+                font-family: 'B Nazanin', Tahoma, sans-serif !important;
+            }
+        </style>
+    }
+    else if (isArabic)
+    {
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <style>
+            body, h1, h2, h3, h4, h5, h6, p, a, span, button, input, select, textarea, div, label, th, td {
+                font-family: 'Cairo', sans-serif !important;
+            }
+        </style>
+    }
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030712;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #030712;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s;
+        }
+
+        .loader-ring {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #42EAFF;
+            border-bottom-color: #FF7E42;
+            animation: spin 1s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
+        }
+
+        @@keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .curriculum-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .curriculum-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.02);
+        }
+        .curriculum-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+            border-radius: 4px;
+        }
+        .curriculum-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #42EAFF;
+        }
+    </style>
+    @await RenderSectionAsync("Styles", false)
+</head>
+<body class="antialiased selection:bg-brand-cyan selection:text-brand-dark min-h-screen flex flex-col bg-brand-dark text-slate-100">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-ring"></div>
+    </div>
+
+    <!-- Background Ambience -->
+    <div class="fixed -top-32 -left-32 w-96 h-96 bg-brand-blue/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed -bottom-32 -right-32 w-96 h-96 bg-brand-orange/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+    <!-- 🌟 Clean LMS Top Navbar -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-white/10 px-4 lg:px-8 py-3.5 flex items-center justify-between shrink-0 shadow-lg">
+        <div class="flex items-center gap-4 min-w-0">
+            <!-- Back to Course Details button -->
+            @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.HasClaim(c => c.Type == "Permission" && (c.Value == "Courses.View" || c.Value == "SuperAdmin")))
+            {
+                <a href="@Url.Action("Details", "Courses", new { area = "Admin", id = courseId })"
+                   class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-brand-cyan border border-white/10 transition-all text-xs font-bold shrink-0">
+                    <i class="fas @(isRtl ? "fa-arrow-right" : "fa-arrow-left")"></i>
+                    <span class="hidden sm:inline">@Localizer["BackToCourse"]</span>
+                </a>
+            }
+            else
+            {
+                <a href="@Url.Action("MyCourseDetails", "Courses", new { id = courseId })"
+                   class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-brand-cyan border border-white/10 transition-all text-xs font-bold shrink-0">
+                    <i class="fas @(isRtl ? "fa-arrow-right" : "fa-arrow-left")"></i>
+                    <span class="hidden sm:inline">@Localizer["BackToCourse"]</span>
+                </a>
+            }
+
+            <div class="h-5 w-[1px] bg-white/10 hidden sm:block"></div>
+
+            <!-- Course Title & Active Video -->
+            <div class="min-w-0 flex items-center gap-2 text-xs">
+                <span class="font-extrabold text-white truncate max-w-[160px] md:max-w-xs">@courseTitle</span>
+                <span class="text-slate-500 hidden md:inline">/</span>
+                <span class="text-brand-cyan font-medium truncate max-w-[200px] hidden md:inline">@ViewData["Title"]</span>
+            </div>
+        </div>
+
+        <!-- Controls: Playlist Toggle + Theme + Lang + Profile -->
+        <div class="flex items-center gap-2.5 shrink-0">
+            <!-- Toggle Playlist Sidebar button -->
+            <button id="toggle-curriculum-btn" type="button"
+                    class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-brand-cyan/10 hover:bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30 transition-all text-xs font-bold"
+                    title="@Localizer["ToggleCurriculum"]">
+                <i class="fas fa-list-ul"></i>
+                <span class="hidden md:inline">@Localizer["CourseCurriculum"]</span>
+            </button>
+
+            <partial name="_ThemeToggle" />
+            <partial name="_LanguageSwitcher" />
+
+            <div class="h-5 w-[1px] bg-white/10"></div>
+
+            <a asp-area="User" asp-controller="Dashboard" asp-action="Index"
+               class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-all text-xs"
+               title="@Localizer["Dashboard"]">
+                <i class="fas fa-home"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- 🎬 Main Player Layout Body -->
+    <div class="flex-1 w-full relative z-10 flex overflow-hidden">
+        @RenderBody()
+    </div>
+
+    <!-- Preloader Script -->
+    <script>
+        window.addEventListener('load', () => {
+            const p = document.getElementById('preloader');
+            if (p) {
+                setTimeout(() => {
+                    p.style.opacity = '0';
+                    p.style.visibility = 'hidden';
+                }, 200);
+            }
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", false)
+</body>
+</html>

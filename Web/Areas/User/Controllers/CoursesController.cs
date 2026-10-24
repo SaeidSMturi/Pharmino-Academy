@@ -124,6 +124,11 @@ namespace Web.Areas.User.Controllers
             ViewBag.HlsAvailable = await _hlsProcessingService.HlsExistsAsync((int)video.CourseId, videoGuid);
             ViewBag.VideoGuid = videoGuid;
 
+            // Load Course Videos and Progress for the Curriculum Playlist Sidebar & Lesson Navigation
+            ViewBag.CourseVideos = await _courseService.GetCourseVideosAsync((int)video.CourseId, userId);
+            ViewBag.VideoProgress = await _courseService.GetVideoProgressDictAsync(userId, (int)video.CourseId);
+            ViewBag.Enrollment = await _courseService.GetUserEnrollmentAsync(userId, (int)video.CourseId);
+
             return View(video);
         }
         #endregion

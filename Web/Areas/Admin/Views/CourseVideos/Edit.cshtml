@@ -34,6 +34,7 @@
             <input type="hidden" asp-for="VideoId" />
             <input type="hidden" asp-for="CourseId" />
             <input type="hidden" asp-for="DurationSeconds" />
+            <input type="hidden" asp-for="OrderIndex" />
             <input type="hidden" name="UploadedVideoToken" id="uploadedVideoToken" />
 
             @if (!ViewData.ModelState.IsValid)
@@ -108,25 +109,7 @@
                 </div>
             </div>
 
-            <div class="pt-6">
-                <h3 class="text-sm font-bold text-brand-yellow uppercase tracking-widest mb-6 flex items-center">
-                    <i class="fas fa-sort-numeric-down @(isRtl ? "ml-2.5" : "mr-2.5") text-base"></i> @Localizer["DisplayOrder"]
-                </h3>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label asp-for="OrderIndex" class="block text-xs font-bold text-slate-400 uppercase tracking-wide">
-                            @Localizer["OrderIndex"] <span class="text-brand-orange">*</span>
-                        </label>
-                        <div class="relative group border-b border-white/10 focus-within:border-brand-cyan/80 transition-colors">
-                            <input asp-for="OrderIndex" type="number" min="0" class="w-full bg-transparent px-4 py-3.5 @(isRtl ? "pr-11 pl-4" : "pl-11 pr-4") text-white placeholder-slate-600 focus:outline-none text-base font-bold font-mono" placeholder="0" />
-                            <i class="fas fa-list-ol absolute @(isRtl ? "right-2" : "left-2") top-1/2 transform -translate-y-1/2 text-slate-600 group-focus-within:text-brand-cyan transition-colors text-sm"></i>
-                        </div>
-                        <span asp-validation-for="OrderIndex" class="text-rose-400 text-xs font-semibold mt-1 block"></span>
-                        <p class="text-[10px] text-slate-500 font-medium mt-2">@Localizer["DisplayOrderHelp"]</p>
-                    </div>
-                </div>
-            </div>
 
             <div class="pt-6">
                 <h3 class="text-sm font-bold text-brand-orange uppercase tracking-widest mb-6 flex items-center">

@@ -195,30 +195,6 @@
     <value>دانشجو</value>
   </data>
 	
-	<data name="ReadyToStart" xml:space="preserve">
-    <value>آماده آغاز</value>
-  </data>
-	<data name="SuccessJourney" xml:space="preserve">
-    <value>مسیر موفقیت هستید؟</value>
-  </data>
-	<data name="JoinPharmacistsDescription" xml:space="preserve">
-    <value>به جمع صدها داروساز موفقی بپیوندید که با دوره‌های هدفمند ما موفق به دریافت پروانه کار داروسازی شده‌اند.</value>
-  </data>
-	<data name="EnrollNow" xml:space="preserve">
-    <value>ثبت‌نام در دوره</value>
-  </data>
-
-	
-	<data name="Student" xml:space="preserve">
-    <value>دانشجو</value>
-  </data>
-	<data name="SuccessStories" xml:space="preserve">
-    <value>داستان‌های موفقیت</value>
-  </data>
-	<data name="StudentSuccessStoriesText" xml:space="preserve">
-    <value>تجربیات واقعی همکاران و داروسازانی که با فارمینو به هدف خود رسیدند.</value>
-  </data>
-
 	<data name="Testimonial1Initial" xml:space="preserve">
     <value>الف</value>
   </data>

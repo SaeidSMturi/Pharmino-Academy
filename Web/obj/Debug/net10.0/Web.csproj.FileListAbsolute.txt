@@ -658,3 +658,4 @@ C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\Web.Resources.Views.Shar
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\fa\Web.resources.cs
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\fa\Web.resources.dll
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\b2msq9thvz-{0}-4tf3qoi7hs-4tf3qoi7hs.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\h1zmaf09gy-{0}-a473m32dqn-a473m32dqn.gz

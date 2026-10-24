@@ -47,6 +47,12 @@ namespace Web.Areas.Admin.Controllers
             public string? FileName { get; set; }
         }
 
+        public class UpdateOrderRequest
+        {
+            public int CourseId { get; set; }
+            public System.Collections.Generic.List<int> VideoIds { get; set; } = new();
+        }
+
         public CourseVideosController(
             WebContext context,
             IWebHostEnvironment environment,
@@ -353,6 +359,7 @@ namespace Web.Areas.Admin.Controllers
             ModelState.Remove("Course");
             ModelState.Remove("CreateDate");
             ModelState.Remove("LastUpdate");
+            ModelState.Remove("OrderIndex");
 
             if (!ModelState.IsValid)
             {
@@ -452,6 +459,14 @@ namespace Web.Areas.Admin.Controllers
                     TempData["ErrorMessage"] = "Server storage error committing video stream.";
                     return View(video);
                 }
+            }
+
+            if (video.OrderIndex <= 0)
+            {
+                var maxOrder = await _context.CourseVideos
+                    .Where(v => v.CourseId == video.CourseId)
+                    .MaxAsync(v => (int?)v.OrderIndex) ?? 0;
+                video.OrderIndex = maxOrder + 1;
             }
 
             video.CreateDate = DateTime.UtcNow;
@@ -628,6 +643,49 @@ namespace Web.Areas.Admin.Controllers
             }
         }
 
+        [HttpPost]
+        [Permission("Courses.Edit")]
+        public async Task<IActionResult> UpdateOrder([FromBody] UpdateOrderRequest request)
+        {
+            if (request == null || request.CourseId <= 0 || request.VideoIds == null || !request.VideoIds.Any())
+            {
+                return Json(new { success = false, message = "Invalid data" });
+            }
+
+            try
+            {
+                var videos = await _context.CourseVideos
+                    .Where(v => v.CourseId == request.CourseId)
+                    .ToListAsync();
+
+                if (!videos.Any())
+                {
+                    return Json(new { success = false, message = "No videos found for this course" });
+                }
+
+                for (int i = 0; i < request.VideoIds.Count; i++)
+                {
+                    var videoId = request.VideoIds[i];
+                    var video = videos.FirstOrDefault(v => v.VideoId == videoId);
+                    if (video != null)
+                    {
+                        video.OrderIndex = i + 1;
+                        video.LastUpdate = DateTime.UtcNow;
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("Updated video order for Course ID: {CourseId}. Total count: {Count}", request.CourseId, request.VideoIds.Count);
+
+                return Json(new { success = true, message = "Order updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update video order for Course ID: {CourseId}", request.CourseId);
+                return Json(new { success = false, message = ex.InnerException?.Message ?? ex.Message });
+            }
+        }
+
         [Permission("Courses.Edit")]
         public async Task<IActionResult> Edit(int id)
         {
@@ -662,6 +720,7 @@ namespace Web.Areas.Admin.Controllers
 
             ModelState.Remove("Course");
             ModelState.Remove("VideoFileName");
+            ModelState.Remove("OrderIndex");
 
             if (!ModelState.IsValid)
             {
@@ -779,7 +838,10 @@ namespace Web.Areas.Admin.Controllers
             existingVideo.Title = video.Title;
             existingVideo.Description = video.Description;
             existingVideo.DurationSeconds = video.DurationSeconds;
-            existingVideo.OrderIndex = video.OrderIndex;
+            if (video.OrderIndex > 0)
+            {
+                existingVideo.OrderIndex = video.OrderIndex;
+            }
             existingVideo.IsFree = video.IsFree;
             existingVideo.IsActive = video.IsActive;
             existingVideo.LastUpdate = DateTime.UtcNow;
