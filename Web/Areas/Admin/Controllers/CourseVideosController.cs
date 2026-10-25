@@ -29,7 +29,8 @@ namespace Web.Areas.Admin.Controllers
         private readonly ILogger<CourseVideosController> _logger;
         private readonly IStorageService _storageService;
         private readonly IHttpClientFactory _httpClientFactory;
-
+        private readonly IVideoTokenService _videoTokenService;
+        private readonly IConfiguration _configuration;
 
         private const string TempUploadSessionPrefix = "CourseVideos.TempUpload.";
 
@@ -61,7 +62,9 @@ namespace Web.Areas.Admin.Controllers
             IHlsProgressService hlsProgress,
             ILogger<CourseVideosController> logger,
             IStorageService storageService,
-            IHttpClientFactory httpClientFactory)
+            IHttpClientFactory httpClientFactory,
+            IVideoTokenService videoTokenService,
+            IConfiguration configuration)
         {
             _context = context;
             _environment = environment;
@@ -71,6 +74,8 @@ namespace Web.Areas.Admin.Controllers
             _logger = logger;
             _storageService = storageService;
             _httpClientFactory = httpClientFactory;
+            _videoTokenService = videoTokenService;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -1001,31 +1006,21 @@ namespace Web.Areas.Admin.Controllers
 
             ViewBag.BundleId = bundleId;
 
-            // Prepare stream URL
-            var videoPath = Path.Combine(_environment.WebRootPath, "uploads", "courses", video.CourseId.ToString(), "videos", video.VideoFileName);
-            if (System.IO.File.Exists(videoPath))
-            {
-                ViewBag.StreamUrl = Url.Action("StreamVideo", "CourseVideos", new { Area = "Admin", id = video.VideoId });
-            }
-            else
-            {
-                var directoryPath = $"uploads/courses/{video.CourseId}/videos";
-                try
-                {
-                    if (await _storageService.FileExistsAsync(directoryPath, video.VideoFileName))
-                    {
-                        ViewBag.StreamUrl = await _storageService.GetSecureFileUrlAsync(directoryPath, video.VideoFileName, TimeSpan.FromHours(4));
-                    }
-                    else
-                    {
-                        ViewBag.StreamUrl = Url.Action("StreamVideo", "CourseVideos", new { Area = "Admin", id = video.VideoId });
-                    }
-                }
-                catch
-                {
-                    ViewBag.StreamUrl = Url.Action("StreamVideo", "CourseVideos", new { Area = "Admin", id = video.VideoId });
-                }
-            }
+            var currentUserIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            int userId = int.TryParse(currentUserIdClaim, out var parsedUid) ? parsedUid : 0;
+            var userEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? User.Identity?.Name ?? $"admin{userId}@pharmino.com";
+
+            var videoGuid = Path.GetFileNameWithoutExtension(video.VideoFileName);
+            var hlsAvailable = await _hlsService.HlsExistsAsync(video.CourseId, videoGuid);
+
+            ViewBag.UserId = userId;
+            ViewBag.VideoGuid = videoGuid;
+            ViewBag.HlsAvailable = hlsAvailable;
+            ViewBag.VideoToken = _videoTokenService.GenerateToken(video.VideoId, userId, 120);
+            ViewBag.SessionId = _videoTokenService.GenerateSessionId(video.VideoId, userId);
+
+            ViewBag.ForensicCode = GetVideoForensicCode(userId, video.VideoId);
+            ViewBag.MaskedEmail = MaskEmail(userEmail);
 
             return View(video);
         }
@@ -1040,6 +1035,13 @@ namespace Web.Areas.Admin.Controllers
             {
                 _logger.LogWarning("Master direct stream failed. Video missing for ID: {VideoId}", id);
                 return NotFound();
+            }
+
+            var videoGuid = Path.GetFileNameWithoutExtension(video.VideoFileName);
+            if (await _hlsService.HlsExistsAsync(video.CourseId, videoGuid))
+            {
+                _logger.LogWarning("Direct MP4 download/streaming blocked for Admin Video ID {VideoId} because HLS is enabled.", id);
+                return StatusCode(403, "Direct MP4 download is disabled. Video is securely streamed via encrypted HLS.");
             }
 
             // 1. First check local physical file on disk
@@ -1070,6 +1072,25 @@ namespace Web.Areas.Admin.Controllers
                 _logger.LogError(ex, "Failed to get secure streaming URL for video {VideoId} from cloud bucket.", id);
                 return NotFound();
             }
+        }
+
+        private string GetVideoForensicCode(int userId, int videoId)
+        {
+            var salt = _configuration["VideoSecurity:WatermarkSalt"] ?? "PharminoSecretSalt";
+            using var hmac = new System.Security.Cryptography.HMACSHA256(System.Text.Encoding.UTF8.GetBytes(salt));
+            var hash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes($"{userId}:{videoId}"));
+            return $"PX-A{userId:D3}{Convert.ToHexString(hash).Substring(0, 4).ToUpperInvariant()}";
+        }
+
+        private static string MaskEmail(string? email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return "admin@pharmino.com";
+            var atIndex = email.IndexOf('@');
+            if (atIndex <= 1) return email;
+            var name = email[..atIndex];
+            var domain = email[atIndex..];
+            if (name.Length <= 3) return $"{name[0]}***{domain}";
+            return $"{name[..2]}***{name[^1]}{domain}";
         }
     }
 }

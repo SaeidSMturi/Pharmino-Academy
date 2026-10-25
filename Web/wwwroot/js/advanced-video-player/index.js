@@ -1,4 +1,4 @@
-﻿import { PlayerUI } from './ui.js';
+import { PlayerUI } from './ui.js';
 import { PlayerControls } from './controls.js';
 import { PlayerEvents } from './events.js';
 import { PlayerProgress } from './progress.js';
@@ -52,6 +52,9 @@ class AdvancedVideoPlayer {
     }
 
     destroy() {
+        if (this.watermarkInterval) clearInterval(this.watermarkInterval);
+        if (this.watermarkCheckInterval) clearInterval(this.watermarkCheckInterval);
+        if (this.watermarkObserver) this.watermarkObserver.disconnect();
         if (this.saveProgressInterval) clearInterval(this.saveProgressInterval);
         if (this.controlsTimeout) clearTimeout(this.controlsTimeout);
         this.progress.saveProgress();

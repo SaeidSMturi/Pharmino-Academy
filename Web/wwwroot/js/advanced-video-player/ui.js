@@ -40,8 +40,15 @@ export class PlayerUI {
                     <span>10s</span>
                 </div>
 
-                <div class="avp-watermark" id="avp-watermark">${this.ctx.config.watermarkText}</div>
-                <div class="avp-watermark-dynamic" id="avp-watermark-dynamic"></div>
+                <div class="avp-forensic-watermark" id="avp-forensic-watermark">
+                    <div class="avp-forensic-token">
+                        <span class="avp-fw-code">${this.ctx.config.forensicCode || 'PX-A000'}</span>
+                        <span class="avp-fw-dot">·</span>
+                        <span class="avp-fw-email">${this.ctx.config.maskedEmail || `User: ${this.ctx.config.userId || ''}`}</span>
+                        <span class="avp-fw-dot">·</span>
+                        <span class="avp-fw-brand">PHARMINO</span>
+                    </div>
+                </div>
 
                 <div class="avp-gradient-top"></div>
                 <div class="avp-gradient-bottom"></div>
@@ -277,6 +284,7 @@ export class PlayerUI {
             skipForwardIndicator: document.getElementById('avp-skip-forward'),
             watermark: document.getElementById('avp-watermark'),
             watermarkDynamic: document.getElementById('avp-watermark-dynamic'),
+            forensicWatermark: document.getElementById('avp-forensic-watermark'),
             blurOverlay: document.getElementById('avp-blur-overlay'),
             chapters: document.getElementById('avp-chapters')
         };
@@ -341,17 +349,99 @@ export class PlayerUI {
 
 
     updateWatermark() {
-        const updateDynamic = () => {
-            const text = `User: ${this.ctx.config.userId} | ${new Date().toLocaleTimeString()}`;
-            if (this.ctx.elements.watermarkDynamic) {
-                this.ctx.elements.watermarkDynamic.textContent = text;
-                this.ctx.elements.watermarkDynamic.style.left = `${Math.random() * 60 + 20}%`;
-                this.ctx.elements.watermarkDynamic.style.top = `${Math.random() * 60 + 20}%`;
+        const watermarkEl = this.ctx.elements.forensicWatermark || document.getElementById('avp-forensic-watermark');
+        if (!watermarkEl) return;
+
+        let warningShown = false;
+        let violationCount = 0;
+
+        // Smooth floating repositioning across content quadrants (8% - 14% opacity)
+        const reposition = () => {
+            const left = Math.floor(Math.random() * 55 + 15);
+            const top = Math.floor(Math.random() * 55 + 15);
+            const opacity = (Math.random() * 0.05 + 0.09).toFixed(3); // 0.09 - 0.14
+            watermarkEl.style.left = `${left}%`;
+            watermarkEl.style.top = `${top}%`;
+            watermarkEl.style.opacity = opacity;
+        };
+
+        reposition();
+        this.ctx.watermarkInterval = setInterval(reposition, 12000);
+
+        // Targeted tamper guard: ONLY monitors the watermark element itself
+        const checkWatermarkIntegrity = () => {
+            if (!watermarkEl.isConnected) {
+                handleViolation('ELEMENT_REMOVED');
+                return;
+            }
+            const style = window.getComputedStyle(watermarkEl);
+            const opacity = parseFloat(style.opacity);
+            if (style.display === 'none' || style.visibility === 'hidden' || opacity < 0.03) {
+                handleViolation('STYLE_CONCEALED');
             }
         };
 
-        updateDynamic();
-        setInterval(updateDynamic, 15000);
+        const handleViolation = (reason) => {
+            violationCount++;
+
+            // Report tamper beacon to server
+            if (this.ctx.config.reportUrl) {
+                fetch(this.ctx.config.reportUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sessionId: this.ctx.config.sessionId,
+                        type: 'WATERMARK_TAMPERED',
+                        details: reason
+                    })
+                }).catch(() => {});
+            }
+
+            if (!warningShown) {
+                warningShown = true;
+                this.showToast('Security Alert: Watermark integrity check failed.', 4000);
+            } else if (violationCount >= 2) {
+                const video = document.getElementById(this.ctx.config.videoId);
+                if (video && !video.paused) {
+                    video.pause();
+                }
+                this.showToast('Playback paused: Watermark display required.', 6000);
+            }
+        };
+
+        if (window.MutationObserver) {
+            const observer = new MutationObserver(() => {
+                checkWatermarkIntegrity();
+            });
+            observer.observe(watermarkEl, {
+                attributes: true,
+                attributeFilter: ['style', 'class', 'hidden']
+            });
+            if (watermarkEl.parentElement) {
+                observer.observe(watermarkEl.parentElement, {
+                    childList: true
+                });
+            }
+            this.ctx.watermarkObserver = observer;
+        }
+
+        this.ctx.watermarkCheckInterval = setInterval(checkWatermarkIntegrity, 5000);
+    }
+
+    showToast(message, duration = 4000) {
+        let toast = document.getElementById('avp-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'avp-toast';
+            toast.className = 'avp-toast';
+            this.ctx.elements.player?.appendChild(toast);
+        }
+        toast.textContent = message;
+        toast.classList.add('visible');
+        clearTimeout(this.toastTimeout);
+        this.toastTimeout = setTimeout(() => {
+            toast.classList.remove('visible');
+        }, duration);
     }
 
     formatTime(seconds) {

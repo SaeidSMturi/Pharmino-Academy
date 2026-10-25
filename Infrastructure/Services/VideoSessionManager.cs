@@ -49,53 +49,25 @@ namespace Infrastructure.Services
         {
             CleanExpiredSessions();
 
-            // 🔒 حذف session های قدیمی همین کاربر برای همین ویدیو
-            // این کار باعث می‌شود که refresh صفحه مشکلی ایجاد نکند
-            var oldSessions = _activeSessions.Values
-                .Where(s => s.UserId == userId && s.VideoId == videoId)
+            // 🔒 به‌جای قفل کردن کاربر، سشن‌های قدیمی را جایگزین می‌کنیم
+            // این کار باعث می‌شود رفرش صفحه یا قطعی اینترنت هرگز کاربر قانونی را مسدود نکند
+            var existingUserSessions = _activeSessions.Values
+                .Where(s => s.UserId == userId)
                 .ToList();
 
-            foreach (var oldSession in oldSessions)
+            if (existingUserSessions.Count >= _maxConcurrentStreams)
             {
-                var sessionAge = DateTime.UtcNow - oldSession.LastActivity;
-
-                // 🔒 اگر session بیش از 30 ثانیه inactive است، حذفش کن
-                // این مدت کافی است تا refresh صفحه مشکلی ایجاد نکند
-                if (sessionAge.TotalSeconds > 30)
+                foreach (var oldSession in existingUserSessions)
                 {
                     _activeSessions.TryRemove(oldSession.SessionId, out _);
                     _logger.LogInformation(
-                        "🧹 Removed stale session for same user/video - SessionId: {SessionId}, Age: {Seconds}s",
-                        oldSession.SessionId,
-                        sessionAge.TotalSeconds
-                    );
-                }
-                // 🔒 اگر session جدید است ولی heartbeat ندارد، هنوز فعال نیست
-                else if (oldSession.LastHeartbeat == null && sessionAge.TotalSeconds > 10)
-                {
-                    _activeSessions.TryRemove(oldSession.SessionId, out _);
-                    _logger.LogInformation(
-                        "🧹 Removed session without heartbeat - SessionId: {SessionId}",
-                        oldSession.SessionId
+                        "🔄 Replacing previous active session for user {UserId} (Evicted Session: {SessionId}) with new stream session",
+                        userId, oldSession.SessionId
                     );
                 }
             }
 
-            // 🔒 شمارش فقط session های واقعاً فعال (که هارت‌بیت دارند یا خیلی جدید هستند)
-            var activeCount = _activeSessions.Values
-                .Where(s => s.UserId == userId)
-                .Where(s =>
-                    (DateTime.UtcNow - s.LastActivity).TotalSeconds < 60 && // فعالیت در 60 ثانیه اخیر
-                    (s.LastHeartbeat != null || (DateTime.UtcNow - s.StartTime).TotalSeconds < 15) // heartbeat دارد یا تازه شروع شده
-                )
-                .Count();
-
-            _logger.LogInformation(
-                "CanStartStream check - UserId: {UserId}, VideoId: {VideoId}, ActiveStreams: {Active}, Max: {Max}",
-                userId, videoId, activeCount, _maxConcurrentStreams
-            );
-
-            return activeCount < _maxConcurrentStreams;
+            return true;
         }
 
         public void StartStream(int userId, int videoId, string sessionId, string ipAddress, string userAgent)

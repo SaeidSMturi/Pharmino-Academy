@@ -80,6 +80,10 @@
 
             <!-- Utility Action Buttons -->
             <div class="flex items-center gap-2">
+                <button id="forensic-toggle" class="px-3 py-2 text-slate-400 hover:text-rose-400 bg-black/40 hover:bg-rose-500/10 border border-white/5 hover:border-rose-500/30 rounded-xl transition-all flex items-center gap-1.5" title="Forensic Reveal (Expose Watermarks)">
+                    <i class="fas fa-fingerprint text-xs"></i>
+                    <span class="text-[11px] font-bold hidden sm:inline">Forensic Reveal</span>
+                </button>
                 <button id="rotate-pdf" class="p-2.5 text-slate-400 hover:text-brand-cyan bg-black/40 hover:bg-white/5 border border-white/5 rounded-xl transition-all" title="Rotate 90°">
                     <i class="fas fa-rotate text-xs"></i>
                 </button>
@@ -369,20 +373,43 @@
         setTimeout(() => { if (currentBitmap) queueRenderPage(pageNum); }, 150);
         });
 
+        let isForensicMode = false;
+        document.getElementById('forensic-toggle').addEventListener('click', function() {
+            isForensicMode = !isForensicMode;
+            const span = this.querySelector('span');
+            if (isForensicMode) {
+                if (isInversionMode) {
+                    document.getElementById('dark-mode-toggle').click();
+                }
+                canvas.style.filter = 'grayscale(100%) contrast(1500%) brightness(0.85)';
+                this.classList.remove('text-slate-400', 'bg-black/40', 'border-white/5');
+                this.classList.add('bg-rose-500', 'text-dark-bg', 'border-rose-500', 'shadow-[0_0_15px_rgba(244,63,94,0.4)]');
+                if (span) span.textContent = 'Forensic Active';
+            } else {
+                canvas.style.filter = 'none';
+                this.classList.add('text-slate-400', 'bg-black/40', 'border-white/5');
+                this.classList.remove('bg-rose-500', 'text-dark-bg', 'border-rose-500', 'shadow-[0_0_15px_rgba(244,63,94,0.4)]');
+                if (span) span.textContent = 'Forensic Reveal';
+            }
+        });
+
         let isInversionMode = false;
         document.getElementById('dark-mode-toggle').addEventListener('click', function() {
-        isInversionMode = !isInversionMode;
-        const icon = this.querySelector('i');
+            if (isForensicMode) {
+                document.getElementById('forensic-toggle').click();
+            }
+            isInversionMode = !isInversionMode;
+            const icon = this.querySelector('i');
 
-        if (isInversionMode) {
-        canvas.style.filter = 'invert(0.88) hue-rotate(180deg) brightness(1.1) contrast(1.1)';
-        icon.classList.replace('fa-moon', 'fa-sun');
-        icon.classList.add('text-brand-yellow');
-        } else {
-        canvas.style.filter = 'none';
-        icon.classList.replace('fa-sun', 'fa-moon');
-        icon.classList.remove('text-brand-yellow');
-        }
+            if (isInversionMode) {
+                canvas.style.filter = 'invert(0.88) hue-rotate(180deg) brightness(1.1) contrast(1.1)';
+                icon.classList.replace('fa-moon', 'fa-sun');
+                icon.classList.add('text-brand-yellow');
+            } else {
+                canvas.style.filter = 'none';
+                icon.classList.replace('fa-sun', 'fa-moon');
+                icon.classList.remove('text-brand-yellow');
+            }
         });
 
         // Anti-Exploit Security Engine hooks

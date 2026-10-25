@@ -1,0 +1,42 @@
+--------------------------------------------------
+[2026-10-25 13:04:02] [فایل/بخش: Infrastructure.BackgroundServices.AutoDeleteLogsBackgroundService]
+🔄 سرویس پاکسازی خودکار لاگ‌های قدیمی فعال شد.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-25 13:04:02] [فایل/بخش: Infrastructure.BackgroundServices.SessionCleanupBackgroundService]
+🔄 SessionCleanupBackgroundService started | Check interval: 30 minutes.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-25 13:04:02] [فایل/بخش: Infrastructure.BackgroundServices.AutoUnlockAccountsService]
+🔄 AutoUnlockAccountsService started | Check interval: 60 minutes | Unlock after: 24 hours
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-25 13:04:02] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Now listening on: http://localhost:5131
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-25 13:04:02] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Application started. Press Ctrl+C to shut down.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-25 13:04:02] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Hosting environment: Development
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-25 13:04:02] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Content root path: C:\Users\user\Desktop\Pharmacists\Web
+
+--------------------------------------------------
+

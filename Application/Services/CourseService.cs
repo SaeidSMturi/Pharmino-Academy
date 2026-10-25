@@ -131,7 +131,7 @@ namespace Application.Services
             // Admin / Staff bypass enrollment requirement
             var hasAdminRole = await _context.UserRoles
                 .AnyAsync(ur => ur.UserId == userId && ur.Role.IsActive &&
-                    (ur.Role.RoleName == "SuperAdmin" || ur.Role.RoleName == "Admin" || ur.Role.RoleName == "CourseManager" || ur.Role.RoleName == "IT"));
+                    (ur.Role.RoleName == "SuperAdmin" || ur.Role.RoleName == "Admin" || ur.Role.RoleName == "CourseManager" || ur.Role.RoleName == "IT" || ur.Role.RoleName == "ITAdministrator" || ur.Role.RoleName.Contains("Admin")));
             if (hasAdminRole)
                 return true;
 

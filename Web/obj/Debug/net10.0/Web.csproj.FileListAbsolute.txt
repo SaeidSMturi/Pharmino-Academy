@@ -197,7 +197,6 @@ C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\704jwtt7bs-{0
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\bdfeud9h6e-{0}-1ieaimc0zs-1ieaimc0zs.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\mo5xe3o7ip-{0}-61n19gt1b8-61n19gt1b8.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\xuph0orury-{0}-kao2ds4qcg-kao2ds4qcg.gz
-C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\c7c8xhpwka-{0}-24tr4vdcjn-24tr4vdcjn.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\qxtltq3tzw-{0}-gtxjp1wxkm-gtxjp1wxkm.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\czcm2eovn5-{0}-3f6ah0a671-3f6ah0a671.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\nk8dogfvvt-{0}-smxqa5gqq0-smxqa5gqq0.gz
@@ -308,9 +307,7 @@ C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\runtimes\win-x64\native\
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\runtimes\win-x86\native\LICENSE
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\runtimes\win-x86\native\pdfium.dll
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\Web.sourcelink.json
-C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\rj1i4o2db1-{0}-zw6008a3ed-zw6008a3ed.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\15c8sfbgbu-{0}-n1w7lfdwi0-n1w7lfdwi0.gz
-C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\62j3x091fd-{0}-62vwscbxhq-62vwscbxhq.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\d0xy4joxk5-{0}-tilkjcuxzf-tilkjcuxzf.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\rqkye4xa2r-{0}-99emilyk1j-99emilyk1j.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\web.config
@@ -659,3 +656,6 @@ C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\fa\Web.resources.cs
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\fa\Web.resources.dll
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\b2msq9thvz-{0}-4tf3qoi7hs-4tf3qoi7hs.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\h1zmaf09gy-{0}-a473m32dqn-a473m32dqn.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\62j3x091fd-{0}-8jz8xopk6q-8jz8xopk6q.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\c7c8xhpwka-{0}-lz2vllkufs-lz2vllkufs.gz
+C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\rj1i4o2db1-{0}-q5j6sprp92-q5j6sprp92.gz

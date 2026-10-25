@@ -1,10 +1,44 @@
-@model Domain.Entities.Course.CourseVideo
+@using Application.Interfaces
+@inject IPermissionService _permissionService
 
 @{
     var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
     ViewData["Title"] = Localizer["VideoDetails"].Value;
-    var streamUrl = ViewBag.StreamUrl as string ?? Url.Action("StreamVideo", "CourseVideos", new { Area = "Admin", id = Model.VideoId });
+
+    var videoToken = ViewBag.VideoToken as string ?? "";
+    var sessionId = ViewBag.SessionId as string ?? "";
+    var userId = ViewBag.UserId != null ? (int)ViewBag.UserId : 0;
+    var hlsAvailable = (bool)(ViewBag.HlsAvailable ?? false);
+    var videoGuid = ViewBag.VideoGuid as string ?? "";
+    var forensicCode = ViewBag.ForensicCode as string ?? "";
+    var maskedEmail = ViewBag.MaskedEmail as string ?? "";
+
+    // Strictly check for IT Administrator authority (IT / ITAdministrator role or IT claim), excluding SuperAdmin
+    var userRoles = userId > 0 ? await _permissionService.GetUserRolesAsync(userId) : new List<string>();
+    var isItAdmin = userRoles.Any(r => r.Equals("IT", StringComparison.OrdinalIgnoreCase) || r.Equals("ITAdministrator", StringComparison.OrdinalIgnoreCase))
+                    || User.IsInRole("IT")
+                    || User.IsInRole("ITAdministrator")
+                    || User.HasClaim(c => (c.Type == System.Security.Claims.ClaimTypes.Role || c.Type == "Permission" || c.Type == "Role")
+                                          && (c.Value.Equals("IT", StringComparison.OrdinalIgnoreCase) || c.Value.Equals("ITAdministrator", StringComparison.OrdinalIgnoreCase)));
 }
+
+<!-- Advanced Video Player CSS & Cyberpunk Panel Styles -->
+<link rel="stylesheet" href="~/css/advanced-video-player.css" />
+<style>
+    #dev-debug-logs::-webkit-scrollbar {
+        width: 4px;
+    }
+    #dev-debug-logs::-webkit-scrollbar-track {
+        background: rgba(3, 7, 18, 0.5);
+    }
+    #dev-debug-logs::-webkit-scrollbar-thumb {
+        background: rgba(66, 234, 255, 0.2);
+        border-radius: 4px;
+    }
+    #dev-debug-logs::-webkit-scrollbar-thumb:hover {
+        background: #42EAFF;
+    }
+</style>
 
 <div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start" dir="@(isRtl ? "rtl" : "ltr")">
 
@@ -42,6 +76,51 @@
         </div>
     </div>
 
+    @if (isItAdmin)
+    {
+        <!-- Cyberpunk Security Debugger Panel (IT Administrator Exclusive) -->
+        <details open class="group mb-6 border border-brand-orange/30 bg-brand-dark/95 rounded-2xl p-4 shadow-[0_0_25px_rgba(255,126,66,0.1)] relative overflow-hidden text-xs">
+            <summary class="flex justify-between items-center cursor-pointer select-none">
+                <h3 class="text-brand-orange font-extrabold font-mono text-xs tracking-wider uppercase flex items-center">
+                    <span class="w-2 h-2 rounded-full bg-brand-orange animate-ping mr-2.5 ml-2.5"></span>
+                    <i class="fas fa-terminal mr-2 ml-2"></i> Live Security Operations Center (IT Administrator)
+                </h3>
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] text-slate-500 group-open:rotate-180 transition-transform">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </div>
+            </summary>
+
+            <div class="pt-4 border-t border-white/5 mt-3">
+                <div id="dev-server-sync" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3 p-3 bg-white/[0.02] border border-white/5 rounded-xl font-mono text-[11px]">
+                    <div class="bg-brand-dark/50 p-2 rounded-lg border border-white/5">Suspicion Score: <span id="dbg-score" class="text-white font-extrabold block mt-0.5 text-brand-orange">0</span></div>
+                    <div class="bg-brand-dark/50 p-2 rounded-lg border border-white/5">Firewall: <span id="dbg-status" class="text-green-400 font-extrabold block mt-0.5">SECURE</span></div>
+                    <div class="bg-brand-dark/50 p-2 rounded-lg border border-white/5">Total Payload: <span id="dbg-total-req" class="text-brand-cyan font-extrabold block mt-0.5">0</span></div>
+                    <div class="bg-brand-dark/50 p-2 rounded-lg border border-white/5">Sync Rate: <div class="mt-0.5 flex items-baseline gap-1"><span id="dbg-speed" class="text-brand-yellow font-extrabold">0</span> <span class="text-[9px] text-slate-500 uppercase">KB/s</span></div></div>
+                </div>
+
+                <div id="dev-debug-logs" class="h-28 overflow-y-auto font-mono text-[10px] space-y-1 p-2 bg-black/60 rounded-xl border border-white/5 shadow-inner">
+                    <div class="text-slate-500 flex items-center gap-2"><i class="fas fa-circle-info text-brand-cyan text-[9px]"></i> Core agent initialized. Securing pipeline...</div>
+                </div>
+            </div>
+        </details>
+    }
+
+    <!-- Watermark & Traceability Notice -->
+    <div class="rounded-xl p-3 mb-6 bg-brand-cyan/5 border border-brand-cyan/20 shadow flex items-center justify-between gap-4 text-xs">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-brand-cyan/10 flex items-center justify-center border border-brand-cyan/20 shrink-0">
+                <i class="fas fa-fingerprint text-brand-cyan text-sm"></i>
+            </div>
+            <div>
+                <span class="text-brand-cyan font-bold">Forensically Protected Content:</span>
+                <span class="text-slate-300 text-[11px] hidden sm:inline ml-1">This video is uniquely watermarked and traceable to your account. Direct MP4 downloads are strictly restricted.</span>
+            </div>
+        </div>
+        <span class="text-[10px] font-mono text-slate-500 uppercase shrink-0">HLS Secure</span>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         <!-- Video Player -->
@@ -74,17 +153,11 @@
                     </div>
                 </div>
 
-                <!-- Video Element -->
+                <!-- Video Element Injected via AdvancedVideoPlayer -->
                 <div class="bg-black relative">
-                    <video id="adminVideoPlayer"
-                           class="w-full max-h-[480px]"
-                           controls
-                           controlsList="nodownload"
-                           oncontextmenu="return false;"
-                           preload="metadata">
-                        <source src="@streamUrl" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                    <div id="player-container" class="bg-black aspect-video w-full">
+                        <!-- Video player injected here -->
+                    </div>
                 </div>
 
                 @if (!string.IsNullOrEmpty(Model.Description))
@@ -184,6 +257,224 @@
 </div>
 
 @section Scripts {
+    @* --- hls.js via CDN --- *@
+    @if (hlsAvailable)
+    {
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+        <script src="~/js/hls-secure-player.js"></script>
+    }
+
+    <script type="module" src="~/js/advanced-video-player/index.js"></script>
+    <script type="module" src="~/js/advanced-video-protection/index.js"></script>
+    <script src="~/js/secure-video-loader.js"></script>
+
+    <script type="module">
+        const VIDEO_ID      = @Model.VideoId;
+        const TOKEN         = '@videoToken';
+        const SESSION_ID    = '@sessionId';
+        const USER_ID       = @userId;
+        const HLS_AVAILABLE = @(hlsAvailable ? "true" : "false");
+        const FORENSIC_CODE = '@forensicCode';
+        const MASKED_EMAIL  = '@maskedEmail';
+
+        let MANIFEST_URL = '';
+        @if (hlsAvailable)
+        {
+            <text>
+                MANIFEST_URL = `@Url.Action("Manifest", "Hls", new { Area = "User" })?videoId=${VIDEO_ID}&sid=${encodeURIComponent(SESSION_ID)}&ct=${encodeURIComponent(TOKEN)}`;
+            </text>
+        }
+
+        window.avpInstance = new window.AdvancedVideoPlayer({
+            containerId:     'player-container',
+            videoId:         'adminVideoPlayer',
+            videoSrc:        '', // Direct MP4 fallback disabled; stream strictly served via HLS
+            sessionId:       SESSION_ID,
+            userId:          USER_ID,
+            courseVideoId:   VIDEO_ID,
+            title:           '@Model.Title.Replace("'", "\\'")',
+            forensicCode:    FORENSIC_CODE,
+            maskedEmail:     MASKED_EMAIL,
+            reportUrl:       '@Url.Action("ReportSuspiciousActivity", "Courses", new { Area = "User" })',
+            saveProgressUrl: null,
+            getProgressUrl:  null,
+            chapters:        []
+        });
+
+        let hlsStreamer;
+
+        if (HLS_AVAILABLE && typeof HlsSecurePlayer !== 'undefined') {
+            hlsStreamer = new HlsSecurePlayer({
+                videoId:        'adminVideoPlayer',
+                sessionId:      SESSION_ID,
+                contentToken:   TOKEN,
+                manifestUrl:    MANIFEST_URL
+            });
+        }
+
+        const protection = new window.AdvancedVideoProtection({
+            videoElementId:  'adminVideoPlayer',
+            sessionId:       SESSION_ID,
+            userId:          USER_ID,
+            videoId:         VIDEO_ID,
+            heartbeatUrl:    '@Url.Action("PlayerHeartbeat", "Courses", new { Area = "User" })',
+            fingerprintUrl:  '@Url.Action("ValidateFingerprint", "Courses", new { Area = "User" })',
+            reportUrl:       '@Url.Action("ReportSuspiciousActivity", "Courses", new { Area = "User" })',
+            heartbeatInterval: 3000,
+            debug: @(isItAdmin ? "true" : "false")
+        });
+
+        // Hide URLs in logs console hooks
+        (function () {
+            const originalLog = console.log;
+            console.log = function (...args) {
+                const filtered = args.map(a =>
+                    typeof a === 'string' && (a.includes('StreamVideo') || a.includes('/Hls/'))
+                        ? '[Protected URL Hidden]'
+                        : a
+                );
+                originalLog.apply(console, filtered);
+            };
+        })();
+
+        // Memory Leak Cleanup Guard
+        window.addEventListener('beforeunload', () => {
+            if (hlsStreamer) hlsStreamer.destroy();
+            if (window.avpInstance) window.avpInstance.destroy();
+        });
+
+        // Dev Logger UI Adapter System
+        window.DevLogger = {
+            log: function(message, type = 'info', data = null) {
+                const logsDiv = document.getElementById('dev-debug-logs');
+                if (!logsDiv) return;
+
+                const time = new Date().toLocaleTimeString();
+                let color = 'text-slate-400';
+                let icon = '<i class="fas fa-circle-info text-brand-cyan text-[9px]"></i>';
+
+                if (type === 'warn') {
+                    color = 'text-brand-yellow';
+                    icon = '<i class="fas fa-triangle-exclamation text-brand-yellow text-[9px]"></i>';
+                }
+                if (type === 'error' || type === 'block') {
+                    color = 'text-brand-orange font-bold';
+                    icon = '<i class="fas fa-circle-radiation text-brand-orange text-[9px]"></i>';
+                }
+
+                let dataStr = '';
+                if (data) {
+                    try { dataStr = typeof data === 'object' ? JSON.stringify(data) : data; } catch(e) {}
+                }
+
+                const html = `<div class="${color} flex items-start gap-2 border-b border-white/[0.02] pb-1">
+                    <span class="text-slate-600 shrink-0">[${time}]</span>
+                    <span class="shrink-0">${icon}</span>
+                    <div class="flex-1 break-all">
+                        ${message}
+                        ${dataStr ? `<span class="text-slate-500 block text-[10px] mt-0.5 bg-black/20 p-1 rounded font-sans">${dataStr}</span>` : ''}
+                    </div>
+                </div>`;
+
+                logsDiv.insertAdjacentHTML('afterbegin', html);
+            },
+
+            updateServerSync: function(data) {
+                if(!data) return;
+
+                const scoreEl = document.getElementById('dbg-score');
+                if (scoreEl) scoreEl.innerText = data.suspicionScore || 0;
+
+                const statusEl = document.getElementById('dbg-status');
+                if (statusEl) {
+                    if (data.isBlocked) {
+                        statusEl.innerText = 'BLOCKED / CRITICAL';
+                        statusEl.className = 'text-brand-orange font-extrabold animate-pulse';
+                    } else if (data.isThrottled) {
+                        statusEl.innerText = 'THROTTLED';
+                        statusEl.className = 'text-brand-yellow font-extrabold';
+                    } else {
+                        statusEl.innerText = 'SECURE';
+                        statusEl.className = 'text-green-400 font-extrabold';
+                    }
+                }
+
+                if(data.debugInfo) {
+                    const reqEl = document.getElementById('dbg-total-req');
+                    if (reqEl) reqEl.innerText = data.debugInfo.totalRequests || 0;
+
+                    const kbps = data.debugInfo.currentSpeedKBps || 0;
+                    let speedText = "0";
+                    let unitText = "KB/s";
+
+                    if (kbps >= 1024 * 1024) {
+                        speedText = (kbps / (1024 * 1024)).toFixed(2);
+                        unitText = "GB/s";
+                    } else if (kbps >= 1024) {
+                        speedText = (kbps / 1024).toFixed(2);
+                        unitText = "MB/s";
+                    } else {
+                        speedText = Math.round(kbps).toString();
+                        unitText = "KB/s";
+                    }
+
+                    const speedEl = document.getElementById('dbg-speed');
+                    if (speedEl) {
+                        speedEl.innerText = speedText;
+                        if (speedEl.nextElementSibling) {
+                            speedEl.nextElementSibling.innerText = unitText;
+                        }
+                    }
+
+                    if(data.debugInfo.reasons && Object.keys(data.debugInfo.reasons).length > 0) {
+                        this.log('Server flagged reasons:', 'warn', data.debugInfo.reasons);
+                    }
+                }
+            }
+        };
+
+        const originalConsoleLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+
+        console.log = function(...args) {
+            if(args[0] && typeof args[0] === 'string' && args[0].includes('[VideoProtection]')) {
+                window.DevLogger.log(args[1] || args[0], 'info', args[2]);
+            }
+            originalConsoleLog.apply(console, args);
+        };
+
+        console.warn = function(...args) {
+            window.DevLogger.log(args[0], 'warn', args[1]);
+            originalWarn.apply(console, args);
+        };
+
+        console.error = function(...args) {
+            window.DevLogger.log(args[0], 'error', args[1]);
+            originalError.apply(console, args);
+        };
+
+        const originalFetch = window.fetch;
+        window.fetch = async function(...args) {
+            const response = await originalFetch.apply(this, args);
+
+            if (response.ok) {
+                const clone = response.clone();
+                clone.json().then(data => {
+                    if(args[0] && (args[0].includes('PlayerHeartbeat') || args[0].includes('ValidateFingerprint'))) {
+                        window.DevLogger.updateServerSync(data);
+
+                        if (data.flags && data.flags.length > 0) {
+                            window.DevLogger.log('Fingerprint Flags:', 'warn', data.flags);
+                        }
+                    }
+                }).catch(e => {});
+            }
+
+            return response;
+        };
+    </script>
+
     <script>
         async function toggleVideoActive(videoId, isActive) {
             const action = isActive ? 'deactivate' : 'activate';

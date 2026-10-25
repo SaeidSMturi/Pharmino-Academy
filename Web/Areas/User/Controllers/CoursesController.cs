@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using Application.Streams;
 using Web.Areas.User.Models; // فرض بر این است که مدل‌ها را اینجا قرار می‌دهید
 using Web.Services.Pdf;
@@ -28,6 +30,7 @@ namespace Web.Areas.User.Controllers
         private readonly IStorageService _storageService;
         private readonly IPdfFileLocator _pdfLocator;
         private readonly ISecurePdfRenderer _pdfRenderer;
+        private readonly IConfiguration _configuration;
 
         public CoursesController(
             ICourseService courseService, IWebHostEnvironment environment,
@@ -35,7 +38,7 @@ namespace Web.Areas.User.Controllers
             ILogger<CoursesController> logger, IOneTimeUrlService oneTimeUrlService,
             IIpBindingService ipBindingService, IHlsProcessingService hlsProcessingService,
             IDataProtectionProvider provider, IMemoryCache cache, IStorageService storageService,
-            IPdfFileLocator pdfLocator, ISecurePdfRenderer pdfRenderer)
+            IPdfFileLocator pdfLocator, ISecurePdfRenderer pdfRenderer, IConfiguration configuration)
         {
             _courseService = courseService;
             _environment = environment;
@@ -50,11 +53,33 @@ namespace Web.Areas.User.Controllers
             _storageService = storageService;
             _pdfLocator = pdfLocator;
             _pdfRenderer = pdfRenderer;
+            _configuration = configuration;
         }
 
         #region Helpers
         private int GetCurrentUserId() =>
             int.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId) ? userId : 0;
+
+        private string GetVideoForensicCode(int userId, int videoId)
+        {
+            var secret = _configuration["VideoProtection:WatermarkSecret"] ?? "Pharmino-VideoForensic-Secret-4b8c9d12";
+            using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret));
+            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes($"{userId}|{videoId}"));
+            var uidPart = userId.ToString().PadLeft(3, '0');
+            var hashPart = Convert.ToHexString(hash, 0, 2);
+            return $"PX-A{uidPart}{hashPart}".ToUpperInvariant();
+        }
+
+        private static string MaskEmail(string? email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return "user***@pharmino.com";
+            var at = email.IndexOf('@');
+            if (at <= 1) return "***" + email[Math.Max(0, at)..];
+            var name = email[..at];
+            var domain = email[at..];
+            var visible = Math.Min(3, name.Length);
+            return name[..visible] + "***" + domain;
+        }
 
         private async Task<(bool IsValid, IActionResult ErrorResult, dynamic Video)> ValidateVideoAccessAsync(int videoId, int userId)
         {
@@ -129,6 +154,10 @@ namespace Web.Areas.User.Controllers
             ViewBag.VideoProgress = await _courseService.GetVideoProgressDictAsync(userId, (int)video.CourseId);
             ViewBag.Enrollment = await _courseService.GetUserEnrollmentAsync(userId, (int)video.CourseId);
 
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value ?? User.Identity?.Name ?? $"student{userId}@pharmino.com";
+            ViewBag.ForensicCode = GetVideoForensicCode(userId, video.VideoId);
+            ViewBag.MaskedEmail = MaskEmail(userEmail);
+
             return View(video);
         }
         #endregion
@@ -193,6 +222,12 @@ namespace Web.Areas.User.Controllers
             var (isValidAccess, errorResult, video) = await ValidateVideoAccessAsync(videoId, userId);
             if (!isValidAccess) return errorResult;
 
+            var videoGuid = Path.GetFileNameWithoutExtension((string)video.VideoFileName);
+            if (await _hlsProcessingService.HlsExistsAsync((int)video.CourseId, videoGuid))
+            {
+                return StatusCode(403, new { error = "Direct MP4 download is disabled. Please use the secure HLS player." });
+            }
+
             var videoPath = Path.Combine(_environment.WebRootPath, "uploads", "courses", video.CourseId.ToString(), "videos", video.VideoFileName);
             if (!System.IO.File.Exists(videoPath)) return NotFound();
 
@@ -252,6 +287,12 @@ namespace Web.Areas.User.Controllers
                 // 2. بررسی دسترسی کاربر به ویدیو
                 var (isValid, errorResult, video) = await ValidateVideoAccessAsync(videoId, userId);
                 if (!isValid) return errorResult;
+
+                var videoGuid = Path.GetFileNameWithoutExtension((string)video.VideoFileName);
+                if (await _hlsProcessingService.HlsExistsAsync((int)video.CourseId, videoGuid))
+                {
+                    return StatusCode(403, new { error = "Direct MP4 download is disabled. Please use the secure HLS player." });
+                }
 
                 var directoryPath = $"uploads/courses/{video.CourseId}/videos";
 
@@ -316,10 +357,12 @@ namespace Web.Areas.User.Controllers
         [HttpPost]
         public IActionResult ReportSuspiciousActivity([FromBody] SuspiciousActivityReport report)
         {
+            var userId = GetCurrentUserId();
             var severityScore = report?.Type switch
             {
                 "SCREEN_RECORDING_API_CALLED" => 50,
                 "SCREEN_RECORDING_EXTENSION" => 40,
+                "WATERMARK_TAMPERED" => 45,
                 "PRINT_SCREEN" => 35,
                 "DEVTOOLS_OPENED" => 30,
                 "DEVTOOLS_SHORTCUT" => 25,
@@ -328,6 +371,20 @@ namespace Web.Areas.User.Controllers
                 "LOW_FRAME_RATE" => 10,
                 _ => 5
             };
+
+            _logger.LogWarning(
+                "⚠️ SUSPICIOUS VIDEO ACTIVITY - UserId: {UserId}, Type: {Type}, Details: {Details}, Severity: {Severity}",
+                userId, report?.Type, report?.Details, severityScore);
+
+            if (!string.IsNullOrEmpty(report?.SessionId))
+            {
+                var session = _sessionManager.GetSession(report.SessionId);
+                if (session != null)
+                {
+                    session.SuspicionReasons[report.Type ?? "SuspiciousActivity"] = severityScore;
+                    session.SuspicionScore += severityScore;
+                }
+            }
 
             return Ok(new { success = true, recorded = true, severityScore });
         }
@@ -374,7 +431,8 @@ namespace Web.Areas.User.Controllers
             var userId = GetCurrentUserId();
             var pdf = await _courseService.GetPdfByIdAsync(pdfId);
 
-            if (pdf == null || !await _courseService.CanUserAccessPdfAsync(userId, pdfId))
+            var isAdmin = User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.HasClaim(c => c.Type == "Permission" && (c.Value == "Courses.View" || c.Value == "SuperAdmin"));
+            if (pdf == null || (!isAdmin && !await _courseService.CanUserAccessPdfAsync(userId, pdfId)))
             {
                 TempData["ErrorMessage"] = "PDF not found or access denied.";
                 return RedirectToAction(nameof(Index));
@@ -497,7 +555,8 @@ namespace Web.Areas.User.Controllers
             if (userId == 0 || userId != tokenUserId) return (false, Forbid(), null, null);
 
             var pdf = await _courseService.GetPdfByIdAsync(pdfId);
-            if (pdf == null || !await _courseService.CanUserAccessPdfAsync(userId, pdfId))
+            var isAdmin = User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.HasClaim(c => c.Type == "Permission" && (c.Value == "Courses.View" || c.Value == "SuperAdmin"));
+            if (pdf == null || (!isAdmin && !await _courseService.CanUserAccessPdfAsync(userId, pdfId)))
                 return (false, Forbid(), null, null);
 
             var pdfPath = _pdfLocator.Resolve(pdf.CourseId, pdf.FileName);
@@ -634,6 +693,6 @@ namespace Web.Areas.User.Models
     public class HeartbeatRequest { public string SessionId { get; set; } public string PlayerState { get; set; } public double CurrentPosition { get; set; } public double Duration { get; set; } public double BufferHealth { get; set; } }
     public class FingerprintRequest { public string SessionId { get; set; } public BrowserFingerprintDto Fingerprint { get; set; } }
     public class BrowserFingerprintDto { public string UserAgent { get; set; } public string Platform { get; set; } public string[] Languages { get; set; } public int ScreenWidth { get; set; } public int ScreenHeight { get; set; } public string CanvasHash { get; set; } public string WebGLVendor { get; set; } public string WebGLRenderer { get; set; } public int HardwareConcurrency { get; set; } public double DeviceMemory { get; set; } public bool DevToolsOpen { get; set; } public bool HasAutomationFlags { get; set; } public string ClientHash { get; set; } }
-    public class SuspiciousActivityReport { public string SessionId { get; set; } public int UserId { get; set; } public string Type { get; set; } public Dictionary<string, object> Data { get; set; } public string Timestamp { get; set; } }
+    public class SuspiciousActivityReport { public string SessionId { get; set; } public int UserId { get; set; } public string Type { get; set; } public string Details { get; set; } public Dictionary<string, object> Data { get; set; } public string Timestamp { get; set; } }
     public class VideoProgressRequest { public int VideoId { get; set; } public double Position { get; set; } public double Duration { get; set; } public bool Completed { get; set; } }
 }

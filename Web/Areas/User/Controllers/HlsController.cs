@@ -145,13 +145,13 @@ namespace Web.Areas.User.Controllers
         /// MIME: video/mp2t
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Segment(int videoId, int seg, string sid, string st, string? quality = null)
+        public async Task<IActionResult> Segment(int videoId, int seg, string sid, string st, string? quality = null, string? variant = null)
         {
             var userId = GetCurrentUserId();
 
             if (!ValidateSegmentAccess(userId, videoId, seg, sid, st))
             {
-                _logger.LogWarning("🚫 Segment denied — VideoId: {VideoId}, Seg: {Seg}, Quality: {Quality}", videoId, seg, quality);
+                _logger.LogWarning("🚫 Segment denied — VideoId: {VideoId}, Seg: {Seg}, Quality: {Quality}, Variant: {Variant}", videoId, seg, quality, variant);
                 return Unauthorized(new { error = "Invalid segment token" });
             }
 
@@ -165,8 +165,8 @@ namespace Web.Areas.User.Controllers
 
             try
             {
-                // دریافت مستقیم استریم چانک با توجه به کیفیت انتخابی از باکت / دیسک
-                var (fileStream, contentLength) = await _hlsService.GetSegmentStreamAsync(meta.Value.CourseId, meta.Value.VideoGuid, seg, quality);
+                // دریافت مستقیم استریم چانک با توجه به کیفیت و واریانت انتخابی (A/B) از باکت / دیسک
+                var (fileStream, contentLength) = await _hlsService.GetSegmentStreamAsync(meta.Value.CourseId, meta.Value.VideoGuid, seg, quality, variant);
 
                 _sessionManager.RecordChunkRequest(sid, 0, contentLength, contentLength, TimeSpan.FromMilliseconds(1));
 
@@ -180,7 +180,7 @@ namespace Web.Areas.User.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Segment file not found in Storage — VideoId: {VideoId}, Seg: {Seg}, Quality: {Quality}", videoId, seg, quality);
+                _logger.LogWarning(ex, "Segment file not found in Storage — VideoId: {VideoId}, Seg: {Seg}, Quality: {Quality}, Variant: {Variant}", videoId, seg, quality, variant);
                 return NotFound();
             }
         }
@@ -374,6 +374,9 @@ namespace Web.Areas.User.Controllers
                         videoId, userId, segIndex,
                         DateTime.UtcNow.AddHours(6));
 
+                    // 🔬 فاز ۲: محاسبه واریانت A یا B بر اساس بیت‌استریم قطعی کاربر
+                    var isVariantB = Application.Security.VideoForensics.IsVariantBForUser(userId, segIndex);
+
                     var segUrl = Url.Action("Segment", "Hls", new
                     {
                         Area = "User",
@@ -381,7 +384,8 @@ namespace Web.Areas.User.Controllers
                         seg = segIndex,
                         sid,
                         st = segToken,
-                        quality = quality
+                        quality = quality,
+                        variant = isVariantB ? "b" : null
                     }, Request.Scheme)!;
 
                     result.AppendLine(segUrl);

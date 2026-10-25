@@ -135,7 +135,9 @@ namespace Web.Services.Pdf
             var day = DateTime.UtcNow.ToString("yyyyMMdd");
             using var hmac = new HMACSHA256(_secret);
             var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes($"{viewer.UserId}|{viewer.PdfId}|{day}"));
-            return $"PX-{viewer.UserId:X}-{Convert.ToHexString(hash, 0, 3)}";
+            var uidPart = viewer.UserId.ToString().PadLeft(3, '0');
+            var hashPart = Convert.ToHexString(hash, 0, 2); // 4 hex characters
+            return $"PX-A{uidPart}{hashPart}".ToUpperInvariant();
         }
 
         #endregion
@@ -148,27 +150,39 @@ namespace Web.Services.Pdf
             var masked = MaskEmail(viewer.Email);
             var now = DateTime.UtcNow;
 
-            // 1) Visible tiled diagonal watermark (drawn on a larger layer, rotated, then cropped).
-            var tileFont = _boldFamily.CreateFont(Math.Max(14f, w * 0.022f), FontStyle.Bold);
-            var tileText = $"{code}  ·  {masked}";
-            var tileColor = Color.FromRgba(30, 40, 90, 34);
-            var textWidth = TextMeasurer.MeasureSize(tileText, new TextOptions(tileFont)).Width;
+            // 1) Visible repeating tiled diagonal watermark matching the reference pattern
+            // Alternating rows:
+            // 0: Forensic Code (e.g. PX-A1487197)
+            // 1: Masked Email (e.g. ali***@gmail.com)
+            // 2: PHARMINO
+            var tileFont = _boldFamily.CreateFont(Math.Max(12f, w * 0.015f), FontStyle.Bold);
+            // Calibrated subtle alpha: 24/255 (~9.5%) - readable document while popping out in high-contrast forensics
+            var tileColor = Color.FromRgba(105, 120, 140, 24);
+
+            var brandText = "PHARMINO";
+            var textItems = new[] { code, masked, brandText };
 
             int side = (int)Math.Ceiling(Math.Sqrt((double)w * w + (double)h * h));
             using (var layer = new Image<Rgba32>(side, side))
             {
-                float rowGap = w * 0.16f;
-                float colGap = textWidth + w * 0.08f;
+                float rowGap = Math.Max(55f, w * 0.062f); // Dense grid: ~22-26 diagonal bands
+
                 layer.Mutate(ctx =>
                 {
                     int row = 0;
                     for (float y = 0; y < side; y += rowGap, row++)
                     {
-                        float offset = (row % 2) * (colGap / 2f);
-                        for (float x = -offset; x < side; x += colGap)
-                            ctx.DrawText(tileText, tileFont, tileColor, new PointF(x, y));
+                        var text = textItems[row % 3];
+                        var itemSize = TextMeasurer.MeasureSize(text, new TextOptions(tileFont));
+                        float colGap = itemSize.Width + (w * 0.09f);
+                        float offset = (row % 3) * (colGap / 3f);
+
+                        for (float x = -offset - colGap; x < side + colGap; x += colGap)
+                        {
+                            ctx.DrawText(text, tileFont, tileColor, new PointF(x, y));
+                        }
                     }
-                    ctx.Rotate(-30);
+                    ctx.Rotate(-28);
                 });
 
                 var cropX = (layer.Width - w) / 2;
@@ -177,26 +191,38 @@ namespace Web.Services.Pdf
                 image.Mutate(ctx => ctx.DrawImage(layer, new Point(0, 0), 1f));
             }
 
-            // 2) Hidden forensic marks: alpha ~2%, invisible at normal viewing,
-            //    positions differ per user and per page.
-            var hiddenFont = _monoFamily.CreateFont(Math.Max(10f, w * 0.013f), FontStyle.Regular);
+            // 2) Hidden steganographic micro-marks (alpha ~2%)
+            var hiddenFont = _monoFamily.CreateFont(Math.Max(9f, w * 0.011f), FontStyle.Regular);
             var hiddenText = $"{code}/u{viewer.UserId}/p{pageNumber}/{now:yyyyMMdd}";
-            var hiddenColor = Color.FromRgba(0, 0, 0, 6);
+            var hiddenColor = Color.FromRgba(0, 0, 0, 5);
             var seed = BitConverter.ToInt32(SHA256.HashData(Encoding.UTF8.GetBytes($"{code}|{pageNumber}")), 0);
             var rng = new Random(seed);
             int maxX = Math.Max(1, w - (int)(w * 0.25));
-            int maxY = Math.Max(1, h - 40);
+            int maxY = Math.Max(1, h - 50);
             image.Mutate(ctx =>
             {
                 for (int i = 0; i < HiddenMarkCount; i++)
                     ctx.DrawText(hiddenText, hiddenFont, hiddenColor, new PointF(rng.Next(20, maxX), rng.Next(20, maxY)));
             });
 
-            // 3) Footer stamp.
-            var footerFont = _monoFamily.CreateFont(Math.Max(10f, w * 0.011f), FontStyle.Regular);
-            var footer = $"Licensed to {masked} · {code} · {now:yyyy-MM-dd HH:mm} UTC";
-            image.Mutate(ctx => ctx.DrawText(footer, footerFont, Color.FromRgba(110, 110, 110, 230),
-                new PointF(w * 0.03f, h - w * 0.028f)));
+            // 3) Bottom solid banner matching user's reference:
+            // "Licensed to ali***@gmail.com - PX-A1487197 | PHARMINO ACADEMY - GCC HEALTHCARE LICENSING ACADEMY" and page "06"
+            int footerHeight = (int)Math.Max(30f, h * 0.024f);
+            var footerRect = new RectangleF(0, h - footerHeight, w, footerHeight);
+            var footerBg = Color.FromRgb(8, 20, 48); // Deep Navy (#081430)
+
+            var footerText = $"Licensed to {masked} - {code} | PHARMINO ACADEMY - GCC HEALTHCARE LICENSING ACADEMY";
+            var footerFont = _boldFamily.CreateFont(Math.Max(9.5f, w * 0.0102f), FontStyle.Bold);
+            var pageText = pageNumber.ToString("D2");
+
+            image.Mutate(ctx =>
+            {
+                ctx.Fill(footerBg, footerRect);
+                ctx.DrawText(footerText, footerFont, Color.FromRgb(220, 230, 245), new PointF(w * 0.025f, h - footerHeight * 0.72f));
+
+                var pageSize = TextMeasurer.MeasureSize(pageText, new TextOptions(footerFont));
+                ctx.DrawText(pageText, footerFont, Color.FromRgb(220, 230, 245), new PointF(w - pageSize.Width - (w * 0.025f), h - footerHeight * 0.72f));
+            });
         }
 
         /// <summary>ali.rezaei@gmail.com -> ali***@gmail.com</summary>

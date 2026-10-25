@@ -46,9 +46,27 @@ namespace Infrastructure.Services
         public async Task<byte[]> ReadKeyAsync(int courseId, string videoGuid) =>
             await _storageService.ReadFileBytesAsync(GetHlsDirectory(courseId, videoGuid), KeyFileName);
 
-        public async Task<byte[]> ReadSegmentAsync(int courseId, string videoGuid, int segIndex, string? quality = null)
+        public async Task<byte[]> ReadSegmentAsync(int courseId, string videoGuid, int segIndex, string? quality = null, string? variant = null)
         {
             string dir = GetHlsDirectory(courseId, videoGuid);
+            var isVariantB = string.Equals(variant, "b", StringComparison.OrdinalIgnoreCase);
+
+            if (isVariantB)
+            {
+                if (!string.IsNullOrEmpty(quality))
+                {
+                    string bQuality = $"{SegmentPrefix}_{quality}_{segIndex:D3}_b{SegmentExtension}";
+                    if (await _storageService.FileExistsAsync(dir, bQuality))
+                        return await _storageService.ReadFileBytesAsync(dir, bQuality);
+                }
+                string bFile = $"{SegmentPrefix}{segIndex:D3}_b{SegmentExtension}";
+                if (await _storageService.FileExistsAsync(dir, bFile))
+                    return await _storageService.ReadFileBytesAsync(dir, bFile);
+                string bAltFile = $"{SegmentPrefix}_{segIndex:D3}_b{SegmentExtension}";
+                if (await _storageService.FileExistsAsync(dir, bAltFile))
+                    return await _storageService.ReadFileBytesAsync(dir, bAltFile);
+            }
+
             if (!string.IsNullOrEmpty(quality))
             {
                 string qualityFileName = $"{SegmentPrefix}_{quality}_{segIndex:D3}{SegmentExtension}";
@@ -61,9 +79,27 @@ namespace Infrastructure.Services
             return await _storageService.ReadFileBytesAsync(dir, $"{SegmentPrefix}_{segIndex:D3}{SegmentExtension}");
         }
 
-        public async Task<(Stream fileStream, long contentLength)> GetSegmentStreamAsync(int courseId, string videoGuid, int segmentIndex, string? quality = null)
+        public async Task<(Stream fileStream, long contentLength)> GetSegmentStreamAsync(int courseId, string videoGuid, int segmentIndex, string? quality = null, string? variant = null)
         {
             string directoryPath = GetHlsDirectory(courseId, videoGuid);
+            var isVariantB = string.Equals(variant, "b", StringComparison.OrdinalIgnoreCase);
+
+            if (isVariantB)
+            {
+                if (!string.IsNullOrEmpty(quality))
+                {
+                    string bQuality = $"{SegmentPrefix}_{quality}_{segmentIndex:D3}_b{SegmentExtension}";
+                    try { return await _storageService.GetFileStreamAsync(directoryPath, bQuality); }
+                    catch (FileNotFoundException) { }
+                }
+                string bFile = $"{SegmentPrefix}{segmentIndex:D3}_b{SegmentExtension}";
+                try { return await _storageService.GetFileStreamAsync(directoryPath, bFile); }
+                catch (FileNotFoundException) { }
+                string bAltFile = $"{SegmentPrefix}_{segmentIndex:D3}_b{SegmentExtension}";
+                try { return await _storageService.GetFileStreamAsync(directoryPath, bAltFile); }
+                catch (FileNotFoundException) { }
+            }
+
             if (!string.IsNullOrEmpty(quality))
             {
                 string qualityFileName = $"{SegmentPrefix}_{quality}_{segmentIndex:D3}{SegmentExtension}";
@@ -98,11 +134,12 @@ namespace Infrastructure.Services
         public string GetKeyPath(int courseId, string videoGuid) =>
             $"{GetHlsDirectory(courseId, videoGuid)}/{KeyFileName}";
 
-        public string GetSegmentPath(int courseId, string videoGuid, int segIndex, string? quality = null)
+        public string GetSegmentPath(int courseId, string videoGuid, int segIndex, string? quality = null, string? variant = null)
         {
+            var suffix = string.Equals(variant, "b", StringComparison.OrdinalIgnoreCase) ? "_b" : "";
             if (!string.IsNullOrEmpty(quality))
-                return $"{GetHlsDirectory(courseId, videoGuid)}/{SegmentPrefix}_{quality}_{segIndex:D3}{SegmentExtension}";
-            return $"{GetHlsDirectory(courseId, videoGuid)}/{SegmentPrefix}{segIndex:D3}{SegmentExtension}";
+                return $"{GetHlsDirectory(courseId, videoGuid)}/{SegmentPrefix}_{quality}_{segIndex:D3}{suffix}{SegmentExtension}";
+            return $"{GetHlsDirectory(courseId, videoGuid)}/{SegmentPrefix}{segIndex:D3}{suffix}{SegmentExtension}";
         }
 
         public async Task<HlsProcessingResult> ProcessVideoAsync(
@@ -138,6 +175,9 @@ namespace Infrastructure.Services
 
                 if (!File.Exists(tempPlaylistPath))
                     return new HlsProcessingResult { Success = false, Error = "Playlist not generated" };
+
+                // 🔬 فاز ۲: تولید چانک‌های واریانت B (Forensic Watermarking) برای سگمنت‌های کد
+                await GenerateVariantBSegmentsAsync(tempDir, keyBytes, ivHex, cancellationToken);
 
                 _logger.LogInformation("🚀 FFmpeg finished. Uploading HLS segments to Storage...");
 
@@ -198,6 +238,7 @@ namespace Infrastructure.Services
             return string.Join(" ",
                 "-y",
                 $"-i \"{inputPath}\"",
+                "-force_key_frames \"expr:gte(t,n_forced*10)\"",
                 "-map 0:v:0 -map 0:a:0?",
                 "-map 0:v:0 -map 0:a:0?",
                 "-map 0:v:0 -map 0:a:0?",
@@ -286,6 +327,110 @@ namespace Infrastructure.Services
             }
 
             return new HlsProcessingResult { Success = true };
+        }
+
+        /// <summary>
+        /// 🔬 فاز ۲: تولید چانک‌های واریانت B (Forensic Watermarking)
+        /// سگمنت‌های کد فرد (۱، ۳، ۵...) بازگشایی و با یک واترمارک هندسی دوگانه (Dual-Box) بسیار نامحسوس
+        /// اما پایدار در برابر بازفشرده‌سازی بازتولید شده و با کلید و IV یکسان رمزنگاری می‌گردند.
+        /// </summary>
+        private async Task GenerateVariantBSegmentsAsync(
+            string tempDir,
+            byte[] keyBytes,
+            string ivHex,
+            CancellationToken cancellationToken)
+        {
+            var segmentFiles = Directory.GetFiles(tempDir, "*.ts")
+                .Where(f => !f.EndsWith("_b.ts", StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            var segmentRegex = new Regex(@"seg(?:_([^_]+))?_?(\d+)\.ts$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            var codeSegments = new List<(string SourcePath, string OutputPath, int SegIndex)>();
+
+            foreach (var filePath in segmentFiles)
+            {
+                var fileName = Path.GetFileName(filePath);
+                var match = segmentRegex.Match(fileName);
+                if (match.Success && int.TryParse(match.Groups[2].Value, out int segIndex))
+                {
+                    if (Application.Security.VideoForensics.IsCodeSegment(segIndex))
+                    {
+                        var dir = Path.GetDirectoryName(filePath)!;
+                        var baseName = Path.GetFileNameWithoutExtension(filePath);
+                        var outPath = Path.Combine(dir, $"{baseName}_b.ts");
+                        codeSegments.Add((filePath, outPath, segIndex));
+                    }
+                }
+            }
+
+            if (codeSegments.Count == 0) return;
+
+            _logger.LogInformation("Generating {Count} Variant B forensic watermarked segments...", codeSegments.Count);
+
+            var ivBytes = Convert.FromHexString(ivHex);
+            using var throttler = new SemaphoreSlim(4, 4);
+
+            var tasks = codeSegments.Select(async item =>
+            {
+                await throttler.WaitAsync(cancellationToken);
+                string tempRawIn = Path.Combine(tempDir, $"{Path.GetFileNameWithoutExtension(item.SourcePath)}_raw.ts");
+                string tempRawOut = Path.Combine(tempDir, $"{Path.GetFileNameWithoutExtension(item.SourcePath)}_b_raw.ts");
+
+                try
+                {
+                    // ۱. رمزگشایی سگمنت واریانت A به فرمت خام
+                    using (var aes = Aes.Create())
+                    {
+                        aes.Key = keyBytes;
+                        aes.IV = ivBytes;
+                        aes.Mode = CipherMode.CBC;
+                        aes.Padding = PaddingMode.PKCS7;
+
+                        using var decryptor = aes.CreateDecryptor();
+                        using var inFs = new FileStream(item.SourcePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                        using var outFs = new FileStream(tempRawIn, FileMode.Create, FileAccess.Write, FileShare.None);
+                        using var cs = new CryptoStream(inFs, decryptor, CryptoStreamMode.Read);
+                        await cs.CopyToAsync(outFs, cancellationToken);
+                    }
+
+                    // ۲. ترنس‌کد سریع چانک با فیلتر کنتراست‌تطبیقی دوگانه (Dual-Box: کادر خارجی تیره + هسته داخلی روشن)
+                    var filter = "drawbox=x=w-64:y=24:w=32:h=32:color=black@0.25:t=fill,drawbox=x=w-60:y=28:w=24:h=24:color=white@0.30:t=fill";
+                    var ffmpegArgs = $"-y -i \"{tempRawIn.Replace('\\', '/')}\" -vf \"{filter}\" -c:v libx264 -preset ultrafast -crf 20 -c:a copy -copyts -avoid_negative_ts 0 \"{tempRawOut.Replace('\\', '/')}\"";
+
+                    var transcodeResult = await RunFfmpegAsync(ffmpegArgs, null, cancellationToken);
+
+                    if (transcodeResult.Success && File.Exists(tempRawOut))
+                    {
+                        // ۳. رمزنگاری مجدد سگمنت واریانت B با همان کلید و IV برای پخش بدون درز
+                        using (var aes = Aes.Create())
+                        {
+                            aes.Key = keyBytes;
+                            aes.IV = ivBytes;
+                            aes.Mode = CipherMode.CBC;
+                            aes.Padding = PaddingMode.PKCS7;
+
+                            using var encryptor = aes.CreateEncryptor();
+                            using var inFs = new FileStream(tempRawOut, FileMode.Open, FileAccess.Read, FileShare.Read);
+                            using var outFs = new FileStream(item.OutputPath, FileMode.Create, FileAccess.Write, FileShare.None);
+                            using var cs = new CryptoStream(outFs, encryptor, CryptoStreamMode.Write);
+                            await inFs.CopyToAsync(cs, cancellationToken);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to generate Variant B for segment {Index}. Fallback to Variant A will occur automatically.", item.SegIndex);
+                }
+                finally
+                {
+                    try { if (File.Exists(tempRawIn)) File.Delete(tempRawIn); } catch { }
+                    try { if (File.Exists(tempRawOut)) File.Delete(tempRawOut); } catch { }
+                    throttler.Release();
+                }
+            });
+
+            await Task.WhenAll(tasks);
+            _logger.LogInformation("✅ Variant B forensic segments successfully generated.");
         }
     }
 }

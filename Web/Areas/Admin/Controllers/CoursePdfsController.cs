@@ -361,9 +361,6 @@ public class CoursePdfsController : AdminBaseController
     [Permission("Courses.View")]
     public async Task<IActionResult> Preview(int id)
     {
-        var username = User.Identity?.Name ?? "Unknown User";
-        _logger.LogInformation("User '{Username}' requested preview for PDF ID: {PdfId}", username, id);
-
         var pdf = await _context.CoursePdfs
             .AsNoTracking()
             .FirstOrDefaultAsync(p => p.PdfId == id);
@@ -375,16 +372,7 @@ public class CoursePdfsController : AdminBaseController
             return RedirectToAction("Index", "Courses");
         }
 
-        ViewBag.PdfId = pdf.PdfId;
-        ViewBag.CourseId = pdf.CourseId;
-        ViewBag.FileDisplayName = string.IsNullOrWhiteSpace(pdf.OriginalFileName) ? pdf.FileName : pdf.OriginalFileName;
-
-        var fullName = User.Identity?.Name;
-        var watermarkName = string.IsNullOrWhiteSpace(fullName) ? (User.Identity?.Name ?? "") : fullName;
-        ViewBag.Watermark = watermarkName;
-
-        _logger.LogInformation("Serving preview page for PDF ID: {PdfId} with Watermark: '{Watermark}'", id, watermarkName);
-        return View();
+        return RedirectToAction("ViewPdf", "Courses", new { area = "User", pdfId = id });
     }
 
     [Permission("Courses.View")]
