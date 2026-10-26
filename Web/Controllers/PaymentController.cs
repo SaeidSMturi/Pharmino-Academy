@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -13,15 +14,18 @@ namespace Web.Controllers
     [Authorize]
     public class PaymentController : Controller
     {
+        private readonly ILemonSqueezyService _lemonSqueezyService;
         private readonly IPayPalService _payPalService;
         private readonly IApplicationDbContext _context;
         private readonly ILogger<PaymentController> _logger;
 
         public PaymentController(
+            ILemonSqueezyService lemonSqueezyService,
             IPayPalService payPalService,
             IApplicationDbContext context,
             ILogger<PaymentController> logger)
         {
+            _lemonSqueezyService = lemonSqueezyService;
             _payPalService = payPalService;
             _context = context;
             _logger = logger;
@@ -98,8 +102,8 @@ namespace Web.Controllers
             var effectivePrice = course.EffectivePrice;
             var localAmount = CurrencyHelper.ConvertFromUsd(effectivePrice, selectedCurrency);
 
-            var returnUrl = Url.Action("PayPalCallback", "Payment", new { courseId }, Request.Scheme);
-            var cancelUrl = Url.Action("PayPalCancel", "Payment", new { courseId }, Request.Scheme);
+            var returnUrl = Url.Action("LemonSqueezyCallback", "Payment", new { courseId }, Request.Scheme);
+            var cancelUrl = Url.Action("LemonSqueezyCancel", "Payment", new { courseId }, Request.Scheme);
 
             if (string.IsNullOrEmpty(returnUrl) || string.IsNullOrEmpty(cancelUrl))
             {
@@ -107,10 +111,10 @@ namespace Web.Controllers
                 return RedirectToAction("Checkout", new { courseId });
             }
 
-            var approvalUrl = await _payPalService.CreateOrderAsync(userId, courseId, localAmount, selectedCurrency, effectivePrice, returnUrl, cancelUrl);
+            var approvalUrl = await _lemonSqueezyService.CreateCheckoutAsync(userId, courseId, localAmount, selectedCurrency, effectivePrice, returnUrl, cancelUrl);
             if (string.IsNullOrEmpty(approvalUrl))
             {
-                TempData["ErrorMessage"] = "Error connecting to the payment gateway.";
+                TempData["ErrorMessage"] = "Error connecting to Lemon Squeezy checkout gateway.";
                 return RedirectToAction("Checkout", new { courseId });
             }
 
@@ -118,7 +122,7 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DemoPayment(string token, int courseId)
+        public async Task<IActionResult> DemoLemonSqueezyPayment(string token, int courseId)
         {
             var userId = GetCurrentUserId();
             if (userId == 0) return RedirectToAction("Login", "Account");
@@ -133,14 +137,63 @@ namespace Web.Controllers
                 return RedirectToAction("Details", "Courses", new { id = courseId });
             }
 
-            return View(transaction);
+            return View("DemoLemonSqueezyPayment", transaction);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmDemoPayment(string token, int courseId)
+        {
+            var success = await _lemonSqueezyService.CompleteDemoOrderAsync(token);
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Lemon Squeezy simulated payment completed successfully! Your course enrollment is now active.";
+                return RedirectToAction("Details", "Courses", new { id = courseId });
+            }
+
+            TempData["ErrorMessage"] = "Could not complete demo payment.";
+            return RedirectToAction("Details", "Courses", new { id = courseId });
+        }
+
+        [HttpGet]
+        public IActionResult LemonSqueezyCallback(int courseId)
+        {
+            TempData["SuccessMessage"] = "Payment processed successfully through Lemon Squeezy. Your course access is being activated.";
+            return RedirectToAction("Details", "Courses", new { id = courseId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LemonSqueezyCancel(string? token, int courseId)
+        {
+            if (!string.IsNullOrEmpty(token))
+            {
+                await _lemonSqueezyService.CancelOrderAsync(token);
+            }
+            TempData["InfoMessage"] = "Lemon Squeezy checkout was cancelled.";
+            return RedirectToAction("Details", "Courses", new { id = courseId });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> LemonSqueezyWebhook()
+        {
+            using var reader = new StreamReader(Request.Body);
+            var rawJson = await reader.ReadToEndAsync();
+            var signature = Request.Headers["X-Signature"].ToString();
+
+            var success = await _lemonSqueezyService.ProcessWebhookAsync(rawJson, signature);
+            return success ? Ok(new { message = "Webhook processed" }) : BadRequest(new { message = "Webhook processing failed" });
+        }
+
+        // Backward-compatibility endpoints
+        [HttpGet]
+        public async Task<IActionResult> DemoPayment(string token, int courseId) =>
+            await DemoLemonSqueezyPayment(token, courseId);
 
         [HttpGet]
         public async Task<IActionResult> PayPalCallback(string token, int courseId)
         {
-            _logger.LogInformation("PayPalCallback received token {Token} for course {CourseId}.", token, courseId);
-
             var success = await _payPalService.CaptureOrderAsync(token);
             if (success)
             {
@@ -155,8 +208,6 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IActionResult> PayPalCancel(string token, int courseId)
         {
-            _logger.LogWarning("PayPalCancel received token {Token} for course {CourseId}.", token, courseId);
-
             await _payPalService.CancelOrderAsync(token);
             TempData["InfoMessage"] = "Payment process was canceled by the user.";
             return RedirectToAction("Details", "Courses", new { id = courseId });

@@ -1,0 +1,259 @@
+@model List<Domain.Entities.Exam.Exam>
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = "Tests Management";
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start" dir="@(isRtl ? "rtl" : "ltr")">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+        <div>
+            <h1 class="text-3xl font-extrabold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent mb-2 tracking-wide flex items-center gap-3">
+                <i class="fas fa-file-signature text-brand-cyan"></i>
+                Mock Tests &amp; Exams
+            </h1>
+            <p class="text-slate-400 text-sm font-medium">Upload exam PDFs with automated MCQ recognition, configure countdown timers, and manage student assessments.</p>
+        </div>
+        <a asp-area="Admin" asp-controller="Tests" asp-action="Create" class="w-full md:w-auto text-center px-6 py-2.5 bg-gradient-to-r from-brand-cyan to-brand-blue rounded-xl text-dark-bg font-extrabold hover:shadow-[0_0_20px_rgba(66,234,255,0.4)] hover:scale-[1.02] transition-all duration-300 whitespace-nowrap text-sm flex items-center justify-center">
+            <i class="fas fa-plus @(isRtl ? "ml-2" : "mr-2") text-lg"></i>
+            Create Test / Upload PDF
+        </a>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-brand-blue/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-brand-blue/10 rounded-full blur-2xl group-hover:bg-brand-blue/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Total Tests</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.Count</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-brand-blue/10 border border-brand-blue/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(66,114,255,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-file-invoice text-brand-blue text-lg"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-emerald-500/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Active Tests</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.Count(e => e.IsActive)</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(16,185,129,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-circle-check text-emerald-400 text-lg"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-brand-cyan/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-brand-cyan/10 rounded-full blur-2xl group-hover:bg-brand-cyan/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Total Questions</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.Sum(e => e.Questions?.Count ?? 0)</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(66,234,255,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-list-check text-brand-cyan text-lg"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-brand-orange/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-brand-orange/10 rounded-full blur-2xl group-hover:bg-brand-orange/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Student Attempts</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.Sum(e => e.Attempts?.Count ?? 0)</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-brand-orange/10 border border-brand-orange/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(255,126,66,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-users-viewfinder text-brand-orange text-lg"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tests List Table -->
+    @if (Model == null || !Model.Any())
+    {
+        <div class="p-16 text-center rounded-3xl bg-white/[0.02] border border-white/[0.05] max-w-2xl mx-auto">
+            <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-brand-cyan/10 flex items-center justify-center border border-brand-cyan/20">
+                <i class="fas fa-file-circle-question text-brand-cyan text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2">No Tests Created Yet</h3>
+            <p class="text-slate-400 text-sm mb-8 leading-relaxed">
+                Upload your first English mock test PDF (or paste MCQ text). The automated engine will parse questions, options (A-D), and correct answer keys instantly.
+            </p>
+            <a asp-area="Admin" asp-controller="Tests" asp-action="Create" class="inline-flex items-center px-6 py-3.5 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg font-extrabold text-sm transition-all duration-300 shadow-lg shadow-brand-cyan/20 hover:scale-[1.02]">
+                <i class="fas fa-plus @(isRtl ? "ml-2" : "mr-2")"></i>
+                Create Your First Test
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="rounded-3xl bg-white/[0.02] border border-white/[0.05] overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="bg-white/[0.03] text-xs uppercase font-bold text-slate-400 tracking-wider border-b border-white/[0.05]">
+                        <tr>
+                            <th class="px-6 py-4">Test Title</th>
+                            <th class="px-6 py-4">Course</th>
+                            <th class="px-6 py-4 text-center">Questions</th>
+                            <th class="px-6 py-4 text-center">Duration</th>
+                            <th class="px-6 py-4 text-center">Passing</th>
+                            <th class="px-6 py-4 text-center">Attempts</th>
+                            <th class="px-6 py-4 text-center">Status</th>
+                            <th class="px-6 py-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/[0.05]">
+                        @foreach (var exam in Model)
+                        {
+                            <tr class="hover:bg-white/[0.02] transition-colors" id="exam-row-@exam.ExamId">
+                                <td class="px-6 py-4 font-semibold text-white">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-cyan/20 to-brand-blue/20 border border-brand-cyan/30 flex items-center justify-center shrink-0">
+                                            <i class="fas fa-clipboard-question text-brand-cyan"></i>
+                                        </div>
+                                        <div>
+                                            <span class="block text-white font-bold text-sm">@exam.Title</span>
+                                            @if (!string.IsNullOrEmpty(exam.Description))
+                                            {
+                                                <span class="block text-xs text-slate-400 truncate max-w-xs">@exam.Description</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    @if (exam.Course != null)
+                                    {
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-brand-blue/15 text-brand-blue border border-brand-blue/30">
+                                            <i class="fas fa-video mr-1.5 text-[10px]"></i>
+                                            @exam.Course.Title
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-500/10 text-slate-400 border border-slate-500/20">
+                                            General
+                                        </span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="font-mono font-bold text-brand-cyan text-sm">
+                                        @(exam.Questions?.Count ?? 0)
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-white/5 font-mono text-xs text-slate-300">
+                                        <i class="fas fa-clock mr-1 text-slate-500"></i>
+                                        @(exam.DurationMinutes > 0 ? $"{exam.DurationMinutes} min" : "No limit")
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="font-mono text-xs text-amber-400 font-semibold">
+                                        @exam.PassingScorePercent%
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-brand-orange/15 text-brand-orange border border-brand-orange/30">
+                                        @(exam.Attempts?.Count ?? 0) taken
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <button type="button"
+                                            onclick="toggleActive(@exam.ExamId, this)"
+                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold cursor-pointer transition-all duration-300 @(exam.IsActive ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30" : "bg-rose-500/20 text-rose-400 border border-rose-500/30 hover:bg-rose-500/30")">
+                                        <i class="fas @(exam.IsActive ? "fa-circle-check" : "fa-circle-xmark") mr-1.5 text-[11px]"></i>
+                                        <span>@(exam.IsActive ? "Active" : "Disabled")</span>
+                                    </button>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <a href="/User/Tests/Take/@exam.ExamId"
+                                           target="_blank"
+                                           title="Preview Student View"
+                                           class="w-8 h-8 rounded-lg bg-white/5 hover:bg-brand-cyan/20 text-slate-400 hover:text-brand-cyan border border-white/10 flex items-center justify-center transition-all">
+                                            <i class="fas fa-eye text-xs"></i>
+                                        </a>
+                                        <button type="button"
+                                                onclick="deleteExam(@exam.ExamId, '@exam.Title')"
+                                                title="Delete Test"
+                                                class="w-8 h-8 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 flex items-center justify-center transition-all">
+                                            <i class="fas fa-trash-can text-xs"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+
+@Html.AntiForgeryToken()
+
+@section Scripts {
+    <script>
+        function antiForgeryHeaders() {
+            return { 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || '' };
+        }
+
+        async function toggleActive(id, btn) {
+            btn.disabled = true;
+            try {
+                const res = await fetch(`/Admin/Tests/ToggleActive/${id}`, {
+                    method: 'POST',
+                    headers: antiForgeryHeaders()
+                });
+                const data = await res.json();
+                if (data.success) {
+                    if (data.isActive) {
+                        btn.className = "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold cursor-pointer transition-all duration-300 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30";
+                        btn.innerHTML = '<i class="fas fa-circle-check mr-1.5 text-[11px]"></i><span>Active</span>';
+                    } else {
+                        btn.className = "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold cursor-pointer transition-all duration-300 bg-rose-500/20 text-rose-400 border border-rose-500/30 hover:bg-rose-500/30";
+                        btn.innerHTML = '<i class="fas fa-circle-xmark mr-1.5 text-[11px]"></i><span>Disabled</span>';
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Could not update test status.");
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function deleteExam(id, title) {
+            if (!confirm(`Are you sure you want to permanently delete the test "${title}"? All questions and student attempts will also be removed.`)) {
+                return;
+            }
+
+            try {
+                const res = await fetch(`/Admin/Tests/Delete/${id}`, {
+                    method: 'POST',
+                    headers: antiForgeryHeaders()
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const row = document.getElementById(`exam-row-${id}`);
+                    if (row) {
+                        row.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                        setTimeout(() => row.remove(), 300);
+                    }
+                } else {
+                    alert("Delete failed: " + (data.message || "Unknown error"));
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Failed to delete test.");
+            }
+        }
+    </script>
+}

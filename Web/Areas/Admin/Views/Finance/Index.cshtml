@@ -1,0 +1,488 @@
+@model Web.Areas.Admin.ViewModels.FinanceDashboardViewModel
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = "Financial Management & Transactions";
+}
+
+<div class="animate-[fadeIn_0.4s_ease_forwards] w-full text-start space-y-8" dir="@(isRtl ? "rtl" : "ltr")">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-brand-cyan/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-extrabold bg-gradient-to-r from-emerald-400 via-brand-cyan to-brand-blue bg-clip-text text-transparent tracking-wide">
+                        Financial Hub &amp; Transactions
+                    </h1>
+                    <p class="text-slate-400 text-xs font-medium mt-0.5">
+                        Track payments, monitor Lemon Squeezy gateway events, analyze course revenues, and manage student transactions.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header Actions: Export CSV -->
+        <div class="flex items-center gap-3">
+            <a asp-action="ExportCsv" asp-route-status="@Model.StatusFilter" asp-route-gateway="@Model.GatewayFilter"
+               class="px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-bold transition-all flex items-center gap-2">
+                <i class="fas fa-file-csv text-emerald-400 text-sm"></i>
+                <span>Export CSV</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Lemon Squeezy Gateway Health Card -->
+    <div class="p-5 rounded-3xl bg-gradient-to-r from-[#FFC233]/10 via-dark-bg/60 to-[#7047EB]/10 border border-[#FFC233]/20 backdrop-blur-xl relative overflow-hidden shadow-xl">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 relative z-10">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#FFC233]/20 text-[#FFC233] border border-[#FFC233]/30 flex items-center justify-center text-lg shrink-0">
+                    <i class="fas fa-lemon"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-white font-bold text-sm">Primary Payment Gateway: Lemon Squeezy</span>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase @(Model.LemonSqueezyMode.Equals("Live", StringComparison.OrdinalIgnoreCase) ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" : "bg-amber-500/20 text-amber-300 border border-amber-500/30")">
+                            Mode: @Model.LemonSqueezyMode
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-0.5">
+                        Webhook endpoint ready for real-time order activation and refund synchronization.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Webhook URL Display + Copy Button -->
+            <div class="flex items-center gap-2 bg-dark-bg/80 border border-white/10 rounded-xl px-3 py-2 max-w-md w-full">
+                <span class="text-[11px] font-mono text-slate-300 truncate select-all flex-1" id="webhookUrlText">@Model.WebhookUrl</span>
+                <button type="button" onclick="copyWebhookUrl()" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-brand-cyan/20 text-slate-300 hover:text-brand-cyan text-xs font-bold transition-all shrink-0 flex items-center gap-1" title="Copy Webhook URL">
+                    <i class="fas fa-copy"></i>
+                    <span id="copyBtnText">Copy</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Financial KPI Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Total Revenue -->
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-emerald-500/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Total Net Revenue</p>
+                    <p class="text-3xl font-extrabold font-mono text-white">$@Model.TotalRevenue.ToString("N2")</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(16,185,129,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-sack-dollar text-emerald-400 text-lg"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completed Orders -->
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-brand-cyan/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-brand-cyan/10 rounded-full blur-2xl group-hover:bg-brand-cyan/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Completed Sales</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.CompletedOrdersCount</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-brand-cyan/10 border border-brand-cyan/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(66,234,255,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-circle-check text-brand-cyan text-lg"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Checkouts -->
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-amber-500/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Pending Checkouts</p>
+                    <p class="text-3xl font-extrabold text-white">@Model.PendingOrdersCount</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(245,158,11,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-clock text-amber-400 text-lg"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Refunded Volume -->
+        <div class="relative p-5 rounded-3xl bg-white/[0.02] border border-white/[0.05] hover:border-rose-500/30 transition-all duration-300 hover:-translate-y-1 group overflow-hidden">
+            <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-rose-500/10 rounded-full blur-2xl group-hover:bg-rose-500/20 transition-all"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Refunds (@Model.RefundedOrdersCount)</p>
+                    <p class="text-3xl font-extrabold font-mono text-rose-400">$@Model.TotalRefundedAmount.ToString("N2")</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(244,63,94,0.1)] group-hover:scale-110 transition-transform">
+                    <i class="fas fa-rotate-left text-rose-400 text-lg"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Selling Courses Section -->
+    @if (Model.TopCoursesRevenue != null && Model.TopCoursesRevenue.Any())
+    {
+        <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05]">
+            <h2 class="text-sm font-bold uppercase text-slate-400 tracking-wider mb-4 flex items-center gap-2">
+                <i class="fas fa-chart-pie text-brand-cyan"></i>
+                Revenue Breakdown by Course
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach (var c in Model.TopCoursesRevenue)
+                {
+                    <div class="p-4 rounded-2xl bg-dark-bg/60 border border-white/5 flex items-center justify-between">
+                        <div class="min-w-0 pr-3">
+                            <h3 class="text-sm font-bold text-white truncate">@c.CourseTitle</h3>
+                            <span class="text-xs text-slate-400">@c.CompletedSalesCount completed sales</span>
+                        </div>
+                        <span class="font-mono font-extrabold text-sm text-emerald-400 shrink-0">
+                            $@c.TotalRevenue.ToString("N2")
+                        </span>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Search & Filter Controls -->
+    <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.05] space-y-4">
+        <form method="get" asp-action="Index" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <!-- Search Query -->
+            <div class="md:col-span-2">
+                <label class="block text-xs uppercase font-bold text-slate-400 mb-1.5">Search Transactions</label>
+                <div class="relative">
+                    <input type="text" name="searchQuery" value="@Model.SearchQuery"
+                           placeholder="Search by student name, email, order token, payment ID..."
+                           class="w-full px-4 py-2.5 rounded-xl bg-dark-bg/60 border border-white/10 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-brand-cyan" />
+                </div>
+            </div>
+
+            <!-- Status Filter -->
+            <div>
+                <label class="block text-xs uppercase font-bold text-slate-400 mb-1.5">Status</label>
+                <select name="status" class="w-full px-4 py-2.5 rounded-xl bg-dark-bg/60 border border-white/10 text-white text-xs focus:outline-none focus:border-brand-cyan">
+                    <option value="All" selected="@(string.IsNullOrEmpty(Model.StatusFilter) || Model.StatusFilter == "All")">All Statuses</option>
+                    <option value="Completed" selected="@(Model.StatusFilter == "Completed")">Completed</option>
+                    <option value="Pending" selected="@(Model.StatusFilter == "Pending")">Pending</option>
+                    <option value="Refunded" selected="@(Model.StatusFilter == "Refunded")">Refunded</option>
+                    <option value="Failed" selected="@(Model.StatusFilter == "Failed")">Failed</option>
+                </select>
+            </div>
+
+            <!-- Gateway Filter -->
+            <div>
+                <label class="block text-xs uppercase font-bold text-slate-400 mb-1.5">Gateway</label>
+                <select name="gateway" class="w-full px-4 py-2.5 rounded-xl bg-dark-bg/60 border border-white/10 text-white text-xs focus:outline-none focus:border-brand-cyan">
+                    <option value="All" selected="@(string.IsNullOrEmpty(Model.GatewayFilter) || Model.GatewayFilter == "All")">All Gateways</option>
+                    <option value="LemonSqueezy" selected="@(Model.GatewayFilter == "LemonSqueezy")">Lemon Squeezy</option>
+                    <option value="PayPal" selected="@(Model.GatewayFilter == "PayPal")">PayPal</option>
+                </select>
+            </div>
+
+            <div class="md:col-span-4 flex items-center justify-between pt-2">
+                <div class="flex items-center gap-2">
+                    <button type="submit" class="px-5 py-2 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-blue text-dark-bg font-extrabold text-xs hover:shadow-[0_0_15px_rgba(66,234,255,0.4)] transition-all flex items-center gap-1.5">
+                        <i class="fas fa-filter"></i> Apply Filters
+                    </button>
+                    @if (!string.IsNullOrEmpty(Model.SearchQuery) || !string.IsNullOrEmpty(Model.StatusFilter) || !string.IsNullOrEmpty(Model.GatewayFilter))
+                    {
+                        <a asp-action="Index" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs font-bold transition-colors">
+                            Clear Filters
+                        </a>
+                    }
+                </div>
+                <span class="text-xs text-slate-500 font-medium">Found @Model.TotalCount transaction(s)</span>
+            </div>
+        </form>
+    </div>
+
+    <!-- Transactions Ledger Table -->
+    <div class="rounded-3xl bg-white/[0.02] border border-white/[0.05] overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-300">
+                <thead class="bg-white/[0.03] text-xs uppercase font-bold text-slate-400 tracking-wider border-b border-white/[0.05]">
+                    <tr>
+                        <th class="px-6 py-4">Order Token</th>
+                        <th class="px-6 py-4">Student</th>
+                        <th class="px-6 py-4">Course</th>
+                        <th class="px-6 py-4 text-center">Amount</th>
+                        <th class="px-6 py-4 text-center">Gateway</th>
+                        <th class="px-6 py-4 text-center">Status</th>
+                        <th class="px-6 py-4 text-center">Date (UTC)</th>
+                        <th class="px-6 py-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/[0.05]">
+                    @if (Model.Transactions == null || !Model.Transactions.Any())
+                    {
+                        <tr>
+                            <td colspan="8" class="px-6 py-12 text-center text-slate-500 text-sm">
+                                <i class="fas fa-receipt block text-2xl mb-2 text-slate-600"></i>
+                                No payment transactions match the specified filters.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var t in Model.Transactions)
+                        {
+                            <tr class="hover:bg-white/[0.02] transition-colors" id="row-@t.TransactionId">
+                                <td class="px-6 py-4 font-mono text-xs font-bold text-white">
+                                    <span class="text-brand-cyan">@t.OrderToken</span>
+                                    @if (!string.IsNullOrEmpty(t.PaymentId))
+                                    {
+                                        <span class="block text-[10px] text-slate-500 font-normal">ID: @t.PaymentId</span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div>
+                                        <span class="block font-bold text-white text-xs">@t.User?.FirstName @t.User?.LastName</span>
+                                        <span class="block text-[11px] text-slate-400">@t.User?.Email</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="font-medium text-xs text-slate-200 line-clamp-1 max-w-xs">
+                                        @(t.Course?.Title ?? "Course #" + t.CourseId)
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="font-mono font-bold text-white text-xs">
+                                        @t.Amount.ToString("N2") <span class="text-[#FFB343]">@t.Currency</span>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    @if (t.Gateway.Equals("LemonSqueezy", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#FFC233]/15 text-[#FFC233] border border-[#FFC233]/30">
+                                            <i class="fas fa-lemon text-[9px]"></i> Lemon Squeezy
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                                            <i class="fab fa-paypal text-[9px]"></i> @t.Gateway
+                                        </span>
+                                    }
+                                    <span class="block text-[9px] text-slate-500 font-mono mt-0.5">@t.Mode</span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    @if (t.Status.Equals("Completed", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                                            <i class="fas fa-check mr-1 text-[10px]"></i> Completed
+                                        </span>
+                                    }
+                                    else if (t.Status.Equals("Pending", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                                            <i class="fas fa-clock mr-1 text-[10px]"></i> Pending
+                                        </span>
+                                    }
+                                    else if (t.Status.Equals("Refunded", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                                            <i class="fas fa-rotate-left mr-1 text-[10px]"></i> Refunded
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-500/20 text-slate-400 border border-slate-500/30">
+                                            @t.Status
+                                        </span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 text-center font-mono text-xs text-slate-400">
+                                    @t.CreateDate.ToString("yyyy-MM-dd HH:mm")
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button type="button" onclick="openDetailsModal(@t.TransactionId)"
+                                                title="View Transaction Details"
+                                                class="w-8 h-8 rounded-lg bg-white/5 hover:bg-brand-cyan/20 text-slate-400 hover:text-brand-cyan border border-white/10 flex items-center justify-center transition-all">
+                                            <i class="fas fa-eye text-xs"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        @if (Model.TotalPages > 1)
+        {
+            <div class="p-4 border-t border-white/[0.05] flex items-center justify-between text-xs text-slate-400">
+                <span>Page @Model.CurrentPage of @Model.TotalPages</span>
+                <div class="flex items-center gap-1.5">
+                    @if (Model.CurrentPage > 1)
+                    {
+                        <a asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)" asp-route-searchQuery="@Model.SearchQuery" asp-route-status="@Model.StatusFilter" asp-route-gateway="@Model.GatewayFilter"
+                           class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white transition-colors">
+                            Previous
+                        </a>
+                    }
+                    @if (Model.CurrentPage < Model.TotalPages)
+                    {
+                        <a asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)" asp-route-searchQuery="@Model.SearchQuery" asp-route-status="@Model.StatusFilter" asp-route-gateway="@Model.GatewayFilter"
+                           class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white transition-colors">
+                            Next
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Transaction Details Modal -->
+<div id="detailsModal" class="fixed inset-0 z-50 bg-dark-bg/90 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="glass-panel rounded-3xl p-8 max-w-lg w-full border border-brand-cyan/30 shadow-2xl relative">
+        <button type="button" onclick="closeDetailsModal()" class="absolute top-5 right-5 text-slate-500 hover:text-white text-lg">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <i class="fas fa-receipt text-brand-cyan"></i>
+            Transaction Details
+        </h3>
+
+        <div id="modalContent" class="space-y-3 text-xs text-slate-300">
+            <div class="p-6 text-center text-slate-500">
+                <i class="fas fa-circle-notch fa-spin text-xl text-brand-cyan mb-2"></i>
+                <p>Loading details...</p>
+            </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+            <span id="manageStatusContainer"></span>
+            <button type="button" onclick="closeDetailsModal()" class="px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-bold transition-colors">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+@section Scripts {
+    <script>
+        function antiForgeryHeaders() {
+            return {
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || '',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            };
+        }
+
+        function copyWebhookUrl() {
+            const urlText = document.getElementById('webhookUrlText').innerText;
+            navigator.clipboard.writeText(urlText);
+            const btn = document.getElementById('copyBtnText');
+            btn.innerText = "Copied!";
+            setTimeout(() => btn.innerText = "Copy", 2000);
+        }
+
+        async function openDetailsModal(id) {
+            document.getElementById('detailsModal').classList.remove('hidden');
+            const container = document.getElementById('modalContent');
+            const statusContainer = document.getElementById('manageStatusContainer');
+            container.innerHTML = '<div class="p-6 text-center text-slate-500"><i class="fas fa-circle-notch fa-spin text-xl text-brand-cyan mb-2"></i><p>Loading details...</p></div>';
+            statusContainer.innerHTML = '';
+
+            try {
+                const res = await fetch(`/Admin/Finance/Details/${id}`);
+                const data = await res.json();
+                if (data.success) {
+                    container.innerHTML = `
+                        <div class="bg-dark-bg/60 border border-white/5 rounded-2xl p-4 space-y-2.5 font-sans">
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="text-slate-400">Order Token:</span>
+                                <span class="font-mono font-bold text-brand-cyan">${data.orderToken}</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="text-slate-400">Gateway Payment ID:</span>
+                                <span class="font-mono text-slate-300">${data.paymentId}</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="text-slate-400">Student:</span>
+                                <span class="text-white font-bold">${data.studentName} (${data.studentEmail})</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="text-slate-400">Course / Item:</span>
+                                <span class="text-white">${data.courseTitle}</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="text-slate-400">Amount Paid:</span>
+                                <span class="font-mono font-black text-emerald-400 text-sm">${data.amount.toFixed(2)} ${data.currency}</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="text-slate-400">Gateway & Mode:</span>
+                                <span class="text-slate-300 font-semibold">${data.gateway} (${data.mode})</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="text-slate-400">Status:</span>
+                                <span class="font-bold text-white">${data.status}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Created:</span>
+                                <span class="font-mono text-slate-400">${data.createDate}</span>
+                            </div>
+                        </div>
+                    `;
+
+                    // Status management buttons (e.g. Refund or Complete)
+                    if (data.status === 'Completed') {
+                        statusContainer.innerHTML = `
+                            <button type="button" onclick="updateTransactionStatus(${data.transactionId}, 'Refunded')"
+                                    class="px-4 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 border border-rose-500/30 text-xs font-bold transition-all">
+                                <i class="fas fa-rotate-left mr-1"></i> Mark as Refunded
+                            </button>
+                        `;
+                    } else if (data.status === 'Pending') {
+                        statusContainer.innerHTML = `
+                            <button type="button" onclick="updateTransactionStatus(${data.transactionId}, 'Completed')"
+                                    class="px-4 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 text-xs font-bold transition-all">
+                                <i class="fas fa-check mr-1"></i> Mark as Paid (Manual)
+                            </button>
+                        `;
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<div class="text-rose-400">Failed to load transaction details.</div>';
+            }
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('detailsModal').classList.add('hidden');
+        }
+
+        async function updateTransactionStatus(id, newStatus) {
+            if (!confirm(`Are you sure you want to change this transaction status to "${newStatus}"?`)) return;
+
+            try {
+                const res = await fetch('/Admin/Finance/UpdateStatus', {
+                    method: 'POST',
+                    headers: antiForgeryHeaders(),
+                    body: `id=${id}&newStatus=${newStatus}`
+                });
+                const data = await res.json();
+                if (data.success) {
+                    closeDetailsModal();
+                    window.location.reload();
+                } else {
+                    alert("Status update failed: " + (data.message || "Unknown error"));
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Error updating status.");
+            }
+        }
+    </script>
+}

@@ -523,18 +523,14 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\scoped
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\scopedcss\bundle\Web.styles.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\scopedcss\projectbundle\Web.bundle.scp.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\6lpa2tr6ex-{0}-cymw47bwax-cymw47bwax.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\rj1i4o2db1-{0}-zw6008a3ed-zw6008a3ed.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\1ayw5voaa5-{0}-d9t0ry3mjf-d9t0ry3mjf.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\704jwtt7bs-{0}-s62qkxfvkf-s62qkxfvkf.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\bdfeud9h6e-{0}-1ieaimc0zs-1ieaimc0zs.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\b2msq9thvz-{0}-dwvehyt1bp-dwvehyt1bp.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\mo5xe3o7ip-{0}-61n19gt1b8-61n19gt1b8.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\xuph0orury-{0}-kao2ds4qcg-kao2ds4qcg.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\15c8sfbgbu-{0}-n1w7lfdwi0-n1w7lfdwi0.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\rqkye4xa2r-{0}-99emilyk1j-99emilyk1j.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\c7c8xhpwka-{0}-24tr4vdcjn-24tr4vdcjn.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\qxtltq3tzw-{0}-gtxjp1wxkm-gtxjp1wxkm.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\62j3x091fd-{0}-62vwscbxhq-62vwscbxhq.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\czcm2eovn5-{0}-3f6ah0a671-3f6ah0a671.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\nk8dogfvvt-{0}-smxqa5gqq0-smxqa5gqq0.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\2s28s4nlbv-{0}-c6cczd3u2l-c6cczd3u2l.gz
@@ -644,8 +640,6 @@ C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\publish\dotnet-tools.jso
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\publish\Web.deps.json
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\publish\Web.runtimeconfig.json
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\publish\Web.staticwebassets.endpoints.json
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\ar\Web.resources.cs
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\en\Web.resources.cs
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\runtimes\win\lib\net10.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\fa\Web.resources.dll
@@ -659,3 +653,57 @@ C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\h1zmaf09gy-{0
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\62j3x091fd-{0}-8jz8xopk6q-8jz8xopk6q.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\c7c8xhpwka-{0}-lz2vllkufs-lz2vllkufs.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\rj1i4o2db1-{0}-q5j6sprp92-q5j6sprp92.gz
+C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\UglyToad.PdfPig.Core.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\UglyToad.PdfPig.DocumentLayoutAnalysis.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\UglyToad.PdfPig.Fonts.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\UglyToad.PdfPig.Package.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\UglyToad.PdfPig.Tokenization.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\UglyToad.PdfPig.Tokens.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\UglyToad.PdfPig.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\fa\Web.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\UglyToad.PdfPig.Core.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\UglyToad.PdfPig.DocumentLayoutAnalysis.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\UglyToad.PdfPig.Fonts.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\UglyToad.PdfPig.Package.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\UglyToad.PdfPig.Tokenization.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\UglyToad.PdfPig.Tokens.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\UglyToad.PdfPig.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\runtimes\win\lib\net10.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\Web.Resources.SharedResource.fa.resources
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\Web.Resources.Views.Home.Index.fa.resources
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\Web.Resources.Views.Shared._Layout.fa.resources
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\fa\Web.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\rj1i4o2db1-{0}-q5j6sprp92-q5j6sprp92.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\b2msq9thvz-{0}-4tf3qoi7hs-4tf3qoi7hs.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\c7c8xhpwka-{0}-lz2vllkufs-lz2vllkufs.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\62j3x091fd-{0}-8jz8xopk6q-8jz8xopk6q.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\h1zmaf09gy-{0}-a473m32dqn-a473m32dqn.gz
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\publish\web.config
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\web.config
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\AppData\VideoEngine\version.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\appsettings.Development.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\appsettings.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\dotnet-tools.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\publish\AppData\VideoEngine\version.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\publish\appsettings.Development.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\publish\appsettings.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\publish\dotnet-tools.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\publish\Web.deps.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\publish\Web.runtimeconfig.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\publish\Web.staticwebassets.endpoints.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\Web.staticwebassets.runtime.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\Web.staticwebassets.endpoints.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\Assets\Fonts\DejaVuSans-Bold.ttf
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\Assets\Fonts\DejaVuSansMono.ttf
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\Web.exe
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\Web.deps.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\Web.runtimeconfig.json
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\Web.dll
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\Web.pdb
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\ar\Web.resources.dll
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\en\Web.resources.dll
+C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild\fa\Web.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\ar\Web.resources.cs
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\en\Web.resources.cs
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\fa\Web.resources.cs

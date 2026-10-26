@@ -660,3 +660,10 @@ C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\h1zmaf09gy-
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\rj1i4o2db1-{0}-q5j6sprp92-q5j6sprp92.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\c7c8xhpwka-{0}-lz2vllkufs-lz2vllkufs.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Release\net10.0\compressed\62j3x091fd-{0}-8jz8xopk6q-8jz8xopk6q.gz
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\UglyToad.PdfPig.Core.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\UglyToad.PdfPig.DocumentLayoutAnalysis.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\UglyToad.PdfPig.Fonts.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\UglyToad.PdfPig.Package.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\UglyToad.PdfPig.Tokenization.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\UglyToad.PdfPig.Tokens.dll
+C:\Users\user\Desktop\Pharmacists\Web\bin\Release\net10.0\UglyToad.PdfPig.dll

@@ -44,6 +44,13 @@ c:\Users\user\Desktop\Pharmacists\publish\Microsoft.IdentityModel.Protocols.Open
 c:\Users\user\Desktop\Pharmacists\publish\Microsoft.IdentityModel.Tokens.dll
 c:\Users\user\Desktop\Pharmacists\publish\Microsoft.SqlServer.Server.dll
 c:\Users\user\Desktop\Pharmacists\publish\NUglify.dll
+c:\Users\user\Desktop\Pharmacists\publish\UglyToad.PdfPig.Core.dll
+c:\Users\user\Desktop\Pharmacists\publish\UglyToad.PdfPig.DocumentLayoutAnalysis.dll
+c:\Users\user\Desktop\Pharmacists\publish\UglyToad.PdfPig.Fonts.dll
+c:\Users\user\Desktop\Pharmacists\publish\UglyToad.PdfPig.Package.dll
+c:\Users\user\Desktop\Pharmacists\publish\UglyToad.PdfPig.Tokenization.dll
+c:\Users\user\Desktop\Pharmacists\publish\UglyToad.PdfPig.Tokens.dll
+c:\Users\user\Desktop\Pharmacists\publish\UglyToad.PdfPig.dll
 c:\Users\user\Desktop\Pharmacists\publish\PdfSharpCore.dll
 c:\Users\user\Desktop\Pharmacists\publish\Serilog.dll
 c:\Users\user\Desktop\Pharmacists\publish\Serilog.AspNetCore.dll

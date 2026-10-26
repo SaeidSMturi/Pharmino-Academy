@@ -304,6 +304,18 @@
                 <span class="font-medium text-sm transition-transform duration-300 group-hover:translate-x-1">@Localizer["MyCourses"]</span>
             </a>
 
+            <a asp-area="User" asp-controller="Tests" asp-action="Index"
+               class="flex items-center space-x-4 px-4 py-3.5 rounded-xl text-slate-400 hover:bg-brand-surface hover:text-white transition-all duration-300 group @(ViewContext.RouteData.Values["controller"]?.ToString() == "Tests" ? "nav-item-active" : "")">
+                <i class="fas fa-file-pen w-5 text-lg transition-transform duration-300 group-hover:scale-110"></i>
+                <span class="font-medium text-sm transition-transform duration-300 group-hover:translate-x-1">My Tests</span>
+            </a>
+
+            <a asp-area="User" asp-controller="Finance" asp-action="Index"
+               class="flex items-center space-x-4 px-4 py-3.5 rounded-xl text-slate-400 hover:bg-brand-surface hover:text-white transition-all duration-300 group @(ViewContext.RouteData.Values["controller"]?.ToString() == "Finance" ? "nav-item-active" : "")">
+                <i class="fas fa-receipt w-5 text-lg transition-transform duration-300 group-hover:scale-110"></i>
+                <span class="font-medium text-sm transition-transform duration-300 group-hover:translate-x-1">Billing & Receipts</span>
+            </a>
+
             <p class="px-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase mt-8 mb-4">@Localizer["Settings"]</p>
 
             <a asp-area="User" asp-controller="Profile" asp-action="EditProfile"

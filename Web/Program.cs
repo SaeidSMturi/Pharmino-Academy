@@ -189,6 +189,9 @@ namespace Web
             builder.Services.Configure<Application.DTOs.Payment.PayPalSettings>(
                 builder.Configuration.GetSection("PayPalSettings"));
             builder.Services.AddScoped<IPayPalService, PayPalService>();
+            builder.Services.Configure<Application.DTOs.Payment.LemonSqueezySettings>(
+                builder.Configuration.GetSection("LemonSqueezy"));
+            builder.Services.AddScoped<ILemonSqueezyService, LemonSqueezyService>();
             builder.Services.AddScoped<ISuspiciousActivityService, SuspiciousActivityService>();
             builder.Services.AddScoped<ISettingsService, SettingsService>();
             builder.Services.AddScoped<ISeoService, SeoService>();
@@ -209,6 +212,7 @@ namespace Web
             // 🔒 Secure PDF delivery: files stored outside wwwroot, pages rendered server-side with a burned-in forensic watermark
             builder.Services.AddSingleton<IPdfFileLocator, PdfFileLocator>();
             builder.Services.AddSingleton<ISecurePdfRenderer, SecurePdfRenderer>();
+            builder.Services.AddScoped<IPdfExamParserService, PdfExamParserService>();
 
             // ثبت سرویس مدیریت لاگ‌ها
             builder.Services.AddScoped<ILogManagerService, LogManagerService>();

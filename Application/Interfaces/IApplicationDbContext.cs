@@ -47,6 +47,12 @@ namespace Application.Interfaces
         DbSet<SeoSitemapSetting> SeoSitemapSettings { get; set; }
         DbSet<PageSeo> PageSeos { get; set; }
 
+        DbSet<Domain.Entities.Exam.Exam> Exams { get; set; }
+        DbSet<Domain.Entities.Exam.ExamQuestion> ExamQuestions { get; set; }
+        DbSet<Domain.Entities.Exam.QuestionOption> QuestionOptions { get; set; }
+        DbSet<Domain.Entities.Exam.ExamAttempt> ExamAttempts { get; set; }
+        DbSet<Domain.Entities.Exam.AttemptAnswer> AttemptAnswers { get; set; }
+
         DatabaseFacade Database { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

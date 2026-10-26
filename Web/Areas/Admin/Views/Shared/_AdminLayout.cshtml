@@ -13,6 +13,7 @@
     var canViewRoles = await _permissionService.UserHasPermissionAsync(currentUserId, "Roles.View");
     var canViewDashboard = await _permissionService.UserHasPermissionAsync(currentUserId, "Dashboard.View");
     var canViewCourses = await _permissionService.UserHasPermissionAsync(currentUserId, "Courses.View");
+    var canViewPayments = await _permissionService.UserHasPermissionAsync(currentUserId, "Payments.View");
 
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture.Name;
     var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
@@ -370,6 +371,24 @@
                                class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Enrollment" ? "sidebar-active" : "")">
                                 <i class="fas fa-credit-card w-5 text-center"></i>
                                 <span class="font-medium">@Localizer["Enrollments"]</span>
+                            </a>
+                        }
+
+                        @if (canViewCourses)
+                        {
+                            <a asp-area="Admin" asp-controller="Tests" asp-action="Index"
+                               class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Tests" ? "sidebar-active" : "")">
+                                <i class="fas fa-file-signature w-5 text-center"></i>
+                                <span class="font-medium">Tests</span>
+                            </a>
+                        }
+
+                        @if (canViewPayments)
+                        {
+                            <a asp-area="Admin" asp-controller="Finance" asp-action="Index"
+                               class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Finance" ? "sidebar-active" : "")">
+                                <i class="fas fa-wallet w-5 text-center text-emerald-400"></i>
+                                <span class="font-medium">Finance</span>
                             </a>
                         }
 

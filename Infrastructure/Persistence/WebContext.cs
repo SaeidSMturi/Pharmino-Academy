@@ -8,6 +8,7 @@ using Domain.Entities.Security;
 using Domain.Entities.User;
 using Domain.Entities.UserTraker;
 using Domain.Entities.Seo;
+using Domain.Entities.Exam;
 using Microsoft.EntityFrameworkCore;
 using Application.Interfaces;
 
@@ -73,6 +74,16 @@ namespace Infrastructure.Persistence
 
         #endregion
 
+        #region Exam / Mock Tests
+
+        public DbSet<Exam> Exams { get; set; }
+        public DbSet<ExamQuestion> ExamQuestions { get; set; }
+        public DbSet<QuestionOption> QuestionOptions { get; set; }
+        public DbSet<ExamAttempt> ExamAttempts { get; set; }
+        public DbSet<AttemptAnswer> AttemptAnswers { get; set; }
+
+        #endregion
+
         #region Security
 
         public DbSet<SuspiciousActivity> SuspiciousActivities { get; set; }
@@ -95,6 +106,23 @@ namespace Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AttemptAnswer>()
+                .HasOne(a => a.Question)
+                .WithMany()
+                .HasForeignKey(a => a.QuestionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Explicit column type (same as the existing columns, so no migration is needed) silences EF's truncation warning.
+            modelBuilder.Entity<Exam>().Property(e => e.PassingScorePercent).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<ExamQuestion>().Property(q => q.Points).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<ExamAttempt>().Property(a => a.Score).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<ExamAttempt>().Property(a => a.TotalPoints).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<ExamAttempt>().Property(a => a.ScorePercent).HasColumnType("decimal(18,2)");
+
+            // Users are soft-deleted with a query filter; hide their attempts the same way so the required
+            // ExamAttempt → User navigation never points at a filtered-out user.
+            modelBuilder.Entity<ExamAttempt>().HasQueryFilter(a => a.User.IsDelete == false);
+
             modelBuilder.Entity<PageSeo>()
                 .HasIndex(p => p.PagePath)
                 .IsUnique();

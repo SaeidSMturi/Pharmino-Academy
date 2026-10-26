@@ -1,0 +1,114 @@
+@model List<Domain.Entities.Course.PaymentTransaction>
+
+@{
+    var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
+    ViewData["Title"] = "Billing & Receipts";
+}
+
+<div class="space-y-8 animate-fade-in-up" dir="@(isRtl ? "rtl" : "ltr")">
+    <!-- Header -->
+    <div class="glass-panel rounded-[2rem] p-8 lg:p-10 relative overflow-hidden">
+        <div class="relative z-10 flex items-center @(isRtl ? "space-x-reverse sm:mr-4" : "space-x-4")">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400">
+                <i class="fas fa-receipt text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+                    Billing &amp; Payment Receipts
+                </h1>
+                <p class="text-slate-400 text-sm mt-1">Review your payment history, track purchase statuses, and access course access receipts.</p>
+            </div>
+        </div>
+        <!-- Ambient Glow -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-[80px] pointer-events-none"></div>
+    </div>
+
+    <!-- Receipts Table -->
+    <div class="glass-panel rounded-2xl border border-white/5 overflow-hidden shadow-xl">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-300">
+                <thead class="bg-white/[0.03] text-xs uppercase font-bold text-slate-400 tracking-wider border-b border-white/[0.05]">
+                    <tr>
+                        <th class="px-6 py-4">Item / Course</th>
+                        <th class="px-6 py-4 text-center">Receipt #</th>
+                        <th class="px-6 py-4 text-center">Amount</th>
+                        <th class="px-6 py-4 text-center">Payment Method</th>
+                        <th class="px-6 py-4 text-center">Status</th>
+                        <th class="px-6 py-4 text-right">Date</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/[0.05]">
+                    @if (Model == null || !Model.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center text-slate-500 text-sm">
+                                <i class="fas fa-receipt block text-2xl mb-2 text-slate-600"></i>
+                                You have no payment transactions recorded yet.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr class="hover:bg-white/[0.02] transition-colors">
+                                <td class="px-6 py-4 font-bold text-white text-xs">
+                                    @(item.Course?.Title ?? "Course Enrollment")
+                                </td>
+                                <td class="px-6 py-4 text-center font-mono text-xs text-brand-cyan">
+                                    @item.OrderToken
+                                </td>
+                                <td class="px-6 py-4 text-center font-mono font-bold text-white text-xs">
+                                    @item.Amount.ToString("N2") <span class="text-[#FFB343]">@item.Currency</span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    @if (item.Gateway.Equals("LemonSqueezy", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#FFC233]/15 text-[#FFC233] border border-[#FFC233]/30">
+                                            <i class="fas fa-lemon text-[9px]"></i> Lemon Squeezy
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                                            <i class="fab fa-paypal text-[9px]"></i> @item.Gateway
+                                        </span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    @if (item.Status.Equals("Completed", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                                            <i class="fas fa-check mr-1 text-[10px]"></i> Paid
+                                        </span>
+                                    }
+                                    else if (item.Status.Equals("Pending", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                                            <i class="fas fa-clock mr-1 text-[10px]"></i> Pending
+                                        </span>
+                                    }
+                                    else if (item.Status.Equals("Refunded", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                                            <i class="fas fa-rotate-left mr-1 text-[10px]"></i> Refunded
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-500/20 text-slate-400 border border-slate-500/30">
+                                            @item.Status
+                                        </span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 text-right font-mono text-xs text-slate-400">
+                                    @item.CreateDate.ToString("MMM dd, yyyy")
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

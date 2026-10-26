@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "g//ydTrrSF8=",
+  "dgSpecHash": "VK8QY+M7u1w=",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+  "projectFilePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\advancedstringbuilder\\0.2.0\\advancedstringbuilder.0.2.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\awssdk.core\\4.0.9.4\\awssdk.core.4.0.9.4.nupkg.sha512",
@@ -42,6 +42,7 @@
     "C:\\Users\\user\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\nuglify\\1.21.17\\nuglify.1.21.17.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\pdfpig\\0.1.9\\pdfpig.0.1.9.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\pdfsharpcore\\1.3.67\\pdfsharpcore.1.3.67.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\serilog\\4.3.0\\serilog.4.3.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\serilog.aspnetcore\\10.0.0\\serilog.aspnetcore.10.0.0.nupkg.sha512",
@@ -81,9 +82,9 @@
       "code": "NU1902",
       "level": "Warning",
       "message": "Package 'SixLabors.ImageSharp' 3.1.12 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-gwg2-r3hj-4w44",
-      "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+      "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+      "filePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
       "libraryId": "SixLabors.ImageSharp",
       "targetGraphs": [
         "net10.0"
@@ -93,9 +94,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'SixLabors.ImageSharp' 3.1.12 has a known high severity vulnerability, https://github.com/advisories/GHSA-j3p4-wp97-rph4",
-      "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+      "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+      "filePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
       "libraryId": "SixLabors.ImageSharp",
       "targetGraphs": [
         "net10.0"
@@ -105,9 +106,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'SixLabors.ImageSharp' 3.1.12 has a known high severity vulnerability, https://github.com/advisories/GHSA-j9gm-c75j-xc9q",
-      "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+      "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+      "filePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
       "libraryId": "SixLabors.ImageSharp",
       "targetGraphs": [
         "net10.0"
@@ -117,9 +118,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'SixLabors.ImageSharp' 3.1.12 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w",
-      "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+      "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+      "filePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
       "libraryId": "SixLabors.ImageSharp",
       "targetGraphs": [
         "net10.0"
@@ -129,9 +130,9 @@
       "code": "NU1902",
       "level": "Warning",
       "message": "Package 'SixLabors.ImageSharp' 3.1.12 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wmxv-xphr-5c9g",
-      "projectPath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+      "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\user\\Desktop\\Pharmacists\\Web\\Web.csproj",
+      "filePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
       "libraryId": "SixLabors.ImageSharp",
       "targetGraphs": [
         "net10.0"

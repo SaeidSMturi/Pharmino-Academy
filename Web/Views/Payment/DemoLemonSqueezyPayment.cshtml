@@ -1,0 +1,73 @@
+@model Domain.Entities.Course.PaymentTransaction
+@{
+    ViewData["Title"] = "Lemon Squeezy Payment Simulator";
+}
+
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <!-- Ambient Neon Glows -->
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[450px] h-[450px] bg-[#7047EB] rounded-full mix-blend-screen filter blur-[130px] opacity-25 animate-pulse"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[450px] h-[450px] bg-[#FFC233] rounded-full mix-blend-screen filter blur-[130px] opacity-20 animate-pulse"></div>
+    </div>
+
+    <div class="max-w-xl w-full space-y-8 bg-dark-bg/80 backdrop-blur-2xl border border-white/10 p-8 md:p-10 rounded-3xl shadow-2xl relative z-10">
+        <!-- Brand Header -->
+        <div class="text-center relative z-10">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#FFC233]/20 to-[#7047EB]/20 text-[#FFC233] border border-[#FFC233]/30 mb-4 shadow-[0_0_25px_rgba(255,194,51,0.25)]">
+                <i class="fas fa-lemon text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-black text-white tracking-tight flex items-center justify-center gap-2">
+                <span>Lemon Squeezy</span>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#FFC233]/20 text-[#FFC233] border border-[#FFC233]/30 font-mono uppercase font-bold">Simulator</span>
+            </h2>
+            <p class="mt-2 text-xs text-slate-400">Secure checkout simulation in development mode</p>
+        </div>
+
+        <div class="space-y-6 relative z-10">
+            <!-- Receipt Card -->
+            <div class="bg-black/40 border border-white/10 rounded-2xl p-6 space-y-4 text-left font-sans" dir="ltr">
+                <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                    <span class="text-slate-400 text-xs uppercase font-bold tracking-wider">Item:</span>
+                    <span class="text-white font-bold text-sm text-right">@Model.Course?.Title</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                    <span class="text-slate-400 text-xs uppercase font-bold tracking-wider">Amount Due:</span>
+                    <span class="text-[#FFC233] font-mono font-black text-xl">
+                        @Model.Amount.ToString("N2") @Model.Currency
+                    </span>
+                </div>
+                <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                    <span class="text-slate-400 text-xs uppercase font-bold tracking-wider">Order Token:</span>
+                    <span class="text-slate-300 font-mono text-xs">@Model.OrderToken</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400 text-xs uppercase font-bold tracking-wider">Gateway Status:</span>
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30 flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                        @Model.Status (Demo)
+                    </span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col gap-3">
+                <form asp-controller="Payment" asp-action="ConfirmDemoPayment" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="token" value="@Model.OrderToken" />
+                    <input type="hidden" name="courseId" value="@Model.CourseId" />
+                    <button type="submit"
+                            class="flex items-center justify-center w-full px-6 py-4 rounded-xl bg-gradient-to-r from-[#FFC233] to-[#FF7E42] text-dark-bg font-extrabold text-sm hover:shadow-[0_0_25px_rgba(255,194,51,0.4)] hover:scale-[1.01] transition-all">
+                        <i class="fas fa-check-circle mr-2 text-base"></i>
+                        Simulate Successful Lemon Squeezy Payment
+                    </button>
+                </form>
+
+                <a href="/Payment/LemonSqueezyCancel?token=@Model.OrderToken&courseId=@Model.CourseId"
+                   class="flex items-center justify-center w-full px-6 py-3.5 rounded-xl bg-white/5 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 border border-white/10 hover:border-rose-500/30 font-semibold text-xs transition-all text-center">
+                    <i class="fas fa-times-circle mr-2"></i>
+                    Cancel Payment and Return
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
