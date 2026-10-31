@@ -21,7 +21,8 @@ namespace Domain.Entities.Course
         [MaxLength(100)]
         public string? PaymentId { get; set; } // The PayPal Capture/Transaction ID
 
-        [Column(TypeName = "decimal(18,2)")]
+        // 3 decimals: OMR amounts go down to the baisa (1/1000).
+        [Column(TypeName = "decimal(18,3)")]
         public decimal Amount { get; set; }
 
         [Required]

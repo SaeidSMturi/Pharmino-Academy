@@ -75,7 +75,7 @@
                                     }
                                     else
                                     {
-                                        <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded font-mono">$@pdf.Price.ToString("N2")</span>
+                                        <span class="px-2 py-0.5 text-[9px] font-bold tracking-wide bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded font-mono">@CurrencyHelper.Format(pdf.Price)</span>
                                     }
                                 </div>
 

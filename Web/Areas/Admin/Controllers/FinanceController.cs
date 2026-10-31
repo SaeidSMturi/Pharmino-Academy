@@ -56,29 +56,41 @@ namespace Web.Areas.Admin.Controllers
                 .Include(t => t.Course)
                 .AsNoTracking();
 
-            // Overall Financial KPIs (Unfiltered)
-            var completedTransactions = await allTransactionsQuery
-                .Where(t => t.Status == "Completed")
+            // Overall Financial KPIs (Unfiltered). Totals are reported in OMR and only count real money:
+            // demo orders move none. Payments charged in OMR or USD are converted at the peg; older records
+            // in other currencies are listed separately rather than guessed at.
+            var reportingCurrency = CurrencyHelper.SiteCurrency;
+            var realMoney = _context.PaymentTransactions.AsNoTracking()
+                .Where(t => t.Mode != "Demo" && (t.Currency == "OMR" || t.Currency == "USD"));
+
+            // Summed per course, status and currency in the database; converted to OMR here.
+            var sums = await realMoney
+                .Where(t => t.Status == "Completed" || t.Status == "Refunded")
+                .GroupBy(t => new { t.CourseId, t.Course.Title, t.Status, t.Currency })
+                .Select(g => new { g.Key.CourseId, g.Key.Title, g.Key.Status, g.Key.Currency, Count = g.Count(), Total = g.Sum(x => x.Amount) })
                 .ToListAsync();
 
-            var totalRevenue = completedTransactions.Sum(t => t.Amount);
-            var completedCount = completedTransactions.Count;
+            decimal InOmr(decimal amount, string currency) => CurrencyHelper.ToSiteCurrency(amount, currency);
 
+            var completedSums = sums.Where(s => s.Status == "Completed").ToList();
+            var refundedSums = sums.Where(s => s.Status == "Refunded").ToList();
+            var totalRevenue = completedSums.Sum(s => InOmr(s.Total, s.Currency));
+            var completedCount = completedSums.Sum(s => s.Count);
+            var refundedCount = refundedSums.Sum(s => s.Count);
+            var totalRefundedAmount = refundedSums.Sum(s => InOmr(s.Total, s.Currency));
             var pendingCount = await allTransactionsQuery.CountAsync(t => t.Status == "Pending");
-            var refundedList = await allTransactionsQuery.Where(t => t.Status == "Refunded").ToListAsync();
-            var refundedCount = refundedList.Count;
-            var totalRefundedAmount = refundedList.Sum(t => t.Amount);
+            var demoCompletedCount = await _context.PaymentTransactions.CountAsync(t => t.Mode == "Demo" && t.Status == "Completed");
+            var otherCurrencyCount = await _context.PaymentTransactions.CountAsync(t => t.Mode != "Demo" && t.Status == "Completed" && t.Currency != "OMR" && t.Currency != "USD");
 
             // Top Courses Revenue
-            var topCourses = completedTransactions
-                .Where(t => t.Course != null)
-                .GroupBy(t => new { t.CourseId, t.Course.Title })
+            var topCourses = completedSums
+                .GroupBy(s => new { s.CourseId, s.Title })
                 .Select(g => new CourseRevenueStat
                 {
                     CourseId = g.Key.CourseId,
                     CourseTitle = g.Key.Title,
-                    CompletedSalesCount = g.Count(),
-                    TotalRevenue = g.Sum(x => x.Amount)
+                    CompletedSalesCount = g.Sum(s => s.Count),
+                    TotalRevenue = g.Sum(s => InOmr(s.Total, s.Currency))
                 })
                 .OrderByDescending(x => x.TotalRevenue)
                 .Take(5)
@@ -143,7 +155,11 @@ namespace Web.Areas.Admin.Controllers
                 PendingOrdersCount = pendingCount,
                 RefundedOrdersCount = refundedCount,
                 TotalRefundedAmount = totalRefundedAmount,
+                ReportingCurrency = reportingCurrency,
+                DemoCompletedCount = demoCompletedCount,
+                OtherCurrencyCompletedCount = otherCurrencyCount,
                 LemonSqueezyMode = _lemonSettings.Mode,
+                MissingPaymentSettings = _lemonSettings.MissingForRealPayments(),
                 LemonSqueezyStoreId = _lemonSettings.StoreId,
                 WebhookUrl = webhookUrl,
                 TopCoursesRevenue = topCourses,
@@ -198,9 +214,13 @@ namespace Web.Areas.Admin.Controllers
         [Permission("Payments.Manage")]
         public async Task<IActionResult> UpdateStatus(int id, string newStatus)
         {
-            var validStatuses = new[] { "Completed", "Pending", "Refunded", "Failed", "Cancelled" };
-            if (!validStatuses.Contains(newStatus, StringComparer.OrdinalIgnoreCase))
-                return Json(new { success = false, message = "Invalid status specified." });
+            // Only the transitions a person should make by hand; everything else comes from the gateway.
+            var allowed = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["Pending"] = new[] { "Completed", "Cancelled", "Failed" },
+                ["Failed"] = new[] { "Completed" },
+                ["Completed"] = new[] { "Refunded" }
+            };
 
             var transaction = await _context.PaymentTransactions
                 .Include(t => t.Course)
@@ -209,18 +229,23 @@ namespace Web.Areas.Admin.Controllers
             if (transaction == null) return Json(new { success = false, message = "Transaction not found." });
 
             var oldStatus = transaction.Status;
+            if (!allowed.TryGetValue(oldStatus, out var targets) || !targets.Contains(newStatus, StringComparer.OrdinalIgnoreCase))
+                return Json(new { success = false, message = $"A {oldStatus} transaction can't be changed to {newStatus}." });
+
+            newStatus = targets.First(s => s.Equals(newStatus, StringComparison.OrdinalIgnoreCase));
             transaction.Status = newStatus;
             transaction.UpdateDate = DateTime.UtcNow;
-
-            // If changing to Completed manually, ensure enrollment is granted
-            if (string.Equals(newStatus, "Completed", StringComparison.OrdinalIgnoreCase) &&
-                !string.Equals(oldStatus, "Completed", StringComparison.OrdinalIgnoreCase))
-            {
-                await _courseService.EnrollUserInCourseAsync(transaction.UserId, transaction.CourseId, transaction.Amount);
-            }
-
             await _context.SaveChangesAsync();
-            _logger.LogInformation("Admin updated transaction {TransactionId} status from {Old} to {New}", id, oldStatus, newStatus);
+
+            // Keep course access in step with the payment.
+            if (newStatus == "Completed")
+                await _courseService.EnrollUserInCourseAsync(transaction.UserId, transaction.CourseId,
+                    CurrencyHelper.ToSiteCurrency(transaction.Amount, transaction.Currency));
+            else if (newStatus == "Refunded")
+                await _courseService.RevokeEnrollmentAsync(transaction.UserId, transaction.CourseId);
+
+            _logger.LogWarning("Admin {AdminId} manually changed transaction {TransactionId} ({OrderToken}, user {UserId}, course {CourseId}) from {Old} to {New}.",
+                User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value, id, transaction.OrderToken, transaction.UserId, transaction.CourseId, oldStatus, newStatus);
 
             return Json(new { success = true, newStatus = transaction.Status });
         }
@@ -248,13 +273,29 @@ namespace Web.Areas.Admin.Controllers
 
             foreach (var t in list)
             {
-                var name = $"{t.User?.FirstName} {t.User?.LastName}".Trim().Replace("\"", "\"\"");
-                var course = (t.Course?.Title ?? "").Replace("\"", "\"\"");
-                sb.AppendLine($"{t.TransactionId},\"{t.OrderToken}\",\"{t.PaymentId}\",\"{name}\",\"{t.User?.Email}\",\"{course}\",{t.Amount},{t.Currency},{t.Gateway},{t.Mode},{t.Status},{t.CreateDate:yyyy-MM-dd HH:mm:ss}");
+                var fields = new[]
+                {
+                    t.TransactionId.ToString(), t.OrderToken, t.PaymentId, $"{t.User?.FirstName} {t.User?.LastName}".Trim(),
+                    t.User?.Email, t.Course?.Title, t.Amount.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                    t.Currency, t.Gateway, t.Mode, t.Status, t.CreateDate.ToString("yyyy-MM-dd HH:mm:ss")
+                };
+                sb.AppendLine(string.Join(",", fields.Select(CsvField)));
             }
 
             var bytes = Encoding.UTF8.GetPreamble().Concat(Encoding.UTF8.GetBytes(sb.ToString())).ToArray();
             return File(bytes, "text/csv", $"pharmino-transactions-{DateTime.UtcNow:yyyyMMdd-HHmm}.csv");
+        }
+
+        /// <summary>
+        /// Quotes a CSV field. Text starting with = + - @ (or tab/CR) is prefixed with ' so Excel shows it
+        /// instead of running it as a formula — student names are user-controlled.
+        /// </summary>
+        private static string CsvField(string? value)
+        {
+            value ??= string.Empty;
+            if (value.Length > 0 && "=+-@\t\r".Contains(value[0]) && !decimal.TryParse(value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out _))
+                value = "'" + value;
+            return "\"" + value.Replace("\"", "\"\"") + "\"";
         }
     }
 }

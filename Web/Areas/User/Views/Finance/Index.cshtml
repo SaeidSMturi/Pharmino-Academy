@@ -59,7 +59,11 @@
                                     @item.OrderToken
                                 </td>
                                 <td class="px-6 py-4 text-center font-mono font-bold text-white text-xs">
-                                    @item.Amount.ToString("N2") <span class="text-[#FFB343]">@item.Currency</span>
+                                    @CurrencyHelper.Format(item.Amount, item.Currency)
+                                    @if (item.Mode.Equals("Demo", StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <span class="block mt-1 text-[10px] font-sans font-semibold text-amber-300" title="Test checkout — no money was charged">Demo · not charged</span>
+                                    }
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     @if (item.Gateway.Equals("LemonSqueezy", StringComparison.OrdinalIgnoreCase))

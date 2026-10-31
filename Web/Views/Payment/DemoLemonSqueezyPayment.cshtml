@@ -33,7 +33,7 @@
                 <div class="flex justify-between items-center border-b border-white/5 pb-3">
                     <span class="text-slate-400 text-xs uppercase font-bold tracking-wider">Amount Due:</span>
                     <span class="text-[#FFC233] font-mono font-black text-xl">
-                        @Model.Amount.ToString("N2") @Model.Currency
+                        @CurrencyHelper.Format(Model.Amount, Model.Currency)
                     </span>
                 </div>
                 <div class="flex justify-between items-center border-b border-white/5 pb-3">

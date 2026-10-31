@@ -33,6 +33,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-valid
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\sitemap_pages.xml
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\pdfjs\pdf.min.mjs
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\sortable.min.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\marked.min.js
@@ -96,6 +97,7 @@ wwwroot\css\site.css
 wwwroot\css\tailwind.min.css
 wwwroot\css\theme.css
 wwwroot\favicon.ico
+wwwroot\fonts\BNazanin.ttf
 wwwroot\js\advanced-video-player.js
 wwwroot\js\advanced-video-player\controls.js
 wwwroot\js\advanced-video-player\events.js
@@ -175,6 +177,7 @@ wwwroot\lib\pdfjs\.gitkeep
 wwwroot\lib\pdfjs\README.txt
 wwwroot\lib\pdfjs\pdf.min.mjs
 wwwroot\lib\pdfjs\pdf.worker.min.mjs
+wwwroot\lib\sortable.min.js
 wwwroot\robots.txt
 wwwroot\sitemap_categories.xml
 wwwroot\sitemap_custom.xml

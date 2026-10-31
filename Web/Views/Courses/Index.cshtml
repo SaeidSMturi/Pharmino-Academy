@@ -84,10 +84,10 @@
                                 @if (course.HasActiveDiscount)
                                 {
                                     <div class="flex items-baseline gap-2">
-                                        <span class="text-3xl font-black text-emerald-400">$@course.EffectivePrice.ToString("N0")</span>
-                                        <span class="text-sm font-semibold text-custom-snow/40 line-through">$@course.Price.ToString("N0")</span>
+                                        <span class="text-3xl font-black text-emerald-400">@CurrencyHelper.Format(course.EffectivePrice)</span>
+                                        <span class="text-sm font-semibold text-custom-snow/40 line-through">@CurrencyHelper.Format(course.Price)</span>
                                     </div>
-                                    <div class="text-[11px] font-bold text-emerald-400/90 mt-0.5">Save $@((course.Price - course.EffectivePrice).ToString("N0"))</div>
+                                    <div class="text-[11px] font-bold text-emerald-400/90 mt-0.5">Save @CurrencyHelper.Format(course.Price - course.EffectivePrice)</div>
                                 }
                                 else if (course.Price == 0)
                                 {
@@ -95,7 +95,7 @@
                                 }
                                 else
                                 {
-                                    <div class="text-3xl font-black text-custom-snow">$@course.Price.ToString("N0")</div>
+                                    <div class="text-3xl font-black text-custom-snow">@CurrencyHelper.Format(course.Price)</div>
                                 }
                             </div>
                             <a asp-area="" asp-controller="Courses" asp-action="Details" asp-route-id="@course.CourseId"

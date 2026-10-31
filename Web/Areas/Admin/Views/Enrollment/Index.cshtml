@@ -165,7 +165,7 @@
                             @if (row.IsPaid)
                             {
                                 <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 font-mono">
-                                    <i class="fas fa-coins @(isRtl ? "ml-1" : "mr-1")"></i>$@row.PaymentAmount?.ToString("N0")
+                                    <i class="fas fa-coins @(isRtl ? "ml-1" : "mr-1")"></i>@CurrencyHelper.Format(row.PaymentAmount ?? 0)
                                 </span>
                             }
                             else
@@ -383,7 +383,7 @@
                         `<button type="button" onclick="selectCourse(${c.courseId}, '${escapeHtml(c.title)}')"
                             class="w-full text-start px-4 py-3 hover:bg-white/5 text-slate-300 hover:text-white transition-colors flex flex-col text-xs">
                             <span class="font-bold text-sm text-white">${escapeHtml(c.title)}</span>
-                            <span class="text-slate-500 mt-1 font-semibold">$${c.price} · ${c.enrollmentCount} · ${c.isActive ? '@Localizer["ActiveCourse"]' : '@Localizer["InactiveCourse"]'}</span>
+                            <span class="text-slate-500 mt-1 font-semibold">${c.price} OMR · ${c.enrollmentCount} · ${c.isActive ? '@Localizer["ActiveCourse"]' : '@Localizer["InactiveCourse"]'}</span>
                          </button>`
                     ).join('');
                 }

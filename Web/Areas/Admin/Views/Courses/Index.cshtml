@@ -157,15 +157,15 @@
                         {
                             <div class="flex items-center bg-emerald-500/10 text-emerald-400 px-2.5 py-1.5 rounded-lg border border-emerald-500/20" title="Discount active: -@course.DiscountPercent%">
                                 <i class="fas fa-tag @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i>
-                                <span class="font-mono text-slate-400 line-through text-[10px] @(isRtl ? "ml-1" : "mr-1")">$@course.Price.ToString("N0")</span>
-                                <span class="font-mono font-bold">$@course.DiscountPrice.Value.ToString("N0")</span>
+                                <span class="font-mono text-slate-400 line-through text-[10px] @(isRtl ? "ml-1" : "mr-1")">@CurrencyHelper.Format(course.Price)</span>
+                                <span class="font-mono font-bold">@CurrencyHelper.Format(course.DiscountPrice.Value)</span>
                             </div>
                         }
                         else
                         {
                             <div class="flex items-center bg-brand-yellow/10 text-brand-yellow px-2.5 py-1.5 rounded-lg border border-brand-yellow/10">
                                 <i class="fas fa-tag @(isRtl ? "ml-1.5" : "mr-1.5") text-[10px]"></i>
-                                <span class="font-mono font-bold">$@course.Price.ToString("N0")</span>
+                                <span class="font-mono font-bold">@CurrencyHelper.Format(course.Price)</span>
                             </div>
                         }
                     </div>

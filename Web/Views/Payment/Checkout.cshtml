@@ -52,7 +52,7 @@
 
                 <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-5">
                     <div class="flex flex-col gap-2">
-                        <label for="currencySelector" class="text-slate-300 text-sm font-semibold">Select Currency (All Arab Countries and USD):</label>
+                        <label for="currencySelector" class="text-slate-300 text-sm font-semibold">Show the price in (estimate only):</label>
                         <select id="currencySelector" name="selectedCurrency" class="w-full bg-slate-950 border border-slate-800 text-white rounded-xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-[#42EAFF]/50 focus:border-[#42EAFF] text-sm transition-all cursor-pointer">
                             @foreach (var curr in (List<Application.DTOs.Payment.CurrencyInfo>)ViewBag.Currencies)
                             {
@@ -71,10 +71,22 @@
                     <div class="flex justify-between items-center pt-4 border-t border-slate-800">
                         <span class="text-slate-400 text-sm font-medium">Payable Amount:</span>
                         <div class="text-white font-black text-2xl flex items-center gap-1.5">
-                            <span id="displayAmount" class="tracking-tight">@Model.Price.ToString("N2")</span>
-                            <span id="displaySymbol" class="text-[#FFB343] text-lg font-bold">@ViewBag.DetectedCurrency</span>
+                            <span id="displayAmount" class="tracking-tight">@Model.EffectivePrice.ToString("N3", System.Globalization.CultureInfo.InvariantCulture)</span>
+                            <span id="displaySymbol" class="text-[#FFB343] text-lg font-bold">OMR</span>
                         </div>
                     </div>
+
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        @if (string.Equals(ViewBag.ChargeCurrency as string, "OMR", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span>You will be charged <strong class="text-white">@CurrencyHelper.Format(Model.EffectivePrice)</strong>.</span>
+                        }
+                        else
+                        {
+                            <span>You will be charged <strong class="text-white">@CurrencyHelper.Format(Model.EffectivePrice)</strong>, processed as
+                                <strong class="text-white">@CurrencyHelper.Format((decimal)ViewBag.ChargeAmount, "USD")</strong> (the fixed rial–dollar rate).</span>
+                        }
+                    </p>
 
                     <div id="conversionInfo" class="bg-[#FF7E42]/10 border border-[#FF7E42]/20 text-[#FFB343] rounded-xl p-4 text-xs leading-relaxed hidden transition-all duration-300">
                         <div class="flex gap-2 items-start">
@@ -102,31 +114,30 @@
 </div>
 
 <script>
+    // Units of each currency per 1 OMR (the table holds units per USD; 1 USD = OmrPerUsd OMR).
     const rates = {
         @foreach (var curr in (List<Application.DTOs.Payment.CurrencyInfo>)ViewBag.Currencies)
         {
-                    <text>"@curr.Code": { rate: @curr.RateToUsd.ToString(System.Globalization.CultureInfo.InvariantCulture), symbol: "@curr.Symbol" },</text>
+                    <text>"@curr.Code": { rate: @((curr.RateToUsd / CurrencyHelper.OmrPerUsd).ToString(System.Globalization.CultureInfo.InvariantCulture)), symbol: "@curr.Symbol", decimals: @CurrencyHelper.DecimalDigits(curr.Code) },</text>
         }
     };
-    const basePrice = @Model.Price.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    // The OMR price (discounted when a discount is active): this is what ProcessPayment charges.
+    const basePrice = @Model.EffectivePrice.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
     document.getElementById("currencySelector").addEventListener("change", function () {
         const selected = this.value;
         const info = rates[selected];
         if (info) {
             const converted = basePrice * info.rate;
-            // Changed locale from 'fa-IR' to 'en-US' for standard English digit formatting
-            const formatted = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(converted);
+            const formatted = new Intl.NumberFormat('en-US', { minimumFractionDigits: selected === "OMR" ? 3 : 0, maximumFractionDigits: info.decimals }).format(converted);
 
             document.getElementById("displayAmount").innerText = formatted;
             document.getElementById("displaySymbol").innerText = info.symbol;
 
             const conversionInfo = document.getElementById("conversionInfo");
-            if (selected !== "USD") {
+            if (selected !== "OMR") {
                 conversionInfo.classList.remove("hidden");
-                const usdAmount = basePrice.toFixed(2);
-                // Translated the Persian alert text to English
-                document.getElementById("conversionText").innerText = `Approximately equivalent to $${usdAmount} USD (Note: Due to technical limitations of the international PayPal system, the final deduction from your account will be calculated and processed in USD equivalent).`;
+                document.getElementById("conversionText").innerText = `This is only an estimate in ${selected}. The price is ${basePrice.toFixed(3)} OMR; your bank converts it at its own rate.`;
             } else {
                 conversionInfo.classList.add("hidden");
             }

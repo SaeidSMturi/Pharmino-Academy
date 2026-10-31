@@ -107,7 +107,8 @@ namespace Application.Services
                 UserId = userId,
                 CourseId = courseId,
                 EnrollmentDate = DateTime.UtcNow,
-                IsPaid = paymentAmount >= requiredPrice,
+                // Half a baisa of slack: a USD payment converted back to OMR can round a hair below the price.
+                IsPaid = paymentAmount > 0 && paymentAmount + 0.0005m >= requiredPrice,
                 PaymentAmount = paymentAmount,
                 PaymentDate = paymentAmount > 0 ? DateTime.UtcNow : null,
                 ProgressPercentage = 0,
@@ -115,6 +116,17 @@ namespace Application.Services
             };
 
             _context.CourseEnrollments.Add(enrollment);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RevokeEnrollmentAsync(int userId, int courseId)
+        {
+            var enrollment = await GetUserEnrollmentAsync(userId, courseId);
+            if (enrollment == null)
+                return false;
+
+            _context.CourseEnrollments.Remove(enrollment);
             await _context.SaveChangesAsync();
             return true;
         }

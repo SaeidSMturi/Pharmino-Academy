@@ -251,6 +251,17 @@ namespace Web
 
             var app = builder.Build();
 
+            // Payments: say loudly at startup if Live/Test mode is missing keys (checkout is refused until they are set).
+            {
+                var paySettings = app.Services.GetRequiredService<Microsoft.Extensions.Options.IOptions<Application.DTOs.Payment.LemonSqueezySettings>>().Value;
+                var missing = paySettings.MissingForRealPayments();
+                if (missing.Count > 0)
+                    app.Logger.LogCritical("Lemon Squeezy is in {Mode} mode but these settings are empty: {Missing}. Students cannot pay until they are set (env vars LemonSqueezy__<Name>).",
+                        paySettings.Mode, string.Join(", ", missing));
+                else
+                    app.Logger.LogInformation("Lemon Squeezy payments mode: {Mode}.", paySettings.Mode);
+            }
+
             app.UseSerilogRequestLogging();
 
             // Configure the HTTP request pipeline.

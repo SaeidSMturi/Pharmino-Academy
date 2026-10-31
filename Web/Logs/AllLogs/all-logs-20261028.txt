@@ -1,0 +1,132 @@
+--------------------------------------------------
+[2026-10-28 19:54:18] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'CourseEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:54:18] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'PaymentTransaction'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:54:18] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'VideoProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:54:18] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'ExamAttempt' has a global query filter defined and is the required end of a relationship with the entity 'AttemptAnswer'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:54:18] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:54:18] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'Post'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:54:18] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'AccountLockHistory'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:54:18] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SuspiciousActivity'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:54:18] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserActiveSession'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:54:18] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserLastKnownLocation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:54:18] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+No store type was specified for the decimal property 'DataDecimal' on entity type 'Setting'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:57:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'CourseEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:57:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'PaymentTransaction'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:57:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'VideoProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:57:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'ExamAttempt' has a global query filter defined and is the required end of a relationship with the entity 'AttemptAnswer'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:57:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:57:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'Post'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:57:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'AccountLockHistory'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:57:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SuspiciousActivity'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:57:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserActiveSession'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:57:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserLastKnownLocation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-28 19:57:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+No store type was specified for the decimal property 'DataDecimal' on entity type 'Setting'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+
+--------------------------------------------------
+

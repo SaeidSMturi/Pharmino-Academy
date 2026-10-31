@@ -12,7 +12,15 @@ namespace Web.Areas.Admin.ViewModels
         public int RefundedOrdersCount { get; set; }
         public decimal TotalRefundedAmount { get; set; }
 
+        /// <summary>Currency the money totals are in; only real (non-demo) payments in it are counted.</summary>
+        public string ReportingCurrency { get; set; } = "USD";
+        public int DemoCompletedCount { get; set; }
+        public int OtherCurrencyCompletedCount { get; set; }
+
         public string LemonSqueezyMode { get; set; } = "Demo";
+
+        /// <summary>Settings still empty for Live/Test payments; students can't pay while any are missing.</summary>
+        public List<string> MissingPaymentSettings { get; set; } = new();
         public string LemonSqueezyStoreId { get; set; } = string.Empty;
         public string WebhookUrl { get; set; } = string.Empty;
 

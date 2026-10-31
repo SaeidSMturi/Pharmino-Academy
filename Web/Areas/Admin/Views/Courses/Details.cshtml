@@ -159,13 +159,13 @@
                                 @if (Model.HasActiveDiscount)
                                 {
                                     <div class="flex items-center gap-1.5">
-                                        <span class="text-slate-400 line-through font-mono text-[11px]">$@Model.Price.ToString("N0")</span>
-                                        <span class="text-emerald-400 font-mono font-bold">$@Model.DiscountPrice.Value.ToString("N0")</span>
+                                        <span class="text-slate-400 line-through font-mono text-[11px]">@CurrencyHelper.Format(Model.Price)</span>
+                                        <span class="text-emerald-400 font-mono font-bold">@CurrencyHelper.Format(Model.DiscountPrice.Value)</span>
                                     </div>
                                 }
                                 else
                                 {
-                                    <span class="text-white font-mono font-bold">$@Model.Price.ToString("N0")</span>
+                                    <span class="text-white font-mono font-bold">@CurrencyHelper.Format(Model.Price)</span>
                                 }
                             </div>
                         </div>
@@ -275,7 +275,7 @@
                                                 <span class="flex items-center gap-1"><i class="fas fa-video text-brand-cyan"></i> @(sub.Videos?.Count ?? 0) Videos</span>
                                                 <span class="flex items-center gap-1"><i class="far fa-clock text-brand-blue"></i> @(sub.DurationHours ?? 0) hrs</span>
                                                 <span class="flex items-center gap-1"><i class="fas fa-file-pdf text-brand-orange"></i> @(sub.Pdfs?.Count ?? 0) PDFs</span>
-                                                <span class="font-mono font-bold text-brand-yellow">$@sub.Price.ToString("N0")</span>
+                                                <span class="font-mono font-bold text-brand-yellow">@CurrencyHelper.Format(sub.Price)</span>
                                             </div>
                                         </div>
                                     </div>
@@ -505,7 +505,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <span class="px-2 py-0.5 text-[9px] font-bold bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded font-mono">$@pdf.Price.ToString("N2")</span>
+                                                    <span class="px-2 py-0.5 text-[9px] font-bold bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/10 rounded font-mono">@CurrencyHelper.Format(pdf.Price)</span>
                                                 }
                                             </div>
                                             <div class="text-[10px] text-slate-500 font-mono font-semibold flex items-center"><i class="fas fa-file @(isRtl ? "ml-1.5" : "mr-1.5") text-slate-600"></i>@(string.IsNullOrWhiteSpace(pdf.OriginalFileName) ? pdf.FileName : pdf.OriginalFileName)</div>
@@ -593,7 +593,7 @@
                                             @if (enrollment.IsPaid)
                                             {
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/10">
-                                                    <i class="fas fa-check-circle @(isRtl ? "ml-1.5" : "mr-1.5")"></i> @Localizer["Paid"] ($@enrollment.PaymentAmount.Value.ToString("N0"))
+                                                    <i class="fas fa-check-circle @(isRtl ? "ml-1.5" : "mr-1.5")"></i> @Localizer["Paid"] (@CurrencyHelper.Format(enrollment.PaymentAmount.Value))
                                                 </span>
                                             }
                                             else
@@ -643,7 +643,7 @@
                     </div>
                     <div class="flex items-center justify-between p-3 bg-white/[0.01] border border-white/[0.02] rounded-xl">
                         <span class="text-slate-400 flex items-center"><i class="fas fa-tag text-brand-yellow w-4 @(isRtl ? "ml-2" : "mr-2")"></i>@Localizer["CoursePricing"]</span>
-                        <span class="text-brand-yellow font-bold text-xs font-mono">$@Model.Price.ToString("N0")</span>
+                        <span class="text-brand-yellow font-bold text-xs font-mono">@CurrencyHelper.Format(Model.Price)</span>
                     </div>
                 </div>
             </div>
@@ -729,7 +729,7 @@
                         <select id="attachCourseSelect" class="w-full px-4 py-3 bg-dark-bg border border-white/10 rounded-xl text-white text-sm font-medium focus:border-purple-400 focus:outline-none">
                             @foreach (var c in availableCourses)
                             {
-                                <option value="@c.CourseId">@c.Title (@(c.Videos?.Count ?? 0) @Localizer["VideosAbbr"], $@c.Price.ToString("N0"))</option>
+                                <option value="@c.CourseId">@c.Title (@(c.Videos?.Count ?? 0) @Localizer["VideosAbbr"], @CurrencyHelper.Format(c.Price))</option>
                             }
                         </select>
                     </div>

@@ -210,8 +210,8 @@ namespace Web.Controllers
                     }},
                     ""offers"": {{
                         ""@type"": ""Offer"",
-                        ""price"": ""{course.Price}"",
-                        ""priceCurrency"": ""USD"",
+                        ""price"": ""{course.EffectivePrice.ToString(System.Globalization.CultureInfo.InvariantCulture)}"",
+                        ""priceCurrency"": ""{Application.DTOs.Payment.CurrencyHelper.SiteCurrency}"",
                         ""availability"": ""https://schema.org/InStock""
                     }},
                     ""hasCourseInstance"": {{

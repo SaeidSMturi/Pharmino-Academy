@@ -48,9 +48,20 @@
                             Mode: @Model.LemonSqueezyMode
                         </span>
                     </div>
-                    <p class="text-xs text-slate-400 mt-0.5">
-                        Webhook endpoint ready for real-time order activation and refund synchronization.
-                    </p>
+                    @if (Model.MissingPaymentSettings.Any())
+                    {
+                        <p class="text-xs text-rose-300 font-semibold mt-0.5">
+                            <i class="fas fa-triangle-exclamation mr-1"></i>
+                            Students can't pay yet — not configured: @string.Join(", ", Model.MissingPaymentSettings).
+                            Set them as server environment variables (LemonSqueezy__ApiKey, …).
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            Webhook endpoint ready for real-time order activation and refund synchronization.
+                        </p>
+                    }
                 </div>
             </div>
 
@@ -72,8 +83,15 @@
             <div class="absolute @(isRtl ? "-left-6" : "-right-6") -top-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
             <div class="flex items-center justify-between relative z-10">
                 <div>
-                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Total Net Revenue</p>
-                    <p class="text-3xl font-extrabold font-mono text-white">$@Model.TotalRevenue.ToString("N2")</p>
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Revenue (real payments)</p>
+                    <p class="text-3xl font-extrabold font-mono text-white">@CurrencyHelper.Format(Model.TotalRevenue)</p>
+                    @if (Model.DemoCompletedCount > 0 || Model.OtherCurrencyCompletedCount > 0)
+                    {
+                        <p class="text-[11px] text-slate-500 mt-1">
+                            @if (Model.DemoCompletedCount > 0) { <span>@Model.DemoCompletedCount demo order(s) not counted. </span> }
+                            @if (Model.OtherCurrencyCompletedCount > 0) { <span>@Model.OtherCurrencyCompletedCount older order(s) in other currencies not counted.</span> }
+                        </p>
+                    }
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(16,185,129,0.1)] group-hover:scale-110 transition-transform">
                     <i class="fas fa-sack-dollar text-emerald-400 text-lg"></i>
@@ -115,7 +133,7 @@
             <div class="flex items-center justify-between relative z-10">
                 <div>
                     <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Refunds (@Model.RefundedOrdersCount)</p>
-                    <p class="text-3xl font-extrabold font-mono text-rose-400">$@Model.TotalRefundedAmount.ToString("N2")</p>
+                    <p class="text-3xl font-extrabold font-mono text-rose-400">@CurrencyHelper.Format(Model.TotalRefundedAmount)</p>
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center shadow-[inset_0_0_15px_rgba(244,63,94,0.1)] group-hover:scale-110 transition-transform">
                     <i class="fas fa-rotate-left text-rose-400 text-lg"></i>
@@ -141,7 +159,7 @@
                             <span class="text-xs text-slate-400">@c.CompletedSalesCount completed sales</span>
                         </div>
                         <span class="font-mono font-extrabold text-sm text-emerald-400 shrink-0">
-                            $@c.TotalRevenue.ToString("N2")
+                            @CurrencyHelper.Format(c.TotalRevenue)
                         </span>
                     </div>
                 }
@@ -252,7 +270,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <span class="font-mono font-bold text-white text-xs">
-                                        @t.Amount.ToString("N2") <span class="text-[#FFB343]">@t.Currency</span>
+                                        @CurrencyHelper.Format(t.Amount, t.Currency)
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-center">
@@ -380,6 +398,14 @@
             };
         }
 
+        // Everything from the server goes through this before being put into HTML:
+        // student names, emails and course titles are user-controlled.
+        function esc(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+        }
+
         function copyWebhookUrl() {
             const urlText = document.getElementById('webhookUrlText').innerText;
             navigator.clipboard.writeText(urlText);
@@ -403,35 +429,35 @@
                         <div class="bg-dark-bg/60 border border-white/5 rounded-2xl p-4 space-y-2.5 font-sans">
                             <div class="flex justify-between border-b border-white/5 pb-2">
                                 <span class="text-slate-400">Order Token:</span>
-                                <span class="font-mono font-bold text-brand-cyan">${data.orderToken}</span>
+                                <span class="font-mono font-bold text-brand-cyan">${esc(data.orderToken)}</span>
                             </div>
                             <div class="flex justify-between border-b border-white/5 pb-2">
                                 <span class="text-slate-400">Gateway Payment ID:</span>
-                                <span class="font-mono text-slate-300">${data.paymentId}</span>
+                                <span class="font-mono text-slate-300">${esc(data.paymentId)}</span>
                             </div>
                             <div class="flex justify-between border-b border-white/5 pb-2">
                                 <span class="text-slate-400">Student:</span>
-                                <span class="text-white font-bold">${data.studentName} (${data.studentEmail})</span>
+                                <span class="text-white font-bold">${esc(data.studentName)} (${esc(data.studentEmail)})</span>
                             </div>
                             <div class="flex justify-between border-b border-white/5 pb-2">
                                 <span class="text-slate-400">Course / Item:</span>
-                                <span class="text-white">${data.courseTitle}</span>
+                                <span class="text-white">${esc(data.courseTitle)}</span>
                             </div>
                             <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="text-slate-400">Amount Paid:</span>
-                                <span class="font-mono font-black text-emerald-400 text-sm">${data.amount.toFixed(2)} ${data.currency}</span>
+                                <span class="text-slate-400">Amount:</span>
+                                <span class="font-mono font-black text-emerald-400 text-sm">${Number(data.amount).toFixed(2)} ${esc(data.currency)}</span>
                             </div>
                             <div class="flex justify-between border-b border-white/5 pb-2">
                                 <span class="text-slate-400">Gateway & Mode:</span>
-                                <span class="text-slate-300 font-semibold">${data.gateway} (${data.mode})</span>
+                                <span class="text-slate-300 font-semibold">${esc(data.gateway)} (${esc(data.mode)})</span>
                             </div>
                             <div class="flex justify-between border-b border-white/5 pb-2">
                                 <span class="text-slate-400">Status:</span>
-                                <span class="font-bold text-white">${data.status}</span>
+                                <span class="font-bold text-white">${esc(data.status)}</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-slate-400">Created:</span>
-                                <span class="font-mono text-slate-400">${data.createDate}</span>
+                                <span class="font-mono text-slate-400">${esc(data.createDate)}</span>
                             </div>
                         </div>
                     `;
@@ -444,7 +470,7 @@
                                 <i class="fas fa-rotate-left mr-1"></i> Mark as Refunded
                             </button>
                         `;
-                    } else if (data.status === 'Pending') {
+                    } else if (data.status === 'Pending' || data.status === 'Failed') {
                         statusContainer.innerHTML = `
                             <button type="button" onclick="updateTransactionStatus(${data.transactionId}, 'Completed')"
                                     class="px-4 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 text-xs font-bold transition-all">
@@ -470,7 +496,7 @@
                 const res = await fetch('/Admin/Finance/UpdateStatus', {
                     method: 'POST',
                     headers: antiForgeryHeaders(),
-                    body: `id=${id}&newStatus=${newStatus}`
+                    body: `id=${encodeURIComponent(id)}&newStatus=${encodeURIComponent(newStatus)}`
                 });
                 const data = await res.json();
                 if (data.success) {

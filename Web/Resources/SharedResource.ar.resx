@@ -966,7 +966,7 @@
     <value>التسعير</value>
   </data>
   <data name="PriceUSD" xml:space="preserve">
-    <value>السعر</value>
+    <value>السعر (ر.ع.)</value>
   </data>
   <data name="SetPriceZeroFree" xml:space="preserve">
     <value>ضع السعر 0 لجعل هذه الدورة مجانية.</value>

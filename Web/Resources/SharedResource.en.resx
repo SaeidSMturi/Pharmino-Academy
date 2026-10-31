@@ -966,7 +966,7 @@
     <value>Pricing</value>
   </data>
   <data name="PriceUSD" xml:space="preserve">
-    <value>Price</value>
+    <value>Price (OMR)</value>
   </data>
   <data name="SetPriceZeroFree" xml:space="preserve">
     <value>Set price to 0 to make this course free.</value>

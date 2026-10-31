@@ -39,7 +39,7 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(1000)");
 
                     b.Property<decimal?>("DiscountPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<int?>("DurationHours")
                         .HasColumnType("int");
@@ -64,7 +64,7 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -130,7 +130,7 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal?>("PaymentAmount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<DateTime?>("PaymentDate")
                         .HasColumnType("datetime2");
@@ -181,7 +181,7 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<string>("Title")
                         .HasMaxLength(200)
@@ -253,7 +253,7 @@ namespace Infrastructure.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransactionId"));
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,3)");
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
@@ -1989,7 +1989,7 @@ namespace Infrastructure.Persistence.Migrations
                             Id = 15,
                             Category = "Payment",
                             Changeable = true,
-                            DataString = "USD",
+                            DataString = "OMR",
                             Description = "Default currency for transactions",
                             DisplayOrder = 1,
                             Title = "Default Currency",

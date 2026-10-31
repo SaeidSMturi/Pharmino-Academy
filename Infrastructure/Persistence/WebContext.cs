@@ -112,6 +112,12 @@ namespace Infrastructure.Persistence
                 .HasForeignKey(a => a.QuestionId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Prices are in Omani Rials, which have 3 decimals (baisa).
+            modelBuilder.Entity<Domain.Entities.Course.Course>().Property(c => c.Price).HasColumnType("decimal(18,3)");
+            modelBuilder.Entity<Domain.Entities.Course.Course>().Property(c => c.DiscountPrice).HasColumnType("decimal(18,3)");
+            modelBuilder.Entity<Domain.Entities.Course.CoursePdf>().Property(p => p.Price).HasColumnType("decimal(18,3)");
+            modelBuilder.Entity<Domain.Entities.Course.CourseEnrollment>().Property(e => e.PaymentAmount).HasColumnType("decimal(18,3)");
+
             // Explicit column type (same as the existing columns, so no migration is needed) silences EF's truncation warning.
             modelBuilder.Entity<Exam>().Property(e => e.PassingScorePercent).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<ExamQuestion>().Property(q => q.Points).HasColumnType("decimal(18,2)");
@@ -370,7 +376,7 @@ namespace Infrastructure.Persistence
                     Title = "Default Currency",
                     Category = "Payment",
                     Description = "Default currency for transactions",
-                    DataString = "USD",
+                    DataString = "OMR",
                     Changeable = true,
                     DisplayOrder = 1,
                     UpdatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)

@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -37,37 +36,45 @@ namespace Infrastructure.Services
             _logger = logger;
         }
 
-        public async Task<string?> CreateCheckoutAsync(
-            int userId,
-            int courseId,
-            decimal localAmount,
-            string currency,
-            decimal amountInUsd,
-            string returnUrl,
-            string cancelUrl)
+        public async Task<string?> CreateCheckoutAsync(int userId, int courseId, decimal priceInOmr, string returnUrl)
         {
+            if (!_settings.IsSupportedCurrency)
+            {
+                _logger.LogError("LemonSqueezy:Currency is {Currency}; it must be OMR or USD. Checkout refused.", _settings.Currency);
+                return null;
+            }
+
+            // Outside Demo mode, refuse to start a checkout that cannot work. Without the webhook secret the
+            // student would be charged but never enrolled, so that one is required too.
+            var missing = _settings.MissingForRealPayments();
+            if (missing.Count > 0)
+            {
+                _logger.LogError("Lemon Squeezy is in {Mode} mode but {Missing} is not set. Checkout refused.", _settings.Mode, string.Join(", ", missing));
+                return null;
+            }
+
             var orderToken = "LS-" + Guid.NewGuid().ToString("N").Substring(0, 16).ToUpper();
 
+            // Record what the student is actually charged: the OMR price, or its exact USD equivalent
+            // when the store charges in dollars.
+            var chargeCurrency = _settings.Currency.ToUpperInvariant();
             var transaction = new PaymentTransaction
             {
                 UserId = userId,
                 CourseId = courseId,
                 OrderToken = orderToken,
-                Amount = localAmount,
-                Currency = currency,
+                Amount = CurrencyHelper.FromSiteCurrency(priceInOmr, chargeCurrency),
+                Currency = chargeCurrency,
                 Status = "Pending",
                 CreateDate = DateTime.UtcNow,
                 Gateway = "LemonSqueezy",
-                Mode = _settings.Mode
+                Mode = _settings.IsDemo ? "Demo" : _settings.Mode
             };
 
             _context.PaymentTransactions.Add(transaction);
             await _context.SaveChangesAsync();
 
-            // Demo Mode fallback or unconfigured credentials
-            if (string.Equals(_settings.Mode, "Demo", StringComparison.OrdinalIgnoreCase) ||
-                string.IsNullOrWhiteSpace(_settings.ApiKey) ||
-                string.IsNullOrWhiteSpace(_settings.StoreId))
+            if (_settings.IsDemo)
             {
                 _logger.LogInformation("LemonSqueezy is in Demo mode. Using demo checkout for order {OrderToken}.", orderToken);
                 return $"/Payment/DemoLemonSqueezyPayment?token={orderToken}&courseId={courseId}";
@@ -83,8 +90,6 @@ namespace Infrastructure.Services
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.api+json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _settings.ApiKey);
 
-                var cents = (int)Math.Round(amountInUsd * 100, MidpointRounding.AwayFromZero);
-
                 var payload = new
                 {
                     data = new
@@ -92,7 +97,7 @@ namespace Infrastructure.Services
                         type = "checkouts",
                         attributes = new
                         {
-                            custom_price = cents,
+                            custom_price = CurrencyHelper.ToMinorUnits(transaction.Amount, transaction.Currency),
                             product_options = new
                             {
                                 name = course?.Title ?? "Course Enrollment",
@@ -114,21 +119,13 @@ namespace Infrastructure.Services
                         },
                         relationships = new
                         {
-                            store = new
-                            {
-                                data = new
-                                {
-                                    type = "stores",
-                                    id = _settings.StoreId
-                                }
-                            }
+                            store = new { data = new { type = "stores", id = _settings.StoreId } },
+                            variant = new { data = new { type = "variants", id = _settings.VariantId } }
                         }
                     }
                 };
 
-                var json = JsonSerializer.Serialize(payload);
-                var content = new StringContent(json, Encoding.UTF8, "application/vnd.api+json");
-
+                var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/vnd.api+json");
                 var response = await client.PostAsync("https://api.lemonsqueezy.com/v1/checkouts", content);
                 var responseContent = await response.Content.ReadAsStringAsync();
 
@@ -137,25 +134,25 @@ namespace Infrastructure.Services
                     using var doc = JsonDocument.Parse(responseContent);
                     if (doc.RootElement.TryGetProperty("data", out var dataEl) &&
                         dataEl.TryGetProperty("attributes", out var attrEl) &&
-                        attrEl.TryGetProperty("url", out var urlEl))
+                        attrEl.TryGetProperty("url", out var urlEl) &&
+                        !string.IsNullOrEmpty(urlEl.GetString()))
                     {
-                        var hostedUrl = urlEl.GetString();
-                        if (!string.IsNullOrEmpty(hostedUrl))
-                        {
-                            _logger.LogInformation("Lemon Squeezy checkout created: {Url}", hostedUrl);
-                            return hostedUrl;
-                        }
+                        return urlEl.GetString();
                     }
                 }
 
-                _logger.LogWarning("Lemon Squeezy checkout API error ({Status}): {Response}. Falling back to demo checkout.", response.StatusCode, responseContent);
+                _logger.LogError("Lemon Squeezy checkout API error ({Status}) for order {OrderToken}: {Response}", response.StatusCode, orderToken, responseContent);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Exception calling Lemon Squeezy API. Falling back to demo checkout.");
+                _logger.LogError(ex, "Exception calling Lemon Squeezy API for order {OrderToken}.", orderToken);
             }
 
-            return $"/Payment/DemoLemonSqueezyPayment?token={orderToken}&courseId={courseId}";
+            // Never fall back to the demo checkout here: that would hand out courses without payment.
+            transaction.Status = "Failed";
+            transaction.UpdateDate = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+            return null;
         }
 
         public async Task<bool> ProcessWebhookAsync(string rawJson, string? signatureHeader)
@@ -166,14 +163,17 @@ namespace Infrastructure.Services
                 return false;
             }
 
-            // Verify Webhook Signature if secret configured
-            if (!string.IsNullOrWhiteSpace(_settings.WebhookSecret))
+            // Fail closed: without a configured secret nothing proves the request came from Lemon Squeezy.
+            if (string.IsNullOrWhiteSpace(_settings.WebhookSecret))
             {
-                if (string.IsNullOrWhiteSpace(signatureHeader) || !VerifySignature(rawJson, signatureHeader, _settings.WebhookSecret))
-                {
-                    _logger.LogWarning("Lemon Squeezy webhook signature verification failed.");
-                    return false;
-                }
+                _logger.LogError("Lemon Squeezy webhook rejected: LemonSqueezy:WebhookSecret is not configured.");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(signatureHeader) || !VerifySignature(rawJson, signatureHeader, _settings.WebhookSecret))
+            {
+                _logger.LogWarning("Lemon Squeezy webhook signature verification failed.");
+                return false;
             }
 
             try
@@ -181,83 +181,131 @@ namespace Infrastructure.Services
                 using var doc = JsonDocument.Parse(rawJson);
                 var root = doc.RootElement;
 
-                var eventName = string.Empty;
-                if (root.TryGetProperty("meta", out var metaEl) &&
-                    metaEl.TryGetProperty("event_name", out var eventEl))
+                if (!root.TryGetProperty("meta", out var metaEl) || !root.TryGetProperty("data", out var dataEl) ||
+                    !dataEl.TryGetProperty("attributes", out var attrs))
                 {
-                    eventName = eventEl.GetString();
+                    _logger.LogWarning("Lemon Squeezy webhook has no meta/data.");
+                    return false;
                 }
 
-                _logger.LogInformation("Lemon Squeezy webhook event received: {EventName}", eventName);
+                var eventName = GetString(metaEl, "event_name");
+                var orderId = GetString(dataEl, "id") ?? "";
+                _logger.LogInformation("Lemon Squeezy webhook event {EventName} for order {OrderId}.", eventName, orderId);
+
+                // Only orders from our own store, in the mode we are running in.
+                if (GetString(attrs, "store_id") != _settings.StoreId)
+                {
+                    _logger.LogWarning("Lemon Squeezy webhook for order {OrderId} is from another store; ignored.", orderId);
+                    return true;
+                }
+
+                var isTestOrder = attrs.TryGetProperty("test_mode", out var tm) && tm.ValueKind == JsonValueKind.True;
+                var expectTest = !string.Equals(_settings.Mode, "Live", StringComparison.OrdinalIgnoreCase);
+                if (isTestOrder != expectTest)
+                {
+                    _logger.LogWarning("Lemon Squeezy webhook for order {OrderId} has test_mode={TestMode} while running in {Mode}; ignored.", orderId, isTestOrder, _settings.Mode);
+                    return true;
+                }
 
                 if (eventName == "order_created")
-                {
-                    string? orderToken = null;
-                    if (metaEl.TryGetProperty("custom_data", out var customEl))
-                    {
-                        if (customEl.TryGetProperty("order_token", out var tokenProp))
-                            orderToken = tokenProp.GetString();
-                    }
-
-                    var orderId = string.Empty;
-                    if (root.TryGetProperty("data", out var dataEl))
-                    {
-                        if (dataEl.TryGetProperty("id", out var idProp))
-                            orderId = idProp.GetString() ?? "";
-                    }
-
-                    PaymentTransaction? transaction = null;
-                    if (!string.IsNullOrEmpty(orderToken))
-                    {
-                        transaction = await _context.PaymentTransactions
-                            .FirstOrDefaultAsync(t => t.OrderToken == orderToken);
-                    }
-
-                    if (transaction != null)
-                    {
-                        transaction.Status = "Completed";
-                        transaction.PaymentId = orderId;
-                        transaction.UpdateDate = DateTime.UtcNow;
-                        await _context.SaveChangesAsync();
-
-                        // Enroll the user in the purchased course
-                        await _courseService.EnrollUserInCourseAsync(transaction.UserId, transaction.CourseId, transaction.Amount);
-                        _logger.LogInformation("User {UserId} enrolled in course {CourseId} via Lemon Squeezy webhook.", transaction.UserId, transaction.CourseId);
-                        return true;
-                    }
-                }
+                    await HandleOrderCreatedAsync(metaEl, attrs, orderId);
                 else if (eventName == "order_refunded")
-                {
-                    var orderId = string.Empty;
-                    if (root.TryGetProperty("data", out var dataEl) && dataEl.TryGetProperty("id", out var idProp))
-                        orderId = idProp.GetString() ?? "";
+                    await HandleOrderRefundedAsync(orderId);
 
-                    var transaction = await _context.PaymentTransactions
-                        .FirstOrDefaultAsync(t => t.PaymentId == orderId);
-
-                    if (transaction != null)
-                    {
-                        transaction.Status = "Refunded";
-                        transaction.UpdateDate = DateTime.UtcNow;
-                        await _context.SaveChangesAsync();
-                        _logger.LogInformation("Transaction {TransactionId} marked as Refunded via webhook.", transaction.TransactionId);
-                        return true;
-                    }
-                }
-
+                // Acknowledge everything else so Lemon Squeezy does not keep retrying.
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to parse Lemon Squeezy webhook.");
+                _logger.LogError(ex, "Failed to process Lemon Squeezy webhook.");
                 return false;
             }
         }
 
-        public async Task<bool> CompleteDemoOrderAsync(string orderToken)
+        private async Task HandleOrderCreatedAsync(JsonElement meta, JsonElement attrs, string orderId)
         {
+            string? orderToken = null;
+            if (meta.TryGetProperty("custom_data", out var customEl))
+                orderToken = GetString(customEl, "order_token");
+
+            if (string.IsNullOrEmpty(orderToken))
+            {
+                _logger.LogWarning("Lemon Squeezy order {OrderId} has no order_token; ignored.", orderId);
+                return;
+            }
+
+            var transaction = await _context.PaymentTransactions.FirstOrDefaultAsync(t => t.OrderToken == orderToken);
+            if (transaction == null)
+            {
+                _logger.LogWarning("Lemon Squeezy order {OrderId} refers to unknown order token {OrderToken}.", orderId, orderToken);
+                return;
+            }
+
+            // Webhooks are retried: process each order once.
+            if (!string.Equals(transaction.Status, "Pending", StringComparison.OrdinalIgnoreCase))
+            {
+                _logger.LogInformation("Order {OrderToken} is already {Status}; webhook ignored.", orderToken, transaction.Status);
+                return;
+            }
+
+            var status = GetString(attrs, "status");
+            if (!string.Equals(status, "paid", StringComparison.OrdinalIgnoreCase))
+            {
+                _logger.LogWarning("Lemon Squeezy order {OrderId} has status {Status}; not enrolling.", orderId, status);
+                return;
+            }
+
+            // The amount and currency charged must match what this order was created for.
+            var currency = GetString(attrs, "currency");
+            var total = attrs.TryGetProperty("total", out var totalEl) && totalEl.TryGetInt64(out var cents) ? cents : -1;
+            var expected = CurrencyHelper.ToMinorUnits(transaction.Amount, transaction.Currency);
+            if (!string.Equals(currency, transaction.Currency, StringComparison.OrdinalIgnoreCase) || total != expected)
+            {
+                transaction.Status = "Failed";
+                transaction.PaymentId = orderId;
+                transaction.UpdateDate = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+                _logger.LogError("Lemon Squeezy order {OrderId} paid {Total} {Currency} (minor units) but order {OrderToken} expects {Expected} {ExpectedCurrency}. Marked Failed for review.",
+                    orderId, total, currency, orderToken, expected, transaction.Currency);
+                return;
+            }
+
+            transaction.Status = "Completed";
+            transaction.PaymentId = orderId;
+            transaction.UpdateDate = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            await _courseService.EnrollUserInCourseAsync(transaction.UserId, transaction.CourseId,
+                CurrencyHelper.ToSiteCurrency(transaction.Amount, transaction.Currency));
+            _logger.LogInformation("User {UserId} enrolled in course {CourseId} via Lemon Squeezy order {OrderId}.", transaction.UserId, transaction.CourseId, orderId);
+        }
+
+        private async Task HandleOrderRefundedAsync(string orderId)
+        {
+            var transaction = await _context.PaymentTransactions.FirstOrDefaultAsync(t => t.PaymentId == orderId);
+            if (transaction == null || string.Equals(transaction.Status, "Refunded", StringComparison.OrdinalIgnoreCase))
+                return;
+
+            transaction.Status = "Refunded";
+            transaction.UpdateDate = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            await _courseService.RevokeEnrollmentAsync(transaction.UserId, transaction.CourseId);
+            _logger.LogInformation("Transaction {TransactionId} refunded via webhook; enrollment of user {UserId} in course {CourseId} revoked.",
+                transaction.TransactionId, transaction.UserId, transaction.CourseId);
+        }
+
+        public async Task<bool> CompleteDemoOrderAsync(string orderToken, int userId)
+        {
+            // Demo completion only exists while the site runs in Demo mode, and only for the student's own demo order.
+            if (!_settings.IsDemo)
+            {
+                _logger.LogWarning("Demo payment confirmation attempted for {OrderToken} while in {Mode} mode; refused.", orderToken, _settings.Mode);
+                return false;
+            }
+
             var transaction = await _context.PaymentTransactions
-                .FirstOrDefaultAsync(t => t.OrderToken == orderToken && t.Status == "Pending");
+                .FirstOrDefaultAsync(t => t.OrderToken == orderToken && t.UserId == userId && t.Status == "Pending" && t.Mode == "Demo");
 
             if (transaction == null) return false;
 
@@ -266,15 +314,16 @@ namespace Infrastructure.Services
             transaction.UpdateDate = DateTime.UtcNow;
             await _context.SaveChangesAsync();
 
-            await _courseService.EnrollUserInCourseAsync(transaction.UserId, transaction.CourseId, transaction.Amount);
+            await _courseService.EnrollUserInCourseAsync(transaction.UserId, transaction.CourseId,
+                CurrencyHelper.ToSiteCurrency(transaction.Amount, transaction.Currency));
             _logger.LogInformation("Demo Lemon Squeezy transaction {OrderToken} completed for course {CourseId}.", orderToken, transaction.CourseId);
             return true;
         }
 
-        public async Task<bool> CancelOrderAsync(string orderToken)
+        public async Task<bool> CancelOrderAsync(string orderToken, int userId)
         {
             var transaction = await _context.PaymentTransactions
-                .FirstOrDefaultAsync(t => t.OrderToken == orderToken && t.Status == "Pending");
+                .FirstOrDefaultAsync(t => t.OrderToken == orderToken && t.UserId == userId && t.Status == "Pending");
 
             if (transaction == null) return false;
 
@@ -282,6 +331,18 @@ namespace Infrastructure.Services
             transaction.UpdateDate = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        /// <summary>Reads a property as a string whether the JSON holds it as a string or a number.</summary>
+        private static string? GetString(JsonElement el, string name)
+        {
+            if (!el.TryGetProperty(name, out var p)) return null;
+            return p.ValueKind switch
+            {
+                JsonValueKind.String => p.GetString(),
+                JsonValueKind.Number => p.GetRawText(),
+                _ => null
+            };
         }
 
         private static bool VerifySignature(string payload, string signatureHeader, string secret)

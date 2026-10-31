@@ -310,7 +310,7 @@
                                             @if (enrollment.IsPaid)
                                             {
                                                 <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/10" dir="ltr">
-                                                    <i class="fas fa-coins @(isRtl ? "ml-1" : "mr-1")"></i>$@enrollment.PaymentAmount?.ToString("N0")
+                                                    <i class="fas fa-coins @(isRtl ? "ml-1" : "mr-1")"></i>@CurrencyHelper.Format(enrollment.PaymentAmount ?? 0)
                                                 </span>
                                             }
                                             else
@@ -548,7 +548,7 @@
                             <div class="flex-1 min-w-0">
                                 <p class="text-xs font-bold text-white truncate" data-course-title="@course.Title.ToLower()">@course.Title</p>
                                 <p class="text-[10px] text-slate-500 font-semibold mt-0.5">
-                                    $@course.Price.ToString("N0") &nbsp;·&nbsp;
+                                    @CurrencyHelper.Format(course.Price) &nbsp;·&nbsp;
                                     @(isAlreadyEnrolled ? Localizer["AlreadyEnrolled"].Value : (course.IsActive ? Localizer["Active"].Value : Localizer["Inactive"].Value))
                                 </p>
                             </div>

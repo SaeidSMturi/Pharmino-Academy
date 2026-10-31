@@ -15,18 +15,18 @@ namespace Web.Controllers
     public class PaymentController : Controller
     {
         private readonly ILemonSqueezyService _lemonSqueezyService;
-        private readonly IPayPalService _payPalService;
+        private readonly LemonSqueezySettings _lemonSettings;
         private readonly IApplicationDbContext _context;
         private readonly ILogger<PaymentController> _logger;
 
         public PaymentController(
             ILemonSqueezyService lemonSqueezyService,
-            IPayPalService payPalService,
+            Microsoft.Extensions.Options.IOptions<LemonSqueezySettings> lemonSettings,
             IApplicationDbContext context,
             ILogger<PaymentController> logger)
         {
             _lemonSqueezyService = lemonSqueezyService;
-            _payPalService = payPalService;
+            _lemonSettings = lemonSettings.Value;
             _context = context;
             _logger = logger;
         }
@@ -63,13 +63,15 @@ namespace Web.Controllers
                 return RedirectToAction("Details", "Courses", new { id = courseId });
             }
 
-            // Detect user language for auto currency selection
-            var acceptLanguage = Request.Headers["Accept-Language"].ToString();
-            var detectedCurrency = CurrencyHelper.AutoSelectCurrency(acceptLanguage);
-
+            // Prices are in OMR; the other currencies in the picker are display estimates only.
             ViewBag.Course = course;
-            ViewBag.DetectedCurrency = detectedCurrency;
-            ViewBag.Currencies = CurrencyHelper.Currencies.Values.ToList();
+            ViewBag.DetectedCurrency = CurrencyHelper.SiteCurrency;
+            ViewBag.Currencies = CurrencyHelper.Currencies.Values.OrderBy(c => c.Code == CurrencyHelper.SiteCurrency ? 0 : 1).ToList();
+
+            // What the payment provider will actually charge (OMR, or the USD equivalent).
+            var chargeCurrency = _lemonSettings.IsSupportedCurrency ? _lemonSettings.Currency.ToUpperInvariant() : "USD";
+            ViewBag.ChargeCurrency = chargeCurrency;
+            ViewBag.ChargeAmount = CurrencyHelper.FromSiteCurrency(course.EffectivePrice, chargeCurrency);
 
             return View(course);
         }
@@ -88,33 +90,31 @@ namespace Web.Controllers
                 return RedirectToAction("Index", "Courses");
             }
 
-            if (!course.IsListedForSale)
+            if (!course.IsListedForSale || !course.IsActive)
             {
                 TempData["ErrorMessage"] = "This course is not available for individual purchase.";
                 return RedirectToAction("Details", "Courses", new { id = courseId });
             }
 
-            if (string.IsNullOrEmpty(selectedCurrency) || !CurrencyHelper.Currencies.ContainsKey(selectedCurrency))
+            // Checkout only checks this when the page is shown; check again so nobody pays twice.
+            if (await _context.CourseEnrollments.AnyAsync(e => e.UserId == userId && e.CourseId == courseId))
             {
-                selectedCurrency = "USD";
+                TempData["InfoMessage"] = "You are already enrolled in this course.";
+                return RedirectToAction("Details", "Courses", new { id = courseId });
             }
 
-            var effectivePrice = course.EffectivePrice;
-            var localAmount = CurrencyHelper.ConvertFromUsd(effectivePrice, selectedCurrency);
-
+            // The currency picker on the checkout page only shows an estimate: the charge is always in USD.
             var returnUrl = Url.Action("LemonSqueezyCallback", "Payment", new { courseId }, Request.Scheme);
-            var cancelUrl = Url.Action("LemonSqueezyCancel", "Payment", new { courseId }, Request.Scheme);
-
-            if (string.IsNullOrEmpty(returnUrl) || string.IsNullOrEmpty(cancelUrl))
+            if (string.IsNullOrEmpty(returnUrl))
             {
                 TempData["ErrorMessage"] = "Error generating payment return URL.";
                 return RedirectToAction("Checkout", new { courseId });
             }
 
-            var approvalUrl = await _lemonSqueezyService.CreateCheckoutAsync(userId, courseId, localAmount, selectedCurrency, effectivePrice, returnUrl, cancelUrl);
+            var approvalUrl = await _lemonSqueezyService.CreateCheckoutAsync(userId, courseId, course.EffectivePrice, returnUrl);
             if (string.IsNullOrEmpty(approvalUrl))
             {
-                TempData["ErrorMessage"] = "Error connecting to Lemon Squeezy checkout gateway.";
+                TempData["ErrorMessage"] = "The payment gateway is unavailable right now. Please try again later.";
                 return RedirectToAction("Checkout", new { courseId });
             }
 
@@ -144,10 +144,10 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmDemoPayment(string token, int courseId)
         {
-            var success = await _lemonSqueezyService.CompleteDemoOrderAsync(token);
+            var success = await _lemonSqueezyService.CompleteDemoOrderAsync(token, GetCurrentUserId());
             if (success)
             {
-                TempData["SuccessMessage"] = "Lemon Squeezy simulated payment completed successfully! Your course enrollment is now active.";
+                TempData["SuccessMessage"] = "Demo payment completed (no money was charged). Your course enrollment is now active.";
                 return RedirectToAction("Details", "Courses", new { id = courseId });
             }
 
@@ -155,10 +155,19 @@ namespace Web.Controllers
             return RedirectToAction("Details", "Courses", new { id = courseId });
         }
 
+        /// <summary>
+        /// Where Lemon Squeezy sends the student after paying. Access is granted by the webhook, which may
+        /// arrive a few seconds later, so only claim success once the enrollment actually exists.
+        /// </summary>
         [HttpGet]
-        public IActionResult LemonSqueezyCallback(int courseId)
+        public async Task<IActionResult> LemonSqueezyCallback(int courseId)
         {
-            TempData["SuccessMessage"] = "Payment processed successfully through Lemon Squeezy. Your course access is being activated.";
+            var userId = GetCurrentUserId();
+            if (await _context.CourseEnrollments.AnyAsync(e => e.UserId == userId && e.CourseId == courseId))
+                TempData["SuccessMessage"] = "Payment completed. Your course access is active.";
+            else
+                TempData["InfoMessage"] = "Thank you! Your payment is being confirmed — your course will unlock within a minute. Refresh this page shortly.";
+
             return RedirectToAction("Details", "Courses", new { id = courseId });
         }
 
@@ -167,9 +176,9 @@ namespace Web.Controllers
         {
             if (!string.IsNullOrEmpty(token))
             {
-                await _lemonSqueezyService.CancelOrderAsync(token);
+                await _lemonSqueezyService.CancelOrderAsync(token, GetCurrentUserId());
             }
-            TempData["InfoMessage"] = "Lemon Squeezy checkout was cancelled.";
+            TempData["InfoMessage"] = "Checkout was cancelled.";
             return RedirectToAction("Details", "Courses", new { id = courseId });
         }
 
@@ -178,7 +187,7 @@ namespace Web.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> LemonSqueezyWebhook()
         {
-            using var reader = new StreamReader(Request.Body);
+            using var reader = new StreamReader(Request.Body, System.Text.Encoding.UTF8);
             var rawJson = await reader.ReadToEndAsync();
             var signature = Request.Headers["X-Signature"].ToString();
 
@@ -186,31 +195,9 @@ namespace Web.Controllers
             return success ? Ok(new { message = "Webhook processed" }) : BadRequest(new { message = "Webhook processing failed" });
         }
 
-        // Backward-compatibility endpoints
+        // Old link format for the demo checkout page.
         [HttpGet]
         public async Task<IActionResult> DemoPayment(string token, int courseId) =>
             await DemoLemonSqueezyPayment(token, courseId);
-
-        [HttpGet]
-        public async Task<IActionResult> PayPalCallback(string token, int courseId)
-        {
-            var success = await _payPalService.CaptureOrderAsync(token);
-            if (success)
-            {
-                TempData["SuccessMessage"] = "Payment completed successfully. Your access to the course has been activated.";
-                return RedirectToAction("Details", "Courses", new { id = courseId });
-            }
-
-            TempData["ErrorMessage"] = "Payment failed or an error occurred.";
-            return RedirectToAction("Details", "Courses", new { id = courseId });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> PayPalCancel(string token, int courseId)
-        {
-            await _payPalService.CancelOrderAsync(token);
-            TempData["InfoMessage"] = "Payment process was canceled by the user.";
-            return RedirectToAction("Details", "Courses", new { id = courseId });
-        }
     }
 }

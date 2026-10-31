@@ -13,6 +13,9 @@ namespace Application.Interfaces
         Task<bool> IsUserEnrolledAsync(int userId, int courseId);
         Task<CourseEnrollment?> GetUserEnrollmentAsync(int userId, int courseId);
         Task<bool> EnrollUserInCourseAsync(int userId, int courseId, decimal paymentAmount);
+
+        /// <summary>Removes the user's direct enrollment in a course (e.g. after a refund). Returns false if there was none.</summary>
+        Task<bool> RevokeEnrollmentAsync(int userId, int courseId);
         Task<bool> CanUserAccessVideoAsync(int userId, int videoId);
         Task<bool> CanUserAccessPdfAsync(int userId, int pdfId);
         Task<CourseVideo?> GetVideoByIdAsync(int videoId);

@@ -4,6 +4,8 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Local secrets (dotnet user-secrets), e.g. the Lemon Squeezy keys; never committed. -->
+    <UserSecretsId>pharmino-web-7d3f1c2a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
