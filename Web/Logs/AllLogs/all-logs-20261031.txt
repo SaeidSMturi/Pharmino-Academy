@@ -1,0 +1,2636 @@
+--------------------------------------------------
+[2026-10-31 12:17:18] [فایل/بخش: Web]
+Lemon Squeezy is in Live mode but these settings are empty: StoreId, VariantId. Students cannot pay until they are set (env vars LemonSqueezy__<Name>).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:18] [فایل/بخش: Infrastructure.BackgroundServices.AutoDeleteLogsBackgroundService]
+🔄 سرویس پاکسازی خودکار لاگ‌های قدیمی فعال شد.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:18] [فایل/بخش: Infrastructure.BackgroundServices.SessionCleanupBackgroundService]
+🔄 SessionCleanupBackgroundService started | Check interval: 30 minutes.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:18] [فایل/بخش: Infrastructure.BackgroundServices.AutoUnlockAccountsService]
+🔄 AutoUnlockAccountsService started | Check interval: 60 minutes | Unlock after: 24 hours
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:19] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Now listening on: https://localhost:7237
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:19] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Now listening on: http://localhost:5131
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:19] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Application started. Press Ctrl+C to shut down.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:19] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Hosting environment: Development
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:19] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Content root path: C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:22] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/ - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'CourseEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'PaymentTransaction'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'VideoProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'ExamAttempt' has a global query filter defined and is the required end of a relationship with the entity 'AttemptAnswer'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'Post'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'AccountLockHistory'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SuspiciousActivity'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserActiveSession'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserLastKnownLocation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+No store type was specified for the decimal property 'DataDecimal' on entity type 'Setting'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:29] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (211ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:30] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@sessionId='?' (Size = 64)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAtUtc], [u].[DeviceFingerprint], [u].[ExpiresAtUtc], [u].[IpAddress], [u].[LastActivityUtc], [u].[SessionId], [u].[UserAgent], [u].[UserId]
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:30] [فایل/بخش: Infrastructure.Services.SessionValidationCookieEvents]
+🚫 Session becb7ac5-2289-4bf5-9e9b-cf686cb127aa was not found in SQL Server (revoked/expired) - rejecting principal.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:30] [فایل/بخش: Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler]
+AuthenticationScheme: Cookies signed out.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:30] [فایل/بخش: Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler]
+Cookies was not authenticated. Failure message: No principal.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:30] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:30] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:30] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@p) [c].[CourseId], [c].[Title], [c].[Description], [c].[Price], COALESCE([c].[DurationHours], 0) AS [DurationHours], [c].[ImageName], (
+    SELECT COUNT(*)
+    FROM [CourseVideos] AS [c0]
+    WHERE [c].[CourseId] = [c0].[CourseId] AND [c0].[IsActive] = CAST(1 AS bit)) AS [VideoCount], [c].[IsBundle], [c].[DiscountPrice], [c].[IsDiscountActive], (
+    SELECT COUNT(*)
+    FROM [CourseBundleItems] AS [c1]
+    WHERE [c].[CourseId] = [c1].[BundleId]) AS [SubCourseCount]
+FROM [Courses] AS [c]
+WHERE [c].[IsActive] = CAST(1 AS bit) AND [c].[IsListedForSale] = CAST(1 AS bit)
+ORDER BY [c].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:31] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Index.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:31] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (139ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:31] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@ToLower='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[CanonicalUrl], [p].[IsActive], [p].[JsonLd], [p].[MetaDescription], [p].[MetaKeywords], [p].[MetaRobots], [p].[OgDescription], [p].[OgImage], [p].[OgTitle], [p].[OgType], [p].[PagePath], [p].[Title], [p].[UpdatedAt]
+FROM [PageSeos] AS [p]
+WHERE [p].[IsActive] = CAST(1 AS bit) AND LOWER([p].[PagePath]) = @ToLower
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:31] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (143ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[Id], [s].[Category], [s].[Changeable], [s].[DataBool], [s].[DataDecimal], [s].[DataInt], [s].[DataJson], [s].[DataString], [s].[Description], [s].[DisplayOrder], [s].[Title], [s].[UpdatedAt]
+FROM [Settings] AS [s]
+ORDER BY [s].[Category], [s].[DisplayOrder]
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:31] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Index executed in 793.9914ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:31] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.Index (Web) in 1590.8954ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:31] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET / responded 200 in 10064.8389 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware]
+Unable to configure Browser Link script injection on the response. 
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/ - 200 null text/html; charset=utf-8 10259.3646ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/js/marked.min.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/css/tailwind.min.css - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/css/Style.css - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/css/theme.css - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+The file /css/theme.css was not modified
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/theme.css responded 304 in 4.1979 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/css/theme.css - 304 null text/css 19.6517ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/css/Style.css'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\Style.css'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/Style.css responded 200 in 29.8829 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/css/Style.css - 200 5930 text/css 41.6371ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/js/marked.min.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\marked.min.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/marked.min.js responded 200 in 58.7145 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/js/marked.min.js - 200 39903 text/javascript 64.9627ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/js/theme.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/js/site.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+The file /js/theme.js was not modified
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - 200 14910 application/javascript; charset=utf-8 7.43ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/theme.js responded 304 in 3.7780 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/js/theme.js - 304 null text/javascript 15.2805ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/js/site.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\site.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/site.js responded 200 in 23.7466 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/js/site.js - 200 5557 text/javascript 35.1086ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/css/tailwind.min.css'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\tailwind.min.css'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/tailwind.min.css responded 200 in 304.8080 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/css/tailwind.min.css - 200 407279 text/css 313.457ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/resize?imagePath=%2Fuploads%2Fcourses%2F0e20b207-7755-4fa4-ba2b-b096096f5011.png&width=500&height=0 - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/resize?imagePath=%2Fuploads%2Fcourses%2Fa7bec711-1195-403e-9d74-5d4e4bcc2641.gif&width=500&height=0 - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/resize?imagePath=%2Fuploads%2Fcourses%2F251356c9-617f-4581-a714-e0020872a451.png&width=500&height=0 - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:32] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/resize?imagePath=%2Fuploads%2Fcourses%2F0ef00181-1d4a-4c95-b092-9ae556f5eb60.gif&width=500&height=0 - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:33] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (138ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:33] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:33] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "ResizeImage", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResizeImage(System.String, Int32, Int32) on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:33] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ContentResultExecutor]
+Executing ContentResult with HTTP Response ContentType of image/svg+xml
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:33] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.ResizeImage (Web) in 32.0049ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:33] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:33] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /resize responded 200 in 215.3997 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:33] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/resize?imagePath=%2Fuploads%2Fcourses%2F251356c9-617f-4581-a714-e0020872a451.png&width=500&height=0 - 200 null image/svg+xml 226.2184ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (151ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (153ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "ResizeImage", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResizeImage(System.String, Int32, Int32) on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "ResizeImage", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResizeImage(System.String, Int32, Int32) on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ContentResultExecutor]
+Executing ContentResult with HTTP Response ContentType of image/svg+xml
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ContentResultExecutor]
+Executing ContentResult with HTTP Response ContentType of image/svg+xml
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.ResizeImage (Web) in 4.7386ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.ResizeImage (Web) in 3.5904ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /resize responded 200 in 5602.6711 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /resize responded 200 in 5606.1492 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/resize?imagePath=%2Fuploads%2Fcourses%2Fa7bec711-1195-403e-9d74-5d4e4bcc2641.gif&width=500&height=0 - 200 null image/svg+xml 5611.1734ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:38] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/resize?imagePath=%2Fuploads%2Fcourses%2F0e20b207-7755-4fa4-ba2b-b096096f5011.png&width=500&height=0 - 200 null image/svg+xml 5613.3361ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/Account/Login - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (142ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.AccountController.Login (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login(System.String) on controller Web.Controllers.AccountController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Login.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Login executed in 107.6766ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.AccountController.Login (Web) in 113.9327ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.AccountController.Login (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /Account/Login responded 200 in 315.3530 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware]
+Unable to configure Browser Link script injection on the response. 
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/Account/Login - 200 null text/html; charset=utf-8 325.4504ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/lib/jquery-validation/dist/jquery.validate.min.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/js/theme.js?v=pBfqoRtldB6QqO6HG7JamrLoeGU6bKWWU-pMwCDF-DA - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/css/theme.css?v=OPP_YRSec7jzbeAQPYdTEc5HUgF1Ri8YHnGRUvWesWY - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - 200 14910 application/javascript; charset=utf-8 8.7535ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/js/theme.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\theme.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+The file /css/theme.css was not modified
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/theme.js responded 200 in 7.1233 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/theme.css responded 304 in 5.6354 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/js/theme.js?v=pBfqoRtldB6QqO6HG7JamrLoeGU6bKWWU-pMwCDF-DA - 200 2842 text/javascript 21.3367ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/css/theme.css?v=OPP_YRSec7jzbeAQPYdTEc5HUgF1Ri8YHnGRUvWesWY - 304 null text/css 23.6098ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js responded 200 in 32.8222 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js - 200 5824 text/javascript 40.9021ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/lib/jquery-validation/dist/jquery.validate.min.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /lib/jquery-validation/dist/jquery.validate.min.js responded 200 in 62.4301 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:42] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/lib/jquery-validation/dist/jquery.validate.min.js - 200 24601 text/javascript 67.6768ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:44] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (151ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:44] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:44] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "ResizeImage", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResizeImage(System.String, Int32, Int32) on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:47] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.FileContentResultExecutor]
+Executing FileContentResult, sending file with download name '' ...
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:47] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.ResizeImage (Web) in 3455.2549ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:47] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:47] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /resize responded 200 in 14499.7262 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:47] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/resize?imagePath=%2Fuploads%2Fcourses%2F0ef00181-1d4a-4c95-b092-9ae556f5eb60.gif&width=500&height=0 - 499 480314 image/webp 14513.1971ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:49] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (160ms) [Parameters=[@nowUtc='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM [u]
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[ExpiresAtUtc] <= @nowUtc
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:49] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (152ms) [Parameters=[@retentionCutoffUtc='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM [u]
+FROM [UserLastKnownLocations] AS [u]
+WHERE [u].[TimestampUtc] < @retentionCutoffUtc
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:51] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (2,604ms) [Parameters=[@unlockThreshold='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TryCount], [u].[UserName]
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit) AND [u].[IsLockedForSuspiciousActivity] = CAST(1 AS bit) AND [u].[LockedAt] IS NOT NULL AND [u].[LockedAt] <= @unlockThreshold
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:53] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 POST https://localhost:7237/Account/Login - application/x-www-form-urlencoded 231
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:53] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (142ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:53] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.AccountController.Login (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:53] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(Application.DTOs.Account.LoginDto, System.String) on controller Web.Controllers.AccountController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:53] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (281ms) [Parameters=[@usernameOrEmail='?' (Size = 200)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TryCount], [u].[UserName]
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit) AND ([u].[UserName] = @usernameOrEmail OR [u].[Email] = @usernameOrEmail)
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:54] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (283ms) [Parameters=[@p26='?' (DbType = Int32), @p0='?' (Size = 50), @p1='?' (Size = 10), @p2='?' (Size = 200), @p3='?' (Size = 200), @p4='?' (DbType = Boolean), @p5='?' (DbType = Boolean), @p6='?' (DbType = Boolean), @p7='?' (DbType = Boolean), @p8='?' (DbType = Boolean), @p9='?' (DbType = DateTime2), @p10='?' (DbType = DateTime2), @p11='?' (Size = 200), @p12='?' (DbType = DateTime2), @p13='?' (Size = 1000), @p14='?' (DbType = DateTime2), @p15='?' (DbType = DateTime2), @p16='?' (DbType = Boolean), @p17='?' (Size = 200), @p18='?' (Size = 13), @p19='?' (Size = 10), @p20='?' (DbType = DateTime2), @p21='?' (Size = 50), @p22='?' (DbType = DateTime2), @p23='?' (DbType = Int32), @p24='?' (DbType = Int32), @p25='?' (Size = 200)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Users] SET [ActiveCode] = @p0, [ActivePhoneNumberCode] = @p1, [Email] = @p2, [FirstName] = @p3, [IsBan] = @p4, [IsDelete] = @p5, [IsEmailActive] = @p6, [IsLockedForSuspiciousActivity] = @p7, [IsPhoneNumberActive] = @p8, [LastChange] = @p9, [LastLoginDate] = @p10, [LastName] = @p11, [LastTry] = @p12, [LockReason] = @p13, [LockedAt] = @p14, [LockoutEnd] = @p15, [LoginWithGoogle] = @p16, [Password] = @p17, [PhoneNumber] = @p18, [PreferredLanguage] = @p19, [RegisterDate] = @p20, [SecurityCode] = @p21, [SecurityCodeExpiry] = @p22, [SuspiciousActivityCount] = @p23, [TryCount] = @p24, [UserName] = @p25
+OUTPUT 1
+WHERE [UserId] = @p26;
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:54] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@_8__locals1_session_UserId='?' (DbType = Int32), @nowUtc='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[UserId] = @_8__locals1_session_UserId AND [u].[ExpiresAtUtc] > @nowUtc
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:54] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Transaction]
+Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:54] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@p0='?' (DbType = DateTime2), @p1='?' (Size = 128), @p2='?' (DbType = DateTime2), @p3='?' (Size = 45), @p4='?' (DbType = DateTime2), @p5='?' (Size = 64), @p6='?' (Size = 500), @p7='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [UserActiveSessions] ([CreatedAtUtc], [DeviceFingerprint], [ExpiresAtUtc], [IpAddress], [LastActivityUtc], [SessionId], [UserAgent], [UserId])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7);
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[IpAddress], [u].[Latitude], [u].[Longitude], [u].[TimestampUtc], [u].[UserId]
+FROM [UserLastKnownLocations] AS [u]
+WHERE [u].[UserId] = @userId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (143ms) [Parameters=[@p='?' (Size = 45), @p2='?' (DbType = Double), @p3='?' (DbType = Double), @p4='?' (DbType = DateTime2), @userId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+UPDATE [u]
+SET [u].[IpAddress] = @p,
+    [u].[Latitude] = @p2,
+    [u].[Longitude] = @p3,
+    [u].[TimestampUtc] = @p4
+FROM [UserLastKnownLocations] AS [u]
+WHERE [u].[UserId] = @userId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:55] [فایل/بخش: Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler]
+AuthenticationScheme: Cookies signed in.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:55] [فایل/بخش: Microsoft.AspNetCore.Mvc.RedirectToActionResult]
+Executing RedirectResult, redirecting to /Admin.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:55] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.AccountController.Login (Web) in 2024.3611ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:55] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.AccountController.Login (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:55] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP POST /Account/Login responded 302 in 2197.8357 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:55] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 POST https://localhost:7237/Account/Login - 302 null null 2206.3847ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:55] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/Admin - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@sessionId='?' (Size = 64)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAtUtc], [u].[DeviceFingerprint], [u].[ExpiresAtUtc], [u].[IpAddress], [u].[LastActivityUtc], [u].[SessionId], [u].[UserAgent], [u].[UserId]
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:56] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (143ms) [Parameters=[@p='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @sessionId='?' (Size = 64), @nowUtc='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+UPDATE [u]
+SET [u].[LastActivityUtc] = @p,
+    [u].[ExpiresAtUtc] = @p3
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId AND [u].[ExpiresAtUtc] > @nowUtc
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:56] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TryCount], [u].[UserName]
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit) AND [u].[UserId] = @p
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:56] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Areas.Admin.Controllers.DashboardController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:56] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {area = "Admin", action = "Index", controller = "Dashboard"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Web.Areas.Admin.Controllers.DashboardController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:56] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (142ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:56] [فایل/بخش: Web.Areas.Admin.Controllers.DashboardController]
+Admin user 'admin@example.com' successfully accessed the dashboard index.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:56] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Index.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:56] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:56] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:56] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:56] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit)
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:57] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Posts] AS [p]
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:57] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Visitors] AS [v]
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:57] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [RecentActivities] AS [r]
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:57] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@p) [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TryCount], [u].[UserName]
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit)
+ORDER BY [u].[RegisterDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:57] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (142ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [p0].[PostId], [p0].[AuthorId], [p0].[Body], [p0].[CreateDate], [p0].[Description], [p0].[ImageName], [p0].[IsPublish], [p0].[MetaDescription], [p0].[ShortKey], [p0].[Tags], [p0].[Title], [p0].[Visit], [u0].[UserId], [u0].[ActiveCode], [u0].[ActivePhoneNumberCode], [u0].[Email], [u0].[FirstName], [u0].[IsBan], [u0].[IsDelete], [u0].[IsEmailActive], [u0].[IsLockedForSuspiciousActivity], [u0].[IsPhoneNumberActive], [u0].[LastChange], [u0].[LastLoginDate], [u0].[LastName], [u0].[LastTry], [u0].[LockReason], [u0].[LockedAt], [u0].[LockoutEnd], [u0].[LoginWithGoogle], [u0].[Password], [u0].[PhoneNumber], [u0].[PreferredLanguage], [u0].[RegisterDate], [u0].[SecurityCode], [u0].[SecurityCodeExpiry], [u0].[SuspiciousActivityCount], [u0].[TryCount], [u0].[UserName]
+FROM (
+    SELECT TOP(@p) [p].[PostId], [p].[AuthorId], [p].[Body], [p].[CreateDate], [p].[Description], [p].[ImageName], [p].[IsPublish], [p].[MetaDescription], [p].[ShortKey], [p].[Tags], [p].[Title], [p].[Visit]
+    FROM [Posts] AS [p]
+    ORDER BY [p].[CreateDate] DESC
+) AS [p0]
+INNER JOIN (
+    SELECT [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TryCount], [u].[UserName]
+    FROM [Users] AS [u]
+    WHERE [u].[IsDelete] = CAST(0 AS bit)
+) AS [u0] ON [p0].[AuthorId] = [u0].[UserId]
+ORDER BY [p0].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:57] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [r1].[Id], [r1].[CreateDate], [r1].[Message], [r1].[PriorityId], [r0].[PriorityId], [r0].[Title]
+FROM (
+    SELECT TOP(@p) [r].[Id], [r].[CreateDate], [r].[Message], [r].[PriorityId]
+    FROM [RecentActivities] AS [r]
+    ORDER BY [r].[CreateDate] DESC
+) AS [r1]
+INNER JOIN [RecentActivityPriorities] AS [r0] ON [r1].[PriorityId] = [r0].[PriorityId]
+ORDER BY [r1].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:58] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:58] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:58] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:58] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:58] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:58] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:58] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:59] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[Category], [s].[Changeable], [s].[DataBool], [s].[DataDecimal], [s].[DataInt], [s].[DataJson], [s].[DataString], [s].[Description], [s].[DisplayOrder], [s].[Title], [s].[UpdatedAt]
+FROM [Settings] AS [s]
+WHERE [s].[Title] = N'SEO.GlobalNoindex'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:59] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Index executed in 2794.0525ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:59] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Areas.Admin.Controllers.DashboardController.Index (Web) in 2948.2041ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:59] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Areas.Admin.Controllers.DashboardController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:59] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /Admin responded 200 in 3607.8826 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:59] [فایل/بخش: Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware]
+Unable to configure Browser Link script injection on the response. 
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:59] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/Admin - 200 null text/html; charset=utf-8 3614.9805ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:59] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:17:59] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - 200 14910 application/javascript; charset=utf-8 3.0858ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:06] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/Students - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:06] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:06] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@sessionId='?' (Size = 64)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAtUtc], [u].[DeviceFingerprint], [u].[ExpiresAtUtc], [u].[IpAddress], [u].[LastActivityUtc], [u].[SessionId], [u].[UserAgent], [u].[UserId]
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:06] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (143ms) [Parameters=[@p='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @sessionId='?' (Size = 64), @nowUtc='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+UPDATE [u]
+SET [u].[LastActivityUtc] = @p,
+    [u].[ExpiresAtUtc] = @p3
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId AND [u].[ExpiresAtUtc] > @nowUtc
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:06] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TryCount], [u].[UserName]
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit) AND [u].[UserId] = @p
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:06] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Areas.User.Controllers.DashboardController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:06] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {area = "User", action = "Index", controller = "Dashboard"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Web.Areas.User.Controllers.DashboardController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:06] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[EnrollmentId], [c].[CompletionDate], [c].[CourseId], [c].[EnrollmentDate], [c].[IsCompleted], [c].[IsPaid], [c].[PaymentAmount], [c].[PaymentDate], [c].[ProgressPercentage], [c].[UserId], [c0].[CourseId], [c0].[CreateDate], [c0].[Description], [c0].[DiscountPrice], [c0].[DurationHours], [c0].[ImageName], [c0].[IsActive], [c0].[IsBundle], [c0].[IsDiscountActive], [c0].[IsListedForSale], [c0].[LastUpdate], [c0].[Price], [c0].[Title]
+FROM [CourseEnrollments] AS [c]
+INNER JOIN [Courses] AS [c0] ON [c].[CourseId] = [c0].[CourseId]
+WHERE [c].[UserId] = @userId
+ORDER BY [c].[EnrollmentDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:06] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Index.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:07] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Index executed in 228.0851ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:07] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Areas.User.Controllers.DashboardController.Index (Web) in 528.8161ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:07] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Areas.User.Controllers.DashboardController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:07] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /Students responded 200 in 1130.6318 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:07] [فایل/بخش: Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware]
+Unable to configure Browser Link script injection on the response. 
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:07] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/Students - 200 null text/html; charset=utf-8 1140.8897ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:07] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:07] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - 200 14910 application/javascript; charset=utf-8 2.9234ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:12] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/Students/Courses - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:12] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:12] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@sessionId='?' (Size = 64)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAtUtc], [u].[DeviceFingerprint], [u].[ExpiresAtUtc], [u].[IpAddress], [u].[LastActivityUtc], [u].[SessionId], [u].[UserAgent], [u].[UserId]
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:13] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (142ms) [Parameters=[@p='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @sessionId='?' (Size = 64), @nowUtc='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+UPDATE [u]
+SET [u].[LastActivityUtc] = @p,
+    [u].[ExpiresAtUtc] = @p3
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId AND [u].[ExpiresAtUtc] > @nowUtc
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:13] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TryCount], [u].[UserName]
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit) AND [u].[UserId] = @p
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:13] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Areas.User.Controllers.CoursesController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:13] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {area = "User", action = "Index", controller = "Courses"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Web.Areas.User.Controllers.CoursesController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:13] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (144ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c0].[CourseId], [c0].[CreateDate], [c0].[Description], [c0].[DiscountPrice], [c0].[DurationHours], [c0].[ImageName], [c0].[IsActive], [c0].[IsBundle], [c0].[IsDiscountActive], [c0].[IsListedForSale], [c0].[LastUpdate], [c0].[Price], [c0].[Title]
+FROM [CourseEnrollments] AS [c]
+INNER JOIN [Courses] AS [c0] ON [c].[CourseId] = [c0].[CourseId]
+WHERE [c].[UserId] = @userId AND [c0].[IsActive] = CAST(1 AS bit)
+ORDER BY [c0].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:13] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (145ms) [Parameters=[@courseIds1='?' (DbType = Int32), @courseIds2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT DISTINCT [e].[CourseId]
+FROM [Exams] AS [e]
+WHERE [e].[IsActive] = CAST(1 AS bit) AND [e].[CourseId] IS NOT NULL AND [e].[CourseId] IN (@courseIds1, @courseIds2)
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:13] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [CourseEnrollments] AS [c]
+        WHERE [c].[UserId] = @userId AND [c].[CourseId] = @courseId) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:13] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[VideoId], [c].[CourseId], [c].[CreateDate], [c].[Description], [c].[DurationSeconds], [c].[IsActive], [c].[IsFree], [c].[LastUpdate], [c].[OrderIndex], [c].[Title], [c].[VideoFileName]
+FROM [CourseVideos] AS [c]
+WHERE [c].[CourseId] = @courseId AND [c].[IsActive] = CAST(1 AS bit)
+ORDER BY [c].[OrderIndex]
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:14] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [CourseEnrollments] AS [c]
+        WHERE [c].[UserId] = @userId AND [c].[CourseId] = @courseId) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:14] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (145ms) [Parameters=[@courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[PdfId], [c].[CourseId], [c].[CreateDate], [c].[FileName], [c].[IsActive], [c].[LastUpdate], [c].[OriginalFileName], [c].[Price], [c].[Title]
+FROM [CoursePdfs] AS [c]
+WHERE [c].[CourseId] = @courseId AND [c].[IsActive] = CAST(1 AS bit)
+ORDER BY [c].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:14] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (145ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [v].[Id], [v].[Completed], [v].[CompletedAt], [v].[CreatedAt], [v].[Duration], [v].[LastPosition], [v].[LastWatched], [v].[UserId], [v].[VideoId], [v].[WatchedPercent]
+FROM [VideoProgresses] AS [v]
+INNER JOIN [CourseVideos] AS [c] ON [v].[VideoId] = [c].[VideoId]
+WHERE [v].[UserId] = @userId AND [c].[CourseId] = @courseId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:14] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [CourseEnrollments] AS [c]
+        WHERE [c].[UserId] = @userId AND [c].[CourseId] = @courseId) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:14] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (142ms) [Parameters=[@courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[VideoId], [c].[CourseId], [c].[CreateDate], [c].[Description], [c].[DurationSeconds], [c].[IsActive], [c].[IsFree], [c].[LastUpdate], [c].[OrderIndex], [c].[Title], [c].[VideoFileName]
+FROM [CourseVideos] AS [c]
+WHERE [c].[CourseId] = @courseId AND [c].[IsActive] = CAST(1 AS bit)
+ORDER BY [c].[OrderIndex]
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:14] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [CourseEnrollments] AS [c]
+        WHERE [c].[UserId] = @userId AND [c].[CourseId] = @courseId) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:14] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[PdfId], [c].[CourseId], [c].[CreateDate], [c].[FileName], [c].[IsActive], [c].[LastUpdate], [c].[OriginalFileName], [c].[Price], [c].[Title]
+FROM [CoursePdfs] AS [c]
+WHERE [c].[CourseId] = @courseId AND [c].[IsActive] = CAST(1 AS bit)
+ORDER BY [c].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [v].[Id], [v].[Completed], [v].[CompletedAt], [v].[CreatedAt], [v].[Duration], [v].[LastPosition], [v].[LastWatched], [v].[UserId], [v].[VideoId], [v].[WatchedPercent]
+FROM [VideoProgresses] AS [v]
+INNER JOIN [CourseVideos] AS [c] ON [v].[VideoId] = [c].[VideoId]
+WHERE [v].[UserId] = @userId AND [c].[CourseId] = @courseId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Index.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (142ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Index executed in 186.8581ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Areas.User.Controllers.CoursesController.Index (Web) in 2165.7815ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Areas.User.Controllers.CoursesController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /Students/Courses responded 200 in 2767.6504 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware]
+Unable to configure Browser Link script injection on the response. 
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/Students/Courses - 200 null text/html; charset=utf-8 2775.1519ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/css/glass-folder.css?v=AvSYHw1N0VseAdQwx9XUc1SLw4tHf4YPZzKVwkB2CmA - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/js/glass-folder.js?v=44miNJ7Gfz151Alz_F4YiVLZEi-DSF8w0jVShCNLWzc - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/css/glass-folder.css'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\glass-folder.css'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/js/glass-folder.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\glass-folder.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - 200 14910 application/javascript; charset=utf-8 6.6697ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/glass-folder.css responded 200 in 6.3050 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/glass-folder.js responded 200 in 4.5527 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/css/glass-folder.css?v=AvSYHw1N0VseAdQwx9XUc1SLw4tHf4YPZzKVwkB2CmA - 200 15966 text/css 14.1188ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/js/glass-folder.js?v=44miNJ7Gfz151Alz_F4YiVLZEi-DSF8w0jVShCNLWzc - 200 7292 text/javascript 15.1049ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/uploads/courses/a7bec711-1195-403e-9d74-5d4e4bcc2641.gif - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/uploads/courses/0ef00181-1d4a-4c95-b092-9ae556f5eb60.gif - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+The file /uploads/courses/0ef00181-1d4a-4c95-b092-9ae556f5eb60.gif was not modified
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /uploads/courses/0ef00181-1d4a-4c95-b092-9ae556f5eb60.gif responded 304 in 1.2999 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:15] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/uploads/courses/0ef00181-1d4a-4c95-b092-9ae556f5eb60.gif - 304 null image/gif 5.8152ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:24] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/Students/Course/5 - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:25] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (147ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:25] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@sessionId='?' (Size = 64)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAtUtc], [u].[DeviceFingerprint], [u].[ExpiresAtUtc], [u].[IpAddress], [u].[LastActivityUtc], [u].[SessionId], [u].[UserAgent], [u].[UserId]
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:25] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (143ms) [Parameters=[@p='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @sessionId='?' (Size = 64), @nowUtc='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+UPDATE [u]
+SET [u].[LastActivityUtc] = @p,
+    [u].[ExpiresAtUtc] = @p3
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId AND [u].[ExpiresAtUtc] > @nowUtc
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:25] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TryCount], [u].[UserName]
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit) AND [u].[UserId] = @p
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:25] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Areas.User.Controllers.CoursesController.MyCourseDetails (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:25] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {area = "User", action = "MyCourseDetails", controller = "Courses"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] MyCourseDetails(Int32) on controller Web.Areas.User.Controllers.CoursesController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:25] [فایل/بخش: Microsoft.EntityFrameworkCore.Query]
+Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:25] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (142ms) [Parameters=[@courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c4].[CourseId], [c4].[CreateDate], [c4].[Description], [c4].[DiscountPrice], [c4].[DurationHours], [c4].[ImageName], [c4].[IsActive], [c4].[IsBundle], [c4].[IsDiscountActive], [c4].[IsListedForSale], [c4].[LastUpdate], [c4].[Price], [c4].[Title], [c5].[VideoId], [c5].[CourseId], [c5].[CreateDate], [c5].[Description], [c5].[DurationSeconds], [c5].[IsActive], [c5].[IsFree], [c5].[LastUpdate], [c5].[OrderIndex], [c5].[Title], [c5].[VideoFileName], [c6].[PdfId], [c6].[CourseId], [c6].[CreateDate], [c6].[FileName], [c6].[IsActive], [c6].[LastUpdate], [c6].[OriginalFileName], [c6].[Price], [c6].[Title], [s].[Id], [s].[AddedDate], [s].[BundleId], [s].[CourseId], [s].[OrderIndex], [s].[CourseId0], [s].[CreateDate], [s].[Description], [s].[DiscountPrice], [s].[DurationHours], [s].[ImageName], [s].[IsActive], [s].[IsBundle], [s].[IsDiscountActive], [s].[IsListedForSale], [s].[LastUpdate], [s].[Price], [s].[Title]
+FROM (
+    SELECT TOP(1) [c].[CourseId], [c].[CreateDate], [c].[Description], [c].[DiscountPrice], [c].[DurationHours], [c].[ImageName], [c].[IsActive], [c].[IsBundle], [c].[IsDiscountActive], [c].[IsListedForSale], [c].[LastUpdate], [c].[Price], [c].[Title]
+    FROM [Courses] AS [c]
+    WHERE [c].[CourseId] = @courseId AND [c].[IsActive] = CAST(1 AS bit)
+) AS [c4]
+LEFT JOIN (
+    SELECT [c0].[VideoId], [c0].[CourseId], [c0].[CreateDate], [c0].[Description], [c0].[DurationSeconds], [c0].[IsActive], [c0].[IsFree], [c0].[LastUpdate], [c0].[OrderIndex], [c0].[Title], [c0].[VideoFileName]
+    FROM [CourseVideos] AS [c0]
+    WHERE [c0].[IsActive] = CAST(1 AS bit)
+) AS [c5] ON [c4].[CourseId] = [c5].[CourseId]
+LEFT JOIN (
+    SELECT [c1].[PdfId], [c1].[CourseId], [c1].[CreateDate], [c1].[FileName], [c1].[IsActive], [c1].[LastUpdate], [c1].[OriginalFileName], [c1].[Price], [c1].[Title]
+    FROM [CoursePdfs] AS [c1]
+    WHERE [c1].[IsActive] = CAST(1 AS bit)
+) AS [c6] ON [c4].[CourseId] = [c6].[CourseId]
+LEFT JOIN (
+    SELECT [c2].[Id], [c2].[AddedDate], [c2].[BundleId], [c2].[CourseId], [c2].[OrderIndex], [c3].[CourseId] AS [CourseId0], [c3].[CreateDate], [c3].[Description], [c3].[DiscountPrice], [c3].[DurationHours], [c3].[ImageName], [c3].[IsActive], [c3].[IsBundle], [c3].[IsDiscountActive], [c3].[IsListedForSale], [c3].[LastUpdate], [c3].[Price], [c3].[Title]
+    FROM [CourseBundleItems] AS [c2]
+    INNER JOIN [Courses] AS [c3] ON [c2].[BundleId] = [c3].[CourseId]
+) AS [s] ON [c4].[CourseId] = [s].[CourseId]
+ORDER BY [c4].[CourseId], [c5].[VideoId], [c6].[PdfId], [s].[Id]
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:25] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [CourseEnrollments] AS [c]
+        WHERE [c].[UserId] = @userId AND [c].[CourseId] = @courseId) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [CourseEnrollments] AS [c]
+        WHERE [c].[UserId] = @userId AND [c].[CourseId] = @courseId) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (142ms) [Parameters=[@courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[VideoId], [c].[CourseId], [c].[CreateDate], [c].[Description], [c].[DurationSeconds], [c].[IsActive], [c].[IsFree], [c].[LastUpdate], [c].[OrderIndex], [c].[Title], [c].[VideoFileName]
+FROM [CourseVideos] AS [c]
+WHERE [c].[CourseId] = @courseId AND [c].[IsActive] = CAST(1 AS bit)
+ORDER BY [c].[OrderIndex]
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [CourseEnrollments] AS [c]
+        WHERE [c].[UserId] = @userId AND [c].[CourseId] = @courseId) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[PdfId], [c].[CourseId], [c].[CreateDate], [c].[FileName], [c].[IsActive], [c].[LastUpdate], [c].[OriginalFileName], [c].[Price], [c].[Title]
+FROM [CoursePdfs] AS [c]
+WHERE [c].[CourseId] = @courseId AND [c].[IsActive] = CAST(1 AS bit)
+ORDER BY [c].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (143ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[EnrollmentId], [c].[CompletionDate], [c].[CourseId], [c].[EnrollmentDate], [c].[IsCompleted], [c].[IsPaid], [c].[PaymentAmount], [c].[PaymentDate], [c].[ProgressPercentage], [c].[UserId]
+FROM [CourseEnrollments] AS [c]
+WHERE [c].[UserId] = @userId AND [c].[CourseId] = @courseId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [v].[Id], [v].[Completed], [v].[CompletedAt], [v].[CreatedAt], [v].[Duration], [v].[LastPosition], [v].[LastWatched], [v].[UserId], [v].[VideoId], [v].[WatchedPercent]
+FROM [VideoProgresses] AS [v]
+INNER JOIN [CourseVideos] AS [c] ON [v].[VideoId] = [c].[VideoId]
+WHERE [v].[UserId] = @userId AND [c].[CourseId] = @courseId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view MyCourseDetails.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (142ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view MyCourseDetails executed in 165.8945ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Areas.User.Controllers.CoursesController.MyCourseDetails (Web) in 1416.6257ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Areas.User.Controllers.CoursesController.MyCourseDetails (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /Students/Course/5 responded 200 in 2022.3396 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware]
+Unable to configure Browser Link script injection on the response. 
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/Students/Course/5 - 200 null text/html; charset=utf-8 2029.1645ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:26] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - 200 14910 application/javascript; charset=utf-8 2.448ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:46] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/uploads/courses/a7bec711-1195-403e-9d74-5d4e4bcc2641.gif - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:57] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/Students/Courses/Watch?videoId=7 - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:57] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:57] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@sessionId='?' (Size = 64)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAtUtc], [u].[DeviceFingerprint], [u].[ExpiresAtUtc], [u].[IpAddress], [u].[LastActivityUtc], [u].[SessionId], [u].[UserAgent], [u].[UserId]
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:57] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (143ms) [Parameters=[@p='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @sessionId='?' (Size = 64), @nowUtc='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+UPDATE [u]
+SET [u].[LastActivityUtc] = @p,
+    [u].[ExpiresAtUtc] = @p3
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId AND [u].[ExpiresAtUtc] > @nowUtc
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:58] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TryCount], [u].[UserName]
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit) AND [u].[UserId] = @p
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:58] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Areas.User.Controllers.CoursesController.Watch (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:58] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {area = "User", action = "Watch", controller = "Courses"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Watch(Int32) on controller Web.Areas.User.Controllers.CoursesController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:58] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (145ms) [Parameters=[@videoId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[VideoId], [c].[CourseId], [c].[CreateDate], [c].[Description], [c].[DurationSeconds], [c].[IsActive], [c].[IsFree], [c].[LastUpdate], [c].[OrderIndex], [c].[Title], [c].[VideoFileName], [c0].[CourseId], [c0].[CreateDate], [c0].[Description], [c0].[DiscountPrice], [c0].[DurationHours], [c0].[ImageName], [c0].[IsActive], [c0].[IsBundle], [c0].[IsDiscountActive], [c0].[IsListedForSale], [c0].[LastUpdate], [c0].[Price], [c0].[Title]
+FROM [CourseVideos] AS [c]
+INNER JOIN [Courses] AS [c0] ON [c].[CourseId] = [c0].[CourseId]
+WHERE [c].[VideoId] = @videoId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:58] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (143ms) [Parameters=[@videoId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[VideoId], [c].[CourseId], [c].[CreateDate], [c].[Description], [c].[DurationSeconds], [c].[IsActive], [c].[IsFree], [c].[LastUpdate], [c].[OrderIndex], [c].[Title], [c].[VideoFileName], [c0].[CourseId], [c0].[CreateDate], [c0].[Description], [c0].[DiscountPrice], [c0].[DurationHours], [c0].[ImageName], [c0].[IsActive], [c0].[IsBundle], [c0].[IsDiscountActive], [c0].[IsListedForSale], [c0].[LastUpdate], [c0].[Price], [c0].[Title]
+FROM [CourseVideos] AS [c]
+INNER JOIN [Courses] AS [c0] ON [c].[CourseId] = [c0].[CourseId]
+WHERE [c].[VideoId] = @videoId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:18:58] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (147ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND ([r].[RoleName] IN (N'SuperAdmin', N'Admin', N'CourseManager', N'IT', N'ITAdministrator') OR [r].[RoleName] LIKE N'%Admin%')) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:22] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/Students/Courses - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:22] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:22] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (144ms) [Parameters=[@sessionId='?' (Size = 64)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAtUtc], [u].[DeviceFingerprint], [u].[ExpiresAtUtc], [u].[IpAddress], [u].[LastActivityUtc], [u].[SessionId], [u].[UserAgent], [u].[UserId]
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (143ms) [Parameters=[@p='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @sessionId='?' (Size = 64), @nowUtc='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+UPDATE [u]
+SET [u].[LastActivityUtc] = @p,
+    [u].[ExpiresAtUtc] = @p3
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId AND [u].[ExpiresAtUtc] > @nowUtc
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TryCount], [u].[UserName]
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit) AND [u].[UserId] = @p
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:23] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Areas.User.Controllers.CoursesController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:23] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {area = "User", action = "Index", controller = "Courses"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Web.Areas.User.Controllers.CoursesController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c0].[CourseId], [c0].[CreateDate], [c0].[Description], [c0].[DiscountPrice], [c0].[DurationHours], [c0].[ImageName], [c0].[IsActive], [c0].[IsBundle], [c0].[IsDiscountActive], [c0].[IsListedForSale], [c0].[LastUpdate], [c0].[Price], [c0].[Title]
+FROM [CourseEnrollments] AS [c]
+INNER JOIN [Courses] AS [c0] ON [c].[CourseId] = [c0].[CourseId]
+WHERE [c].[UserId] = @userId AND [c0].[IsActive] = CAST(1 AS bit)
+ORDER BY [c0].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@courseIds1='?' (DbType = Int32), @courseIds2='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT DISTINCT [e].[CourseId]
+FROM [Exams] AS [e]
+WHERE [e].[IsActive] = CAST(1 AS bit) AND [e].[CourseId] IS NOT NULL AND [e].[CourseId] IN (@courseIds1, @courseIds2)
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [CourseEnrollments] AS [c]
+        WHERE [c].[UserId] = @userId AND [c].[CourseId] = @courseId) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:23] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (142ms) [Parameters=[@courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[VideoId], [c].[CourseId], [c].[CreateDate], [c].[Description], [c].[DurationSeconds], [c].[IsActive], [c].[IsFree], [c].[LastUpdate], [c].[OrderIndex], [c].[Title], [c].[VideoFileName]
+FROM [CourseVideos] AS [c]
+WHERE [c].[CourseId] = @courseId AND [c].[IsActive] = CAST(1 AS bit)
+ORDER BY [c].[OrderIndex]
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:24] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [CourseEnrollments] AS [c]
+        WHERE [c].[UserId] = @userId AND [c].[CourseId] = @courseId) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:24] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[PdfId], [c].[CourseId], [c].[CreateDate], [c].[FileName], [c].[IsActive], [c].[LastUpdate], [c].[OriginalFileName], [c].[Price], [c].[Title]
+FROM [CoursePdfs] AS [c]
+WHERE [c].[CourseId] = @courseId AND [c].[IsActive] = CAST(1 AS bit)
+ORDER BY [c].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:24] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [v].[Id], [v].[Completed], [v].[CompletedAt], [v].[CreatedAt], [v].[Duration], [v].[LastPosition], [v].[LastWatched], [v].[UserId], [v].[VideoId], [v].[WatchedPercent]
+FROM [VideoProgresses] AS [v]
+INNER JOIN [CourseVideos] AS [c] ON [v].[VideoId] = [c].[VideoId]
+WHERE [v].[UserId] = @userId AND [c].[CourseId] = @courseId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:24] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [CourseEnrollments] AS [c]
+        WHERE [c].[UserId] = @userId AND [c].[CourseId] = @courseId) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:24] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[VideoId], [c].[CourseId], [c].[CreateDate], [c].[Description], [c].[DurationSeconds], [c].[IsActive], [c].[IsFree], [c].[LastUpdate], [c].[OrderIndex], [c].[Title], [c].[VideoFileName]
+FROM [CourseVideos] AS [c]
+WHERE [c].[CourseId] = @courseId AND [c].[IsActive] = CAST(1 AS bit)
+ORDER BY [c].[OrderIndex]
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:24] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [CourseEnrollments] AS [c]
+        WHERE [c].[UserId] = @userId AND [c].[CourseId] = @courseId) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:24] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[PdfId], [c].[CourseId], [c].[CreateDate], [c].[FileName], [c].[IsActive], [c].[LastUpdate], [c].[OriginalFileName], [c].[Price], [c].[Title]
+FROM [CoursePdfs] AS [c]
+WHERE [c].[CourseId] = @courseId AND [c].[IsActive] = CAST(1 AS bit)
+ORDER BY [c].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @courseId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [v].[Id], [v].[Completed], [v].[CompletedAt], [v].[CreatedAt], [v].[Duration], [v].[LastPosition], [v].[LastWatched], [v].[UserId], [v].[VideoId], [v].[WatchedPercent]
+FROM [VideoProgresses] AS [v]
+INNER JOIN [CourseVideos] AS [c] ON [v].[VideoId] = [c].[VideoId]
+WHERE [v].[UserId] = @userId AND [c].[CourseId] = @courseId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Index.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Index executed in 148.0155ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Areas.User.Controllers.CoursesController.Index (Web) in 1883.4777ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Areas.User.Controllers.CoursesController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /Students/Courses responded 200 in 2505.5185 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware]
+Unable to configure Browser Link script injection on the response. 
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/Students/Courses - 200 null text/html; charset=utf-8 2517.9111ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/css/glass-folder.css?v=AvSYHw1N0VseAdQwx9XUc1SLw4tHf4YPZzKVwkB2CmA - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/js/glass-folder.js?v=44miNJ7Gfz151Alz_F4YiVLZEi-DSF8w0jVShCNLWzc - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+The file /css/glass-folder.css was not modified
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+The file /js/glass-folder.js was not modified
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/_framework/aspnetcore-browser-refresh.js - 200 14910 application/javascript; charset=utf-8 6.0732ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/glass-folder.css responded 304 in 4.6813 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/glass-folder.js responded 304 in 3.4375 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/css/glass-folder.css?v=AvSYHw1N0VseAdQwx9XUc1SLw4tHf4YPZzKVwkB2CmA - 304 null text/css 11.9746ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/js/glass-folder.js?v=44miNJ7Gfz151Alz_F4YiVLZEi-DSF8w0jVShCNLWzc - 304 null text/javascript 13.6112ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/uploads/courses/a7bec711-1195-403e-9d74-5d4e4bcc2641.gif - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/favicon.ico - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/favicon.ico'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\favicon.ico'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /favicon.ico responded 200 in 9.1330 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:25] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/2 GET https://localhost:7237/favicon.ico - 200 5430 image/x-icon 12.2469ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:50] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/2 GET https://localhost:7237/Students/Courses/Watch?videoId=7 - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:50] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:50] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@sessionId='?' (Size = 64)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[CreatedAtUtc], [u].[DeviceFingerprint], [u].[ExpiresAtUtc], [u].[IpAddress], [u].[LastActivityUtc], [u].[SessionId], [u].[UserAgent], [u].[UserId]
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:51] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (144ms) [Parameters=[@p='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @sessionId='?' (Size = 64), @nowUtc='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+UPDATE [u]
+SET [u].[LastActivityUtc] = @p,
+    [u].[ExpiresAtUtc] = @p3
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[SessionId] = @sessionId AND [u].[ExpiresAtUtc] > @nowUtc
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:51] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TryCount], [u].[UserName]
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit) AND [u].[UserId] = @p
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:51] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Areas.User.Controllers.CoursesController.Watch (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:51] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {area = "User", action = "Watch", controller = "Courses"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Watch(Int32) on controller Web.Areas.User.Controllers.CoursesController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:51] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@videoId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[VideoId], [c].[CourseId], [c].[CreateDate], [c].[Description], [c].[DurationSeconds], [c].[IsActive], [c].[IsFree], [c].[LastUpdate], [c].[OrderIndex], [c].[Title], [c].[VideoFileName], [c0].[CourseId], [c0].[CreateDate], [c0].[Description], [c0].[DiscountPrice], [c0].[DurationHours], [c0].[ImageName], [c0].[IsActive], [c0].[IsBundle], [c0].[IsDiscountActive], [c0].[IsListedForSale], [c0].[LastUpdate], [c0].[Price], [c0].[Title]
+FROM [CourseVideos] AS [c]
+INNER JOIN [Courses] AS [c0] ON [c].[CourseId] = [c0].[CourseId]
+WHERE [c].[VideoId] = @videoId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:51] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@videoId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[VideoId], [c].[CourseId], [c].[CreateDate], [c].[Description], [c].[DurationSeconds], [c].[IsActive], [c].[IsFree], [c].[LastUpdate], [c].[OrderIndex], [c].[Title], [c].[VideoFileName], [c0].[CourseId], [c0].[CreateDate], [c0].[Description], [c0].[DiscountPrice], [c0].[DurationHours], [c0].[ImageName], [c0].[IsActive], [c0].[IsBundle], [c0].[IsDiscountActive], [c0].[IsListedForSale], [c0].[LastUpdate], [c0].[Price], [c0].[Title]
+FROM [CourseVideos] AS [c]
+INNER JOIN [Courses] AS [c0] ON [c].[CourseId] = [c0].[CourseId]
+WHERE [c].[VideoId] = @videoId
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:19:51] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND ([r].[RoleName] IN (N'SuperAdmin', N'Admin', N'CourseManager', N'IT', N'ITAdministrator') OR [r].[RoleName] LIKE N'%Admin%')) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+

@@ -1,0 +1,126 @@
+@model Web.Areas.User.Models.CourseFolderViewModel
+@*
+    One enrolled course as a glass folder. Styles: css/glass-folder.css, behaviour: js/glass-folder.js.
+    The stage is drawn at 340 × 272 (the front glass is the lower 198) and scaled by the script.
+    ViewData["AppearDelay"] staggers the entrance across a row.
+*@
+@{
+    const string BackPath = "M0 56A22 22 0 0 1 22 34L146 34C170 34 172 0 198 0L318 0A22 22 0 0 1 340 22L340 250A22 22 0 0 1 318 272L22 272A22 22 0 0 1 0 250Z";
+    const string FrontPath = "M0 22A22 22 0 0 1 22 0L118 0C144 0 146 32 172 32L318 32A22 22 0 0 1 340 54L340 176A22 22 0 0 1 318 198L22 198A22 22 0 0 1 0 176Z";
+
+    var inv = System.Globalization.CultureInfo.InvariantCulture;
+    var uid = "gf" + Model.CourseId;
+    var count = Model.Files.Count;
+
+    // A small, stable wobble per file so the stack looks handled, not stamped.
+    static uint Hash(string s) { uint h = 2166136261; foreach (var c in s) h = (h ^ c) * 16777619; return h; }
+    static double Unit(uint h, int salt) { var x = (h ^ (uint)(salt * 0x9E3779B9)) * 2654435761u; return (x >> 8) / 16777216.0; }
+}
+
+<div class="gf-root" data-label="@Model.Title" data-appear-delay="@(ViewData["AppearDelay"] ?? 0)">
+    <div class="gf-stage">
+        <div class="gf-tilt">
+            <div class="gf-shadow" aria-hidden="true"></div>
+
+            @* back panel: the course image, or the brand gradient *@
+            <div class="gf-back" style="clip-path: path('@BackPath')" aria-hidden="true">
+                <div class="gf-art gf-art--brand"></div>
+                @if (Model.ImageUrl != null)
+                {
+                    <img class="gf-art" src="@Model.ImageUrl" alt="" width="364" height="296" loading="lazy" decoding="async" draggable="false" />
+                }
+                <div class="gf-back-sheen"></div>
+            </div>
+            <svg class="gf-rim gf-back-rim" viewBox="0 0 340 272" aria-hidden="true"><path d="@BackPath" /></svg>
+
+            @* the frosted front panel, hinged on its bottom edge *@
+            <div class="gf-front" style="clip-path: path('@FrontPath')">
+                <div class="gf-tint" aria-hidden="true"></div>
+                <div class="gf-spec" aria-hidden="true"></div>
+                <svg class="gf-rim gf-front-rim" viewBox="0 0 340 198" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="@(uid)-rim" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#fff" stop-opacity="0.95" />
+                            <stop offset="0.35" stop-color="#fff" stop-opacity="0.35" />
+                            <stop offset="1" stop-color="#fff" stop-opacity="0.12" />
+                        </linearGradient>
+                    </defs>
+                    <path d="@FrontPath" stroke="url(#@(uid)-rim)" />
+                </svg>
+                @* The whole glass is the link to the course page; the lessons fan out on hover or from the ··· menu. *@
+                <a class="gf-hit" href="@Model.CourseUrl" aria-label="Open course: @Model.Title, @Model.Meta"></a>
+                @if (Model.IsBundle)
+                {
+                    <span class="gf-badge"><i class="fas fa-cubes"></i> Bundle</span>
+                }
+                <div class="gf-label">
+                    <span class="gf-title">@Model.Title</span>
+                    <span class="gf-meta">@Model.Meta</span>
+                    @if (Model.ProgressPercent is int pct)
+                    {
+                        <span class="gf-bar" aria-hidden="true"><b style="width:@(pct)%"></b></span>
+                    }
+                </div>
+            </div>
+
+            @* the contents: after the glass in tab order, beneath it on screen *@
+            <ul class="gf-files" id="@(uid)-files" aria-label="@Model.Title contents">
+                @for (var v = 0; v < count; v++)
+                {
+                    var file = Model.Files[v];
+                    var h = Hash(file.Name + v);
+                    var slot = count <= 1 ? 0 : (v / (double)(count - 1)) * 2 - 1;
+                    var jx = (Unit(h, 1) - 0.5) * 10;
+                    var jr = (Unit(h, 2) - 0.5) * 3.2;
+                    var style = string.Format(inv, "--gf-slot:{0:0.###};--gf-depth:{1};--gf-jx:{2:0.##}px;--gf-jr:{3:0.##}deg;z-index:{4}",
+                        slot, count - 1 - v, jx, jr, v + 1);
+                    var isFront = v == count - 1;
+                    <li class="gf-sheet-slot">
+                        <a class="gf-sheet" href="@file.Href" data-kind="@file.Kind" data-done="@(file.Done ? "" : null)" style="@style">
+                            <span class="gf-lines" aria-hidden="true">
+                                <i style="width:86%"></i><i style="width:92%"></i><i style="width:64%"></i><i style="width:58%"></i>
+                            </span>
+                            <span class="gf-sheet-head">
+                                <span class="gf-sheet-name">@file.Name</span>
+                                @if (!string.IsNullOrEmpty(file.Meta))
+                                {
+                                    <span class="gf-sheet-meta">@file.Meta</span>
+                                }
+                            </span>
+                            @if (isFront && file.Kind == "lesson")
+                            {
+                                <span class="gf-sheet-tag">@(file.Done ? "Watch again" : file.Progress != null ? "Continue" : "Up next")</span>
+                            }
+                            @if (file.Progress is int p)
+                            {
+                                <span class="gf-sheet-progress" aria-hidden="true"><b style="width:@(p)%"></b></span>
+                            }
+                            <i class="fas @file.Icon gf-sheet-icon" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                }
+            </ul>
+
+            @* the ··· key *@
+            <button type="button" class="gf-key" aria-haspopup="menu" aria-expanded="false" aria-controls="@(uid)-menu" aria-label="More options for @Model.Title">
+                <svg class="gf-glyph" viewBox="0 0 30 12" aria-hidden="true">
+                    <rect x="1" y="1.5" width="8" height="9" rx="3.4" />
+                    <rect x="11" y="1.5" width="8" height="9" rx="3.4" />
+                    <rect x="21" y="1.5" width="8" height="9" rx="3.4" />
+                </svg>
+            </button>
+            <div class="gf-menu" id="@(uid)-menu" role="menu" aria-label="@Model.Title options">
+                @if (Model.ContinueUrl != null)
+                {
+                    <a class="gf-menu-item" role="menuitem" href="@Model.ContinueUrl"><i class="fas fa-play"></i> Continue where I left off</a>
+                }
+                <a class="gf-menu-item" role="menuitem" href="@Model.CourseUrl"><i class="fas fa-book-open"></i> @(Model.IsBundle ? "Open bundle" : "Open course page")</a>
+                @if (Model.HasTests)
+                {
+                    <a class="gf-menu-item" role="menuitem" href="@Url.Action("Index", "Tests", new { area = "User" })"><i class="fas fa-file-pen"></i> Mock tests</a>
+                }
+                <button type="button" class="gf-menu-item" role="menuitem" data-gf-action="toggle" aria-controls="@(uid)-files"><i class="fas fa-folder-open"></i> <span data-gf-toggle-label>Show lessons</span></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -31,6 +32,7 @@ namespace Web.Areas.User.Controllers
         private readonly IPdfFileLocator _pdfLocator;
         private readonly ISecurePdfRenderer _pdfRenderer;
         private readonly IConfiguration _configuration;
+        private readonly IApplicationDbContext _db;
 
         public CoursesController(
             ICourseService courseService, IWebHostEnvironment environment,
@@ -38,8 +40,10 @@ namespace Web.Areas.User.Controllers
             ILogger<CoursesController> logger, IOneTimeUrlService oneTimeUrlService,
             IIpBindingService ipBindingService, IHlsProcessingService hlsProcessingService,
             IDataProtectionProvider provider, IMemoryCache cache, IStorageService storageService,
-            IPdfFileLocator pdfLocator, ISecurePdfRenderer pdfRenderer, IConfiguration configuration)
+            IPdfFileLocator pdfLocator, ISecurePdfRenderer pdfRenderer, IConfiguration configuration,
+            IApplicationDbContext db)
         {
+            _db = db;
             _courseService = courseService;
             _environment = environment;
             _videoTokenService = videoTokenService;
@@ -96,8 +100,117 @@ namespace Web.Areas.User.Controllers
         #region Page Views
         public async Task<IActionResult> Index()
         {
-            var enrolledCourses = await _courseService.GetUserEnrolledCoursesAsync(GetCurrentUserId());
-            return View(enrolledCourses);
+            var userId = GetCurrentUserId();
+            var enrolledCourses = await _courseService.GetUserEnrolledCoursesAsync(userId);
+
+            var courseIds = enrolledCourses.Select(c => c.CourseId).ToList();
+            var coursesWithTests = await _db.Exams
+                .Where(e => e.IsActive && e.CourseId != null && courseIds.Contains(e.CourseId.Value))
+                .Select(e => e.CourseId!.Value)
+                .Distinct()
+                .ToListAsync();
+
+            var folders = new List<CourseFolderViewModel>();
+            foreach (var course in enrolledCourses)
+                folders.Add(await BuildFolderAsync(course, userId, coursesWithTests.Contains(course.CourseId)));
+
+            return View(folders);
+        }
+
+        /// <summary>
+        /// One course as a folder: the lesson to resume sits at the front, then the one after it,
+        /// the first PDF, and an "All lessons" sheet at the back. A bundle holds its courses instead.
+        /// </summary>
+        private async Task<CourseFolderViewModel> BuildFolderAsync(Domain.Entities.Course.Course course, int userId, bool hasTests)
+        {
+            var courseUrl = Url.Action(nameof(MyCourseDetails), new { id = course.CourseId })!;
+            var folder = new CourseFolderViewModel
+            {
+                CourseId = course.CourseId,
+                Title = course.Title,
+                ImageUrl = string.IsNullOrEmpty(course.ImageName) ? null : Url.Content("~/uploads/courses/" + course.ImageName),
+                IsBundle = course.IsBundle,
+                CourseUrl = courseUrl,
+                HasTests = hasTests
+            };
+
+            if (course.IsBundle)
+            {
+                var inside = await _courseService.GetBundleCoursesAsync(course.CourseId);
+                folder.Meta = inside.Count + (inside.Count == 1 ? " course" : " courses");
+                folder.Files.Add(new CourseFolderFile { Name = "Open bundle", Meta = folder.Meta, Href = courseUrl, Kind = "all", Icon = "fa-layer-group" });
+                foreach (var c in inside.Take(3).Reverse())
+                    folder.Files.Add(new CourseFolderFile
+                    {
+                        Name = c.Title,
+                        Meta = "Course",
+                        Href = Url.Action(nameof(MyCourseDetails), new { id = c.CourseId })!,
+                        Kind = "course",
+                        Icon = "fa-book-open"
+                    });
+                return folder;
+            }
+
+            var videos = (await _courseService.GetCourseVideosAsync(course.CourseId, userId)).OrderBy(v => v.OrderIndex).ToList();
+            var pdfs = await _courseService.GetCoursePdfsAsync(course.CourseId, userId);
+            var progress = await _courseService.GetVideoProgressDictAsync(userId, course.CourseId);
+
+            var done = videos.Count(v => progress.TryGetValue(v.VideoId, out var p) && p.Completed);
+            folder.ProgressPercent = videos.Count == 0 ? null : (int)Math.Round(100.0 * done / videos.Count);
+            folder.Meta = videos.Count == 0
+                ? (pdfs.Count > 0 ? pdfs.Count + (pdfs.Count == 1 ? " PDF" : " PDFs") : "Coming soon")
+                : videos.Count + (videos.Count == 1 ? " lesson" : " lessons") + " · " + folder.ProgressPercent + "% done";
+
+            // The lesson to resume: the first one not finished, or the last one when all are.
+            var nextIndex = videos.FindIndex(v => !(progress.TryGetValue(v.VideoId, out var p) && p.Completed));
+            if (nextIndex < 0) nextIndex = videos.Count - 1;
+
+            CourseFolderFile Lesson(int i)
+            {
+                var v = videos[i];
+                progress.TryGetValue(v.VideoId, out var p);
+                var length = v.DurationSeconds is int s && s > 0 ? TimeSpan.FromSeconds(s).ToString(s >= 3600 ? @"h\:mm\:ss" : @"m\:ss") : null;
+                return new CourseFolderFile
+                {
+                    Name = v.Title,
+                    Meta = "Lesson " + (i + 1) + (length != null ? " · " + length : ""),
+                    Href = Url.Action(nameof(Watch), new { videoId = v.VideoId })!,
+                    Kind = "lesson",
+                    Icon = p?.Completed == true ? "fa-circle-check" : "fa-play",
+                    Done = p?.Completed == true,
+                    Progress = p != null && !p.Completed && p.WatchedPercent > 0 ? (int)Math.Round(p.WatchedPercent) : null
+                };
+            }
+
+            // Back to front.
+            folder.Files.Add(new CourseFolderFile
+            {
+                Name = "All lessons",
+                Meta = folder.Meta,
+                Href = courseUrl,
+                Kind = "all",
+                Icon = "fa-list-ul"
+            });
+            if (pdfs.Count > 0)
+            {
+                var pdf = pdfs[0];
+                folder.Files.Add(new CourseFolderFile
+                {
+                    Name = pdf.Title ?? pdf.OriginalFileName,
+                    Meta = pdfs.Count == 1 ? "PDF" : "PDF · 1 of " + pdfs.Count,
+                    Href = Url.Action(nameof(ViewPdf), new { pdfId = pdf.PdfId })!,
+                    Kind = "pdf",
+                    Icon = "fa-file-pdf"
+                });
+            }
+            if (nextIndex >= 0)
+            {
+                if (nextIndex + 1 < videos.Count) folder.Files.Add(Lesson(nextIndex + 1));
+                folder.Files.Add(Lesson(nextIndex));
+                folder.ContinueUrl = folder.Files[^1].Href;
+            }
+
+            return folder;
         }
 
         [HttpGet("/Students/Course/{id}")]

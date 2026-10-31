@@ -672,3 +672,5 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\comp
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\c7c8xhpwka-{0}-lz2vllkufs-lz2vllkufs.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\62j3x091fd-{0}-8jz8xopk6q-8jz8xopk6q.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\h1zmaf09gy-{0}-a473m32dqn-a473m32dqn.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\unq5rbnm93-{0}-igvn5c6r5a-igvn5c6r5a.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\m58a7gl4ji-{0}-99vwi1xiee-99vwi1xiee.gz

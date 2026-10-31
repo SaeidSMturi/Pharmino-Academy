@@ -1,0 +1,6 @@
+--------------------------------------------------
+[2026-10-31 12:17:18] [فایل/بخش: Web]
+Lemon Squeezy is in Live mode but these settings are empty: StoreId, VariantId. Students cannot pay until they are set (env vars LemonSqueezy__<Name>).
+
+--------------------------------------------------
+

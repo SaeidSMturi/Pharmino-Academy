@@ -1,4 +1,4 @@
-@model List<Domain.Entities.Course.Course>
+@model List<Web.Areas.User.Models.CourseFolderViewModel>
 @{
     var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
     ViewData["Title"] = Localizer["MyEnrolledCourses"].Value;
@@ -40,104 +40,24 @@
     }
     else
     {
-        <!-- Courses Premium Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach (var course in Model)
+        <!-- Each course is a glass folder: tap to open it and pick a lesson. -->
+        @* Room above each row: an open folder's files rise about 130px out of it. *@
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-32 pt-28 pb-4 justify-items-center items-end">
+            @for (var i = 0; i < Model.Count; i++)
             {
-                <div class="glass-panel rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-white/10 group flex flex-col h-full shadow-xl">
-                    <!-- Course Image & Badges -->
-                    <div class="h-48 bg-brand-dark relative overflow-hidden shrink-0 border-b border-white/5">
-                        @if (!string.IsNullOrEmpty(course.ImageName))
-                        {
-                            <img src="~/uploads/courses/@course.ImageName"
-                                 alt="@course.Title"
-                                 class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
-                            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent opacity-80"></div>
-                        }
-                        else
-                        {
-                            <div class="w-full h-full bg-gradient-to-br from-brand-blue/10 to-brand-cyan/10 flex items-center justify-center">
-                                <i class="fas fa-book-open text-slate-600 text-5xl opacity-40"></i>
-                            </div>
-                        }
-                        <!-- Premium Float Tag -->
-                        <div class="absolute top-4 @(isRtl ? "left-4" : "right-4") flex items-center gap-1.5">
-                            @if (course.IsBundle)
-                            {
-                                <span class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-[10px] font-black shadow-lg shadow-purple-500/20 tracking-wider">
-                                    <i class="fas fa-cubes @(isRtl ? "ml-1" : "mr-1")"></i> @(isRtl ? "پکیج" : "Bundle")
-                                </span>
-                            }
-                            <span class="px-3 py-1.5 rounded-xl bg-brand-cyan text-brand-dark text-[10px] font-extrabold shadow-lg shadow-brand-cyan/20 tracking-wider">
-                                <i class="fas fa-check-circle @(isRtl ? "ml-1" : "mr-1")"></i> @Localizer["Enrolled"]
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Course Content Wrapper -->
-                    <div class="p-6 flex flex-col flex-1 justify-between">
-                        <div>
-                            <!-- Title -->
-                            <h3 class="text-lg font-bold text-slate-100 group-hover:text-brand-cyan transition-colors line-clamp-2 min-h-[3.5rem] tracking-tight">
-                                @course.Title
-                            </h3>
-
-                            <!-- Description -->
-                            <p class="text-slate-400 text-xs leading-relaxed mb-6 line-clamp-3 min-h-[4rem]">
-                                @course.Description
-                            </p>
-                        </div>
-
-                        <div>
-                            <!-- Course Metadata -->
-                            <div class="flex items-center justify-between mb-5 text-xs font-bold text-slate-500 border-t border-white/5 pt-4">
-                                @if (course.DurationHours.HasValue && course.DurationHours.Value > 0)
-                                {
-                                    <span class="flex items-center">
-                                        <i class="far fa-clock @(isRtl ? "ml-2" : "mr-2") text-brand-blue text-sm"></i>
-                                        @course.DurationHours @Localizer["Hours"]
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span></span>
-                                }
-
-                                <span class="flex items-center text-emerald-400">
-                                    <i class="fas fa-unlock-keyhole @(isRtl ? "ml-2" : "mr-2") text-sm"></i>
-                                    @Localizer["FullAccess"]
-                                </span>
-                            </div>
-
-                            <!-- Premium Interactive Button -->
-                            <a href="@Url.Action("MyCourseDetails", new { id = course.CourseId })"
-                               class="flex items-center justify-center w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/5 text-slate-200 hover:text-white hover:bg-brand-blue hover:border-brand-blue font-bold text-sm text-center transition-all duration-300 group/btn shadow-inner">
-                                <span class="group-hover/btn:translate-x-[-4px] transition-transform duration-200">@Localizer["ContinueLearning"]</span>
-                                <i class="fas @(isRtl ? "fa-chevron-left mr-2" : "fa-chevron-right ml-2") text-xs opacity-0 group-hover/btn:opacity-100 group-hover/btn:translate-x-[4px] transition-all duration-200"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                <partial name="_CourseFolder" model="Model[i]" view-data='new ViewDataDictionary(ViewData) { ["AppearDelay"] = (i % 3) * 140 }' />
             }
         </div>
+        <p class="text-center text-[11px] font-mono tracking-[0.18em] uppercase text-slate-500">
+            @(isRtl ? "برای ورود به دوره روی پوشه بزنید · ··· برای درس‌ها" : "Click a folder to open the course · hover or ··· to see lessons")
+        </p>
     }
 </div>
 
 @section Styles {
-    <style>
-        /* Multi-line trimming standard constraints */
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
+    <link rel="stylesheet" href="~/css/glass-folder.css" asp-append-version="true" />
+}
 
-        .line-clamp-3 {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-    </style>
+@section Scripts {
+    <script src="~/js/glass-folder.js" asp-append-version="true"></script>
 }

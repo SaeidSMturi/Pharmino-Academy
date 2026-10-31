@@ -47,6 +47,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\di
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\pdfjs\pdf.worker.min.mjs
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\glass-folder.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
@@ -77,6 +78,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\di
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\sitemap_custom.xml
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\glass-folder.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\sitemap_products.xml
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
@@ -93,6 +95,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\di
 wwwroot\css\Style.css
 wwwroot\css\admin.css
 wwwroot\css\advanced-video-player.css
+wwwroot\css\glass-folder.css
 wwwroot\css\site.css
 wwwroot\css\tailwind.min.css
 wwwroot\css\theme.css
@@ -111,6 +114,7 @@ wwwroot\js\advanced-video-protection\index.js
 wwwroot\js\advanced-video-protection\network.js
 wwwroot\js\advanced-video-protection\protectors.js
 wwwroot\js\advanced-video-protection\utils.js
+wwwroot\js\glass-folder.js
 wwwroot\js\hls-secure-player.js
 wwwroot\js\marked.min.js
 wwwroot\js\secure-video-loader.js
