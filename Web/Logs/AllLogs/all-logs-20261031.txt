@@ -2634,3 +2634,1664 @@ END
 
 --------------------------------------------------
 
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Web]
+Lemon Squeezy is in Live mode but these settings are empty: StoreId, VariantId. Students cannot pay until they are set (env vars LemonSqueezy__<Name>).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Infrastructure.BackgroundServices.SessionCleanupBackgroundService]
+🔄 SessionCleanupBackgroundService started | Check interval: 30 minutes.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Infrastructure.BackgroundServices.AutoDeleteLogsBackgroundService]
+🔄 سرویس پاکسازی خودکار لاگ‌های قدیمی فعال شد.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Infrastructure.BackgroundServices.AutoUnlockAccountsService]
+🔄 AutoUnlockAccountsService started | Check interval: 60 minutes | Unlock after: 24 hours
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Now listening on: http://localhost:5131
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Application started. Press Ctrl+C to shut down.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Hosting environment: Development
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Microsoft.Hosting.Lifetime]
+Content root path: C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/favicon.ico - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware]
+Failed to determine the https port for redirect.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/favicon.ico'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\favicon.ico'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /favicon.ico responded 200 in 8.2431 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:54] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/favicon.ico - 200 5430 image/x-icon 11.563ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:55] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 HEAD http://localhost:5131/ - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'CourseEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'PaymentTransaction'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'VideoProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'ExamAttempt' has a global query filter defined and is the required end of a relationship with the entity 'AttemptAnswer'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'Post'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'AccountLockHistory'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SuspiciousActivity'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserActiveSession'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'UserLastKnownLocation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:55] [فایل/بخش: Microsoft.EntityFrameworkCore.Model.Validation]
+No store type was specified for the decimal property 'DataDecimal' on entity type 'Setting'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:57] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 HEAD http://localhost:5131/ - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:58] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/ - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:42:59] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 HEAD http://localhost:5131/ - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:01] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (186ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:01] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:01] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:01] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (157ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@p) [c].[CourseId], [c].[Title], [c].[Description], [c].[Price], COALESCE([c].[DurationHours], 0) AS [DurationHours], [c].[ImageName], (
+    SELECT COUNT(*)
+    FROM [CourseVideos] AS [c0]
+    WHERE [c].[CourseId] = [c0].[CourseId] AND [c0].[IsActive] = CAST(1 AS bit)) AS [VideoCount], [c].[IsBundle], [c].[DiscountPrice], [c].[IsDiscountActive], (
+    SELECT COUNT(*)
+    FROM [CourseBundleItems] AS [c1]
+    WHERE [c].[CourseId] = [c1].[BundleId]) AS [SubCourseCount]
+FROM [Courses] AS [c]
+WHERE [c].[IsActive] = CAST(1 AS bit) AND [c].[IsListedForSale] = CAST(1 AS bit)
+ORDER BY [c].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:01] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Index.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:01] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (233ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:01] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 HEAD http://localhost:5131/ - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (152ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@p) [c].[CourseId], [c].[Title], [c].[Description], [c].[Price], COALESCE([c].[DurationHours], 0) AS [DurationHours], [c].[ImageName], (
+    SELECT COUNT(*)
+    FROM [CourseVideos] AS [c0]
+    WHERE [c].[CourseId] = [c0].[CourseId] AND [c0].[IsActive] = CAST(1 AS bit)) AS [VideoCount], [c].[IsBundle], [c].[DiscountPrice], [c].[IsDiscountActive], (
+    SELECT COUNT(*)
+    FROM [CourseBundleItems] AS [c1]
+    WHERE [c].[CourseId] = [c1].[BundleId]) AS [SubCourseCount]
+FROM [Courses] AS [c]
+WHERE [c].[IsActive] = CAST(1 AS bit) AND [c].[IsListedForSale] = CAST(1 AS bit)
+ORDER BY [c].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Index.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (153ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@p) [c].[CourseId], [c].[Title], [c].[Description], [c].[Price], COALESCE([c].[DurationHours], 0) AS [DurationHours], [c].[ImageName], (
+    SELECT COUNT(*)
+    FROM [CourseVideos] AS [c0]
+    WHERE [c].[CourseId] = [c0].[CourseId] AND [c0].[IsActive] = CAST(1 AS bit)) AS [VideoCount], [c].[IsBundle], [c].[DiscountPrice], [c].[IsDiscountActive], (
+    SELECT COUNT(*)
+    FROM [CourseBundleItems] AS [c1]
+    WHERE [c].[CourseId] = [c1].[BundleId]) AS [SubCourseCount]
+FROM [Courses] AS [c]
+WHERE [c].[IsActive] = CAST(1 AS bit) AND [c].[IsListedForSale] = CAST(1 AS bit)
+ORDER BY [c].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Index.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (152ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@ToLower='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[CanonicalUrl], [p].[IsActive], [p].[JsonLd], [p].[MetaDescription], [p].[MetaKeywords], [p].[MetaRobots], [p].[OgDescription], [p].[OgImage], [p].[OgTitle], [p].[OgType], [p].[PagePath], [p].[Title], [p].[UpdatedAt]
+FROM [PageSeos] AS [p]
+WHERE [p].[IsActive] = CAST(1 AS bit) AND LOWER([p].[PagePath]) = @ToLower
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (152ms) [Parameters=[@ToLower='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[CanonicalUrl], [p].[IsActive], [p].[JsonLd], [p].[MetaDescription], [p].[MetaKeywords], [p].[MetaRobots], [p].[OgDescription], [p].[OgImage], [p].[OgTitle], [p].[OgType], [p].[PagePath], [p].[Title], [p].[UpdatedAt]
+FROM [PageSeos] AS [p]
+WHERE [p].[IsActive] = CAST(1 AS bit) AND LOWER([p].[PagePath]) = @ToLower
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[Id], [s].[Category], [s].[Changeable], [s].[DataBool], [s].[DataDecimal], [s].[DataInt], [s].[DataJson], [s].[DataString], [s].[Description], [s].[DisplayOrder], [s].[Title], [s].[UpdatedAt]
+FROM [Settings] AS [s]
+ORDER BY [s].[Category], [s].[DisplayOrder]
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (152ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[Id], [s].[Category], [s].[Changeable], [s].[DataBool], [s].[DataDecimal], [s].[DataInt], [s].[DataJson], [s].[DataString], [s].[Description], [s].[DisplayOrder], [s].[Title], [s].[UpdatedAt]
+FROM [Settings] AS [s]
+ORDER BY [s].[Category], [s].[DisplayOrder]
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Index executed in 530.8231ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Index executed in 486.6103ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.Index (Web) in 679.0427ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.Index (Web) in 644.5944ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP HEAD / responded 200 in 807.9094 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP HEAD / responded 200 in 5442.7753 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 HEAD http://localhost:5131/ - 200 null text/html; charset=utf-8 5448.5581ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:02] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 HEAD http://localhost:5131/ - 200 null text/html; charset=utf-8 813.5868ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@ToLower='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[CanonicalUrl], [p].[IsActive], [p].[JsonLd], [p].[MetaDescription], [p].[MetaKeywords], [p].[MetaRobots], [p].[OgDescription], [p].[OgImage], [p].[OgTitle], [p].[OgType], [p].[PagePath], [p].[Title], [p].[UpdatedAt]
+FROM [PageSeos] AS [p]
+WHERE [p].[IsActive] = CAST(1 AS bit) AND LOWER([p].[PagePath]) = @ToLower
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (144ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Index executed in 5860.0364ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.Index (Web) in 6154.7242ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP HEAD / responded 200 in 12520.6722 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 HEAD http://localhost:5131/ - 200 null text/html; charset=utf-8 12521.3935ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (152ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (144ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@p) [c].[CourseId], [c].[Title], [c].[Description], [c].[Price], COALESCE([c].[DurationHours], 0) AS [DurationHours], [c].[ImageName], (
+    SELECT COUNT(*)
+    FROM [CourseVideos] AS [c0]
+    WHERE [c].[CourseId] = [c0].[CourseId] AND [c0].[IsActive] = CAST(1 AS bit)) AS [VideoCount], [c].[IsBundle], [c].[DiscountPrice], [c].[IsDiscountActive], (
+    SELECT COUNT(*)
+    FROM [CourseBundleItems] AS [c1]
+    WHERE [c].[CourseId] = [c1].[BundleId]) AS [SubCourseCount]
+FROM [Courses] AS [c]
+WHERE [c].[IsActive] = CAST(1 AS bit) AND [c].[IsListedForSale] = CAST(1 AS bit)
+ORDER BY [c].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Index.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (153ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@p) [c].[CourseId], [c].[Title], [c].[Description], [c].[Price], COALESCE([c].[DurationHours], 0) AS [DurationHours], [c].[ImageName], (
+    SELECT COUNT(*)
+    FROM [CourseVideos] AS [c0]
+    WHERE [c].[CourseId] = [c0].[CourseId] AND [c0].[IsActive] = CAST(1 AS bit)) AS [VideoCount], [c].[IsBundle], [c].[DiscountPrice], [c].[IsDiscountActive], (
+    SELECT COUNT(*)
+    FROM [CourseBundleItems] AS [c1]
+    WHERE [c].[CourseId] = [c1].[BundleId]) AS [SubCourseCount]
+FROM [Courses] AS [c]
+WHERE [c].[IsActive] = CAST(1 AS bit) AND [c].[IsListedForSale] = CAST(1 AS bit)
+ORDER BY [c].[CreateDate] DESC
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Index.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (144ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (152ms) [Parameters=[@userId='?' (DbType = Int32), @permissionName='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [UserRoles] AS [u]
+        INNER JOIN [Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+        WHERE [u].[UserId] = @userId AND [r].[IsActive] = CAST(1 AS bit) AND EXISTS (
+            SELECT 1
+            FROM [RolePermissions] AS [r0]
+            INNER JOIN [Permissions] AS [p] ON [r0].[PermissionId] = [p].[PermissionId]
+            WHERE [r].[RoleId] = [r0].[RoleId] AND [p].[PermissionName] = @permissionName)) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (143ms) [Parameters=[@ToLower='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[CanonicalUrl], [p].[IsActive], [p].[JsonLd], [p].[MetaDescription], [p].[MetaKeywords], [p].[MetaRobots], [p].[OgDescription], [p].[OgImage], [p].[OgTitle], [p].[OgType], [p].[PagePath], [p].[Title], [p].[UpdatedAt]
+FROM [PageSeos] AS [p]
+WHERE [p].[IsActive] = CAST(1 AS bit) AND LOWER([p].[PagePath]) = @ToLower
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Index executed in 292.1178ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.Index (Web) in 437.5359ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:07] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (151ms) [Parameters=[@ToLower='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [p].[Id], [p].[CanonicalUrl], [p].[IsActive], [p].[JsonLd], [p].[MetaDescription], [p].[MetaKeywords], [p].[MetaRobots], [p].[OgDescription], [p].[OgImage], [p].[OgTitle], [p].[OgType], [p].[PagePath], [p].[Title], [p].[UpdatedAt]
+FROM [PageSeos] AS [p]
+WHERE [p].[IsActive] = CAST(1 AS bit) AND LOWER([p].[PagePath]) = @ToLower
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Index executed in 306.2682ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.Index (Web) in 459.8706ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.Index (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP HEAD / responded 200 in 8353.0920 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 HEAD http://localhost:5131/ - 200 null text/html; charset=utf-8 8353.4029ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET / responded 200 in 9715.0022 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/ - 200 null text/html; charset=utf-8 9715.5649ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/css/tailwind.min.css - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/js/marked.min.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/css/Style.css - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/js/site.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/css/theme.css - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/js/theme.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/css/Style.css'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\Style.css'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/js/site.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\site.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/css/theme.css'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\theme.css'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/site.js responded 200 in 4.3633 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/js/theme.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\theme.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/js/marked.min.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\marked.min.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/theme.js responded 200 in 4.1784 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/marked.min.js responded 200 in 4.7879 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/Style.css responded 200 in 4.4511 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/js/marked.min.js - 200 39903 text/javascript 4.933ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/css/tailwind.min.css'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\tailwind.min.css'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/theme.css responded 200 in 4.2825 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/tailwind.min.css responded 200 in 5.4399 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/js/theme.js - 200 2842 text/javascript 4.2956ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/css/theme.css - 200 25312 text/css 4.6422ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/js/site.js - 200 5557 text/javascript 4.5083ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/css/Style.css - 200 5930 text/css 4.7941ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/css/tailwind.min.css - 200 407279 text/css 5.6352ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/resize?imagePath=%2Fuploads%2Fcourses%2F0e20b207-7755-4fa4-ba2b-b096096f5011.png&width=500&height=0 - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/resize?imagePath=%2Fuploads%2Fcourses%2Fa7bec711-1195-403e-9d74-5d4e4bcc2641.gif&width=500&height=0 - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/resize?imagePath=%2Fuploads%2Fcourses%2F251356c9-617f-4581-a714-e0020872a451.png&width=500&height=0 - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:08] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/resize?imagePath=%2Fuploads%2Fcourses%2F0ef00181-1d4a-4c95-b092-9ae556f5eb60.gif&width=500&height=0 - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (141ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (143ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (152ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "ResizeImage", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResizeImage(System.String, Int32, Int32) on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "ResizeImage", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResizeImage(System.String, Int32, Int32) on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "ResizeImage", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResizeImage(System.String, Int32, Int32) on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ContentResultExecutor]
+Executing ContentResult with HTTP Response ContentType of image/svg+xml
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ContentResultExecutor]
+Executing ContentResult with HTTP Response ContentType of image/svg+xml
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ContentResultExecutor]
+Executing ContentResult with HTTP Response ContentType of image/svg+xml
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.ResizeImage (Web) in 9.6131ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.ResizeImage (Web) in 9.5768ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.ResizeImage (Web) in 6.0019ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /resize responded 200 in 163.4276 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /resize responded 200 in 166.0339 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /resize responded 200 in 165.9547 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/resize?imagePath=%2Fuploads%2Fcourses%2F251356c9-617f-4581-a714-e0020872a451.png&width=500&height=0 - 200 null image/svg+xml 163.5919ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/resize?imagePath=%2Fuploads%2Fcourses%2Fa7bec711-1195-403e-9d74-5d4e4bcc2641.gif&width=500&height=0 - 200 null image/svg+xml 166.5001ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:09] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/resize?imagePath=%2Fuploads%2Fcourses%2F0e20b207-7755-4fa4-ba2b-b096096f5011.png&width=500&height=0 - 200 null image/svg+xml 166.5167ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:14] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (139ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:14] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:14] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "ResizeImage", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResizeImage(System.String, Int32, Int32) on controller Web.Controllers.HomeController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/Account/Login - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (138ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.AccountController.Login (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login(System.String) on controller Web.Controllers.AccountController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Login.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Login executed in 41.3006ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.AccountController.Login (Web) in 42.9972ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.AccountController.Login (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /Account/Login responded 200 in 219.3272 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/Account/Login - 200 null text/html; charset=utf-8 219.6464ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/css/theme.css?v=OPP_YRSec7jzbeAQPYdTEc5HUgF1Ri8YHnGRUvWesWY - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/css/login-capsule.css?v=j2jDFUy1e26S8wYJ4sTuKD7rLdlQr3QltT4yhOawtkE - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/lib/jquery/dist/jquery.min.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/css/login-capsule.css'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\login-capsule.css'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/css/theme.css'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\theme.css'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/login-capsule.css responded 200 in 0.9753 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/theme.css responded 200 in 1.0330 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/css/login-capsule.css?v=j2jDFUy1e26S8wYJ4sTuKD7rLdlQr3QltT4yhOawtkE - 200 7790 text/css 1.1587ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/css/theme.css?v=OPP_YRSec7jzbeAQPYdTEc5HUgF1Ri8YHnGRUvWesWY - 200 25312 text/css 1.2299ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/lib/jquery-validation/dist/jquery.validate.min.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/lib/jquery-validation/dist/jquery.validate.min.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /lib/jquery-validation/dist/jquery.validate.min.js responded 200 in 0.4488 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/lib/jquery-validation/dist/jquery.validate.min.js - 200 24601 text/javascript 0.5321ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js responded 200 in 0.4756 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js - 200 5824 text/javascript 0.655ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/js/theme.js?v=pBfqoRtldB6QqO6HG7JamrLoeGU6bKWWU-pMwCDF-DA - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/js/login-capsule.js?v=oYKrKAn7g4sZUxlGFwlgUIA-b-WkDPrrpz3WXBIGHqI - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/js/theme.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\theme.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/theme.js responded 200 in 0.5977 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/js/theme.js?v=pBfqoRtldB6QqO6HG7JamrLoeGU6bKWWU-pMwCDF-DA - 200 2842 text/javascript 0.6749ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/js/login-capsule.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\login-capsule.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/login-capsule.js responded 200 in 0.4958 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/js/login-capsule.js?v=oYKrKAn7g4sZUxlGFwlgUIA-b-WkDPrrpz3WXBIGHqI - 200 4323 text/javascript 0.5626ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/lib/jquery/dist/jquery.min.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\jquery\dist\jquery.min.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /lib/jquery/dist/jquery.min.js responded 200 in 55.2443 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:16] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/lib/jquery/dist/jquery.min.js - 200 89501 text/javascript 55.3504ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:18] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.FileContentResultExecutor]
+Executing FileContentResult, sending file with download name '' ...
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:18] [فایل/بخش: Microsoft.AspNetCore.Server.Kestrel.Connections]
+Connection id "0HNPN5BQGURG0", Request id "0HNPN5BQGURG0:00000002": the application aborted the connection.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:18] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.HomeController.ResizeImage (Web) in 4517.4141ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:18] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.HomeController.ResizeImage (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:18] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /resize responded 200 in 10050.7325 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:18] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/resize?imagePath=%2Fuploads%2Fcourses%2F0ef00181-1d4a-4c95-b092-9ae556f5eb60.gif&width=500&height=0 - 499 480314 image/webp 10050.8788ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:25] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (147ms) [Parameters=[@nowUtc='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM [u]
+FROM [UserActiveSessions] AS [u]
+WHERE [u].[ExpiresAtUtc] <= @nowUtc
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:25] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (154ms) [Parameters=[@unlockThreshold='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TryCount], [u].[UserName]
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit) AND [u].[IsLockedForSuspiciousActivity] = CAST(1 AS bit) AND [u].[LockedAt] IS NOT NULL AND [u].[LockedAt] <= @unlockThreshold
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:25] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (137ms) [Parameters=[@retentionCutoffUtc='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM [u]
+FROM [UserLastKnownLocations] AS [u]
+WHERE [u].[TimestampUtc] < @retentionCutoffUtc
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/Account/Login - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (138ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.AccountController.Login (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login(System.String) on controller Web.Controllers.AccountController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Login.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Login executed in 2.1368ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.AccountController.Login (Web) in 3.5236ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.AccountController.Login (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /Account/Login responded 200 in 151.1428 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/Account/Login - 200 null text/html; charset=utf-8 151.5327ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/css/login-capsule.css?v=j2jDFUy1e26S8wYJ4sTuKD7rLdlQr3QltT4yhOawtkE - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/js/login-capsule.js?v=oYKrKAn7g4sZUxlGFwlgUIA-b-WkDPrrpz3WXBIGHqI - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+The file /js/login-capsule.js was not modified
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/login-capsule.js responded 304 in 0.8829 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+The file /css/login-capsule.css was not modified
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/login-capsule.css responded 304 in 1.4617 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/js/login-capsule.js?v=oYKrKAn7g4sZUxlGFwlgUIA-b-WkDPrrpz3WXBIGHqI - 304 null text/javascript 1.015ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:43:56] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/css/login-capsule.css?v=j2jDFUy1e26S8wYJ4sTuKD7rLdlQr3QltT4yhOawtkE - 304 null text/css 1.5921ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/Account/Login - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (142ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.AccountController.Login (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login(System.String) on controller Web.Controllers.AccountController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Login.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Login executed in 2.9022ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.AccountController.Login (Web) in 12.3248ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.AccountController.Login (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /Account/Login responded 200 in 159.0733 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/Account/Login - 200 null text/html; charset=utf-8 159.4035ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/css/login-capsule.css?v=j2jDFUy1e26S8wYJ4sTuKD7rLdlQr3QltT4yhOawtkE - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/js/login-capsule.js?v=oYKrKAn7g4sZUxlGFwlgUIA-b-WkDPrrpz3WXBIGHqI - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+The file /css/login-capsule.css was not modified
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+The file /js/login-capsule.js was not modified
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/login-capsule.css responded 304 in 0.3261 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/login-capsule.js responded 304 in 0.3537 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/js/login-capsule.js?v=oYKrKAn7g4sZUxlGFwlgUIA-b-WkDPrrpz3WXBIGHqI - 304 null text/javascript 0.4693ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:14] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/css/login-capsule.css?v=j2jDFUy1e26S8wYJ4sTuKD7rLdlQr3QltT4yhOawtkE - 304 null text/css 0.5113ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/Account/Login - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Executed DbCommand (140ms) [Parameters=[@cleanUrl='?' (Size = 500)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[CreatedAt], [s].[IsActive], [s].[IsPermanent], [s].[NewUrl], [s].[OldUrl]
+FROM [SeoRedirects] AS [s]
+WHERE [s].[IsActive] = CAST(1 AS bit) AND [s].[OldUrl] = @cleanUrl
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executing endpoint 'Web.Controllers.AccountController.Login (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Route matched with {action = "Login", controller = "Account", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login(System.String) on controller Web.Controllers.AccountController (Web).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executing ViewResult, running view Login.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor]
+Executed ViewResult - view Login executed in 1.2694ms.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker]
+Executed action Web.Controllers.AccountController.Login (Web) in 1.4895ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.Routing.EndpointMiddleware]
+Executed endpoint 'Web.Controllers.AccountController.Login (Web)'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /Account/Login responded 200 in 145.0243 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/Account/Login - 200 null text/html; charset=utf-8 145.2533ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/js/login-capsule.js?v=kkuFvkPGKCuJgbEVzRwdXvUmrYaSiMdFeXOH4C-r78Y - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request starting HTTP/1.1 GET http://localhost:5131/css/login-capsule.css?v=j2jDFUy1e26S8wYJ4sTuKD7rLdlQr3QltT4yhOawtkE - null null
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+The file /css/login-capsule.css was not modified
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /css/login-capsule.css responded 304 in 0.2592 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/css/login-capsule.css?v=j2jDFUy1e26S8wYJ4sTuKD7rLdlQr3QltT4yhOawtkE - 304 null text/css 0.4293ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware]
+Sending file. Request path: '/js/login-capsule.js'. Physical path: 'C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\login-capsule.js'
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Serilog.AspNetCore.RequestLoggingMiddleware]
+HTTP GET /js/login-capsule.js responded 200 in 0.7065 ms
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:44:30] [فایل/بخش: Microsoft.AspNetCore.Hosting.Diagnostics]
+Request finished HTTP/1.1 GET http://localhost:5131/js/login-capsule.js?v=kkuFvkPGKCuJgbEVzRwdXvUmrYaSiMdFeXOH4C-r78Y - 200 4719 text/javascript 0.842ms
+
+--------------------------------------------------
+

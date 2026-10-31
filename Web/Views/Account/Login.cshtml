@@ -31,6 +31,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/login-capsule.css" asp-append-version="true" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -109,8 +110,16 @@
         <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#FF7E42]/15 blur-[120px] pointer-events-none"></div>
         <div class="absolute top-[30%] right-[20%] w-[30vw] h-[30vw] rounded-full bg-[#42EAFF]/10 blur-[100px] pointer-events-none"></div>
 
-        <main class="w-full max-w-md z-10">
-            <div class="liquid-glass rounded-3xl p-8 md:p-10 transform transition-all duration-300">
+        @* pills and tablets falling slowly behind the card (filled in by login-capsule.js) *@
+        <div class="cap-rain" aria-hidden="true"></div>
+
+        @* The capsule: it opens to let the card out, and snaps shut again on sign-in. *@
+        <main class="cap-stage w-full max-w-md z-10" data-error="@(ViewData.ModelState.IsValid ? "false" : "true")">
+            <div class="cap-half cap-left" aria-hidden="true"><span class="cap-brand">Phar</span></div>
+            <div class="cap-half cap-right" aria-hidden="true"><span class="cap-brand">mino</span></div>
+            <div class="cap-busy" aria-hidden="true"></div>
+
+            <div class="cap-card liquid-glass rounded-3xl p-8 md:p-10">
                 <div class="text-center mb-8">
                     <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">@Localizer["WelcomeBack"]</h1>
                     <p class="text-slate-400 mt-2 text-sm font-medium">@Localizer["LoginSub"]</p>
@@ -167,5 +176,6 @@
     </div>
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/theme.js" asp-append-version="true"></script>
+    <script src="~/js/login-capsule.js" asp-append-version="true"></script>
 </body>
 </html>
