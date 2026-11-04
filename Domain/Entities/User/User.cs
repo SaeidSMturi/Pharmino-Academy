@@ -81,7 +81,8 @@ namespace Domain.Entities.User
 
         [Display(Name = "شماره تلفن همراه")]
         [AllowNull]
-        [MaxLength(13, ErrorMessage = "{0} نمیتواند بیشتر از {1} کارکتر باشد")]
+        // E.164 international form, e.g. +96891234567 (at most 15 digits plus "+").
+        [MaxLength(16, ErrorMessage = "{0} نمیتواند بیشتر از {1} کارکتر باشد")]
         public string? PhoneNumber { get; set; }
 
         [Display(Name = "اخیرین تغییرات")]
@@ -100,6 +101,32 @@ namespace Domain.Entities.User
         [Display(Name = "زبان مورد علاقه")]
         [MaxLength(10)]
         public string? PreferredLanguage { get; set; }
+
+        /// <summary>Date of birth (date only). Collected at sign-up; students must be 18 or older.</summary>
+        public DateTime? DateOfBirth { get; set; }
+
+        #region Terms acceptance record (proof of agreement, kept for disputes)
+
+        /// <summary>Version of the terms the student accepted, e.g. "1.0".</summary>
+        [MaxLength(20)]
+        public string? TermsVersion { get; set; }
+
+        public DateTime? TermsAcceptedAt { get; set; }
+
+        [MaxLength(64)]
+        public string? TermsAcceptedIp { get; set; }
+
+        /// <summary>The full name the student typed to sign the terms.</summary>
+        [MaxLength(400)]
+        public string? TermsSignature { get; set; }
+
+        /// <summary>When the student consented to personal-data processing (Personal Data Protection Law, RD 6/2022).</summary>
+        public DateTime? DataConsentAt { get; set; }
+
+        /// <summary>Optional consent to receive news and offers.</summary>
+        public bool MarketingConsent { get; set; }
+
+        #endregion
 
         #region Relations
 

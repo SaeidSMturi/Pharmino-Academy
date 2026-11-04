@@ -171,6 +171,33 @@
           }
         }
       },
+      "libphonenumber-csharp/9.0.42": {
+        "runtime": {
+          "lib/net10.0/PhoneNumbers.dll": {
+            "assemblyVersion": "9.0.42.0",
+            "fileVersion": "9.0.42.0"
+          }
+        }
+      },
+      "MaxMind.Db/5.1.0": {
+        "runtime": {
+          "lib/net10.0/MaxMind.Db.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.1.0.0"
+          }
+        }
+      },
+      "MaxMind.GeoIP2/6.1.0": {
+        "dependencies": {
+          "MaxMind.Db": "5.1.0"
+        },
+        "runtime": {
+          "lib/net10.0/MaxMind.GeoIP2.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.0.0"
+          }
+        }
+      },
       "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
         "runtime": {
           "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
@@ -757,7 +784,8 @@
         "dependencies": {
           "Domain": "1.0.0",
           "Microsoft.EntityFrameworkCore": "10.0.10",
-          "PdfPig": "0.1.9"
+          "PdfPig": "0.1.9",
+          "libphonenumber-csharp": "9.0.42"
         },
         "runtime": {
           "Application.dll": {
@@ -779,6 +807,7 @@
           "AWSSDK.S3": "4.0.25.1",
           "Application": "1.0.0",
           "Domain": "1.0.0",
+          "MaxMind.GeoIP2": "6.1.0",
           "Microsoft.EntityFrameworkCore": "10.0.10",
           "Microsoft.EntityFrameworkCore.SqlServer": "10.0.10",
           "System.Security.Cryptography.Pkcs": "10.0.13",
@@ -841,6 +870,27 @@
       "sha512": "sha512-in7fpB16Zbdz7D7Qv+4QrapTKKOU1ub2XOvmVGVDEyEwnEZjlbGIiwmpfO03q/GDDEkDM/gIAumxK0U988qSsQ==",
       "path": "docnet.core/2.6.0",
       "hashPath": "docnet.core.2.6.0.nupkg.sha512"
+    },
+    "libphonenumber-csharp/9.0.42": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QDwM5FoB/MIJt64ZkVjm2gN3ftCKAwJW1xPvwScctiPmZFARWu4OYYQyW77EXbqt17PjkTFV4twQ8zegGCvyBg==",
+      "path": "libphonenumber-csharp/9.0.42",
+      "hashPath": "libphonenumber-csharp.9.0.42.nupkg.sha512"
+    },
+    "MaxMind.Db/5.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-u4fynkxX0bNLYaz90N9m9FiaOX22WmEFKlHnvlqw8sswngH54oYvgynhT4GXZvqTy8l7D96/+E9OVzuu34ex9w==",
+      "path": "maxmind.db/5.1.0",
+      "hashPath": "maxmind.db.5.1.0.nupkg.sha512"
+    },
+    "MaxMind.GeoIP2/6.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-IBy7B0mhzZfLvCZd2znr8+nquNUL8K973MVorQEQowvlX/BHFCVHK6BoMhdIT6ZpDIc8ETMl4ZyixS/6iBQ26A==",
+      "path": "maxmind.geoip2/6.1.0",
+      "hashPath": "maxmind.geoip2.6.1.0.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
       "type": "package",

@@ -52,6 +52,12 @@ namespace Infrastructure.Services
             if (isPreviousWithinRetention && !string.Equals(previous!.IpAddress, ipAddress, StringComparison.OrdinalIgnoreCase))
             {
                 var currentLocation = await _geoIpService.GetLocationAsync(ipAddress);
+
+                // Unknown location (no database, private IP, IP not in the database): don't guess.
+                // A made-up location is what caused false "impossible travel" alarms before.
+                if (currentLocation == null || (currentLocation.Latitude == 0 && currentLocation.Longitude == 0))
+                    return result;
+
                 var distanceKm = CalculateHaversineDistanceKm(
                     previous.Latitude, previous.Longitude,
                     currentLocation.Latitude, currentLocation.Longitude);
@@ -102,7 +108,8 @@ namespace Infrastructure.Services
                 ? new GeoLocation(previous.Latitude, previous.Longitude, string.Empty, string.Empty)
                 : await _geoIpService.GetLocationAsync(ipAddress);
 
-            await UpsertLastKnownLocationAsync(userId, ipAddress, newLocation, nowUtc);
+            if (newLocation != null && !(newLocation.Latitude == 0 && newLocation.Longitude == 0))
+                await UpsertLastKnownLocationAsync(userId, ipAddress, newLocation, nowUtc);
 
             return result;
         }

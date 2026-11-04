@@ -1,0 +1,30 @@
+{
+  "name": "pharmino-client",
+  "private": true,
+  "version": "1.0.0",
+  "description": "React islands for Pharmino (shadcn structure). Built into Web/wwwroot/dist; run `npm run build` after changing anything here.",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && vite build && node scripts/copy-flags.mjs",
+    "watch": "vite build --watch"
+  },
+  "dependencies": {
+    "clsx": "2.1.1",
+    "flag-icons": "7.2.3",
+    "framer-motion": "11.11.17",
+    "libphonenumber-js": "1.11.14",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tailwind-merge": "2.5.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.1.11",
+    "@types/node": "22.9.0",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.6.0",
+    "tailwindcss": "4.1.11",
+    "typescript": "5.6.3",
+    "vite": "6.3.5"
+  }
+}

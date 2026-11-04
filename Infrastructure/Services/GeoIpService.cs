@@ -1,58 +1,83 @@
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography;
-using System.Text;
 using Application.Interfaces;
+using MaxMind.GeoIP2;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Services
 {
     /// <summary>
-    /// پیاده‌سازی Mock/Deterministic سرویس GeoIP برای محیط توسعه و تست منطق سفر غیرممکن
+    /// GeoIP lookups against a local MaxMind GeoLite2-City database (.mmdb). The lookup happens on this
+    /// server, so visitors' IP addresses are never sent to a third party.
+    ///
+    /// The database is free but needs a MaxMind account to download, and should be refreshed monthly.
+    /// Its path comes from the "GeoIp:DatabasePath" setting.
     /// </summary>
-    public class MockGeoIpService : IGeoIpService
+    public sealed class MaxMindGeoIpService : IGeoIpService, IDisposable
     {
-        // نقطه مرجع ثابت برای ترافیک محلی/توسعه (Loopback و شبکه‌های خصوصی) تا فاصله صفر محاسبه شود
-        // Fixed reference point for local/dev traffic (loopback & private networks) so distance = 0 while testing.
-        private static readonly GeoLocation LocalDevelopmentLocation = new(35.6892, 51.3890, "Tehran", "Iran");
+        private readonly DatabaseReader _reader;
+        private readonly ILogger<MaxMindGeoIpService> _logger;
 
-        public Task<GeoLocation> GetLocationAsync(string ipAddress)
+        public MaxMindGeoIpService(string databasePath, ILogger<MaxMindGeoIpService> logger)
         {
-            if (string.IsNullOrWhiteSpace(ipAddress) || ipAddress == "unknown" || IsPrivateOrLoopback(ipAddress))
-            {
-                return Task.FromResult(LocalDevelopmentLocation);
-            }
-
-            var hash = SHA256.HashData(Encoding.UTF8.GetBytes(ipAddress));
-
-            // مشتق‌سازی قطعی مختصات از Hash آدرس IP (شبیه‌سازی رفتار یک پایگاه داده GeoIP واقعی)
-            // Deterministically derive pseudo-coordinates from the IP hash (mimics a real GeoIP database lookup).
-            var latitude = Math.Clamp((BitConverter.ToInt32(hash, 0) % 18000) / 100.0, -90, 90);
-            var longitude = Math.Clamp((BitConverter.ToInt32(hash, 4) % 36000) / 100.0, -180, 180);
-
-            return Task.FromResult(new GeoLocation(latitude, longitude, "Unknown", "Unknown"));
+            // The reader is thread-safe and memory-maps the file; one instance serves the whole app.
+            _reader = new DatabaseReader(databasePath);
+            _logger = logger;
         }
 
-        private static bool IsPrivateOrLoopback(string ip)
+        public Task<GeoLocation?> GetLocationAsync(string ipAddress)
         {
-            if (!IPAddress.TryParse(ip, out var address))
-            {
-                return false;
-            }
+            if (string.IsNullOrWhiteSpace(ipAddress) || !IPAddress.TryParse(ipAddress, out var address) || IsPrivateOrLoopback(address))
+                return Task.FromResult<GeoLocation?>(null);
 
-            if (IPAddress.IsLoopback(address))
+            try
             {
-                return true;
-            }
+                if (!_reader.TryCity(address, out var r) || r == null)
+                    return Task.FromResult<GeoLocation?>(null);
 
-            if (address.AddressFamily != AddressFamily.InterNetwork)
+                // Without coordinates the travel check can't use it, but the country is still useful.
+                var lat = r.Location.Latitude ?? 0;
+                var lon = r.Location.Longitude ?? 0;
+                var hasCoordinates = r.Location.Latitude.HasValue && r.Location.Longitude.HasValue;
+                if (!hasCoordinates && string.IsNullOrEmpty(r.Country.IsoCode))
+                    return Task.FromResult<GeoLocation?>(null);
+
+                return Task.FromResult<GeoLocation?>(new GeoLocation(
+                    lat, lon,
+                    r.City.Name ?? string.Empty,
+                    r.Country.Name ?? string.Empty,
+                    r.Country.IsoCode));
+            }
+            catch (Exception ex)
             {
-                return false;
+                _logger.LogWarning(ex, "GeoIP lookup failed for {Ip}.", ipAddress);
+                return Task.FromResult<GeoLocation?>(null);
             }
-
-            var bytes = address.GetAddressBytes();
-            return bytes[0] == 10
-                || (bytes[0] == 172 && bytes[1] is >= 16 and <= 31)
-                || (bytes[0] == 192 && bytes[1] == 168);
         }
+
+        internal static bool IsPrivateOrLoopback(IPAddress address)
+        {
+            if (IPAddress.IsLoopback(address)) return true;
+            if (address.IsIPv4MappedToIPv6) address = address.MapToIPv4();
+            if (address.AddressFamily == AddressFamily.InterNetworkV6)
+                return address.IsIPv6LinkLocal || address.IsIPv6SiteLocal || address.IsIPv6UniqueLocal;
+
+            var b = address.GetAddressBytes();
+            return b[0] == 10
+                || (b[0] == 172 && b[1] is >= 16 and <= 31)
+                || (b[0] == 192 && b[1] == 168)
+                || (b[0] == 169 && b[1] == 254);
+        }
+
+        public void Dispose() => _reader.Dispose();
+    }
+
+    /// <summary>
+    /// Used when no GeoIP database is installed: every location is unknown, so location-based
+    /// checks (impossible travel, country defaults, language by country) are skipped rather than guessed.
+    /// </summary>
+    public sealed class NullGeoIpService : IGeoIpService
+    {
+        public Task<GeoLocation?> GetLocationAsync(string ipAddress) => Task.FromResult<GeoLocation?>(null);
     }
 }

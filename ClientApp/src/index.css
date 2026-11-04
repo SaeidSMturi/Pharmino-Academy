@@ -1,0 +1,26 @@
+/*
+ * Tailwind for the React islands. Only the theme and utilities are imported, not Tailwind's
+ * base reset (preflight), so the island never restyles the rest of the Razor page.
+ * Utilities are !important because the page also loads the Tailwind CDN, whose unlayered rules
+ * for the same class names (bg-white/80 …) would otherwise beat these layered ones.
+ */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) important;
+
+/* The site switches theme with a class on <html> (theme.js), not the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* shadcn colour tokens the components use (bg-card, bg-sidebar-ring, …). */
+:root {
+  --card: oklch(1 0 0);
+  --sidebar-ring: oklch(0.97 0 0);
+}
+.dark {
+  --card: oklch(0.205 0 0);
+  --sidebar-ring: oklch(0.269 0 0);
+}
+
+@theme inline {
+  --color-card: var(--card);
+  --color-sidebar-ring: var(--sidebar-ring);
+}

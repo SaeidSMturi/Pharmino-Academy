@@ -10,10 +10,19 @@
         "dependencies": {
           "Domain": "1.0.0",
           "Microsoft.EntityFrameworkCore": "10.0.10",
-          "PdfPig": "0.1.9"
+          "PdfPig": "0.1.9",
+          "libphonenumber-csharp": "9.0.42"
         },
         "runtime": {
           "Application.dll": {}
+        }
+      },
+      "libphonenumber-csharp/9.0.42": {
+        "runtime": {
+          "lib/net10.0/PhoneNumbers.dll": {
+            "assemblyVersion": "9.0.42.0",
+            "fileVersion": "9.0.42.0"
+          }
         }
       },
       "Microsoft.EntityFrameworkCore/10.0.10": {
@@ -82,6 +91,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "libphonenumber-csharp/9.0.42": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QDwM5FoB/MIJt64ZkVjm2gN3ftCKAwJW1xPvwScctiPmZFARWu4OYYQyW77EXbqt17PjkTFV4twQ8zegGCvyBg==",
+      "path": "libphonenumber-csharp/9.0.42",
+      "hashPath": "libphonenumber-csharp.9.0.42.nupkg.sha512"
     },
     "Microsoft.EntityFrameworkCore/10.0.10": {
       "type": "package",

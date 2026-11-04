@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "VK8QY+M7u1w=",
+  "dgSpecHash": "jkauVsoUhYs=",
   "success": true,
   "projectFilePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
   "expectedPackageFiles": [
@@ -11,6 +11,9 @@
     "C:\\Users\\user\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\docnet.core\\2.6.0\\docnet.core.2.6.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\libphonenumber-csharp\\9.0.42\\libphonenumber-csharp.9.0.42.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\maxmind.db\\5.1.0\\maxmind.db.5.1.0.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\maxmind.geoip2\\6.1.0\\maxmind.geoip2.6.1.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\8.0.0\\microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.bcl.cryptography\\9.0.4\\microsoft.bcl.cryptography.9.0.4.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.build.framework\\18.0.2\\microsoft.build.framework.18.0.2.nupkg.sha512",
@@ -118,6 +121,18 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'SixLabors.ImageSharp' 3.1.12 has a known high severity vulnerability, https://github.com/advisories/GHSA-jjfr-hcj7-qf5w",
+      "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 3.1.12 has a known high severity vulnerability, https://github.com/advisories/GHSA-v76p-62qx-wwq2",
       "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
       "warningLevel": 1,
       "filePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",

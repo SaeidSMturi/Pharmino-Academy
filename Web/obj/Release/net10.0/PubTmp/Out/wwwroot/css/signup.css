@@ -1,0 +1,246 @@
+/*
+ * One-page sign-up — Views/Account/Register.cshtml, behaviour in js/signup.js.
+ * Six steps on one page; each slides out when done and the next slides in. Built from the approved sketches:
+ * 1 email (envelope) · 2 name + three-ring date dial · 3 password (padlock + capsule meter) ·
+ * 4 phone (all countries) · 5 terms · 6 email code (React OTP island, dist/signup).
+ * Dark by default; html.light switches the tokens.
+ */
+
+.su {
+  --su-text: #f1f5f9;
+  --su-text-2: #94a3b8;
+  --su-text-3: #64748b;
+  --su-line: rgba(255, 255, 255, .09);
+  --su-line-2: rgba(255, 255, 255, .18);
+  --su-field: rgba(15, 23, 42, .6);
+  --su-field-line: #1e293b;
+  --su-soft: rgba(255, 255, 255, .03);
+  --su-accent: #42EAFF;
+  --su-blue: #4272FF;
+  --su-orange: #FF7E42;
+  --su-green: #1D9E75;
+  --su-green-2: #34d399;
+  --su-red: #f87171;
+  --su-amber: #fbbf24;
+  --su-ease: cubic-bezier(.2, .8, .2, 1);
+  --su-spring: cubic-bezier(.3, 1.5, .5, 1);
+  color: var(--su-text);
+  width: 100%;
+  max-width: 34rem;
+}
+html.light .su {
+  --su-text: #0f172a;
+  --su-text-2: #475569;
+  --su-text-3: #64748b;
+  --su-line: rgba(15, 23, 42, .08);
+  --su-line-2: rgba(15, 23, 42, .18);
+  --su-field: #ffffff;
+  --su-field-line: #cbd5e1;
+  --su-soft: rgba(15, 23, 42, .03);
+  --su-accent: #0284c7;
+  --su-green-2: #059669;
+  --su-red: #dc2626;
+}
+
+.su-card {
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  background-color: rgba(15, 23, 42, .45);
+  border: 1px solid rgba(255, 255, 255, .08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .5);
+  overflow: hidden;
+}
+html.light .su-card { background-color: rgba(255, 255, 255, .78); border-color: rgba(15, 23, 42, .08); box-shadow: 0 25px 50px -12px rgba(15, 23, 42, .18); }
+@media (min-width: 640px) { .su-card { padding: 2rem; } }
+@media (max-width: 640px) { .su-card { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); } }
+
+/* ---- progress ---------------------------------------------------------------- */
+.su-progress { height: 4px; border-radius: 2px; background: var(--su-line); overflow: hidden; }
+.su-progress i { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--su-blue), var(--su-green)); transition: width .6s var(--su-ease); }
+.su-steplabel { font-size: .75rem; color: var(--su-text-2); margin: .5rem 0 1rem; display: flex; justify-content: space-between; }
+
+/* ---- steps: one visible at a time, sliding ------------------------------------- */
+.su-step { display: none; }
+.su-step.is-active { display: block; }
+.su-step.enter-next { animation: su-in-right .45s var(--su-ease) both; }
+.su-step.enter-prev { animation: su-in-left .45s var(--su-ease) both; }
+.su-step.leave-next { display: block; animation: su-out-left .3s ease-in both; }
+.su-step.leave-prev { display: block; animation: su-out-right .3s ease-in both; }
+@keyframes su-in-right { from { opacity: 0; transform: translateX(48px); } }
+@keyframes su-in-left { from { opacity: 0; transform: translateX(-48px); } }
+@keyframes su-out-left { to { opacity: 0; transform: translateX(-60px) rotate(-2deg); } }
+@keyframes su-out-right { to { opacity: 0; transform: translateX(60px) rotate(2deg); } }
+
+/* fields rise in one after another each time a step appears */
+.su-step.is-active .su-f { animation: su-rise .5s var(--su-ease) both; }
+.su-step.is-active .su-f:nth-child(2) { animation-delay: .08s; }
+.su-step.is-active .su-f:nth-child(3) { animation-delay: .16s; }
+.su-step.is-active .su-f:nth-child(4) { animation-delay: .24s; }
+.su-step.is-active .su-f:nth-child(5) { animation-delay: .32s; }
+.su-step.is-active .su-f:nth-child(6) { animation-delay: .40s; }
+@keyframes su-rise { from { opacity: 0; transform: translateY(14px); } }
+
+.su-title { font-size: 1.25rem; font-weight: 800; letter-spacing: -.01em; margin: 0 0 .25rem; }
+.su-sub { font-size: .875rem; color: var(--su-text-2); margin: 0 0 1.25rem; }
+.su-f { margin-bottom: .9rem; }
+.su-label { display: block; font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--su-text-2); margin-bottom: .35rem; }
+.su-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--su-field);
+  border: 1px solid var(--su-field-line);
+  border-radius: .75rem;
+  padding: .8rem .9rem;
+  color: var(--su-text);
+  font-size: 16px; /* 16px stops iPhone zooming in on focus */
+  transition: border-color .2s, box-shadow .2s;
+}
+.su-input::placeholder { color: var(--su-text-3); }
+.su-input:focus { outline: none; border-color: var(--su-blue); box-shadow: 0 0 0 3px rgba(66, 114, 255, .2); }
+.su-input[aria-invalid="true"] { border-color: var(--su-red); }
+.su-row { display: flex; gap: .6rem; }
+.su-row > * { flex: 1; min-width: 0; }
+@media (max-width: 420px) { .su-row.su-stack { flex-direction: column; gap: 0; } }
+.su-msg { font-size: .8rem; min-height: 1.1rem; margin-top: .3rem; color: var(--su-text-2); }
+.su-msg.ok { color: var(--su-green-2); }
+.su-msg.bad { color: var(--su-red); }
+
+.su-nav { display: flex; justify-content: space-between; align-items: center; gap: .75rem; margin-top: 1.25rem; }
+.su-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 46px; padding: .7rem 1.4rem; border-radius: .75rem;
+  font-weight: 700; font-size: .9rem; cursor: pointer; border: 1px solid transparent;
+  transition: transform .15s, opacity .2s, background .2s;
+}
+.su-btn:active { transform: scale(.98); }
+.su-btn:disabled { opacity: .55; cursor: progress; }
+.su-btn-primary { color: #fff; background: linear-gradient(135deg, #4272FF 0%, #FF7E42 100%); background-size: 200% auto; margin-inline-start: auto; }
+.su-btn-primary:hover { background-position: right center; }
+.su-btn-ghost { background: transparent; color: var(--su-text-2); border-color: var(--su-line-2); }
+.su-btn-ghost:hover { color: var(--su-text); }
+.su-link { background: none; border: 0; padding: 0; color: var(--su-accent); font: inherit; cursor: pointer; text-decoration: underline; }
+.su-spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); border-top-color: #fff; animation: su-spin .7s linear infinite; }
+@keyframes su-spin { to { transform: rotate(1turn); } }
+
+.su-shake { animation: su-shake .4s; }
+@keyframes su-shake { 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+
+/* ---- step 1: envelope --------------------------------------------------------------- */
+.su-env { display: block; margin: .25rem auto 1rem; width: 104px; height: 78px; }
+.su-env .flap { transform-origin: 52px 15px; transition: transform .45s var(--su-spring); }
+.su-env.open .flap { transform: scaleY(-1); }
+.su-env .letter { transition: transform .45s var(--su-ease); }
+.su-env.open .letter { transform: translateY(-17px); }
+.su-env .seal { opacity: 0; transform-origin: 52px 50px; transform: scale(.3); transition: all .35s var(--su-spring); }
+.su-env.ok .seal { opacity: 1; transform: scale(1); }
+
+/* ---- step 2: three-ring date dial --------------------------------------------------- */
+.su-dial { display: block; width: 100%; max-width: 300px; margin: 0 auto; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; }
+.su-dial.grab { cursor: grabbing; }
+.su-dial .ring { transition: transform .3s cubic-bezier(.2, .9, .3, 1.15); transform-origin: 120px 120px; outline: none; }
+.su-dial .ring.live { transition: none; }
+.su-dial .band { fill: none; stroke: var(--su-line); }
+.su-dial .ring:focus-visible .band { stroke: var(--su-accent); }
+.su-dial .face { fill: var(--su-soft); stroke: var(--su-line-2); }
+.su-dial .hub { fill: var(--su-field); stroke: var(--su-line); }
+.su-dial .lbl { font-size: 11px; fill: var(--su-text-2); transition: opacity .2s; pointer-events: none; }
+.su-dial .lbl.sel { fill: var(--su-text); font-weight: 700; }
+.su-dial .lbl.off { opacity: .22; }
+.su-dial .flip .yl { opacity: 0; }
+.su-dial .cdate { font-size: 16px; font-weight: 700; fill: var(--su-text); }
+.su-dial .cyear { font-size: 13px; fill: var(--su-text-2); }
+.su-age { text-align: center; font-size: .9rem; margin-top: .4rem; color: var(--su-text-2); min-height: 1.3rem; }
+.su-age b { color: var(--su-text); display: inline-block; transition: transform .2s; }
+.su-age b.bump { transform: scale(1.25); }
+.su-hint { text-align: center; font-size: .75rem; color: var(--su-text-3); }
+
+/* ---- step 3: padlock, capsule meter, rules ------------------------------------------ */
+.su-lock { display: block; margin: 0 auto .5rem; width: 60px; height: 68px; }
+.su-lock .shackle { transition: transform .45s var(--su-spring), stroke .3s; stroke: #94a3b8; }
+.su-lock .body { transition: fill .3s; fill: #64748b; }
+.su-lock.done .shackle { stroke: #0F6E56; }
+.su-lock.done .body { fill: var(--su-green); }
+.su-pw { position: relative; }
+.su-pw .su-input { padding-inline-end: 3rem; }
+.su-eye { position: absolute; inset-inline-end: .35rem; top: 50%; transform: translateY(-50%); background: none; border: 0; color: var(--su-text-2); padding: .5rem .6rem; cursor: pointer; }
+.su-meter { position: relative; height: 14px; border-radius: 999px; background: var(--su-soft); border: 1px solid var(--su-line-2); overflow: hidden; margin: .6rem 0 .2rem; }
+.su-meter i { position: absolute; inset-block: 0; inset-inline-start: 0; width: 0; border-radius: 999px; transition: width .35s var(--su-ease), background .3s; }
+.su-meter::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--su-line-2); }
+.su-level { font-size: .75rem; color: var(--su-text-2); text-align: end; min-height: 1rem; }
+.su-rules { list-style: none; padding: 0; margin: .4rem 0 0; font-size: .85rem; display: grid; gap: .15rem; }
+.su-rules li { display: flex; gap: .5rem; align-items: center; color: var(--su-text-2); transition: color .2s; }
+.su-rules .dot { width: 16px; height: 16px; flex: none; border-radius: 50%; border: 1.5px solid var(--su-line-2); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; transition: all .25s var(--su-spring); }
+.su-rules li.ok { color: var(--su-text); }
+.su-rules li.ok .dot { background: var(--su-green); border-color: var(--su-green); transform: scale(1.1); }
+
+/* ---- step 4: phone -------------------------------------------------------------------- */
+.su-phone { display: block; margin: 0 auto .75rem; width: 86px; height: 140px; }
+.su-phone.buzz { animation: su-buzz .5s; }
+@keyframes su-buzz { 10%, 50%, 90% { transform: translateX(-3px) rotate(-2deg); } 30%, 70% { transform: translateX(3px) rotate(2deg); } }
+.su-phone .frame { fill: var(--su-soft); stroke: var(--su-text-3); }
+.su-phone .screen { fill: var(--su-field); stroke: var(--su-line); transition: stroke .3s; }
+.su-phone.ok .screen { stroke: var(--su-green); }
+.su-phone .cc { font-size: 9px; fill: var(--su-text-2); }
+.su-phone .num { font-size: 10px; font-weight: 700; fill: var(--su-text); }
+.su-phone .tick { opacity: 0; transition: opacity .3s; }
+.su-phone.ok .tick { opacity: 1; }
+.su-tel { position: relative; display: flex; gap: .5rem; }
+.su-cc { display: inline-flex; align-items: center; gap: .4rem; flex: none; padding: 0 .75rem; border-radius: .75rem; background: var(--su-field); border: 1px solid var(--su-field-line); color: var(--su-text); cursor: pointer; font-size: .95rem; min-height: 48px; }
+.su-cc .fi { width: 1.3em; border-radius: 2px; }
+.su-tel .su-input { letter-spacing: .03em; }
+.su-pop { position: absolute; inset-inline: 0; top: calc(100% + 6px); z-index: 30; background: var(--su-field); border: 1px solid var(--su-line-2); border-radius: .9rem; padding: .4rem; box-shadow: 0 18px 40px -12px rgba(0, 0, 0, .5); animation: su-drop .2s var(--su-ease); }
+.su-pop[hidden] { display: none; }
+@keyframes su-drop { from { opacity: 0; transform: translateY(-6px); } }
+.su-pop .su-input { margin-bottom: .35rem; padding: .6rem .75rem; }
+.su-list { max-height: 220px; overflow-y: auto; }
+.su-opt { display: flex; align-items: center; gap: .55rem; padding: .5rem .55rem; border-radius: .5rem; font-size: .9rem; cursor: pointer; }
+.su-opt .fi { width: 1.3em; border-radius: 2px; flex: none; }
+.su-opt .code { margin-inline-start: auto; color: var(--su-text-2); font-variant-numeric: tabular-nums; }
+.su-opt:hover, .su-opt[aria-selected="true"] { background: var(--su-soft); }
+.su-note { font-size: .8rem; color: var(--su-text-3); margin-top: .25rem; }
+
+/* ---- step 5: terms ------------------------------------------------------------------------ */
+.su-tbar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-bottom: .5rem; }
+.su-chip { font-size: .75rem; padding: .2rem .65rem; border-radius: 999px; background: rgba(248, 113, 113, .14); color: var(--su-red); }
+.su-jump { margin-inline-start: auto; font-size: .8rem; }
+.su-read { height: 3px; background: var(--su-line); border-radius: 2px; overflow: hidden; margin-bottom: .5rem; }
+.su-read i { display: block; height: 100%; width: 0; background: var(--su-accent); transition: width .15s; }
+.su-doc { height: 340px; overflow-y: auto; border: 1px solid var(--su-line-2); border-radius: .9rem; padding: .25rem 1rem 1rem; background: var(--su-soft); font-size: .85rem; line-height: 1.65; color: var(--su-text-2); }
+.su-doc h3 { font-size: .95rem; color: var(--su-text); margin: 1rem 0 .25rem; font-weight: 700; }
+.su-doc ol, .su-doc ul { padding-inline-start: 1.2rem; margin: .25rem 0; list-style: decimal; }
+.su-doc p { margin: .25rem 0; }
+.su-doc b { color: var(--su-text); }
+.su-doc table { width: 100%; border-collapse: collapse; font-size: .8rem; margin: .4rem 0; table-layout: fixed; }
+.su-doc th, .su-doc td { text-align: start; padding: .4rem; border-bottom: 1px solid var(--su-line); vertical-align: top; }
+.su-doc th { color: var(--su-text); }
+.su-doc td.amt, .su-doc th.amt { text-align: end; width: 6.2rem; }
+.su-doc td.amt { color: var(--su-red); font-weight: 700; }
+.su-doc td.act, .su-doc th.act { text-align: end; width: 8rem; }
+.su-doc td.act { color: var(--su-amber); font-weight: 600; }
+.su-doc tr.grp td { color: var(--su-text); font-weight: 700; background: var(--su-soft); }
+.su-doc .row { opacity: 0; transform: translateX(-10px); transition: all .4s var(--su-ease); }
+.su-doc .row.in { opacity: 1; transform: none; }
+.su-doc .end { text-align: center; font-size: .75rem; color: var(--su-text-3); padding-top: .75rem; }
+.su-chk { display: flex; gap: .6rem; align-items: flex-start; font-size: .85rem; margin-top: .7rem; transition: opacity .3s; cursor: pointer; }
+.su-chk input { margin-top: .2rem; width: 18px; height: 18px; flex: none; accent-color: var(--su-blue); }
+.su-chk.lock { opacity: .4; cursor: not-allowed; }
+.su-chk .opt { color: var(--su-text-2); }
+.su-plane { display: inline-block; transition: transform .7s cubic-bezier(.5, 0, .8, .4), opacity .7s; }
+.su-btn.fly .su-plane { transform: translate(160px, -60px) rotate(-20deg); opacity: 0; }
+
+/* ---- step 6: the React OTP island ------------------------------------------------------------ */
+.su-otp { display: flex; justify-content: center; min-height: 420px; }
+.su-otp-foot { text-align: center; font-size: .85rem; color: var(--su-text-2); margin-top: .5rem; }
+.su-creating { text-align: center; font-size: .9rem; margin-top: .75rem; min-height: 1.4rem; color: var(--su-text-2); }
+.su-dots::after { content: ""; animation: su-dots 1.2s steps(4) infinite; }
+@keyframes su-dots { 0% { content: ""; } 25% { content: "."; } 50% { content: ".."; } 75% { content: "..."; } }
+
+.su-foot { text-align: center; font-size: .875rem; color: var(--su-text-3); margin-top: 1.25rem; }
+.su-foot a { color: var(--su-orange); font-weight: 700; }
+.su-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .su *, .su *::before, .su *::after { animation: none !important; transition-duration: 0s !important; }
+}

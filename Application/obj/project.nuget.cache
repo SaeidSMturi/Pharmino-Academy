@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "90tsOGAFRRw=",
+  "dgSpecHash": "24e6Uhdoxvo=",
   "success": true,
   "projectFilePath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\user\\.nuget\\packages\\libphonenumber-csharp\\9.0.42\\libphonenumber-csharp.9.0.42.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.entityframeworkcore\\10.0.10\\microsoft.entityframeworkcore.10.0.10.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\10.0.10\\microsoft.entityframeworkcore.abstractions.10.0.10.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\10.0.10\\microsoft.entityframeworkcore.analyzers.10.0.10.nupkg.sha512",

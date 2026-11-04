@@ -1,11 +1,20 @@
-@model Application.DTOs.Account.RegisterDto
 @using System.Globalization
+@using Microsoft.Extensions.Options
+@inject IOptions<Domain.Configuration.PasswordPolicyOptions> PasswordPolicy
+@*
+    One-page sign-up (approved sketches 1–6). Six steps; each slides away when done and the next slides in.
+    Nothing is saved until the email code is verified (step 6): the page then posts everything once to
+    SignupController.Create. Styles: css/signup.css · behaviour: js/signup.js · step 6 is the React OTP
+    component, built from ClientApp into dist/signup/signup.js.
+*@
 @{
     var currentCulture = CultureInfo.CurrentCulture.Name;
     var isRtl = CultureInfo.CurrentCulture.TextInfo.IsRightToLeft;
+    var isFarsi = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
+    var isArabic = currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
+    var policy = PasswordPolicy.Value;
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="@currentCulture" dir="@(isRtl ? "rtl" : "ltr")">
 <head>
@@ -14,571 +23,204 @@
             try {
                 var theme = localStorage.getItem('pharmino_theme') || 'dark';
                 document.documentElement.setAttribute('data-theme', theme);
-                if (theme === 'light') {
-                    document.documentElement.classList.add('light', 'light-theme');
-                } else {
-                    document.documentElement.classList.add('dark', 'dark-theme');
-                }
-            } catch (e) { }
+                document.documentElement.classList.add(theme === 'light' ? 'light' : 'dark', theme === 'light' ? 'light-theme' : 'dark-theme');
+            } catch (e) { document.documentElement.classList.add('dark', 'dark-theme'); }
         })();
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, follow">
     <title>@Localizer["RegisterTitle"] - @Localizer["SiteName"]</title>
-    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-        theme: {
-        extend: {
-        colors: {
-        'brand-yellow': '#FFB343',
-        'brand-cyan': '#42EAFF',
-        'brand-blue': '#4272FF',
-        'brand-orange': '#FF7E42',
-        'dark-bg': '#0B0F19'
-        },
-        animation: {
-        'blob': 'blob 7s infinite',
-        },
-        keyframes: {
-        blob: {
-        '0%': { transform: 'translate(0px, 0px) scale(1)' },
-        '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-        '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-        '100%': { transform: 'translate(0px, 0px) scale(1)' },
-        }
-        }
-        }
-        }
-        }
-    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/dist/signup/flag-icons/css/flag-icons.min.css" />
+    <link rel="stylesheet" href="~/dist/signup/signup.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/signup.css" asp-append-version="true" />
     <style>
-        body {
-        font-family: 'Inter', sans-serif;
-        background-color: #0B0F19;
-        color: #e2e8f0;
-        overflow-x: hidden;
-        }
-
-        .glass-panel {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .animation-delay-2000 {
-        animation-delay: 2s;
-        }
-
-        /* Custom scrollbar for dropdown هماهنگ با رنگ‌های جدید */
-        .country-dropdown-list::-webkit-scrollbar {
-        width: 6px;
-        }
-
-        .country-dropdown-list::-webkit-scrollbar-track {
-        background: rgba(15, 23, 42, 0.5); /* slate-900/50 */
-        border-radius: 10px;
-        }
-
-        .country-dropdown-list::-webkit-scrollbar-thumb {
-        background: #4272FF; /* brand-blue */
-        border-radius: 10px;
-        }
-
-        .country-dropdown-list::-webkit-scrollbar-thumb:hover {
-        background: #42EAFF; /* brand-cyan */
-        }
-
-        .validation-summary-valid {
-            display: none;
-        }
-        .field-validation-valid {
-            display: none;
-        }
-        .validation-summary-errors {
-            background-color: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: 0.75rem;
-            padding: 0.75rem 1rem;
-            margin-bottom: 1rem;
-            color: #f87171;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-        .validation-summary-errors ul {
-            list-style-type: disc;
-            padding-inline-start: 1.25rem;
-        }
-        .field-validation-error {
-            color: #f87171;
-            font-size: 0.75rem;
-            margin-top: 0.25rem;
-            display: block;
-        }
-        .input-validation-error {
-            border-color: #ef4444 !important;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
+        html.light body { background-color: #f4f6fb; color: #0f172a; }
     </style>
-    @{
-        var isFarsi = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
-        var isArabic = currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
-    }
     @if (isFarsi)
     {
         <style>
-            @@font-face {
-                font-family: 'B Nazanin';
-                src: url('/fonts/BNazanin.ttf') format('truetype');
-                font-weight: normal;
-                font-style: normal;
-                font-display: swap;
-            }
-            html {
-                font-size: 19px !important;
-            }
-            body, h1, h2, h3, h4, h5, h6, p, span, a, input, button, label, select, option {
-                font-family: 'B Nazanin', Tahoma, sans-serif !important;
-            }
+            @@font-face { font-family: 'B Nazanin'; src: url('/fonts/BNazanin.ttf') format('truetype'); font-display: swap; }
+            body, h1, h2, h3, p, span, a, label, button { font-family: 'B Nazanin', Tahoma, sans-serif !important; }
         </style>
     }
     else if (isArabic)
     {
-        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-        <style>
-            body, h1, h2, h3, h4, h5, h6, p, span, a, input, button, label, select, option {
-                font-family: 'Cairo', sans-serif !important;
-            }
-        </style>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+        <style> body, h1, h2, h3, p, span, a, label, button { font-family: 'Cairo', sans-serif !important; } </style>
     }
 </head>
-<body class="antialiased relative min-h-screen">
+<body class="antialiased">
 
-    <!-- Floating Theme & Language Switcher -->
-    <div class="absolute top-4 right-4 z-50 flex items-center gap-2">
+    <div class="absolute top-4 @(isRtl ? "left-4" : "right-4") z-50 flex items-center gap-2">
         <div class="glass-panel p-1.5 rounded-full bg-slate-900/40 border border-white/10 shadow-lg flex items-center gap-2">
             <partial name="_ThemeToggle" />
             <partial name="_LanguageSwitcher" />
         </div>
     </div>
 
-    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-[-5%] left-[-10%] w-[500px] h-[500px] bg-brand-blue rounded-full mix-blend-screen filter blur-[120px] opacity-30 animate-blob"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-brand-cyan rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-blob animation-delay-2000"></div>
-    </div>
+    <div class="min-h-screen flex flex-col items-center justify-center relative px-4 py-20 overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#4272FF]/15 blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#FF7E42]/15 blur-[120px] pointer-events-none"></div>
 
-    <div class="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 py-10">
+        <main class="su relative z-10" id="su"
+              data-country="@ViewBag.DetectedCountry"
+              data-terms-version="@Application.DTOs.Account.SignupTerms.Version"
+              data-min-age="@Application.DTOs.Account.SignupTerms.MinimumAge"
+              data-pw-len="@policy.RequiredLength" data-pw-upper="@policy.RequireUppercase.ToString().ToLowerInvariant()"
+              data-pw-lower="@policy.RequireLowercase.ToString().ToLowerInvariant()" data-pw-digit="@policy.RequireDigit.ToString().ToLowerInvariant()"
+              data-pw-special="@policy.RequireSpecialCharacter.ToString().ToLowerInvariant()" data-pw-chars="@policy.SpecialCharacters"
+              data-pw-unique="@policy.MinimumUniqueCharacters"
+              data-url-check-email="@Url.Action("CheckEmail", "Signup")" data-url-check-phone="@Url.Action("CheckPhone", "Signup")"
+              data-url-send-code="@Url.Action("SendCode", "Signup")" data-url-verify-code="@Url.Action("VerifyCode", "Signup")"
+              data-url-create="@Url.Action("Create", "Signup")">
+            <div class="su-card">
+                <div class="su-progress" aria-hidden="true"><i id="su-progress"></i></div>
+                <div class="su-steplabel"><span id="su-steplabel">Step 1 of 6</span><span id="su-stepname">Your email</span></div>
+                <div class="su-sr" aria-live="polite" id="su-live"></div>
 
-        <main class="w-full max-w-lg">
-            <div class="glass-panel rounded-3xl p-8 md:p-10 transition-all duration-300 hover:border-brand-blue/30 shadow-2xl">
-                <div class="text-center mb-8">
-                    <h1 class="text-3xl font-extrabold text-white tracking-tight">@Localizer["RegisterTitle"]</h1>
-                    <p class="text-slate-400 mt-2 text-sm">@Localizer["RegisterSub"]</p>
-                </div>
+                <form id="su-form" novalidate autocomplete="on" onsubmit="return false">
+                    @Html.AntiForgeryToken()
 
-                <form asp-action="Register" asp-controller="Account" method="POST" class="space-y-5">
-                    @if (TempData["ErrorMessage"] != null)
-                    {
-                        <div class="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 flex items-center space-x-3 text-sm">
-                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            <span>@TempData["ErrorMessage"]</span>
+                    @* ---------- Step 1: email ---------- *@
+                    <section class="su-step is-active" data-step="1" data-name="Your email" aria-labelledby="su-h1">
+                        <svg class="su-env su-f" id="su-env" viewBox="0 0 104 78" aria-hidden="true">
+                            <g class="letter"><rect x="18" y="18" width="68" height="42" rx="3" fill="#f8fafc" stroke="#94a3b8" /><line x1="26" y1="30" x2="70" y2="30" stroke="#94a3b8" /><line x1="26" y1="38" x2="60" y2="38" stroke="#94a3b8" /></g>
+                            <rect x="6" y="15" width="92" height="57" rx="7" fill="#1D9E75" />
+                            <path d="M6 72 L52 41 L98 72" fill="none" stroke="#0F6E56" stroke-width="1.5" />
+                            <path class="flap" d="M6 22 Q6 15 13 15 H91 Q98 15 98 22 L52 50 Z" fill="#5DCAA5" stroke="#0F6E56" stroke-width="1.5" />
+                            <g class="seal"><circle cx="52" cy="50" r="12" fill="#0F6E56" /><path d="M46 50 l4.5 4.5 l8 -9" fill="none" stroke="#E1F5EE" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></g>
+                        </svg>
+                        <h1 class="su-title su-f" id="su-h1">Create your account</h1>
+                        <p class="su-sub su-f">Start with your email. We'll send a code to it at the end.</p>
+                        <div class="su-f">
+                            <label class="su-label" for="su-email">Email</label>
+                            <input class="su-input" id="su-email" type="email" name="email" autocomplete="email" inputmode="email" placeholder="name@example.com" maxlength="200" dir="ltr">
+                            <div class="su-msg" id="su-email-msg"></div>
                         </div>
-                    }
-                    <div asp-validation-summary="ModelOnly" class="text-red-400 text-sm font-medium bg-red-500/10 border border-red-500/20 rounded-xl p-3 empty:hidden"></div>
+                        <div class="su-nav su-f"><button type="button" class="su-btn su-btn-primary" data-next>Next</button></div>
+                    </section>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label asp-for="FirstName" class="block text-sm font-medium text-slate-300 mb-1.5">@Localizer["FirstName"]</label>
-                            <div class="relative">
-                                <input asp-for="FirstName" type="text" autocomplete="given-name" required
-                                       class="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl p-3.5 text-white placeholder-slate-500 focus:ring-2 focus:ring-brand-cyan/50 focus:border-brand-cyan focus:outline-none transition-all duration-200">
-                            </div>
-                            <span asp-validation-for="FirstName" class="text-red-400 text-xs mt-1 block"></span>
+                    @* ---------- Step 2: name + three-ring date dial ---------- *@
+                    <section class="su-step" data-step="2" data-name="About you" aria-labelledby="su-h2">
+                        <h2 class="su-title su-f" id="su-h2">About you</h2>
+                        <div class="su-row su-stack su-f">
+                            <div><label class="su-label" for="su-first">First name</label><input class="su-input" id="su-first" autocomplete="given-name" placeholder="John" maxlength="200"></div>
+                            <div><label class="su-label" for="su-last">Last name</label><input class="su-input" id="su-last" autocomplete="family-name" placeholder="Doe" maxlength="200"></div>
                         </div>
-                        <div>
-                            <label asp-for="LastName" class="block text-sm font-medium text-slate-300 mb-1.5">@Localizer["LastName"]</label>
-                            <div class="relative">
-                                <input asp-for="LastName" type="text" autocomplete="family-name" required
-                                       class="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl p-3.5 text-white placeholder-slate-500 focus:ring-2 focus:ring-brand-cyan/50 focus:border-brand-cyan focus:outline-none transition-all duration-200">
-                            </div>
-                            <span asp-validation-for="LastName" class="text-red-400 text-xs mt-1 block"></span>
+                        <div class="su-f">
+                            <span class="su-label" id="su-dob-label">Date of birth</span>
+                            <svg class="su-dial" id="su-dial" viewBox="0 0 240 240" role="group" aria-labelledby="su-dob-label">
+                                <circle class="face" cx="120" cy="120" r="117" />
+                                <g class="ring" data-ring="y" tabindex="0" role="slider" aria-label="Year"><circle class="band" cx="120" cy="120" r="104" stroke-width="24" /></g>
+                                <g class="ring" data-ring="m" tabindex="0" role="slider" aria-label="Month"><circle class="band" cx="120" cy="120" r="78" stroke-width="24" /></g>
+                                <g class="ring" data-ring="d" tabindex="0" role="slider" aria-label="Day"><circle class="band" cx="120" cy="120" r="53" stroke-width="22" /></g>
+                                <circle class="hub" cx="120" cy="120" r="40" pointer-events="none" />
+                                <text class="cdate" x="120" y="117" text-anchor="middle" pointer-events="none" id="su-cdate"></text>
+                                <text class="cyear" x="120" y="135" text-anchor="middle" pointer-events="none" id="su-cyear"></text>
+                                <rect x="111" y="1" width="18" height="118" rx="9" fill="none" stroke="#1D9E75" stroke-width="1.5" opacity=".7" pointer-events="none" />
+                                <path d="M120 0 l-5 0 l5 7 l5 -7z" fill="#1D9E75" pointer-events="none" />
+                            </svg>
+                            <div class="su-age" id="su-age"></div>
+                            <div class="su-hint">Outer: years · middle: months · inner: days. Drag, scroll, use arrows or tap a value.</div>
                         </div>
-                    </div>
+                        <div class="su-msg bad su-f" id="su-about-msg"></div>
+                        <div class="su-nav su-f"><button type="button" class="su-btn su-btn-ghost" data-back>Back</button><button type="button" class="su-btn su-btn-primary" data-next>Next</button></div>
+                    </section>
 
-                    <div>
-                        <label asp-for="PhoneNumber" class="block text-sm font-medium text-slate-300 mb-1.5">@Localizer["PhoneNumber"]</label>
-                        <div class="mt-1 flex rounded-xl shadow-sm">
-                            <div id="country-code-container" class="relative w-1/3">
-                                <button type="button" id="country-code-button" class="flex items-center justify-center w-full h-full rounded-l-xl border border-r-0 border-slate-700/50 bg-slate-900/50 p-3.5 focus:ring-2 focus:ring-brand-cyan/50 focus:border-brand-cyan focus:outline-none transition-all duration-200 text-white">
-                                    <span id="selected-country-flag" class="text-lg">🇴🇲</span>
-                                    <span id="selected-country-code" class="mx-2 text-sm font-medium">+968</span>
-                                </button>
-                                <div id="country-code-dropdown" class="absolute z-20 hidden mt-2 w-72 max-h-60 overflow-y-auto rounded-xl bg-slate-800 border border-slate-700/50 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none country-dropdown-list backdrop-blur-xl">
-                                    <div class="p-3 sticky top-0 bg-slate-800 z-10 border-b border-slate-700/50">
-                                        <input type="text" id="country-search" class="w-full bg-slate-900/50 border border-slate-600/50 rounded-lg p-2.5 text-sm text-white placeholder-slate-400 focus:ring-2 focus:ring-brand-cyan/50 focus:border-brand-cyan focus:outline-none transition-all" placeholder="@Localizer["SearchCountry"]">
-                                    </div>
-                                    <ul id="country-list" class="p-2">
-                                    </ul>
+                    @* ---------- Step 3: password ---------- *@
+                    <section class="su-step" data-step="3" data-name="Password" aria-labelledby="su-h3">
+                        <svg class="su-lock su-f" id="su-lock" viewBox="0 0 64 72" aria-hidden="true">
+                            <path class="shackle" id="su-shackle" d="M18 34 V22 a14 14 0 0 1 28 0 V34" fill="none" stroke-width="6" stroke-linecap="round" style="transform:translateY(-12px)" />
+                            <rect class="body" x="8" y="32" width="48" height="36" rx="8" />
+                            <circle cx="32" cy="48" r="4" fill="#0b0f19" /><rect x="30.5" y="49" width="3" height="9" rx="1.5" fill="#0b0f19" />
+                        </svg>
+                        <h2 class="su-title su-f" id="su-h3">Create a password</h2>
+                        <div class="su-f">
+                            <label class="su-label" for="su-pw">Password</label>
+                            <div class="su-pw"><input class="su-input" id="su-pw" type="password" autocomplete="new-password" placeholder="Create a password" maxlength="200" dir="ltr"><button type="button" class="su-eye" id="su-eye" aria-label="Show password"><i class="fas fa-eye"></i></button></div>
+                            <div class="su-meter" aria-hidden="true"><i id="su-meter"></i></div>
+                            <div class="su-level" id="su-level"></div>
+                            <ul class="su-rules" id="su-rules"></ul>
+                        </div>
+                        <div class="su-f">
+                            <label class="su-label" for="su-pw2">Confirm password</label>
+                            <div class="su-pw" id="su-pw2-wrap"><input class="su-input" id="su-pw2" type="password" autocomplete="new-password" placeholder="Type it again" maxlength="200" dir="ltr"></div>
+                            <div class="su-msg" id="su-pw-msg"></div>
+                        </div>
+                        <div class="su-nav su-f"><button type="button" class="su-btn su-btn-ghost" data-back>Back</button><button type="button" class="su-btn su-btn-primary" data-next>Next</button></div>
+                    </section>
+
+                    @* ---------- Step 4: phone ---------- *@
+                    <section class="su-step" data-step="4" data-name="Phone" aria-labelledby="su-h4">
+                        <svg class="su-phone su-f" id="su-phone" viewBox="0 0 92 150" aria-hidden="true">
+                            <rect class="frame" x="6" y="2" width="80" height="146" rx="14" stroke-width="2" />
+                            <rect class="screen" x="13" y="16" width="66" height="104" rx="4" />
+                            <rect x="36" y="7" width="20" height="3" rx="1.5" fill="#64748b" />
+                            <text class="cc" x="46" y="44" text-anchor="middle" id="su-phone-cc"></text>
+                            <text class="num" x="46" y="62" text-anchor="middle" id="su-phone-num"></text>
+                            <g class="tick"><circle cx="46" cy="92" r="11" fill="#1D9E75" /><path d="M41 92 l4 4 l7 -8" fill="none" stroke="#E1F5EE" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></g>
+                            <rect x="38" y="130" width="16" height="8" rx="4" fill="none" stroke="#64748b" />
+                        </svg>
+                        <h2 class="su-title su-f" id="su-h4">Your mobile number</h2>
+                        <div class="su-f">
+                            <label class="su-label" for="su-tel">Mobile number</label>
+                            <div class="su-tel" id="su-tel-row" dir="ltr">
+                                <button type="button" class="su-cc" id="su-cc" aria-haspopup="listbox" aria-expanded="false" aria-label="Country code"><span class="fi" id="su-flag"></span><span id="su-cc-label">+</span><i class="fas fa-chevron-down" style="font-size:.7em"></i></button>
+                                <input class="su-input" id="su-tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="Your number">
+                                <div class="su-pop" id="su-pop" hidden>
+                                    <input class="su-input" id="su-cq" placeholder="Search country or code" aria-label="Search countries" autocomplete="off">
+                                    <div class="su-list" id="su-list" role="listbox" aria-label="Countries"></div>
                                 </div>
-                                <input type="hidden" name="country-code" id="country-code-input" value="+968">
                             </div>
-                            <input type="tel" asp-for="PhoneNumber" required
-                                   class="block w-2/3 rounded-r-xl bg-slate-900/50 border border-slate-700/50 p-3.5 focus:ring-2 focus:ring-brand-cyan/50 focus:border-brand-cyan focus:outline-none transition-all duration-200 text-white placeholder-slate-500" placeholder="123 456 789">
+                            <div class="su-msg" id="su-detect"></div>
+                            <div class="su-msg" id="su-tel-msg"></div>
+                            <p class="su-note">Used for account recovery and course updates. We never share it.</p>
                         </div>
-                        <span asp-validation-for="PhoneNumber" class="text-red-400 text-xs mt-1 block"></span>
-                    </div>
+                        <div class="su-nav su-f"><button type="button" class="su-btn su-btn-ghost" data-back>Back</button><button type="button" class="su-btn su-btn-primary" data-next>Next</button></div>
+                    </section>
 
-                    <div>
-                        <label asp-for="Email" class="block text-sm font-medium text-slate-300 mb-1.5">@Localizer["EmailAddress"]</label>
-                        <div class="relative">
-                            <input asp-for="Email" type="email" autocomplete="email" required
-                                   class="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl p-3.5 text-white placeholder-slate-500 focus:ring-2 focus:ring-brand-cyan/50 focus:border-brand-cyan focus:outline-none transition-all duration-200">
+                    @* ---------- Step 5: terms ---------- *@
+                    <section class="su-step" data-step="5" data-name="Terms" aria-labelledby="su-h5">
+                        <h2 class="su-title" id="su-h5">Terms and conditions</h2>
+                        <div class="su-tbar"><span class="su-chip">Agreed compensation of 50–1,000 OMR applies</span><button type="button" class="su-link su-jump" id="su-jump">Jump to section 6 ↓</button></div>
+                        <div class="su-read" aria-hidden="true"><i id="su-read"></i></div>
+                        <div class="su-doc" id="su-doc" tabindex="0" role="document" aria-label="Terms and conditions">
+                            <partial name="_SignupTerms" />
                         </div>
-                        <span asp-validation-for="Email" class="text-red-400 text-xs mt-1 block"></span>
-                    </div>
-
-                    <div>
-                        <label asp-for="Password" class="block text-sm font-medium text-slate-300 mb-1.5">@Localizer["Password"]</label>
-                        <div class="relative">
-                            <input asp-for="Password" type="password" autocomplete="new-password" required id="password-input"
-                                   class="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl p-3.5 text-white placeholder-slate-500 focus:ring-2 focus:ring-brand-cyan/50 focus:border-brand-cyan focus:outline-none transition-all duration-200">
+                        <label class="su-chk lock" data-lock><input type="checkbox" id="su-c1" disabled><span>I have read and agree to the Terms of use and student agreement.</span></label>
+                        <label class="su-chk lock" data-lock><input type="checkbox" id="su-c2" disabled><span>I understand that sharing, recording or copying Pharmino content makes me liable to pay agreed compensation of 50 to 1,000 OMR per breach, as set out in section 6.</span></label>
+                        <label class="su-chk lock" data-lock><input type="checkbox" id="su-c3" disabled><span>I consent to Pharmino processing my personal data as described in section 9 and the Privacy Policy.</span></label>
+                        <label class="su-chk lock" data-lock><input type="checkbox" id="su-c4" disabled><span class="opt">Optional: send me news about new courses and offers.</span></label>
+                        <div class="su-f" style="margin-top:.8rem">
+                            <label class="su-label" for="su-sig" id="su-sig-label">Type your full name to sign</label>
+                            <input class="su-input" id="su-sig" disabled autocomplete="off" maxlength="400">
                         </div>
-                        <span asp-validation-for="Password" class="text-red-400 text-xs mt-1 block"></span>
+                        <div class="su-msg" id="su-terms-msg">Scroll to the end of the terms to continue.</div>
+                        <div class="su-nav"><button type="button" class="su-btn su-btn-ghost" data-back>Back</button><button type="button" class="su-btn su-btn-primary" id="su-agree">Agree and send my code <span class="su-plane"><i class="fas fa-paper-plane"></i></span></button></div>
+                    </section>
 
-                        <div class="mt-3 p-4 bg-slate-900/40 border border-slate-700/50 rounded-xl transition-all duration-300">
-                            <p class="text-xs font-semibold text-slate-300 mb-3">@Localizer["PasswordMustContain"]</p>
-                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-400">
-                                <li id="req-length" class="flex items-center transition-colors">
-                                    <span class="@(isRtl ? "ml-2" : "mr-2") text-[10px] w-3 h-3 flex items-center justify-center rounded-full bg-slate-800">✗</span>
-                                    <span>@Localizer["AtLeast8Chars"]</span>
-                                </li>
-                                <li id="req-uppercase" class="flex items-center transition-colors">
-                                    <span class="@(isRtl ? "ml-2" : "mr-2") text-[10px] w-3 h-3 flex items-center justify-center rounded-full bg-slate-800">✗</span>
-                                    <span>@Localizer["OneUppercase"]</span>
-                                </li>
-                                <li id="req-lowercase" class="flex items-center transition-colors">
-                                    <span class="@(isRtl ? "ml-2" : "mr-2") text-[10px] w-3 h-3 flex items-center justify-center rounded-full bg-slate-800">✗</span>
-                                    <span>@Localizer["OneLowercase"]</span>
-                                </li>
-                                <li id="req-digit" class="flex items-center transition-colors">
-                                    <span class="@(isRtl ? "ml-2" : "mr-2") text-[10px] w-3 h-3 flex items-center justify-center rounded-full bg-slate-800">✗</span>
-                                    <span>@Localizer["OneDigit"]</span>
-                                </li>
-                                <li id="req-special" class="flex items-center transition-colors">
-                                    <span class="@(isRtl ? "ml-2" : "mr-2") text-[10px] w-3 h-3 flex items-center justify-center rounded-full bg-slate-800">✗</span>
-                                    <span>@Localizer["OneSpecialChar"]</span>
-                                </li>
-                                <li id="req-unique" class="flex items-center transition-colors">
-                                    <span class="@(isRtl ? "ml-2" : "mr-2") text-[10px] w-3 h-3 flex items-center justify-center rounded-full bg-slate-800">✗</span>
-                                    <span>@Localizer["FourUniqueChars"]</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label asp-for="ConfirmPassword" class="block text-sm font-medium text-slate-300 mb-1.5">@Localizer["ConfirmPassword"]</label>
-                        <div class="relative">
-                            <input asp-for="ConfirmPassword" type="password" autocomplete="new-password" required
-                                   class="w-full bg-slate-900/50 border border-slate-700/50 rounded-xl p-3.5 text-white placeholder-slate-500 focus:ring-2 focus:ring-brand-cyan/50 focus:border-brand-cyan focus:outline-none transition-all duration-200">
-                        </div>
-                        <span asp-validation-for="ConfirmPassword" class="text-red-400 text-xs mt-1 block"></span>
-                    </div>
-
-                    <div class="pt-3">
-                        <button type="submit"
-                                class="w-full flex justify-center py-3.5 px-4 rounded-xl shadow-lg shadow-brand-orange/20 text-base font-bold text-slate-900 bg-gradient-to-r from-brand-yellow to-brand-orange hover:from-brand-orange hover:to-brand-yellow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-bg focus:ring-brand-yellow transition-all duration-300 transform hover:-translate-y-0.5">
-                            @Localizer["RegisterTitle"]
-                        </button>
-                    </div>
-
+                    @* ---------- Step 6: email code (React OTP component) ---------- *@
+                    <section class="su-step" data-step="6" data-name="Verify email" aria-label="Verify your email">
+                        <div class="su-otp" id="su-otp"></div>
+                        <div class="su-otp-foot" id="su-otp-foot">Didn't get it? Check your spam folder. · <button type="button" class="su-link" id="su-change-email">Wrong email? Change it</button></div>
+                        <div class="su-creating" id="su-creating" aria-live="polite"></div>
+                    </section>
                 </form>
             </div>
-
-            <p class="mt-8 text-center text-sm text-slate-400">
-                @Localizer["AlreadyHaveAccount"]
-                <a asp-area="" asp-controller="Account" asp-action="Login" class="font-semibold text-brand-cyan hover:text-brand-blue transition-colors">
-                    @Localizer["SignIn"]
-                </a>
-            </p>
+            <p class="su-foot">Already have an account? <a asp-controller="Account" asp-action="Login">Sign in</a></p>
         </main>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-        // Password strength validation
-        const passwordInput = document.getElementById('password-input');
-        if (passwordInput) {
-        passwordInput.addEventListener('input', function() {
-        validatePassword(this.value);
-        });
-        }
-
-        function validatePassword(password) {
-        const requirements = {
-        length: password.length >= 8,
-        uppercase: /[A-Z]/.test(password),
-        lowercase: /[a-z]/.test(password),
-        digit: /\d/.test(password),
-        special: /[!@@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(password),
-        unique: new Set(password).size >= 4
-        };
-
-        updateRequirement('req-length', requirements.length);
-        updateRequirement('req-uppercase', requirements.uppercase);
-        updateRequirement('req-lowercase', requirements.lowercase);
-        updateRequirement('req-digit', requirements.digit);
-        updateRequirement('req-special', requirements.special);
-        updateRequirement('req-unique', requirements.unique);
-        }
-
-        function updateRequirement(id, isValid) {
-        const element = document.getElementById(id);
-        if (element) {
-        const icon = element.querySelector('span:first-child');
-        if (isValid) {
-        icon.textContent = '✓';
-        // Style for valid requirement
-        icon.classList.add('bg-green-500/20', 'text-green-400');
-        icon.classList.remove('bg-slate-800', 'text-slate-400');
-        element.classList.add('text-green-400');
-        element.classList.remove('text-slate-400');
-        } else {
-        icon.textContent = '✗';
-        // Style for invalid requirement
-        icon.classList.add('bg-slate-800', 'text-slate-400');
-        icon.classList.remove('bg-green-500/20', 'text-green-400');
-        element.classList.add('text-slate-400');
-        element.classList.remove('text-green-400');
-        }
-        }
-        }
-
-        // Country code dropdown logic (Keeping the full array as you provided)
-        const countries = [
-        { name: 'Oman', code: '+968', flag: '🇴🇲' },
-        { name: 'Iran', code: '+98', flag: '🇮🇷' },
-        { name: 'United States', code: '+1', flag: '🇺🇸' },
-        { name: 'United Kingdom', code: '+44', flag: '🇬🇧' },
-        { name: 'United Arab Emirates', code: '+971', flag: '🇦🇪' },
-        { name: 'Afghanistan', code: '+93', flag: '🇦🇫' },
-        { name: 'Albania', code: '+355', flag: '🇦🇱' },
-        { name: 'Algeria', code: '+213', flag: '🇩🇿' },
-        { name: 'Andorra', code: '+376', flag: '🇦🇩' },
-        { name: 'Angola', code: '+244', flag: '🇦🇴' },
-        { name: 'Argentina', code: '+54', flag: '🇦🇷' },
-        { name: 'Armenia', code: '+374', flag: '🇦🇲' },
-        { name: 'Australia', code: '+61', flag: '🇦🇺' },
-        { name: 'Austria', code: '+43', flag: '🇦🇹' },
-        { name: 'Azerbaijan', code: '+994', flag: '🇦🇿' },
-        { name: 'Bahamas', code: '+1-242', flag: '🇧🇸' },
-        { name: 'Bahrain', code: '+973', flag: '🇧🇭' },
-        { name: 'Bangladesh', code: '+880', flag: '🇧🇩' },
-        { name: 'Belarus', code: '+375', flag: '🇧🇾' },
-        { name: 'Belgium', code: '+32', flag: '🇧🇪' },
-        { name: 'Belize', code: '+501', flag: '🇧🇿' },
-        { name: 'Benin', code: '+229', flag: '🇧🇯' },
-        { name: 'Bhutan', code: '+975', flag: '🇧🇹' },
-        { name: 'Bolivia', code: '+591', flag: '🇧🇴' },
-        { name: 'Bosnia and Herzegovina', code: '+387', flag: '🇧🇦' },
-        { name: 'Botswana', code: '+267', flag: '🇧🇼' },
-        { name: 'Brazil', code: '+55', flag: '🇧🇷' },
-        { name: 'Brunei', code: '+673', flag: '🇧🇳' },
-        { name: 'Bulgaria', code: '+359', flag: '🇧🇬' },
-        { name: 'Burkina Faso', code: '+226', flag: '🇧🇫' },
-        { name: 'Burundi', code: '+257', flag: '🇧🇮' },
-        { name: 'Cambodia', code: '+855', flag: '🇰🇭' },
-        { name: 'Cameroon', code: '+237', flag: '🇨🇲' },
-        { name: 'Canada', code: '+1', flag: '🇨🇦' },
-        { name: 'Central African Republic', code: '+236', flag: '🇨🇫' },
-        { name: 'Chad', code: '+235', flag: '🇹🇩' },
-        { name: 'Chile', code: '+56', flag: '🇨🇱' },
-        { name: 'China', code: '+86', flag: '🇨🇳' },
-        { name: 'Colombia', code: '+57', flag: '🇨🇴' },
-        { name: 'Comoros', code: '+269', flag: '🇰🇲' },
-        { name: 'Congo', code: '+242', flag: '🇨🇬' },
-        { name: 'Costa Rica', code: '+506', flag: '🇨🇷' },
-        { name: 'Croatia', code: '+385', flag: '🇭🇷' },
-        { name: 'Cuba', code: '+53', flag: '🇨🇺' },
-        { name: 'Cyprus', code: '+357', flag: '🇨🇾' },
-        { name: 'Czech Republic', code: '+420', flag: '🇨🇿' },
-        { name: 'Denmark', code: '+45', flag: '🇩🇰' },
-        { name: 'Djibouti', code: '+253', flag: '🇩🇯' },
-        { name: 'Dominica', code: '+1-767', flag: '🇩🇲' },
-        { name: 'Dominican Republic', code: '+1-809', flag: '🇩🇴' },
-        { name: 'Ecuador', code: '+593', flag: '🇪🇨' },
-        { name: 'Egypt', code: '+20', flag: '🇪🇬' },
-        { name: 'El Salvador', code: '+503', flag: '🇸🇻' },
-        { name: 'Equatorial Guinea', code: '+240', flag: '🇬🇶' },
-        { name: 'Estonia', code: '+372', flag: '🇪🇪' },
-        { name: 'Ethiopia', code: '+251', flag: '🇪🇹' },
-        { name: 'Fiji', code: '+679', flag: '🇫🇯' },
-        { name: 'Finland', code: '+358', flag: '🇫🇮' },
-        { name: 'France', code: '+33', flag: '🇫🇷' },
-        { name: 'Gabon', code: '+241', flag: '🇬🇦' },
-        { name: 'Gambia', code: '+220', flag: '🇬🇲' },
-        { name: 'Georgia', code: '+995', flag: '🇬🇪' },
-        { name: 'Germany', code: '+49', flag: '🇩🇪' },
-        { name: 'Ghana', code: '+233', flag: '🇬🇭' },
-        { name: 'Greece', code: '+30', flag: '🇬🇷' },
-        { name: 'Guatemala', code: '+502', flag: '🇬🇹' },
-        { name: 'Guinea', code: '+224', flag: '🇬🇳' },
-        { name: 'Guyana', code: '+592', flag: '🇬🇾' },
-        { name: 'Haiti', code: '+509', flag: '🇭🇹' },
-        { name: 'Honduras', code: '+504', flag: '🇭🇳' },
-        { name: 'Hungary', code: '+36', flag: '🇭🇺' },
-        { name: 'Iceland', code: '+354', flag: '🇮🇸' },
-        { name: 'India', code: '+91', flag: '🇮🇳' },
-        { name: 'Indonesia', code: '+62', flag: '🇮🇩' },
-        { name: 'Iraq', code: '+964', flag: '🇮🇶' },
-        { name: 'Ireland', code: '+353', flag: '🇮🇪' },
-        { name: 'Israel', code: '+972', flag: '🇮🇱' },
-        { name: 'Italy', code: '+39', flag: '🇮🇹' },
-        { name: 'Jamaica', code: '+1-876', flag: '🇯🇲' },
-        { name: 'Japan', code: '+81', flag: '🇯🇵' },
-        { name: 'Jordan', code: '+962', flag: '🇯🇴' },
-        { name: 'Kazakhstan', code: '+7', flag: '🇰🇿' },
-        { name: 'Kenya', code: '+254', flag: '🇰🇪' },
-        { name: 'Kuwait', code: '+965', flag: '🇰🇼' },
-        { name: 'Kyrgyzstan', code: '+996', flag: '🇰🇬' },
-        { name: 'Latvia', code: '+371', flag: '🇱🇻' },
-        { name: 'Lebanon', code: '+961', flag: '🇱🇧' },
-        { name: 'Liberia', code: '+231', flag: '🇱🇷' },
-        { name: 'Libya', code: '+218', flag: '🇱🇾' },
-        { name: 'Liechtenstein', code: '+423', flag: '🇱🇮' },
-        { name: 'Lithuania', code: '+370', flag: '🇱🇹' },
-        { name: 'Luxembourg', code: '+352', flag: '🇱🇺' },
-        { name: 'Madagascar', code: '+261', flag: '🇲🇬' },
-        { name: 'Malaysia', code: '+60', flag: '🇲🇾' },
-        { name: 'Maldives', code: '+960', flag: '🇲🇻' },
-        { name: 'Mali', code: '+223', flag: '🇲🇱' },
-        { name: 'Malta', code: '+356', flag: '🇲🇹' },
-        { name: 'Mauritania', code: '+222', flag: '🇲🇷' },
-        { name: 'Mauritius', code: '+230', flag: '🇲🇺' },
-        { name: 'Mexico', code: '+52', flag: '🇲🇽' },
-        { name: 'Moldova', code: '+373', flag: '🇲🇩' },
-        { name: 'Monaco', code: '+377', flag: '🇲🇨' },
-        { name: 'Mongolia', code: '+976', flag: '🇲🇳' },
-        { name: 'Montenegro', code: '+382', flag: '🇲🇪' },
-        { name: 'Morocco', code: '+212', flag: '🇲🇦' },
-        { name: 'Mozambique', code: '+258', flag: '🇲🇿' },
-        { name: 'Myanmar', code: '+95', flag: '🇲🇲' },
-        { name: 'Namibia', code: '+264', flag: '🇳🇦' },
-        { name: 'Nepal', code: '+977', flag: '🇳🇵' },
-        { name: 'Netherlands', code: '+31', flag: '🇳🇱' },
-        { name: 'New Zealand', code: '+64', flag: '🇳🇿' },
-        { name: 'Nicaragua', code: '+505', flag: '🇳🇮' },
-        { name: 'Niger', code: '+227', flag: '🇳🇪' },
-        { name: 'Nigeria', code: '+234', flag: '🇳🇬' },
-        { name: 'North Korea', code: '+850', flag: '🇰🇵' },
-        { name: 'North Macedonia', code: '+389', flag: '🇲🇰' },
-        { name: 'Norway', code: '+47', flag: '🇳🇴' },
-        { name: 'Pakistan', code: '+92', flag: '🇵🇰' },
-        { name: 'Panama', code: '+507', flag: '🇵🇦' },
-        { name: 'Paraguay', code: '+595', flag: '🇵🇾' },
-        { name: 'Peru', code: '+51', flag: '🇵🇪' },
-        { name: 'Philippines', code: '+63', flag: '🇵🇭' },
-        { name: 'Poland', code: '+48', flag: '🇵🇱' },
-        { name: 'Portugal', code: '+351', flag: '🇵🇹' },
-        { name: 'Qatar', code: '+974', flag: '🇶🇦' },
-        { name: 'Romania', code: '+40', flag: '🇷🇴' },
-        { name: 'Russia', code: '+7', flag: '🇷🇺' },
-        { name: 'Rwanda', code: '+250', flag: '🇷🇼' },
-        { name: 'Saudi Arabia', code: '+966', flag: '🇸🇦' },
-        { name: 'Senegal', code: '+221', flag: '🇸🇳' },
-        { name: 'Serbia', code: '+381', flag: '🇷🇸' },
-        { name: 'Singapore', code: '+65', flag: '🇸🇬' },
-        { name: 'Slovakia', code: '+421', flag: '🇸🇰' },
-        { name: 'Slovenia', code: '+386', flag: '🇸🇮' },
-        { name: 'Somalia', code: '+252', flag: '🇸🇴' },
-        { name: 'South Africa', code: '+27', flag: '🇿🇦' },
-        { name: 'South Korea', code: '+82', flag: '🇰🇷' },
-        { name: 'Spain', code: '+34', flag: '🇪🇸' },
-        { name: 'Sri Lanka', code: '+94', flag: '🇱🇰' },
-        { name: 'Sudan', code: '+249', flag: '🇸🇩' },
-        { name: 'Sweden', code: '+46', flag: '🇸🇪' },
-        { name: 'Switzerland', code: '+41', flag: '🇨🇭' },
-        { name: 'Syria', code: '+963', flag: '🇸🇾' },
-        { name: 'Taiwan', code: '+886', flag: '🇹🇼' },
-        { name: 'Tanzania', code: '+255', flag: '🇹🇿' },
-        { name: 'Thailand', code: '+66', flag: '🇹🇭' },
-        { name: 'Togo', code: '+228', flag: '🇹🇬' },
-        { name: 'Tunisia', code: '+216', flag: '🇹🇳' },
-        { name: 'Turkey', code: '+90', flag: '🇹🇷' },
-        { name: 'Turkmenistan', code: '+993', flag: '🇹🇲' },
-        { name: 'Uganda', code: '+256', flag: '🇺🇬' },
-        { name: 'Ukraine', code: '+380', flag: '🇺🇦' },
-        { name: 'Uruguay', code: '+598', flag: '🇺🇾' },
-        { name: 'Uzbekistan', code: '+998', flag: '🇺🇿' },
-        { name: 'Venezuela', code: '+58', flag: '🇻🇪' },
-        { name: 'Vietnam', code: '+84', flag: '🇻🇳' },
-        { name: 'Yemen', code: '+967', flag: '🇾🇪' },
-        { name: 'Zambia', code: '+260', flag: '🇿🇲' },
-        { name: 'Zimbabwe', code: '+263', flag: '🇿🇼' },
-        ];
-
-        const countryCodeButton = document.getElementById('country-code-button');
-        const countryCodeDropdown = document.getElementById('country-code-dropdown');
-        const countryList = document.getElementById('country-list');
-        const countrySearch = document.getElementById('country-search');
-        const selectedCountryFlag = document.getElementById('selected-country-flag');
-        const selectedCountryCode = document.getElementById('selected-country-code');
-        const countryCodeInput = document.getElementById('country-code-input');
-
-        function populateCountryList(filter = '') {
-        countryList.innerHTML = '';
-        const filteredCountries = countries.filter(c =>
-        c.name.toLowerCase().includes(filter.toLowerCase()) ||
-        c.code.includes(filter)
-        );
-
-        filteredCountries.forEach(country => {
-        const li = document.createElement('li');
-        li.classList.add('px-3', 'py-2.5', 'mb-1', 'cursor-pointer', 'hover:bg-brand-blue/20', 'rounded-lg', 'flex', 'items-center', 'text-sm', 'transition-colors');
-        li.dataset.code = country.code;
-        li.dataset.flag = country.flag;
-
-        li.innerHTML = `
-        <span class="text-xl">${country.flag}</span>
-        <span class="ml-3 font-medium text-slate-300 group-hover:text-white">${country.name}</span>
-        <span class="ml-auto text-slate-500 text-xs">${country.code}</span>
-        `;
-
-        li.addEventListener('click', () => {
-        selectedCountryFlag.textContent = country.flag;
-        selectedCountryCode.textContent = country.code;
-        countryCodeInput.value = country.code;
-        countryCodeDropdown.classList.add('hidden');
-        });
-        countryList.appendChild(li);
-        });
-        }
-
-        populateCountryList();
-
-        countryCodeButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        countryCodeDropdown.classList.toggle('hidden');
-        });
-
-        countrySearch.addEventListener('keyup', () => {
-        populateCountryList(countrySearch.value);
-        });
-
-        document.addEventListener('click', (e) => {
-        if (!document.getElementById('country-code-container').contains(e.target)) {
-        countryCodeDropdown.classList.add('hidden');
-        }
-        });
-        });
-    </script>
-    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/theme.js" asp-append-version="true"></script>
-
+    <script src="~/dist/signup/signup.js" asp-append-version="true"></script>
+    <script src="~/js/signup.js" asp-append-version="true"></script>
 </body>
 </html>

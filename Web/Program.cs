@@ -120,7 +120,21 @@ namespace Web
             // the scoped WebContext (EF Core) — all session state now lives in SQL Server, with no external cache/store.
             builder.Services.AddScoped<ISessionManagerService, SqlSessionManagerService>();
             builder.Services.AddSingleton<IDeviceFingerprintService, DeviceFingerprintService>();
-            builder.Services.AddSingleton<IGeoIpService, MockGeoIpService>();
+            // Real GeoIP from a local MaxMind GeoLite2-City database when it's installed; otherwise every location
+            // is "unknown" and location-based checks are skipped (never guessed).
+            builder.Services.AddSingleton<IGeoIpService>(sp =>
+            {
+                var configured = builder.Configuration["GeoIp:DatabasePath"] ?? "App_Data/GeoLite2-City.mmdb";
+                var path = Path.IsPathRooted(configured) ? configured : Path.Combine(builder.Environment.ContentRootPath, configured);
+                var log = sp.GetRequiredService<ILoggerFactory>().CreateLogger("GeoIp");
+                if (File.Exists(path))
+                {
+                    log.LogInformation("GeoIP: using MaxMind database at {Path}.", path);
+                    return new MaxMindGeoIpService(path, sp.GetRequiredService<ILogger<MaxMindGeoIpService>>());
+                }
+                log.LogWarning("GeoIP: no database at {Path}. Country defaults, language-by-country and impossible-travel checks are off until it is installed.", path);
+                return new NullGeoIpService();
+            });
             builder.Services.AddSingleton<IUserAgentParserService, UserAgentParserService>();
             builder.Services.AddScoped<IImpossibleTravelDetectionService, ImpossibleTravelDetectionService>();
 
@@ -183,6 +197,8 @@ namespace Web
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
             builder.Services.AddScoped<IAccountService, AccountService>();
+            // Email codes and verification tokens for the one-page sign-up (in memory until the account exists).
+            builder.Services.AddSingleton<Web.Services.Signup.SignupVerificationService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPermissionService, PermissionService>();
             builder.Services.AddScoped<ICourseService, CourseService>();

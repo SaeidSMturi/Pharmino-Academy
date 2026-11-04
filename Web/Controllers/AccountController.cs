@@ -96,7 +96,7 @@ namespace Web.Controllers
         #region Register
 
         [HttpGet]
-        public IActionResult Register()
+        public async Task<IActionResult> Register([FromServices] IGeoIpService geoIp)
         {
             if (User.Identity!.IsAuthenticated)
             {
@@ -121,29 +121,18 @@ namespace Web.Controllers
                 ViewData["MetaDescription"] = "Create a new account on the specialized pharmacy education platform.";
             }
             ViewData["MetaRobots"] = "noindex, follow";
+
+            // Phone step: preselect the visitor's country from their IP (empty when unknown).
+            var location = await geoIp.GetLocationAsync(HttpContext.Connection.RemoteIpAddress?.ToString() ?? "");
+            ViewBag.DetectedCountry = location?.CountryCode ?? "";
             return View();
         }
 
+        // The old single-form POST created accounts without email verification. Sign-up now goes through
+        // SignupController (verify the emailed code, then create), so this only sends people back to the page.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterDto model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            var result = await _accountService.RegisterAsync(model);
-
-            if (!result.Success)
-            {
-                ModelState.AddModelError("", result.Message);
-                return View(model);
-            }
-
-            TempData["SuccessMessage"] = result.Message + ". Please login.";
-            return RedirectToAction("Login");
-        }
+        public IActionResult Register(RegisterDto model) => RedirectToAction(nameof(Register));
 
         #endregion
 

@@ -2171,6 +2171,12 @@ namespace Infrastructure.Persistence.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
+                    b.Property<DateTime?>("DataConsentAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -2220,14 +2226,17 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<bool>("LoginWithGoogle")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("MarketingConsent")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<string>("PreferredLanguage")
                         .HasMaxLength(10)
@@ -2246,6 +2255,21 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<int>("SuspiciousActivityCount")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("TermsAcceptedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TermsAcceptedIp")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("TermsSignature")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("TermsVersion")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("TryCount")
                         .HasColumnType("int");
@@ -2286,6 +2310,7 @@ namespace Infrastructure.Persistence.Migrations
                             LastChange = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             LastName = "",
                             LoginWithGoogle = false,
+                            MarketingConsent = false,
                             Password = "pmWkWSBCL51Bfkhn79xPuKBKHz//H6B+mY6G9/eieuM=",
                             PhoneNumber = "09xxxxxxxxx",
                             RegisterDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),

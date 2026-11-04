@@ -1,0 +1,214 @@
+/*
+ * Capsule login — Views/Account/Login.cshtml, behaviour in js/login-capsule.js.
+ *
+ * A two-tone capsule sits closed in the middle of the page, splits open and lets the
+ * login card out of the seam. Small pills and tablets fall slowly behind it. On sign-in
+ * the card slips back in, the capsule snaps shut with a click, and the form submits.
+ *
+ * Without the script nothing here hides the form: every hidden state is keyed on
+ * html.cap-js, which the script sets. Reduced motion skips the intro and the rain.
+ */
+
+.cap-stage {
+  --cap-blue: #4272FF;
+  --cap-blue-dark: #2f55d6;
+  --cap-orange: #FF7E42;
+  --cap-orange-dark: #e2602a;
+  --cap-h: 112px;          /* capsule height */
+  --cap-w: 132px;          /* width of each half */
+  --cap-spread: min(300px, 46vw); /* how far the halves travel when opening */
+  --cap-ease: cubic-bezier(.2, .8, .2, 1);
+  --cap-snap: cubic-bezier(.5, -0.4, .3, 1.5);
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  z-index: 10;
+}
+
+/* ---- the two halves ------------------------------------------------------- */
+.cap-half {
+  position: absolute;
+  top: 50%;
+  width: var(--cap-w);
+  height: var(--cap-h);
+  margin-top: calc(var(--cap-h) / -2);
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;              /* only shown while the script animates */
+  transition: transform .75s var(--cap-ease), opacity .45s var(--cap-ease);
+}
+.cap-half::before,
+.cap-half::after { content: ""; position: absolute; }
+.cap-left {
+  right: 50%;
+  border-radius: calc(var(--cap-h) / 2) 0 0 calc(var(--cap-h) / 2);
+  background: linear-gradient(180deg, #6b8fff 0%, var(--cap-blue) 45%, var(--cap-blue-dark) 100%);
+  box-shadow: inset 0 -10px 18px rgba(0, 0, 0, .18), 0 18px 40px -12px rgba(66, 114, 255, .55);
+}
+.cap-right {
+  left: 50%;
+  border-radius: 0 calc(var(--cap-h) / 2) calc(var(--cap-h) / 2) 0;
+  background: linear-gradient(180deg, #ffa274 0%, var(--cap-orange) 45%, var(--cap-orange-dark) 100%);
+  box-shadow: inset 0 -10px 18px rgba(0, 0, 0, .18), 0 18px 40px -12px rgba(255, 126, 66, .55);
+}
+/* gloss stripe along the top */
+.cap-half::before {
+  top: 14%;
+  height: 16%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .45);
+}
+.cap-left::before { left: 18%; right: 0; border-radius: 999px 0 0 999px; }
+.cap-right::before { left: 0; right: 18%; border-radius: 0 999px 999px 0; }
+/* the lip where the halves meet */
+.cap-left::after {
+  top: 6%;
+  bottom: 6%;
+  right: -1px;
+  width: 6px;
+  background: rgba(0, 0, 0, .14);
+  border-radius: 2px;
+}
+.cap-brand {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: .14em;
+  color: rgba(255, 255, 255, .9);
+  text-transform: uppercase;
+}
+
+/* ---- states (only with the script) ---------------------------------------- */
+/* closed: the capsule in the middle, card hidden in it */
+html.cap-js .cap-stage[data-cap="closed"] .cap-half,
+html.cap-js .cap-stage[data-cap="closing"] .cap-half,
+html.cap-js .cap-stage[data-cap="clicked"] .cap-half { opacity: 1; transform: none; }
+html.cap-js .cap-stage[data-cap="closed"] .cap-card,
+html.cap-js .cap-stage[data-cap="closing"] .cap-card,
+html.cap-js .cap-stage[data-cap="clicked"] .cap-card {
+  opacity: 0;
+  transform: scale(.55);
+  pointer-events: none;
+}
+html.cap-js .cap-stage[data-cap="closed"] .cap-half { animation: cap-wobble 1.1s var(--cap-ease) .15s both; }
+
+/* opening: the halves slide apart and fade, the card comes out of the seam */
+html.cap-js .cap-stage[data-cap="opening"] .cap-left { opacity: 0; transform: translateX(calc(var(--cap-spread) * -1)) rotate(-14deg); }
+html.cap-js .cap-stage[data-cap="opening"] .cap-right { opacity: 0; transform: translateX(var(--cap-spread)) rotate(14deg); }
+html.cap-js .cap-stage[data-cap="opening"] .cap-half { transition: transform .8s var(--cap-ease), opacity .55s ease-in .25s; }
+
+.cap-card {
+  transform-origin: 50% 50%;
+  transition: transform .7s var(--cap-snap), opacity .45s var(--cap-ease);
+}
+html.cap-js .cap-stage[data-cap="opening"] .cap-card { transition-delay: .12s; }
+
+/* closing on sign-in: the card slips back in fast, the halves return from the sides */
+html.cap-js .cap-stage[data-cap="closing"] .cap-card { transition: transform .35s ease-in, opacity .25s ease-in; }
+html.cap-js .cap-stage[data-cap="closing"] .cap-half { transition: transform .45s var(--cap-ease) .15s, opacity .2s ease .1s; }
+html.cap-js .cap-stage[data-cap="clicked"] .cap-half { animation: cap-click .45s var(--cap-ease) both; }
+html.cap-js .cap-stage[data-cap="clicked"] .cap-busy { opacity: 1; }
+
+/* the halves start the close from where they left */
+html.cap-js .cap-stage[data-cap="pre-close"] .cap-left { opacity: 0; transform: translateX(calc(var(--cap-spread) * -1)) rotate(-14deg); transition: none; }
+html.cap-js .cap-stage[data-cap="pre-close"] .cap-right { opacity: 0; transform: translateX(var(--cap-spread)) rotate(14deg); transition: none; }
+
+@keyframes cap-wobble {
+  0% { transform: translateY(-40px) scale(.7); opacity: 0; }
+  45% { transform: translateY(6px) scale(1.04); opacity: 1; }
+  65% { transform: translateY(-3px) rotate(-2deg); }
+  82% { transform: rotate(1.5deg); }
+  100% { transform: none; opacity: 1; }
+}
+@keyframes cap-click {
+  0% { transform: scaleX(1.08); }
+  40% { transform: scaleX(.94); }
+  70% { transform: scaleX(1.02); }
+  100% { transform: none; }
+}
+
+/* spinner shown under the closed capsule while the sign-in request is on its way */
+.cap-busy {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--cap-h) / 2 + 22px);
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, .2);
+  border-top-color: #42EAFF;
+  opacity: 0;
+  transition: opacity .2s;
+  animation: cap-spin .8s linear infinite;
+  pointer-events: none;
+}
+@keyframes cap-spin { to { transform: rotate(1turn); } }
+
+/* a wrong password: the card shakes instead of replaying the intro */
+.cap-stage[data-cap="error"] .cap-card { animation: cap-shake .5s var(--cap-ease) both; }
+@keyframes cap-shake {
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(3px); }
+}
+
+/* ---- falling pills ------------------------------------------------------------ */
+.cap-rain {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.cap-pill {
+  position: absolute;
+  top: -60px;
+  display: block;
+  opacity: .32;
+  animation: cap-fall var(--dur, 14s) linear var(--delay, 0s) infinite;
+  will-change: transform;
+}
+.cap-pill--capsule {
+  width: var(--size, 34px);
+  height: calc(var(--size, 34px) * .42);
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--a, #4272FF) 0 50%, var(--b, #FF7E42) 50% 100%);
+}
+.cap-pill--tablet {
+  width: calc(var(--size, 34px) * .6);
+  height: calc(var(--size, 34px) * .6);
+  border-radius: 50%;
+  background: var(--a, #42EAFF);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .25);
+}
+.cap-pill--tablet::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  background: rgba(0, 0, 0, .25);
+}
+@keyframes cap-fall {
+  from { transform: translateY(0) rotate(var(--r0, 0deg)); }
+  to { transform: translateY(calc(100vh + 120px)) rotate(var(--r1, 360deg)); }
+}
+html.light .cap-pill { opacity: .22; }
+
+/* ---- phones: a smaller capsule and a gentler spread ---------------------------- */
+@media (max-width: 480px) {
+  .cap-stage { --cap-h: 88px; --cap-w: 104px; --cap-spread: 52vw; }
+  .cap-brand { font-size: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cap-rain { display: none; }
+  .cap-stage *, .cap-stage *::before, .cap-stage *::after { animation: none !important; transition: none !important; }
+}

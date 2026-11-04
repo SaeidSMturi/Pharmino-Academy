@@ -1,16 +1,18 @@
 namespace Application.Interfaces
 {
     /// <summary>
-    /// نتیجه یک جستجوی GeoIP: مختصات جغرافیایی تخمینی برای یک آدرس IP
-    /// Result of a GeoIP lookup: the approximate geographic coordinates for an IP address.
+    /// Result of a GeoIP lookup: the approximate location of an IP address.
+    /// <paramref name="CountryCode"/> is the ISO 3166-1 alpha-2 code (e.g. "OM").
     /// </summary>
-    public record GeoLocation(double Latitude, double Longitude, string City, string Country);
+    public record GeoLocation(double Latitude, double Longitude, string City, string Country, string? CountryCode = null);
 
     /// <summary>
-    /// سرویس تعیین موقعیت جغرافیایی از روی IP - رابط قابل جایگزینی با سرویس‌های واقعی
+    /// Looks up where an IP address is. Returns null when the location is unknown
+    /// (private/loopback addresses, addresses missing from the database, or no database installed),
+    /// so callers can skip location-based logic instead of acting on a guess.
     /// </summary>
     public interface IGeoIpService
     {
-        Task<GeoLocation> GetLocationAsync(string ipAddress);
+        Task<GeoLocation?> GetLocationAsync(string ipAddress);
     }
 }

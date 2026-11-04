@@ -64,6 +64,10 @@
             "PdfPig": {
               "target": "Package",
               "version": "[0.1.9, )"
+            },
+            "libphonenumber-csharp": {
+              "target": "Package",
+              "version": "[9.0.42, )"
             }
           },
           "imports": [
@@ -904,6 +908,10 @@
             "AWSSDK.S3": {
               "target": "Package",
               "version": "[4.0.25.1, )"
+            },
+            "MaxMind.GeoIP2": {
+              "target": "Package",
+              "version": "[6.1.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",

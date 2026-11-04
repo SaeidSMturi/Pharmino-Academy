@@ -64,6 +64,10 @@
             "PdfPig": {
               "target": "Package",
               "version": "[0.1.9, )"
+            },
+            "libphonenumber-csharp": {
+              "target": "Package",
+              "version": "[9.0.42, )"
             }
           },
           "imports": [

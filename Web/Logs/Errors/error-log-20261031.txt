@@ -10,3 +10,150 @@ Lemon Squeezy is in Live mode but these settings are empty: StoreId, VariantId. 
 
 --------------------------------------------------
 
+--------------------------------------------------
+[2026-10-31 12:46:04] [فایل/بخش: Web]
+Lemon Squeezy is in Live mode but these settings are empty: StoreId, VariantId. Students cannot pay until they are set (env vars LemonSqueezy__<Name>).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:47:03] [فایل/بخش: Infrastructure.Services.ImpossibleTravelDetectionService]
+🚨 IMPOSSIBLE TRAVEL detected for UserId 1: 13,976 km in 0.25h (required speed 56,413 km/h, threshold 800 km/h). Previous IP: 2.48.158.214, New IP: ::1.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 12:47:04] [فایل/بخش: Web.Controllers.AccountController]
+🚨 UserId 1 login flagged as Impossible Travel from IP ::1; 1 older session(s) force-revoked.
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 13:55:22] [فایل/بخش: Web]
+Lemon Squeezy is in Live mode but these settings are empty: StoreId, VariantId. Students cannot pay until they are set (env vars LemonSqueezy__<Name>).
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 13:55:52] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Failed executing DbCommand (147ms) [Parameters=[@unlockThreshold='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserId], [u].[ActiveCode], [u].[ActivePhoneNumberCode], [u].[DataConsentAt], [u].[DateOfBirth], [u].[Email], [u].[FirstName], [u].[IsBan], [u].[IsDelete], [u].[IsEmailActive], [u].[IsLockedForSuspiciousActivity], [u].[IsPhoneNumberActive], [u].[LastChange], [u].[LastLoginDate], [u].[LastName], [u].[LastTry], [u].[LockReason], [u].[LockedAt], [u].[LockoutEnd], [u].[LoginWithGoogle], [u].[MarketingConsent], [u].[Password], [u].[PhoneNumber], [u].[PreferredLanguage], [u].[RegisterDate], [u].[SecurityCode], [u].[SecurityCodeExpiry], [u].[SuspiciousActivityCount], [u].[TermsAcceptedAt], [u].[TermsAcceptedIp], [u].[TermsSignature], [u].[TermsVersion], [u].[TryCount], [u].[UserName]
+FROM [Users] AS [u]
+WHERE [u].[IsDelete] = CAST(0 AS bit) AND [u].[IsLockedForSuspiciousActivity] = CAST(1 AS bit) AND [u].[LockedAt] IS NOT NULL AND [u].[LockedAt] <= @unlockThreshold
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 13:55:52] [فایل/بخش: Microsoft.EntityFrameworkCore.Query]
+An exception occurred while iterating over the results of a query for context type 'Infrastructure.Persistence.WebContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'DataConsentAt'.
+Invalid column name 'DateOfBirth'.
+Invalid column name 'MarketingConsent'.
+Invalid column name 'TermsAcceptedAt'.
+Invalid column name 'TermsAcceptedIp'.
+Invalid column name 'TermsSignature'.
+Invalid column name 'TermsVersion'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:8491c396-118d-4895-b494-0545a9ef1d9c
+Error Number:207,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'DataConsentAt'.
+Invalid column name 'DateOfBirth'.
+Invalid column name 'MarketingConsent'.
+Invalid column name 'TermsAcceptedAt'.
+Invalid column name 'TermsAcceptedIp'.
+Invalid column name 'TermsSignature'.
+Invalid column name 'TermsVersion'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:8491c396-118d-4895-b494-0545a9ef1d9c
+Error Number:207,State:1,Class:16
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 13:55:52] [فایل/بخش: Application.Services.SuspiciousActivityService]
+Error in auto-unlock process
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'DataConsentAt'.
+Invalid column name 'DateOfBirth'.
+Invalid column name 'MarketingConsent'.
+Invalid column name 'TermsAcceptedAt'.
+Invalid column name 'TermsAcceptedIp'.
+Invalid column name 'TermsSignature'.
+Invalid column name 'TermsVersion'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__195_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Application.Services.SuspiciousActivityService.AutoUnlockExpiredAccountsAsync(Int32 hoursLocked) in C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Application\Services\SuspiciousActivityService.cs:line 273
+ClientConnectionId:8491c396-118d-4895-b494-0545a9ef1d9c
+Error Number:207,State:1,Class:16
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 14:13:08] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Failed executing DbCommand (179ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DROP INDEX [IX_Users_PhoneNumber] ON [Users];
+DECLARE @var5 nvarchar(max);
+SELECT @var5 = QUOTENAME([d].[name])
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Users]') AND [c].[name] = N'PhoneNumber');
+IF @var5 IS NOT NULL EXEC(N'ALTER TABLE [Users] DROP CONSTRAINT ' + @var5 + ';');
+ALTER TABLE [Users] ALTER COLUMN [PhoneNumber] nvarchar(16) NULL;
+CREATE UNIQUE INDEX [IX_Users_PhoneNumber] ON [Users] ([PhoneNumber]) WHERE [PhoneNumber] IS NOT NULL;
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 14:13:57] [فایل/بخش: Microsoft.EntityFrameworkCore.Database.Command]
+Failed executing DbCommand (163ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DROP INDEX [IX_Users_PhoneNumber] ON [Users];
+DECLARE @var nvarchar(max);
+SELECT @var = QUOTENAME([d].[name])
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Users]') AND [c].[name] = N'PhoneNumber');
+IF @var IS NOT NULL EXEC(N'ALTER TABLE [Users] DROP CONSTRAINT ' + @var + ';');
+ALTER TABLE [Users] ALTER COLUMN [PhoneNumber] nvarchar(16) NULL;
+CREATE UNIQUE INDEX [IX_Users_PhoneNumber] ON [Users] ([PhoneNumber]) WHERE [PhoneNumber] IS NOT NULL;
+
+--------------------------------------------------
+
+--------------------------------------------------
+[2026-10-31 14:14:46] [فایل/بخش: Web]
+Lemon Squeezy is in Live mode but these settings are empty: StoreId, VariantId. Students cannot pay until they are set (env vars LemonSqueezy__<Name>).
+
+--------------------------------------------------
+

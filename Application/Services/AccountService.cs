@@ -59,6 +59,49 @@ namespace Application.Services
             return (true, "Registration completed successfully", createdUser.UserId);
         }
 
+        public async Task<(bool Success, string Message, int? UserId)> CreateVerifiedAccountAsync(SignupDto model, string phoneE164, DateTime dateOfBirth, string ipAddress)
+        {
+            var email = model.Email.Trim();
+
+            // Checked again here: someone may have registered the same email or phone while this student filled the form.
+            if (await _userRepository.IsEmailExistsAsync(email))
+                return (false, "This email is already registered", null);
+            if (await _userRepository.IsPhoneNumberExistsAsync(phoneE164))
+                return (false, "This phone number is already registered", null);
+
+            var now = DateTime.UtcNow;
+            var user = new User
+            {
+                FirstName = model.FirstName.Trim(),
+                LastName = model.LastName.Trim(),
+                UserName = email,
+                Email = email,
+                PhoneNumber = phoneE164,
+                DateOfBirth = dateOfBirth.Date,
+                Password = _passwordHasher.HashPassword(model.Password),
+                ActiveCode = Guid.NewGuid().ToString("N"),
+                SecurityCode = Guid.NewGuid().ToString("N"),
+                ActivePhoneNumberCode = string.Empty,
+                IsEmailActive = true, // verified with the emailed code before this call
+                IsPhoneNumberActive = false,
+                RegisterDate = now,
+                LastChange = now,
+                IsDelete = false,
+                IsBan = false,
+                TryCount = 0,
+                TermsVersion = model.TermsVersion,
+                TermsAcceptedAt = now,
+                TermsAcceptedIp = ipAddress,
+                TermsSignature = model.Signature.Trim(),
+                DataConsentAt = now,
+                MarketingConsent = model.MarketingConsent
+            };
+
+            var createdUser = await _userRepository.AddUserAsync(user);
+            await _userRepository.SaveChangesAsync();
+            return (true, "Account created", createdUser.UserId);
+        }
+
         public async Task<(bool Success, string Message, int? UserId)> LoginAsync(LoginDto model)
         {
             // Find user by username or email (UserName equals Email in our model)

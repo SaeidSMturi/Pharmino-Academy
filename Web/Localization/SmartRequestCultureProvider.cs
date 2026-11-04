@@ -91,13 +91,15 @@ namespace Web.Localization
                     try
                     {
                         var location = await geoIpService.GetLocationAsync(ipAddress);
-                        if (location != null && !string.IsNullOrEmpty(location.Country))
+                        // ISO code first (always English and stable), then the country name.
+                        var country = location?.CountryCode ?? location?.Country;
+                        if (!string.IsNullOrEmpty(country))
                         {
-                            if (ArabicCountries.Contains(location.Country))
+                            if (ArabicCountries.Contains(country))
                             {
                                 detectedCulture = "ar";
                             }
-                            else if (PersianCountries.Contains(location.Country))
+                            else if (PersianCountries.Contains(country))
                             {
                                 detectedCulture = "fa";
                             }
