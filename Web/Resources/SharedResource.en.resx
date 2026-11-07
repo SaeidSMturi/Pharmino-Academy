@@ -1649,4 +1649,16 @@
   <data name="ReorderHelpText" xml:space="preserve">
     <value>Drag videos by the handle (=) to reorder, then click Save.</value>
   </data>
+  <data name="Tests" xml:space="preserve">
+    <value>Tests</value>
+  </data>
+  <data name="Finance" xml:space="preserve">
+    <value>Finance</value>
+  </data>
+  <data name="MyTests" xml:space="preserve">
+    <value>My Tests</value>
+  </data>
+  <data name="BillingReceipts" xml:space="preserve">
+    <value>Billing &amp; Receipts</value>
+  </data>
 </root>

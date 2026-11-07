@@ -1,0 +1,65 @@
+/* =====================================================================
+   Admin panel: phone layout (loaded by Areas/Admin/_AdminLayout.cshtml)
+   Only applies below 640px; tablets and desktop are unchanged.
+   !important is needed because the Tailwind CDN injects its utilities
+   after this file.
+   ===================================================================== */
+
+@media (max-width: 639px) {
+  /* Drop the two nested boxes around every page (they cost ~60px of width) */
+  #admin-main #admin-shell {
+    background: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+  #admin-main #admin-shell-inner {
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    min-height: 0 !important;
+  }
+
+  /* Desktop-sized padding shrinks to phone size */
+  #admin-main .p-10,
+  #admin-main .p-8 { padding: 1.25rem !important; }
+  #admin-main .p-6 { padding: 1rem !important; }
+  #admin-main .rounded-\[2rem\] { border-radius: 1.5rem !important; }
+  #admin-main .mb-8 { margin-bottom: 1.25rem !important; }
+
+  /* Page titles stop wrapping on every word */
+  #admin-main h1.text-4xl,
+  #admin-main h1.text-3xl { font-size: 1.6rem !important; line-height: 1.2 !important; }
+
+  /* Icon tiles next to text never get squeezed into pills */
+  #admin-main .flex > .w-8,
+  #admin-main .flex > .w-10,
+  #admin-main .flex > .w-12,
+  #admin-main .flex > .w-14,
+  #admin-main .flex > .w-16 { flex-shrink: 0 !important; }
+
+  /* Summary-card rows (4 across on desktop) stack on phones: keep each card short */
+  #admin-main .grid.lg\:grid-cols-4 { gap: .75rem !important; }
+  #admin-main .grid.lg\:grid-cols-4 > * { padding: .9rem 1rem !important; min-height: 0 !important; }
+  #admin-main .grid.lg\:grid-cols-4 > * .text-4xl,
+  #admin-main .grid.lg\:grid-cols-4 > * .text-3xl { font-size: 1.6rem !important; line-height: 1.15 !important; }
+  #admin-main .grid.lg\:grid-cols-4 > * .w-12.h-12,
+  #admin-main .grid.lg\:grid-cols-4 > * .w-14.h-14 { width: 2.5rem !important; height: 2.5rem !important; }
+  #admin-main .grid.lg\:grid-cols-4 > * .mb-4,
+  #admin-main .grid.lg\:grid-cols-4 > * .mb-6 { margin-bottom: .5rem !important; }
+
+  /* Wide tables scroll sideways inside their own card */
+  #admin-main .overflow-x-auto { -webkit-overflow-scrolling: touch; }
+
+  /* Header bar: language button shows only the globe + chevron */
+  .mobile-bar .lang-switcher-btn > span { display: none; }
+  .mobile-bar .lang-switcher-btn { padding: .55rem .7rem !important; }
+}
+
+/* ---- Arabic / Farsi (right-to-left): mirror the menu's highlight bar ---- */
+[dir="rtl"] #sidebar .menu-item::before { left: auto; right: 0; border-radius: 4px 0 0 4px; }
+[dir="rtl"] #sidebar .menu-item:hover { padding-left: 1rem; padding-right: 1.25rem; background: linear-gradient(270deg, rgba(66, 234, 255, .1) 0%, transparent 100%); }
+[dir="rtl"] #sidebar .sidebar-active { background: linear-gradient(270deg, rgba(66, 114, 255, .15) 0%, rgba(66, 234, 255, .02) 100%); }

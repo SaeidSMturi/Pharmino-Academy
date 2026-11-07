@@ -316,10 +316,6 @@
     <main>
         <!-- Hero Section -->
         <section class="min-h-screen flex items-center pt-24 pb-12 relative overflow-hidden">
-            <div class="absolute top-1/4 left-5 w-80 h-80 bg-custom-cyan/15 rounded-full mix-blend-screen filter blur-[120px] animate-blob-1"></div>
-            <div class="absolute top-1/3 right-5 w-96 h-96 bg-custom-blue/20 rounded-full mix-blend-screen filter blur-[140px] animate-blob-2"></div>
-            <div class="absolute bottom-1/4 left-1/4 w-[450px] h-[450px] bg-custom-orange/10 rounded-full mix-blend-screen filter blur-[150px] animate-blob-1" style="animation-duration: 28s;"></div>
-
             <div class="container mx-auto px-4 text-center relative z-10">
                 <div class="inline-flex items-center gap-2 mb-8 px-5 py-2 rounded-full glass-panel border border-custom-cyan/30 text-custom-cyan text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(66,234,255,0.15)] transform hover:scale-105 transition-transform duration-300">
                     <span class="w-2 h-2 rounded-full bg-custom-cyan animate-ping"></span>
@@ -410,13 +406,13 @@
                                     <h3 class="text-2xl font-bold text-custom-snow mb-3 group-hover:text-custom-cyan transition-colors duration-300">@course.Title</h3>
                                     <p class="text-custom-snow/60 text-sm line-clamp-3 mb-8 flex-grow leading-relaxed">@course.Description</p>
 
-                                    <div class="flex items-center justify-between mt-auto pt-6 border-t border-custom-cyan/10">
-                                        <div>
+                                    <div class="flex items-center justify-between gap-3 mt-auto pt-6 border-t border-custom-cyan/10">
+                                        <div class="min-w-0">
                                             @if (course.HasActiveDiscount)
                                             {
                                                 <div class="flex items-baseline gap-2">
-                                                    <span class="text-3xl font-black text-emerald-400">@CurrencyHelper.Format(course.EffectivePrice)</span>
-                                                    <span class="text-sm font-semibold text-custom-snow/40 line-through">@CurrencyHelper.Format(course.Price)</span>
+                                                    <span class="text-2xl sm:text-3xl font-black text-emerald-400 whitespace-nowrap">@CurrencyHelper.Format(course.EffectivePrice)</span>
+                                                    <span class="text-sm font-semibold text-custom-snow/40 line-through whitespace-nowrap">@CurrencyHelper.Format(course.Price)</span>
                                                 </div>
                                                 <div class="text-[11px] font-bold text-emerald-400/90 mt-0.5">Save @CurrencyHelper.Format(course.Price - course.EffectivePrice)</div>
                                             }
@@ -426,11 +422,11 @@
                                             }
                                             else
                                             {
-                                                <div class="text-3xl font-black text-custom-snow">@CurrencyHelper.Format(course.Price)</div>
+                                                <div class="text-2xl sm:text-3xl font-black text-custom-snow whitespace-nowrap">@CurrencyHelper.Format(course.Price)</div>
                                             }
                                         </div>
                                         <a asp-area="" asp-controller="Courses" asp-action="Details" asp-route-id="@course.CourseId"
-                                           class="px-6 py-2.5 rounded-full bg-custom-blue/20 hover:bg-custom-blue text-custom-cyan hover:text-white text-sm font-bold transition-all duration-300 border border-custom-blue/50 hover:shadow-[0_0_25px_rgba(66,114,255,0.5)] transform hover:scale-105">
+                                           class="shrink-0 whitespace-nowrap px-5 sm:px-6 py-2.5 rounded-full bg-custom-blue/20 hover:bg-custom-blue text-custom-cyan hover:text-white text-sm font-bold transition-all duration-300 border border-custom-blue/50 hover:shadow-[0_0_25px_rgba(66,114,255,0.5)] transform hover:scale-105">
                                             @Localizer["ViewCourse"]
                                         </a>
                                     </div>
@@ -592,6 +588,7 @@
     </footer>
 
     <script src="~/js/site.js"></script>
+    <script src="~/js/gradient-bg.js" asp-append-version="true" data-preset="site"></script>
     <script src="~/js/theme.js"></script>
 </body>
 </html>

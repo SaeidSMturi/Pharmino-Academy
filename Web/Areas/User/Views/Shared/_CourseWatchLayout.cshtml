@@ -176,8 +176,8 @@
     <div class="fixed -bottom-32 -right-32 w-96 h-96 bg-brand-orange/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
     <!-- 🌟 Clean LMS Top Navbar -->
-    <header class="sticky top-0 z-40 glass-panel border-b border-white/10 px-4 lg:px-8 py-3.5 flex items-center justify-between shrink-0 shadow-lg">
-        <div class="flex items-center gap-4 min-w-0">
+    <header class="watch-bar sticky top-0 z-40 glass-panel border-b border-white/10 px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-2 shrink-0 shadow-lg">
+        <div class="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
             <!-- Back to Course Details button -->
             @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.HasClaim(c => c.Type == "Permission" && (c.Value == "Courses.View" || c.Value == "SuperAdmin")))
             {
@@ -200,14 +200,14 @@
 
             <!-- Course Title & Active Video -->
             <div class="min-w-0 flex items-center gap-2 text-xs">
-                <span class="font-extrabold text-white truncate max-w-[160px] md:max-w-xs">@courseTitle</span>
+                <span class="font-extrabold text-white truncate md:max-w-xs">@courseTitle</span>
                 <span class="text-slate-500 hidden md:inline">/</span>
                 <span class="text-brand-cyan font-medium truncate max-w-[200px] hidden md:inline">@ViewData["Title"]</span>
             </div>
         </div>
 
         <!-- Controls: Playlist Toggle + Theme + Lang + Profile -->
-        <div class="flex items-center gap-2.5 shrink-0">
+        <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             <!-- Toggle Playlist Sidebar button -->
             <button id="toggle-curriculum-btn" type="button"
                     class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-brand-cyan/10 hover:bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30 transition-all text-xs font-bold"
@@ -219,18 +219,27 @@
             <partial name="_ThemeToggle" />
             <partial name="_LanguageSwitcher" />
 
-            <div class="h-5 w-[1px] bg-white/10"></div>
+            <div class="h-5 w-[1px] bg-white/10 hidden sm:block"></div>
 
             <a asp-area="User" asp-controller="Dashboard" asp-action="Index"
-               class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-all text-xs"
+               class="hidden sm:flex w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-all text-xs"
                title="@Localizer["Dashboard"]">
                 <i class="fas fa-home"></i>
             </a>
         </div>
     </header>
 
+    <style>
+        /* phones: language button shows only its globe, so the course title keeps some room */
+        @@media (max-width: 639px) {
+            .watch-bar .lang-switcher-btn > span { display: none; }
+            .watch-bar .lang-switcher-btn { padding: .5rem .6rem !important; }
+            .watch-bar #toggle-curriculum-btn { padding: .5rem .7rem; }
+        }
+    </style>
+
     <!-- 🎬 Main Player Layout Body -->
-    <div class="flex-1 w-full relative z-10 flex overflow-hidden">
+    <div class="flex-1 w-full relative z-10 flex lg:overflow-hidden">
         @RenderBody()
     </div>
 

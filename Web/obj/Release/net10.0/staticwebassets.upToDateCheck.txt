@@ -22,12 +22,14 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\cd.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\cf.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\admin-mobile.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\gh.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-protection\index.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\ky.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\sd.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\to.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\om.svg
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\gradient-bg.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\gb-eng.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\gy.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-protection\network.js
@@ -337,6 +339,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\vn.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\theme.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\yt.svg
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\student-mobile.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\ly.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\kh.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\la.svg
@@ -370,12 +373,14 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\mf.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\jm.svg
 wwwroot\css\Style.css
+wwwroot\css\admin-mobile.css
 wwwroot\css\admin.css
 wwwroot\css\advanced-video-player.css
 wwwroot\css\glass-folder.css
 wwwroot\css\login-capsule.css
 wwwroot\css\signup.css
 wwwroot\css\site.css
+wwwroot\css\student-mobile.css
 wwwroot\css\tailwind.min.css
 wwwroot\css\theme.css
 wwwroot\dist\signup\flag-icons\css\flag-icons.min.css
@@ -667,6 +672,7 @@ wwwroot\js\advanced-video-protection\network.js
 wwwroot\js\advanced-video-protection\protectors.js
 wwwroot\js\advanced-video-protection\utils.js
 wwwroot\js\glass-folder.js
+wwwroot\js\gradient-bg.js
 wwwroot\js\hls-secure-player.js
 wwwroot\js\login-capsule.js
 wwwroot\js\marked.min.js

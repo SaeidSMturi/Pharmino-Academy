@@ -72,8 +72,7 @@
             void to.offsetWidth;
             to.classList.add('is-active', fwd ? 'enter-next' : 'enter-prev');
             current = n;
-            $('su-progress').style.width = ((n - 1) / 6 * 100) + '%';
-            $('su-steplabel').textContent = 'Step ' + n + ' of 6';
+            setStepper(n, false);
             $('su-stepname').textContent = to.dataset.name;
             announce('Step ' + n + ' of 6: ' + to.dataset.name);
             var first = to.querySelector('input:not([disabled]):not([type=checkbox]), [tabindex="0"]');
@@ -81,6 +80,27 @@
             onEnter(n);
         }, 280);
     }
+
+    // stepper: the pill sits on the current segment, the faint fill covers the finished ones
+    var stepButtons = Array.prototype.slice.call(document.querySelectorAll('#su-steps [data-goto]'));
+    function setStepper(n, done) {
+        var seg = 100 / 6;
+        $('su-track-fill').style.width = (done ? 100 : (n - 1) * seg) + '%';
+        $('su-track-pill').style.transform = 'translateX(' + ((n - 1) * 100) + '%)';
+        $('su-steplabel').textContent = done ? 'All done' : 'Step ' + n + ' of 6';
+        stepButtons.forEach(function (b, i) {
+            var s = i + 1, completed = done || s < n;
+            b.classList.toggle('done', completed);
+            b.disabled = !completed || done;
+            if (s === n && !done) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+        });
+    }
+    stepButtons.forEach(function (b) {
+        b.addEventListener('click', function () {
+            var s = +b.dataset.goto;
+            if (!busy && !finished && s < current) go(s);
+        });
+    });
 
     var nextHandlers = {};
     root.addEventListener('click', function (e) {
@@ -453,7 +473,7 @@
         var x = byCode(c);
         $('su-flag').className = 'fi fi-' + c.toLowerCase();
         $('su-cc-label').textContent = x.code;
-        $('su-phone-cc').textContent = x.name.length > 14 ? x.code : x.name + ' ' + x.code;
+        $('su-phone-cc').textContent = x.name.length > 12 ? x.code : x.name + ' ' + x.code;
         formatTel();
     }
 
@@ -481,9 +501,9 @@
         if (on) {
             cq.value = '';
             renderList('');
-            cq.focus();
+            cq.focus({ preventScroll: true });
             var sel = list.querySelector('[aria-selected=true]');
-            if (sel) sel.scrollIntoView({ block: 'center' });
+            if (sel) list.scrollTop = sel.offsetTop - list.offsetTop - (list.clientHeight - sel.offsetHeight) / 2;
         }
     }
     ccBtn.addEventListener('click', function () { openPop(pop.hidden); });
@@ -499,7 +519,7 @@
             e.preventDefault();
             i = Math.max(0, Math.min(opts.length - 1, i + (e.key === 'ArrowDown' ? 1 : -1)));
             opts.forEach(function (o, j) { o.setAttribute('aria-selected', j === i ? 'true' : 'false'); });
-            if (opts[i]) opts[i].scrollIntoView({ block: 'nearest' });
+            if (opts[i]) keepVisible(opts[i]);
         } else if (e.key === 'Enter') {
             e.preventDefault();
             if (opts[i]) pick(opts[i].dataset.c);
@@ -508,13 +528,19 @@
             ccBtn.focus();
         }
     });
+    // scrollIntoView would also scroll the card and the page, so move the list by hand
+    function keepVisible(o) {
+        var top = o.offsetTop - list.offsetTop, bottom = top + o.offsetHeight;
+        if (top < list.scrollTop) list.scrollTop = top;
+        else if (bottom > list.scrollTop + list.clientHeight) list.scrollTop = bottom - list.clientHeight;
+    }
     list.addEventListener('click', function (e) { var o = e.target.closest('.su-opt[data-c]'); if (o) pick(o.dataset.c); });
     document.addEventListener('click', function (e) { if (!pop.hidden && !e.target.closest('#su-tel-row')) openPop(false); });
     function pick(c) {
         setCountry(c);
         msg($('su-detect'), '');
         openPop(false);
-        tel.focus();
+        tel.focus({ preventScroll: true });
     }
 
     function formatTel() {
@@ -536,7 +562,9 @@
         var digits = raw.replace(/\D/g, '');
         var formatted = digits ? new lib.phone.AsYouType(region).input(digits) : '';
         if (tel.value !== formatted) tel.value = formatted;
-        $('su-phone-num').textContent = formatted || '';
+        var numEl = $('su-phone-num');
+        numEl.textContent = formatted || '· · · · · · ·';
+        numEl.classList.toggle('ph', !formatted);
         var valid = digits.length > 3 && lib.phone.isValidPhoneNumber(digits, region);
         phoneSvg.classList.toggle('ok', valid);
         return valid;
@@ -568,11 +596,9 @@
     // ---------- step 5: terms ----------------------------------------------------------------------------
 
     var doc = $('su-doc'), unlocked = false;
-    var checks = ['su-c1', 'su-c2', 'su-c3', 'su-c4'].map($), sig = $('su-sig');
+    var checks = ['su-c1', 'su-c3'].map($);
 
     function prepareTerms() {
-        $('su-sig-label').textContent = 'Type your full name to sign: ' + data.firstName + ' ' + data.lastName;
-        sig.placeholder = data.firstName + ' ' + data.lastName;
         onDocScroll();
     }
 
@@ -594,8 +620,7 @@
             root.querySelectorAll('[data-lock]').forEach(function (l, i) {
                 setTimeout(function () { l.classList.remove('lock'); l.querySelector('input').disabled = false; }, i * 90);
             });
-            sig.disabled = false;
-            msg($('su-terms-msg'), 'Thanks for reading. Tick the boxes and sign below.');
+            msg($('su-terms-msg'), 'Thanks for reading. Tick both boxes to continue.');
             announce('Terms read. Checkboxes are now available.');
         }
     }
@@ -607,12 +632,6 @@
         else doc.scrollTo({ top: top, behavior: 'smooth' });
     });
 
-    function norm(s) { return s.trim().replace(/\s+/g, ' ').toLowerCase(); }
-    sig.addEventListener('input', function () {
-        invalid(sig, false);
-        var ok = norm(sig.value) === norm(data.firstName + ' ' + data.lastName);
-        msg($('su-terms-msg'), ok ? 'Signed.' : '', ok ? 'ok' : '');
-    });
     checks.forEach(function (c) { c.addEventListener('change', function () { msg($('su-terms-msg'), ''); }); });
 
     var lastSent = { email: '', at: 0 };
@@ -620,8 +639,7 @@
         var btn = this, m = $('su-terms-msg');
         if (busy) return;
         if (!unlocked) { shake(doc); msg(m, 'Please scroll to the end of the terms first.', 'bad'); return; }
-        for (var i = 0; i < 3; i++) if (!checks[i].checked) { shake(checks[i].parentNode); msg(m, 'Please tick the three required boxes.', 'bad'); return; }
-        if (norm(sig.value) !== norm(data.firstName + ' ' + data.lastName)) { invalid(sig, true); msg(m, 'Your signature must match your name: ' + data.firstName + ' ' + data.lastName + '.', 'bad'); return; }
+        for (var i = 0; i < checks.length; i++) if (!checks[i].checked) { shake(checks[i].parentNode); msg(m, 'Please tick both boxes to continue.', 'bad'); return; }
 
         // the code from a moment ago is still good: don't ask for another one
         if (data.email === lastSent.email && Date.now() - lastSent.at < 9 * 60 * 1000) { toOtp(); return; }
@@ -657,7 +675,8 @@
                         msg($('su-creating'), r.ok ? 'A new code is on its way.' : (r.message || 'Couldn\'t send a new code.'), r.ok ? 'ok' : 'bad');
                     });
                 },
-                onSuccess: create
+                onSuccess: create,
+                onChangeEmail: changeEmail
             });
         }
         msg($('su-creating'), '');
@@ -666,7 +685,6 @@
 
     function create() {
         var c = $('su-creating');
-        $('su-otp-foot').hidden = true;
         c.classList.remove('ok', 'bad');
         c.innerHTML = 'Creating your account<span class="su-dots"></span>';
         post(ds.urlCreate, {
@@ -679,28 +697,24 @@
             phoneNumber: data.phone,
             phoneRegion: data.region,
             acceptTerms: checks[0].checked,
-            acceptCompensation: checks[1].checked,
-            acceptDataProcessing: checks[2].checked,
-            marketingConsent: checks[3].checked,
-            signature: sig.value.trim(),
+            acceptDataProcessing: checks[1].checked,
             termsVersion: ds.termsVersion,
             verificationToken: data.token
         }).then(function (r) {
             if (r.ok) {
                 finished = true;
-                $('su-progress').style.width = '100%';
+                setStepper(6, true);
                 c.classList.add('ok');
                 c.textContent = 'Your account is ready. Taking you to sign in…';
                 setTimeout(function () { location.href = r.redirect || '/Account/Login'; }, 900);
                 return;
             }
-            $('su-otp-foot').hidden = false;
             c.classList.add('bad');
             c.textContent = r.message || 'We couldn\'t create your account.';
         });
     }
 
-    $('su-change-email').addEventListener('click', function () {
+    function changeEmail() {
         if (otp) { otp.unmount(); otp = null; }
         otpEmail = '';
         data.token = '';
@@ -708,7 +722,7 @@
         env.classList.remove('ok');
         go(1);
         setTimeout(function () { emailInput.focus(); emailInput.select(); }, 320);
-    });
+    }
 
     // ---------- start --------------------------------------------------------------------------------------
 
@@ -719,5 +733,5 @@
     }
     if (lib) start(); else window.addEventListener('pharmino-signup-ready', start);
     dial.render();
-    $('su-progress').style.width = '0%';
+    setStepper(1, false);
 })();

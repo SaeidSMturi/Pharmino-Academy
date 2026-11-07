@@ -74,6 +74,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-mobile.css" asp-append-version="true" />
     @{
         var isFarsi = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
         var isArabic = currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
@@ -243,17 +244,19 @@
 
     <!-- Mobile Header -->
     <header class="lg:hidden fixed top-0 left-0 right-0 z-40 glass-panel border-b-0">
-        <div class="flex items-center justify-between p-4">
-            <button id="mobile-menu-btn" class="text-slate-300 hover:text-brand-cyan transition-colors">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
-            <h1 class="text-xl font-bold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent">
-                Pharmacists
-            </h1>
-            <div class="flex items-center gap-2">
+        <div class="mobile-bar flex items-center justify-between gap-2 px-3 py-2.5">
+            <div class="flex items-center gap-1.5 min-w-0">
+                <button id="mobile-menu-btn" type="button" aria-label="Open menu" aria-controls="sidebar" class="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center text-slate-300 hover:text-brand-cyan hover:bg-white/5 transition-colors">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="min-w-0 truncate text-lg font-bold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent">
+                    Pharmacists
+                </h1>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
                 <partial name="_ThemeToggle" />
                 <partial name="_LanguageSwitcher" />
-                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-dark-bg font-bold text-sm">
+                <div class="hidden min-[400px]:flex w-8 h-8 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow items-center justify-center text-dark-bg font-bold text-sm">
                     @(User.Identity?.Name?.Substring(0, 1).ToUpper() ?? "A")
                 </div>
             </div>
@@ -263,10 +266,10 @@
     <div class="flex h-screen pt-16 lg:pt-0 overflow-hidden">
 
         <!-- Floating Sidebar (Desktop) -->
-        <aside id="sidebar" class="fixed lg:relative inset-y-0 @(isRtl ? "right-0" : "left-0") z-50 w-72 transform @(isRtl ? "translate-x-full" : "-translate-x-full") lg:translate-x-0 transition-transform duration-300 ease-out flex flex-col lg:m-5 lg:h-[calc(100vh-2.5rem)] lg:rounded-3xl glass-panel">
+        <aside id="sidebar" class="fixed lg:relative inset-y-0 @(isRtl ? "right-0" : "left-0") z-50 w-72 max-w-[85vw] lg:max-w-none transform @(isRtl ? "translate-x-full" : "-translate-x-full") lg:translate-x-0 transition-transform duration-300 ease-out flex flex-col lg:m-5 lg:h-[calc(100vh-2.5rem)] lg:rounded-3xl glass-panel">
 
             <!-- Logo Section -->
-            <div class="hidden lg:flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") p-8">
+            <div class="hidden lg:flex items-center gap-3 p-8">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-cyan to-brand-blue p-[1px] shadow-[0_0_20px_rgba(66,234,255,0.3)]">
                     <div class="w-full h-full bg-dark-bg rounded-xl flex items-center justify-center">
                         <i class="fas fa-cube text-brand-cyan text-lg"></i>
@@ -280,7 +283,7 @@
 
             <!-- Admin Profile Card -->
             <div class="px-6 pb-6">
-                <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center @(isRtl ? "space-x-reverse" : "space-x-4") group hover:border-brand-cyan/30 transition-colors cursor-pointer">
+                <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center gap-4 group hover:border-brand-cyan/30 transition-colors cursor-pointer">
                     <div class="relative">
                         <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-dark-bg font-bold text-lg shadow-[0_0_15px_rgba(255,126,66,0.3)] group-hover:scale-105 transition-transform">
                             @{
@@ -305,7 +308,7 @@
 
                 <p class="text-[10px] font-bold text-slate-500/70 uppercase tracking-widest mb-2 px-4 mt-2">@Localizer["Overview"]</p>
                 <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
-                   class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "sidebar-active" : "")">
+                   class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "sidebar-active" : "")">
                     <i class="fas fa-layer-group w-5 text-center"></i>
                     <span class="font-medium">@Localizer["Dashboard"]</span>
                 </a>
@@ -319,7 +322,7 @@
                         {
                             <div class="mb-1">
                                 <button type="button" id="users-menu-toggle" class="menu-item w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm">
-                                    <span class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3")">
+                                    <span class="flex items-center gap-3">
                                         <i class="fas fa-users-rays w-5 text-center"></i>
                                         <span class="font-medium">@Localizer["Users"]</span>
                                     </span>
@@ -330,7 +333,7 @@
                                     @if (canViewStudents)
                                     {
                                         <a asp-area="Admin" asp-controller="Users" asp-action="Students"
-                                           class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-2.5 rounded-lg text-slate-400 hover:text-brand-cyan text-sm transition-colors">
+                                           class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:text-brand-cyan text-sm transition-colors">
                                             <span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
                                             <span>@Localizer["Students"]</span>
                                         </a>
@@ -338,7 +341,7 @@
                                     @if (canViewAdminUsers)
                                     {
                                         <a asp-area="Admin" asp-controller="Users" asp-action="AdminUsers"
-                                           class="flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-2.5 rounded-lg text-slate-400 hover:text-brand-cyan text-sm transition-colors">
+                                           class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:text-brand-cyan text-sm transition-colors">
                                             <span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
                                             <span>@Localizer["AdminUsers"]</span>
                                         </a>
@@ -350,7 +353,7 @@
                         @if (canViewRoles)
                         {
                             <a asp-area="Admin" asp-controller="Roles" asp-action="Index"
-                               class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Roles" ? "sidebar-active" : "")">
+                               class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Roles" ? "sidebar-active" : "")">
                                 <i class="fas fa-shield-halved w-5 text-center"></i>
                                 <span class="font-medium">@Localizer["Permissions"]</span>
                             </a>
@@ -359,7 +362,7 @@
                         @if (canViewCourses)
                         {
                             <a asp-area="Admin" asp-controller="Courses" asp-action="Index"
-                               class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Courses" ? "sidebar-active" : "")">
+                               class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Courses" ? "sidebar-active" : "")">
                                 <i class="fas fa-video w-5 text-center"></i>
                                 <span class="font-medium">@Localizer["Courses"]</span>
                             </a>
@@ -368,7 +371,7 @@
                         @if (canViewCourses)
                         {
                             <a asp-area="Admin" asp-controller="Enrollment" asp-action="Index"
-                               class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Enrollment" ? "sidebar-active" : "")">
+                               class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Enrollment" ? "sidebar-active" : "")">
                                 <i class="fas fa-credit-card w-5 text-center"></i>
                                 <span class="font-medium">@Localizer["Enrollments"]</span>
                             </a>
@@ -377,25 +380,25 @@
                         @if (canViewCourses)
                         {
                             <a asp-area="Admin" asp-controller="Tests" asp-action="Index"
-                               class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Tests" ? "sidebar-active" : "")">
+                               class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Tests" ? "sidebar-active" : "")">
                                 <i class="fas fa-file-signature w-5 text-center"></i>
-                                <span class="font-medium">Tests</span>
+                                <span class="font-medium">@Localizer["Tests"]</span>
                             </a>
                         }
 
                         @if (canViewPayments)
                         {
                             <a asp-area="Admin" asp-controller="Finance" asp-action="Index"
-                               class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Finance" ? "sidebar-active" : "")">
+                               class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Finance" ? "sidebar-active" : "")">
                                 <i class="fas fa-wallet w-5 text-center text-emerald-400"></i>
-                                <span class="font-medium">Finance</span>
+                                <span class="font-medium">@Localizer["Finance"]</span>
                             </a>
                         }
 
                         @if (canViewDashboard)
                         {
                             <a asp-area="Admin" asp-controller="Posts" asp-action="Index"
-                               class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Posts" ? "sidebar-active" : "")">
+                               class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Posts" ? "sidebar-active" : "")">
                                 <i class="fas fa-pen-nib w-5 text-center"></i>
                                 <span class="font-medium">@Localizer["Content"]</span>
                             </a>
@@ -407,25 +410,25 @@
                     <p class="text-[10px] font-bold text-slate-500/70 uppercase tracking-widest mb-2 px-4">@Localizer["System"]</p>
 
                     <a asp-area="Admin" asp-controller="Security" asp-action="LockedAccounts"
-                       class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Security" ? "sidebar-active" : "")">
+                       class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Security" ? "sidebar-active" : "")">
                         <i class="fas fa-lock w-5 text-center"></i>
                         <span class="font-medium">@Localizer["Security"]</span>
                     </a>
 
                     <a asp-area="Admin" asp-controller="Settings" asp-action="Index"
-                       class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Settings" ? "sidebar-active" : "")">
+                       class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Settings" ? "sidebar-active" : "")">
                         <i class="fas fa-sliders w-5 text-center"></i>
                         <span class="font-medium">@Localizer["Preferences"]</span>
                     </a>
 
                     <a asp-area="Admin" asp-controller="Seo" asp-action="Index"
-                       class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Seo" ? "sidebar-active" : "")">
+                       class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Seo" ? "sidebar-active" : "")">
                         <i class="fas fa-chart-line w-5 text-center"></i>
                         <span class="font-medium">SEO</span>
                     </a>
                     
                     <a asp-area="Admin" asp-controller="Logs" asp-action="Index"
-                       class="menu-item flex items-center @(isRtl ? "space-x-reverse" : "space-x-3") px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Logs" ? "sidebar-active" : "")">
+                       class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Logs" ? "sidebar-active" : "")">
                         <i class="fas fa-history w-5 text-center"></i>
                         <span class="font-medium">@Localizer["Logs"]</span>
                     </a>
@@ -436,13 +439,13 @@
             <div class="p-4 border-t border-white/[0.05] space-y-2">
                 <div class="grid grid-cols-2 gap-2">
                     <a href="/Students"
-                       class="flex items-center justify-center @(isRtl ? "space-x-reverse space-x-2" : "space-x-2") py-2.5 px-2 rounded-xl bg-white/[0.03] hover:bg-brand-blue/15 text-slate-300 hover:text-brand-blue border border-white/[0.05] hover:border-brand-blue/30 transition-all duration-300 text-xs font-semibold group"
+                       class="flex items-center justify-center gap-2 py-2.5 px-2 rounded-xl bg-white/[0.03] hover:bg-brand-blue/15 text-slate-300 hover:text-brand-blue border border-white/[0.05] hover:border-brand-blue/30 transition-all duration-300 text-xs font-semibold group"
                        title="@Localizer["Students"]">
                         <i class="fas fa-graduation-cap text-brand-blue text-xs group-hover:scale-110 transition-transform"></i>
                         <span class="truncate">@Localizer["Students"]</span>
                     </a>
                     <a href="/"
-                       class="flex items-center justify-center @(isRtl ? "space-x-reverse space-x-2" : "space-x-2") py-2.5 px-2 rounded-xl bg-white/[0.03] hover:bg-brand-cyan/15 text-slate-300 hover:text-brand-cyan border border-white/[0.05] hover:border-brand-cyan/30 transition-all duration-300 text-xs font-semibold group"
+                       class="flex items-center justify-center gap-2 py-2.5 px-2 rounded-xl bg-white/[0.03] hover:bg-brand-cyan/15 text-slate-300 hover:text-brand-cyan border border-white/[0.05] hover:border-brand-cyan/30 transition-all duration-300 text-xs font-semibold group"
                        title="@Localizer["LiveSite"]">
                         <i class="fas fa-globe text-brand-cyan text-xs group-hover:scale-110 transition-transform"></i>
                         <span class="truncate">@Localizer["LiveSite"]</span>
@@ -450,7 +453,7 @@
                 </div>
 
                 <a asp-area="" asp-controller="Account" asp-action="Logout"
-                   class="flex items-center justify-center @(isRtl ? "space-x-reverse" : "space-x-2") w-full py-2.5 rounded-xl bg-brand-orange/10 text-brand-orange hover:bg-brand-orange hover:text-dark-bg hover:shadow-[0_0_20px_rgba(255,126,66,0.4)] transition-all duration-300 font-bold text-sm">
+                   class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-brand-orange/10 text-brand-orange hover:bg-brand-orange hover:text-dark-bg hover:shadow-[0_0_20px_rgba(255,126,66,0.4)] transition-all duration-300 font-bold text-sm">
                     <i class="fas fa-power-off"></i>
                     <span>@Localizer["Logout"]</span>
                 </a>
@@ -461,11 +464,11 @@
         <div id="sidebar-backdrop" class="fixed inset-0 bg-dark-bg/90 backdrop-blur-md z-40 hidden lg:hidden"></div>
 
         <!-- Main Content Area -->
-        <main class="flex-1 h-full overflow-y-auto lg:p-6 p-4">
+        <main id="admin-main" class="flex-1 min-w-0 h-full overflow-y-auto lg:p-6 px-3 py-4 sm:p-4">
             <div class="max-w-7xl mx-auto space-y-6">
                 @if (isGlobalNoindexActive)
                 {
-                    <div class="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center space-x-4 shadow-[0_4px_25px_rgba(244,63,94,0.3)] animate-pulse">
+                    <div class="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center gap-4 shadow-[0_4px_25px_rgba(244,63,94,0.3)] animate-pulse">
                         <div class="p-2 bg-rose-500/20 rounded-lg"><i class="fas fa-triangle-exclamation text-xl"></i></div>
                         <div>
                             <strong class="font-bold text-sm block">Search Engine Indexing Blocked (Noindex Active)</strong>
@@ -480,7 +483,7 @@
                         <h2 class="text-xl font-bold text-white">@ViewData["Title"]</h2>
                         <p class="text-sm text-slate-400 mt-1">@Localizer["AdminLayoutSub"]</p>
                     </div>
-                    <div class="flex items-center @(isRtl ? "space-x-reverse space-x-3" : "space-x-3")">
+                    <div class="flex items-center gap-3">
                         <partial name="_ThemeToggle" />
                         <partial name="_LanguageSwitcher" />
                     </div>
@@ -489,7 +492,7 @@
                 <!-- Modern Alerts -->
                 @if (TempData["SuccessMessage"] != null)
                 {
-                    <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center space-x-4 shadow-[0_4px_20px_rgba(16,185,129,0.1)]">
+                    <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-4 shadow-[0_4px_20px_rgba(16,185,129,0.1)]">
                         <div class="p-2 bg-emerald-500/20 rounded-lg"><i class="fas fa-check text-lg"></i></div>
                         <span class="font-medium text-sm">@TempData["SuccessMessage"]</span>
                     </div>
@@ -497,15 +500,15 @@
 
                 @if (TempData["ErrorMessage"] != null)
                 {
-                    <div class="p-4 rounded-2xl bg-brand-orange/10 border border-brand-orange/20 text-brand-orange flex items-center space-x-4 shadow-[0_4px_20px_rgba(255,126,66,0.1)]">
+                    <div class="p-4 rounded-2xl bg-brand-orange/10 border border-brand-orange/20 text-brand-orange flex items-center gap-4 shadow-[0_4px_20px_rgba(255,126,66,0.1)]">
                         <div class="p-2 bg-brand-orange/20 rounded-lg"><i class="fas fa-triangle-exclamation text-lg"></i></div>
                         <span class="font-medium text-sm">@TempData["ErrorMessage"]</span>
                     </div>
                 }
 
                 <!-- Body Content Container -->
-                <div class="glass-panel rounded-3xl p-1 shadow-2xl">
-                    <div class="bg-dark-bg/40 rounded-[22px] p-6 min-h-[500px]">
+                <div id="admin-shell" class="glass-panel rounded-3xl p-1 shadow-2xl">
+                    <div id="admin-shell-inner" class="bg-dark-bg/40 rounded-[22px] p-6 min-h-[500px]">
                         @RenderBody()
                     </div>
                 </div>
@@ -521,14 +524,19 @@
         const sidebar = document.getElementById('sidebar');
         const sidebarBackdrop = document.getElementById('sidebar-backdrop');
 
+        // Closed menu waits off the left edge in LTR and off the right edge in Arabic / Farsi
+        const sidebarClosedClass = document.documentElement.dir === 'rtl' ? 'translate-x-full' : '-translate-x-full';
+
         if (mobileMenuBtn) {
         mobileMenuBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('-translate-x-full');
+        sidebar.classList.toggle(sidebarClosedClass);
         sidebarBackdrop.classList.toggle('hidden');
+        mobileMenuBtn.setAttribute('aria-expanded', String(!sidebar.classList.contains(sidebarClosedClass)));
         });
         sidebarBackdrop.addEventListener('click', () => {
-        sidebar.classList.add('-translate-x-full');
+        sidebar.classList.add(sidebarClosedClass);
         sidebarBackdrop.classList.add('hidden');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
         });
         }
 

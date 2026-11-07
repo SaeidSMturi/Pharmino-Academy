@@ -48,8 +48,8 @@ namespace Application.DTOs.Account
         public bool AcceptDataProcessing { get; set; }
         public bool MarketingConsent { get; set; }
 
-        /// <summary>The full name typed to sign the terms.</summary>
-        [Required, MaxLength(400)]
+        /// <summary>Name recorded against the accepted terms; set by the server from First/LastName.</summary>
+        [MaxLength(400)]
         public string Signature { get; set; } = string.Empty;
 
         [Required, MaxLength(20)]

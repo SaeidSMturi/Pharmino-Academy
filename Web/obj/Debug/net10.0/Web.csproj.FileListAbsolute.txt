@@ -791,8 +791,6 @@ C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-
 C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild6\ar\Web.resources.dll
 C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild6\en\Web.resources.dll
 C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-claude-pzs8sxrjxfjjc-scratch-workspaces-daf68a88-e25a-4585-a196-f78523c912ab-b82eec73-4124-4994-8779-ba0d3f6a8536-scratch-2026-10-25-2154f3\3af0b7ce-466d-4b95-b53c-d6a64fae7c27\scratchpad\webbuild6\fa\Web.resources.dll
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\c9e3ad15r3-{0}-lvs1vwhxee-lvs1vwhxee.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\czapx1icbl-{0}-albf4qezjr-albf4qezjr.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\PhoneNumbers.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\MaxMind.Db.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\bin\Debug\net10.0\MaxMind.GeoIP2.dll
@@ -833,7 +831,6 @@ C:\Users\user\AppData\Local\Temp\pharmino-build\Web.pdb
 C:\Users\user\AppData\Local\Temp\pharmino-build\ar\Web.resources.dll
 C:\Users\user\AppData\Local\Temp\pharmino-build\en\Web.resources.dll
 C:\Users\user\AppData\Local\Temp\pharmino-build\fa\Web.resources.dll
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\bd99rxen5c-{0}-05s17jcn9c-05s17jcn9c.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\ze1mqy4djk-{0}-557rwq02z1-557rwq02z1.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\7ipzrvn0ay-{0}-fdkerjavvt-fdkerjavvt.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\75v7c98fu9-{0}-5kz3ksalyt-5kz3ksalyt.gz
@@ -1105,6 +1102,29 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compre
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\hb9woymn95-{0}-3p12w4ba14-3p12w4ba14.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\0hdagv3j2r-{0}-2z66o5x5ga-2z66o5x5ga.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\7hctcabyb0-{0}-igptxjqzvt-igptxjqzvt.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\nu1ripf8f1-{0}-jsczlhs1zn-jsczlhs1zn.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\90fajr167m-{0}-7amq46eepu-7amq46eepu.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\qs9e4pbhs4-{0}-hx1mojsuw9-hx1mojsuw9.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\c9e3ad15r3-{0}-826lythgqs-826lythgqs.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\3gb5rcifoa-{0}-s782uh2snw-s782uh2snw.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\czapx1icbl-{0}-y8xzqgcalh-y8xzqgcalh.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\qs9e4pbhs4-{0}-8g6ekhorz3-8g6ekhorz3.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\nu1ripf8f1-{0}-6xshu55n5v-6xshu55n5v.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\90fajr167m-{0}-3extibfqal-3extibfqal.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\bd99rxen5c-{0}-exz9m2h6bs-exz9m2h6bs.gz
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\web.config
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\AppData\VideoEngine\version.json
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\appsettings.Development.json
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\appsettings.json
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\dotnet-tools.json
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Web.staticwebassets.runtime.json
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Web.staticwebassets.endpoints.json
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Assets\Fonts\DejaVuSans-Bold.ttf
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Assets\Fonts\DejaVuSansMono.ttf
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Web.exe
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Web.deps.json
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Web.runtimeconfig.json
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Web.dll
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Web.pdb
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\ar\Web.resources.dll
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\en\Web.resources.dll
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\fa\Web.resources.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\2e35gc6mqd-{0}-epi2najgck-epi2najgck.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\x47f3soksq-{0}-ojskdxegvw-ojskdxegvw.gz

@@ -134,11 +134,11 @@ namespace Web.Controllers
                 return Fail("Enter a valid mobile number for the selected country");
 
             if (model.TermsVersion != SignupTerms.Version) return Fail("The terms have changed. Please reload the page and review them again.");
-            if (!model.AcceptTerms || !model.AcceptCompensation || !model.AcceptDataProcessing)
-                return Fail("Please accept the terms, the compensation clause and the data processing consent");
-            static string Squash(string s) => Regex.Replace(s.Trim(), @"\s+", " ");
-            if (!string.Equals(Squash(model.Signature), Squash(first_ + " " + last), StringComparison.OrdinalIgnoreCase))
-                return Fail("Your signature must match your first and last name");
+            // Two boxes on the form: the terms (which include the section 6 compensation clause) and data processing.
+            if (!model.AcceptTerms || !model.AcceptDataProcessing)
+                return Fail("Please accept the terms and the data processing consent");
+            // There is no typed signature any more: record the account holder's name against the accepted terms.
+            model.Signature = first_ + " " + last;
 
             // Last: this uses the token up, so only consume it once everything else is valid.
             if (!_verification.TryConsumeToken(model.VerificationToken, model.Email))

@@ -77,11 +77,11 @@
 </style>
 
 <!-- 🌟 Outer Split Workspace (Curriculum Playlist Sidebar + Video Main Stage) -->
-<div class="flex-1 w-full flex flex-col lg:flex-row overflow-hidden relative" dir="@(isRtl ? "rtl" : "ltr")">
+<div class="flex-1 w-full flex flex-col lg:flex-row lg:overflow-hidden relative" dir="@(isRtl ? "rtl" : "ltr")">
 
     <!-- 📚 1. Course Curriculum / Playlist Sidebar (Matching Image 2) -->
     <aside id="curriculum-sidebar"
-           class="w-full lg:w-80 xl:w-96 shrink-0 bg-brand-dark/95 border-b lg:border-b-0 @(isRtl ? "lg:border-l" : "lg:border-r") border-white/10 flex flex-col h-[400px] lg:h-[calc(100vh-61px)] transition-all duration-300 z-30 select-none">
+           class="order-2 lg:order-none w-full lg:w-80 xl:w-96 shrink-0 bg-brand-dark/95 border-t lg:border-t-0 @(isRtl ? "lg:border-l" : "lg:border-r") border-white/10 flex flex-col max-h-[70vh] lg:max-h-none lg:h-[calc(100vh-61px)] transition-all duration-300 z-30 select-none">
 
         <!-- Progress Header (Image 2: "82% COMPLETE") -->
         <div class="p-4 lg:p-5 border-b border-white/10 bg-white/[0.02]">
@@ -191,7 +191,7 @@
     </aside>
 
     <!-- 🎬 2. Main Video Player Stage -->
-    <main class="flex-1 overflow-y-auto h-[calc(100vh-61px)] p-4 md:p-6 lg:p-8 space-y-6 curriculum-scrollbar">
+    <main class="order-1 lg:order-none flex-1 min-w-0 lg:overflow-y-auto lg:h-[calc(100vh-61px)] p-3 sm:p-4 md:p-6 lg:p-8 space-y-4 sm:space-y-6 curriculum-scrollbar">
 
         @if (isItAdmin)
         {
@@ -239,28 +239,28 @@
         </div>
 
         <!-- 🎬 Floating Video Player Viewport Container -->
-        <div class="glass-panel rounded-[2rem] overflow-hidden shadow-2xl relative border border-white/10">
+        <div class="glass-panel rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl relative border border-white/10">
             <div id="player-container" class="bg-black aspect-video w-full">
                 <!-- Video player injected here -->
             </div>
         </div>
 
         <!-- 🧭 3. Bottom Lesson Navigation Bar (Matching Image 3) -->
-        <div class="flex items-center justify-between gap-4 p-4 rounded-2xl glass-panel border border-white/10 shadow-xl">
+        <div class="flex items-center justify-between gap-2 sm:gap-4 p-3 sm:p-4 rounded-2xl glass-panel border border-white/10 shadow-xl">
             <!-- < Previous Lesson Button -->
             @if (prevVideo != null)
             {
                 <a href="@Url.Action("Watch", new { videoId = prevVideo.VideoId })"
                    class="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-white font-bold text-xs sm:text-sm hover:border-brand-cyan/40 transition-all shadow">
                     <i class="fas @(isRtl ? "fa-chevron-right" : "fa-chevron-left") text-xs"></i>
-                    <span>@Localizer["PreviousLesson"]</span>
+                    <span class="hidden min-[420px]:inline">@Localizer["PreviousLesson"]</span>
                 </a>
             }
             else
             {
                 <span class="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl border border-white/5 bg-white/[0.02] text-slate-600 font-bold text-xs sm:text-sm cursor-not-allowed">
                     <i class="fas @(isRtl ? "fa-chevron-right" : "fa-chevron-left") text-xs"></i>
-                    <span>@Localizer["PreviousLesson"]</span>
+                    <span class="hidden min-[420px]:inline">@Localizer["PreviousLesson"]</span>
                 </span>
             }
 
@@ -275,7 +275,7 @@
             @if (nextVideo != null)
             {
                 <button type="button" id="btn-complete-continue" onclick="completeAndNavigate(@nextVideo.VideoId)"
-                        class="inline-flex items-center gap-2.5 px-5 sm:px-7 py-2.5 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-500 hover:to-emerald-500 text-slate-950 font-extrabold text-xs sm:text-sm shadow-[0_0_20px_rgba(45,212,191,0.35)] hover:scale-[1.02] active:scale-[0.98] transition-all">
+                        class="inline-flex items-center justify-center gap-2.5 flex-1 sm:flex-none whitespace-nowrap px-4 sm:px-7 py-2.5 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-500 hover:to-emerald-500 text-slate-950 font-extrabold text-xs sm:text-sm shadow-[0_0_20px_rgba(45,212,191,0.35)] hover:scale-[1.02] active:scale-[0.98] transition-all">
                     <span>@Localizer["CompleteAndContinue"]</span>
                     <i class="fas @(isRtl ? "fa-chevron-left" : "fa-chevron-right") text-xs"></i>
                 </button>
@@ -283,7 +283,7 @@
             else
             {
                 <button type="button" id="btn-complete-continue" onclick="completeAndFinishCourse()"
-                        class="inline-flex items-center gap-2.5 px-5 sm:px-7 py-2.5 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-blue hover:from-brand-cyan/90 hover:to-brand-blue/90 text-slate-950 font-extrabold text-xs sm:text-sm shadow-[0_0_20px_rgba(66,234,255,0.35)] hover:scale-[1.02] active:scale-[0.98] transition-all">
+                        class="inline-flex items-center justify-center gap-2.5 flex-1 sm:flex-none whitespace-nowrap px-4 sm:px-7 py-2.5 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-blue hover:from-brand-cyan/90 hover:to-brand-blue/90 text-slate-950 font-extrabold text-xs sm:text-sm shadow-[0_0_20px_rgba(66,234,255,0.35)] hover:scale-[1.02] active:scale-[0.98] transition-all">
                     <i class="fas fa-trophy text-sm"></i>
                     <span>@Localizer["CompleteCourse"]</span>
                 </button>
@@ -291,7 +291,7 @@
         </div>
 
         <!-- Video Info & Description -->
-        <div class="glass-panel rounded-2xl p-6 border border-white/10 space-y-4">
+        <div class="glass-panel rounded-2xl p-4 sm:p-6 border border-white/10 space-y-4">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
                 <div>
                     <h1 class="text-xl md:text-2xl font-extrabold text-white tracking-tight mb-1">@Model.Title</h1>
@@ -321,8 +321,8 @@
 
         <!-- Hotkeys & Security Matrix -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Console Hotkeys -->
-            <div class="glass-panel rounded-2xl p-5 border border-white/5">
+            <!-- Console Hotkeys (hidden on phones: no keyboard) -->
+            <div class="hidden md:block glass-panel rounded-2xl p-5 border border-white/5">
                 <h3 class="text-xs font-bold text-white tracking-wider uppercase mb-3 flex items-center">
                     <i class="fas fa-keyboard mr-2 ml-2 text-brand-cyan"></i> Console Hotkeys
                 </h3>
@@ -471,6 +471,12 @@
         const curriculumSidebar = document.getElementById('curriculum-sidebar');
         if (toggleBtn && curriculumSidebar) {
             toggleBtn.addEventListener('click', () => {
+                // below lg the lesson list sits under the video, so the button jumps to it
+                if (window.matchMedia('(max-width: 1023px)').matches) {
+                    curriculumSidebar.classList.remove('hidden');
+                    curriculumSidebar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    return;
+                }
                 curriculumSidebar.classList.toggle('hidden');
             });
         }

@@ -77,10 +77,6 @@
         <div class="loader-ring"></div>
     </div>
 
-    <div class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
-        <div class="absolute top-1/4 left-5 w-80 h-80 bg-custom-gold/10 rounded-full mix-blend-screen filter blur-[120px] animate-blob-1"></div>
-        <div class="absolute bottom-1/3 right-5 w-96 h-96 bg-custom-navy/20 rounded-full mix-blend-screen filter blur-[140px] animate-blob-2"></div>
-    </div>
 
     <header id="header-wrapper" class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 transition-all duration-500 ease-in-out">
         <div id="header-container" class="w-full max-w-6xl px-5 py-3 rounded-full bg-custom-dark/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(18,60,118,0.3)] flex justify-between items-center transition-all duration-500 ease-in-out border border-custom-gold/20 relative">
@@ -392,6 +388,7 @@
     </footer>
 
 <script src="~/js/site.js"></script>
+<script src="~/js/gradient-bg.js" asp-append-version="true" data-preset="site"></script>
 <script src="~/js/theme.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

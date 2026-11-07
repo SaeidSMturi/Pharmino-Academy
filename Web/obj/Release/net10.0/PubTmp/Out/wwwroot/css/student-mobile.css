@@ -1,0 +1,112 @@
+/* =====================================================================
+   Student area: phone layout (loaded by Areas/User/_UserLayout.cshtml)
+   Everything here is inside a max-width query, so tablets and desktop
+   keep their existing look. !important is needed because the Tailwind
+   CDN injects its utilities after this file.
+   ===================================================================== */
+
+@media (max-width: 639px) {
+  /* The page already draws its own cards; the extra glass box around them
+     only ate ~50px of width on a phone. */
+  #user-main #user-shell {
+    background: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+  }
+  #user-main #user-shell > .absolute { display: none !important; }
+
+  /* Desktop-sized padding shrinks to phone size */
+  #user-main .p-16 { padding: 2rem 1.25rem !important; }
+  #user-main .p-10,
+  #user-main .p-8 { padding: 1.25rem !important; }
+  #user-main .p-6 { padding: 1rem !important; }
+  #user-main .rounded-\[2rem\] { border-radius: 1.5rem !important; }
+  #user-main .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.25rem !important; }
+  #user-main .mb-8 { margin-bottom: 1.25rem !important; }
+  #user-main .gap-6 { gap: 1rem !important; }
+
+  /* Page titles: a little smaller so they don't wrap on every word */
+  #user-main h1.text-3xl,
+  #user-main h1.text-2xl { font-size: 1.5rem !important; line-height: 1.2 !important; }
+  #user-main .text-lg.text-slate-400 { font-size: 1rem !important; }
+
+  /* Square icon tiles next to text must never get squeezed into pills */
+  #user-main .flex > .w-8,
+  #user-main .flex > .w-9,
+  #user-main .flex > .w-10,
+  #user-main .flex > .w-12,
+  #user-main .flex > .w-14,
+  #user-main .flex > .w-16 { flex-shrink: 0 !important; }
+
+  /* Page heroes (icon + title + subtitle): the icon sits above the title
+     instead of stealing a column of width. */
+  #user-main .glass-panel > .relative.z-10.flex.items-center:has(> .w-12 + div > h1),
+  #user-main .relative.z-10.flex.items-center:has(> .w-12 + div > h1) {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: .85rem;
+  }
+  #user-main .relative.z-10.flex.items-center:has(> .w-12 + div > h1) > * { margin: 0 !important; }
+
+  /* Header bar: language button shows only the globe + chevron */
+  .mobile-bar .lang-switcher-btn > span { display: none; }
+  .mobile-bar .lang-switcher-btn { padding: .55rem .7rem !important; }
+  .mobile-bar .theme-toggle-btn { width: 2.5rem; height: 2.5rem; }
+
+  /* Receipts table becomes a stack of cards */
+  .rcpt-table thead { display: none; }
+  .rcpt-table, .rcpt-table tbody, .rcpt-table tr, .rcpt-table td { display: block; width: 100%; }
+  .rcpt-table tr { padding: .9rem 1rem; }
+  .rcpt-table td {
+    padding: .3rem 0 !important;
+    text-align: start !important;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .rcpt-table td[data-label]::before {
+    content: attr(data-label);
+    font-size: .68rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+    color: rgb(148 163 184);
+    flex-shrink: 0;
+  }
+  .rcpt-table td.rcpt-title { font-size: .95rem !important; padding-bottom: .5rem !important; }
+  .rcpt-table td.rcpt-token { word-break: break-all; }
+  .rcpt-table td.rcpt-empty { display: block; text-align: center !important; }
+  [data-theme="light"] .rcpt-table td[data-label]::before { color: rgb(71 85 105); }
+
+  /* Dark theme: the animated background has a bright white sweep that sits
+     right behind the cards on a tall phone screen; give cards a darker base
+     so their white/grey text stays readable over it. */
+  html:not([data-theme="light"]) #user-main .glass-panel {
+    background: linear-gradient(135deg, rgba(8, 12, 28, .78) 0%, rgba(8, 12, 28, .62) 100%) !important;
+  }
+
+  /* Bars that stick while the page scrolls (exam timer) must hide what passes under them */
+  html:not([data-theme="light"]) #user-main .sticky.glass-panel { background: rgba(8, 12, 28, .95) !important; }
+  [data-theme="light"] #user-main .sticky.glass-panel { background: rgba(255, 255, 255, .96) !important; }
+
+  /* Forms that used to rely on the outer glass box (profile, password)
+     get a card of their own on phones */
+  #user-main .mobile-card {
+    background: linear-gradient(135deg, rgba(8, 12, 28, .8) 0%, rgba(8, 12, 28, .66) 100%);
+    border: 1px solid rgba(255, 255, 255, .08);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .35);
+  }
+  [data-theme="light"] #user-main .mobile-card {
+    background: rgba(255, 255, 255, .82);
+    border-color: rgba(15, 23, 42, .08);
+    box-shadow: 0 16px 36px rgba(15, 23, 42, .12);
+  }
+}
+
+/* Very narrow phones (iPhone SE / small Androids) */
+@media (max-width: 359px) {
+  #user-main { padding-left: .5rem !important; padding-right: .5rem !important; }
+  #user-main .grid-cols-2 { grid-template-columns: 1fr !important; }
+}

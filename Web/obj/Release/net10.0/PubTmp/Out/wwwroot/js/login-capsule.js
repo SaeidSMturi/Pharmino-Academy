@@ -17,30 +17,6 @@
 
     var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // ---- falling pills ---------------------------------------------------------
-    var rain = document.querySelector(".cap-rain");
-    if (rain && !reduced) {
-        var colours = ["#4272FF", "#FF7E42", "#42EAFF", "#FFB343", "#a78bfa"];
-        var count = window.innerWidth < 640 ? 6 : 14;
-        for (var i = 0; i < count; i++) {
-            var pill = document.createElement("span");
-            var capsule = Math.random() < 0.65;
-            pill.className = "cap-pill " + (capsule ? "cap-pill--capsule" : "cap-pill--tablet");
-            var a = colours[Math.floor(Math.random() * colours.length)];
-            var b = colours[Math.floor(Math.random() * colours.length)];
-            var r0 = Math.round(Math.random() * 360);
-            pill.style.cssText =
-                "left:" + (Math.random() * 100).toFixed(1) + "%;" +
-                "--size:" + Math.round(24 + Math.random() * 26) + "px;" +
-                "--dur:" + (11 + Math.random() * 10).toFixed(1) + "s;" +
-                // negative delays so the sky is already full when the page appears
-                "--delay:" + (-Math.random() * 20).toFixed(1) + "s;" +
-                "--r0:" + r0 + "deg;--r1:" + (r0 + (Math.random() < 0.5 ? -1 : 1) * (180 + Math.round(Math.random() * 360))) + "deg;" +
-                "--a:" + a + ";--b:" + (b === a ? "#FF7E42" : b) + ";";
-            rain.appendChild(pill);
-        }
-    }
-
     if (reduced) return;
     document.documentElement.classList.add("cap-js");
 

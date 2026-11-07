@@ -42,7 +42,7 @@
     {
         <!-- Each course is a glass folder: tap to open it and pick a lesson. -->
         @* Room above each row: an open folder's files rise about 130px out of it. *@
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-32 pt-28 pb-4 justify-items-center items-end">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-24 sm:gap-y-32 pt-16 sm:pt-28 pb-4 justify-items-center items-end">
             @for (var i = 0; i < Model.Count; i++)
             {
                 <partial name="_CourseFolder" model="Model[i]" view-data='new ViewDataDictionary(ViewData) { ["AppearDelay"] = (i % 3) * 140 }' />

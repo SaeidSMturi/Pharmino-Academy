@@ -49,3 +49,6 @@ C:\Users\user\AppData\Local\Temp\claude\C--Users-user-AppData-Local-Claude-Data-
 C:\Users\user\AppData\Local\Temp\pharmino-build\Domain.deps.json
 C:\Users\user\AppData\Local\Temp\pharmino-build\Domain.dll
 C:\Users\user\AppData\Local\Temp\pharmino-build\Domain.pdb
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Domain.deps.json
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Domain.dll
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Domain.pdb

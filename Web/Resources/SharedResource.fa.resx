@@ -1649,4 +1649,16 @@
   <data name="ReorderHelpText" xml:space="preserve">
     <value>ویدیوها را با کشیدن نشانه‌ها (═) جابه‌جا کنید و سپس روی ذخیره چیدمان بزنید.</value>
   </data>
+  <data name="Tests" xml:space="preserve">
+    <value>آزمون‌ها</value>
+  </data>
+  <data name="Finance" xml:space="preserve">
+    <value>امور مالی</value>
+  </data>
+  <data name="MyTests" xml:space="preserve">
+    <value>آزمون‌های من</value>
+  </data>
+  <data name="BillingReceipts" xml:space="preserve">
+    <value>صورتحساب و رسیدها</value>
+  </data>
 </root>

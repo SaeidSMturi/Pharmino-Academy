@@ -70,3 +70,7 @@ C:\Users\user\AppData\Local\Temp\pharmino-build\Infrastructure.deps.json
 C:\Users\user\AppData\Local\Temp\pharmino-build\Infrastructure.runtimeconfig.json
 C:\Users\user\AppData\Local\Temp\pharmino-build\Infrastructure.dll
 C:\Users\user\AppData\Local\Temp\pharmino-build\Infrastructure.pdb
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Infrastructure.deps.json
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Infrastructure.runtimeconfig.json
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Infrastructure.dll
+C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Infrastructure.pdb

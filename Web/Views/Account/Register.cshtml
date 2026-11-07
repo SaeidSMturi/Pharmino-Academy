@@ -67,8 +67,6 @@
     </div>
 
     <div class="min-h-screen flex flex-col items-center justify-center relative px-4 py-20 overflow-hidden">
-        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#4272FF]/15 blur-[120px] pointer-events-none"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#FF7E42]/15 blur-[120px] pointer-events-none"></div>
 
         <main class="su relative z-10" id="su"
               data-country="@ViewBag.DetectedCountry"
@@ -82,8 +80,19 @@
               data-url-send-code="@Url.Action("SendCode", "Signup")" data-url-verify-code="@Url.Action("VerifyCode", "Signup")"
               data-url-create="@Url.Action("Create", "Signup")">
             <div class="su-card">
-                <div class="su-progress" aria-hidden="true"><i id="su-progress"></i></div>
-                <div class="su-steplabel"><span id="su-steplabel">Step 1 of 6</span><span id="su-stepname">Your email</span></div>
+                @* Stepper: look of 21st.dev "Segmented Progress Pill Stepper" (shadcnspace stepper-04). *@
+                <div class="su-stepper">
+                    <div class="su-stepper-head"><h3 id="su-stepname">Your email</h3><p id="su-steplabel">Step 1 of 6</p></div>
+                    <div class="su-track" aria-hidden="true"><i class="fill" id="su-track-fill"></i><i class="pill" id="su-track-pill"></i></div>
+                    <ol class="su-steps" id="su-steps" aria-label="Sign-up steps">
+                        <li><button type="button" data-goto="1" aria-current="step"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg><span>Email</span></button></li>
+                        <li><button type="button" data-goto="2" disabled><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg><span>About you</span></button></li>
+                        <li><button type="button" data-goto="3" disabled><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg><span>Password</span></button></li>
+                        <li><button type="button" data-goto="4" disabled><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg><span>Phone</span></button></li>
+                        <li><button type="button" data-goto="5" disabled><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg><span>Terms</span></button></li>
+                        <li><button type="button" data-goto="6" disabled><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg><span>Verify</span></button></li>
+                    </ol>
+                </div>
                 <div class="su-sr" aria-live="polite" id="su-live"></div>
 
                 <form id="su-form" novalidate autocomplete="on" onsubmit="return false">
@@ -196,13 +205,7 @@
                             <partial name="_SignupTerms" />
                         </div>
                         <label class="su-chk lock" data-lock><input type="checkbox" id="su-c1" disabled><span>I have read and agree to the Terms of use and student agreement.</span></label>
-                        <label class="su-chk lock" data-lock><input type="checkbox" id="su-c2" disabled><span>I understand that sharing, recording or copying Pharmino content makes me liable to pay agreed compensation of 50 to 1,000 OMR per breach, as set out in section 6.</span></label>
                         <label class="su-chk lock" data-lock><input type="checkbox" id="su-c3" disabled><span>I consent to Pharmino processing my personal data as described in section 9 and the Privacy Policy.</span></label>
-                        <label class="su-chk lock" data-lock><input type="checkbox" id="su-c4" disabled><span class="opt">Optional: send me news about new courses and offers.</span></label>
-                        <div class="su-f" style="margin-top:.8rem">
-                            <label class="su-label" for="su-sig" id="su-sig-label">Type your full name to sign</label>
-                            <input class="su-input" id="su-sig" disabled autocomplete="off" maxlength="400">
-                        </div>
                         <div class="su-msg" id="su-terms-msg">Scroll to the end of the terms to continue.</div>
                         <div class="su-nav"><button type="button" class="su-btn su-btn-ghost" data-back>Back</button><button type="button" class="su-btn su-btn-primary" id="su-agree">Agree and send my code <span class="su-plane"><i class="fas fa-paper-plane"></i></span></button></div>
                     </section>
@@ -210,7 +213,6 @@
                     @* ---------- Step 6: email code (React OTP component) ---------- *@
                     <section class="su-step" data-step="6" data-name="Verify email" aria-label="Verify your email">
                         <div class="su-otp" id="su-otp"></div>
-                        <div class="su-otp-foot" id="su-otp-foot">Didn't get it? Check your spam folder. · <button type="button" class="su-link" id="su-change-email">Wrong email? Change it</button></div>
                         <div class="su-creating" id="su-creating" aria-live="polite"></div>
                     </section>
                 </form>
@@ -219,6 +221,7 @@
         </main>
     </div>
 
+    <script src="~/js/gradient-bg.js" asp-append-version="true" data-preset="site"></script>
     <script src="~/js/theme.js" asp-append-version="true"></script>
     <script src="~/dist/signup/signup.js" asp-append-version="true"></script>
     <script src="~/js/signup.js" asp-append-version="true"></script>

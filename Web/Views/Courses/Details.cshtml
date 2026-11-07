@@ -444,8 +444,8 @@
                                 }
 
                                 <div class="flex-1 min-w-0">
-                                    <div class="flex items-center justify-between mb-1">
-                                        <h3 class="text-base font-bold text-custom-snow group-hover:text-custom-gold transition-colors truncate pr-4">@video.Title</h3>
+                                    <div class="flex flex-col-reverse items-start sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-1">
+                                        <h3 class="text-sm sm:text-base font-bold text-custom-snow group-hover:text-custom-gold transition-colors line-clamp-2 sm:truncate leading-snug">@video.Title</h3>
 
                                         @if (canWatch)
                                         {
@@ -519,7 +519,7 @@
 
                                 <div class="flex-1 min-w-0">
                                     <div class="flex items-center justify-between mb-1">
-                                        <h3 class="text-base font-bold text-custom-snow group-hover:text-[#ff6b6b] transition-colors truncate pr-4">@(pdf.Title ?? pdf.OriginalFileName)</h3>
+                                        <h3 class="text-sm sm:text-base font-bold text-custom-snow group-hover:text-[#ff6b6b] transition-colors line-clamp-2 sm:truncate leading-snug sm:pr-4">@(pdf.Title ?? pdf.OriginalFileName)</h3>
                                         @if (pdf.Price == 0)
                                         {
                                             <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-[#4ade80]/20 text-[#4ade80] uppercase border border-[#4ade80]/20 flex-shrink-0">@Localizer["BadgeFree"]</span>

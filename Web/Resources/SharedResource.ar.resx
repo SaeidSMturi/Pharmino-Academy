@@ -1649,4 +1649,16 @@
   <data name="ReorderHelpText" xml:space="preserve">
     <value>اسحب الفيديوهات باستخدام المقبض (═) لتغيير الترتيب، ثم اضغط حفظ الترتيب.</value>
   </data>
+  <data name="Tests" xml:space="preserve">
+    <value>الاختبارات</value>
+  </data>
+  <data name="Finance" xml:space="preserve">
+    <value>المالية</value>
+  </data>
+  <data name="MyTests" xml:space="preserve">
+    <value>اختباراتي</value>
+  </data>
+  <data name="BillingReceipts" xml:space="preserve">
+    <value>الفواتير والإيصالات</value>
+  </data>
 </root>

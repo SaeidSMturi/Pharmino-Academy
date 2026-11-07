@@ -14,6 +14,7 @@ type MountOptions = {
   onVerify: (code: string) => Promise<OTPVerifyResult>;
   onResend: () => void | Promise<void>;
   onSuccess: () => void;
+  onChangeEmail?: () => void;
 };
 
 const settings = { stiffness: 700, damping: 20, y: 10, opacity: 0 };

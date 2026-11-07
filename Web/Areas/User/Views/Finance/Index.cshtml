@@ -26,7 +26,7 @@
     <!-- Receipts Table -->
     <div class="glass-panel rounded-2xl border border-white/5 overflow-hidden shadow-xl">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-slate-300">
+            <table class="rcpt-table w-full text-left text-sm text-slate-300">
                 <thead class="bg-white/[0.03] text-xs uppercase font-bold text-slate-400 tracking-wider border-b border-white/[0.05]">
                     <tr>
                         <th class="px-6 py-4">Item / Course</th>
@@ -41,7 +41,7 @@
                     @if (Model == null || !Model.Any())
                     {
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-slate-500 text-sm">
+                            <td colspan="6" class="rcpt-empty px-6 py-12 text-center text-slate-500 text-sm">
                                 <i class="fas fa-receipt block text-2xl mb-2 text-slate-600"></i>
                                 You have no payment transactions recorded yet.
                             </td>
@@ -52,20 +52,20 @@
                         @foreach (var item in Model)
                         {
                             <tr class="hover:bg-white/[0.02] transition-colors">
-                                <td class="px-6 py-4 font-bold text-white text-xs">
+                                <td class="rcpt-title px-6 py-4 font-bold text-white text-xs">
                                     @(item.Course?.Title ?? "Course Enrollment")
                                 </td>
-                                <td class="px-6 py-4 text-center font-mono text-xs text-brand-cyan">
+                                <td data-label="Receipt #" class="rcpt-token px-6 py-4 text-center font-mono text-xs text-brand-cyan">
                                     @item.OrderToken
                                 </td>
-                                <td class="px-6 py-4 text-center font-mono font-bold text-white text-xs">
+                                <td data-label="Amount" class="px-6 py-4 text-center font-mono font-bold text-white text-xs">
                                     @CurrencyHelper.Format(item.Amount, item.Currency)
                                     @if (item.Mode.Equals("Demo", StringComparison.OrdinalIgnoreCase))
                                     {
                                         <span class="block mt-1 text-[10px] font-sans font-semibold text-amber-300" title="Test checkout — no money was charged">Demo · not charged</span>
                                     }
                                 </td>
-                                <td class="px-6 py-4 text-center">
+                                <td data-label="Method" class="px-6 py-4 text-center">
                                     @if (item.Gateway.Equals("LemonSqueezy", StringComparison.OrdinalIgnoreCase))
                                     {
                                         <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#FFC233]/15 text-[#FFC233] border border-[#FFC233]/30">
@@ -79,7 +79,7 @@
                                         </span>
                                     }
                                 </td>
-                                <td class="px-6 py-4 text-center">
+                                <td data-label="Status" class="px-6 py-4 text-center">
                                     @if (item.Status.Equals("Completed", StringComparison.OrdinalIgnoreCase))
                                     {
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
@@ -105,7 +105,7 @@
                                         </span>
                                     }
                                 </td>
-                                <td class="px-6 py-4 text-right font-mono text-xs text-slate-400">
+                                <td data-label="Date" class="px-6 py-4 text-right font-mono text-xs text-slate-400">
                                     @item.CreateDate.ToString("MMM dd, yyyy")
                                 </td>
                             </tr>

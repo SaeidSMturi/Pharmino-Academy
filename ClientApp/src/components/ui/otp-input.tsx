@@ -27,7 +27,7 @@ const OTPSuccess = () => {
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.3, type: "spring", stiffness: 500, damping: 30 }}
-        className="w-16 h-16 bg-green-500 ring-4 ring-green-100 dark:ring-green-900 text-white flex items-center justify-center rounded-full"
+        className="w-16 h-16 bg-emerald-500 ring-4 ring-emerald-400/30 text-white flex items-center justify-center rounded-full shadow-lg"
       >
         <CheckIcon size={32} strokeWidth={3} />
       </motion.div>
@@ -35,9 +35,9 @@ const OTPSuccess = () => {
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.4, duration: 0.4 }}
-        className="text-green-600 dark:text-green-400 font-semibold text-lg"
+        className="text-emerald-300 font-semibold text-lg"
       >
-        OTP Verified!
+        Email verified!
       </motion.p>
     </div>
   );
@@ -51,7 +51,7 @@ const OTPError = ({ message = "Invalid OTP. Please try again." }: { message?: st
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.2 }}
-      className="text-center text-red-500 dark:text-red-400 font-medium mt-2 absolute -bottom-8 w-full"
+      className="text-center text-red-300 text-sm font-medium mt-2 absolute -bottom-8 w-full"
     >
       {message}
     </motion.div>
@@ -97,7 +97,7 @@ const OTPInputBox = ({
 
   useEffect(() => {
     if (state === "success") {
-      const transitionX = index * 68; // Adjusted for 4 inputs with gap
+      const transitionX = index * 72; // [Pharmino] 56px boxes + 16px gap
       animationControls.start({
         x: -transitionX,
         transition: slowSuccessTransition,
@@ -164,12 +164,12 @@ const OTPInputBox = ({
 
   return (
     <motion.div
-      className={`w-14 h-16 rounded-lg ring-2 ring-transparent focus-within:shadow-inner overflow-hidden transition-all duration-300 ${
+      className={`w-14 h-14 rounded-2xl border shadow-lg overflow-hidden transition-all duration-200 ${
         state === "error"
-          ? "ring-red-400 dark:ring-red-500"
+          ? "border-red-400/80 bg-red-500/15"
           : state === "success"
-            ? "ring-green-500"
-            : "focus-within:ring-gray-400 dark:focus-within:ring-gray-500 ring-gray-200 dark:ring-gray-700"
+            ? "border-emerald-400/80 bg-emerald-500/15"
+            : "border-white/55 bg-white/15 focus-within:border-white focus-within:bg-white/25 focus-within:ring-4 focus-within:ring-white/25"
       }`}
       initial={{ opacity, y }}
       animate={animationControls}
@@ -184,7 +184,9 @@ const OTPInputBox = ({
         onPaste={onPaste}
         onFocus={onFocus}
         onBlur={onBlur}
-        className="w-full h-full text-center text-3xl font-semibold outline-none caret-gray-900 dark:caret-gray-200 bg-sidebar-ring dark:bg-black dark:text-white"
+        autoComplete={index === 0 ? "one-time-code" : "off"}
+        aria-label={`Digit ${index + 1}`}
+        className="w-full h-full text-center text-2xl font-semibold outline-none bg-transparent text-white caret-white"
         disabled={state === "success"}
       />
     </motion.div>
@@ -206,6 +208,7 @@ export function OTPVerification({
   onVerify,
   onResend,
   onSuccess,
+  onChangeEmail,
 }: {
   stiffness?: number;
   damping?: number;
@@ -219,6 +222,8 @@ export function OTPVerification({
   onResend?: () => void | Promise<void>;
   /** Called once the success animation has had time to play. */
   onSuccess?: () => void;
+  /** [Pharmino] Goes back to the email step when the address was mistyped. */
+  onChangeEmail?: () => void;
 }) {
   const [state, setState] = useState("idle");
   const [countdown, setCountdown] = useState(60);
@@ -337,36 +342,36 @@ export function OTPVerification({
   };
 
   return (
-    <div
-      className="rounded-3xl p-8 w-full max-w-sm shadow-lg dark:shadow-gray-900/50 relative overflow-hidden"
-      style={{
-        backgroundImage:
-          "url(https://cdn.21st.dev/assets/localized/16c55696aea9e60fe904ded95cfa9615f3dd5850411f794c155beb28679fd3a4.gif)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <div className="absolute inset-0 bg-white/80 dark:bg-card/97 rounded-3xl"></div>
+    // [Pharmino] Look of 21st.dev "OTP Verify" by minhxthanh: tunnel animation under a blue gradient.
+    <div className="relative w-full max-w-sm overflow-hidden rounded-3xl shadow-2xl">
+      <div className="absolute inset-0 z-0" aria-hidden="true">
+        <img
+          src="https://cdn.21st.dev/assets/mirror/44/447cf94cf584093396582baae6030e44c02a7c06df1fa6b931aeedbf97afa518.gif"
+          alt=""
+          className="w-full h-full object-cover opacity-60"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-600/85 via-blue-800/90 to-[#0a1033]" />
+      </div>
 
-      <div className="relative z-10">
-        {/* Logo */}
-        <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 bg-black dark:bg-white rounded-full flex items-center justify-center">
-            <div className="flex space-x-1">
-              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-            </div>
+      <div className="relative z-10 px-6 py-12 sm:px-8 sm:py-14">
+        <div className="text-center mb-8">
+          <div className="w-12 h-12 mx-auto mb-6 rounded-2xl bg-white/15 border border-white/35 text-white flex items-center justify-center shadow-lg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="m3 7 9 6 9-6" />
+            </svg>
           </div>
+          <h1 className="text-2xl font-semibold text-white mb-3">
+            {state === "success" ? "You're verified" : "Enter verification code"}
+          </h1>
+          {state !== "success" && (
+            <p className="text-white/85 text-sm leading-relaxed">
+              We emailed a 4-digit code to
+              <br />
+              <span className="text-white font-medium break-all">{email}</span>
+            </p>
+          )}
         </div>
-
-        {/* Title */}
-        <h1 className="text-2xl font-semibold text-center text-gray-900 dark:text-white mb-2">
-          {state === "success"
-            ? "Verification Successful!"
-            : "Enter Verification Code"}
-        </h1>
 
         <AnimatePresence mode="wait">
           {state === "success" ? (
@@ -376,9 +381,8 @@ export function OTPVerification({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              // This container will hold the success message and provide space.
               className="flex items-center justify-center"
-              style={{ height: "232px" }} // Matches the approximate height of the form part
+              style={{ height: "168px" }}
             >
               <OTPSuccess />
             </motion.div>
@@ -390,21 +394,8 @@ export function OTPVerification({
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              {/* Description */}
-              <p className="text-center text-gray-600 dark:text-gray-300 mt-2 mb-8">
-                We've sent a 4-digit code to
-                <br />{" "}
-                <span className="font-medium text-gray-800 dark:text-gray-100">
-                  {email}
-                </span>
-              </p>
-
-              {/* OTP Input Area */}
-              <div className="flex flex-col items-center justify-center gap-2 mb-10 relative h-20">
-                <motion.div
-                  animate={animationControls}
-                  className="flex items-center justify-center gap-4"
-                >
+              <div className="flex flex-col items-center justify-center mb-10 relative h-16" dir="ltr">
+                <motion.div animate={animationControls} className="flex items-center justify-center gap-4">
                   {Array.from({ length: 4 }).map((_, index) => (
                     <OTPInputBox
                       key={`input-${index}`}
@@ -423,23 +414,38 @@ export function OTPVerification({
                 </AnimatePresence>
               </div>
 
-              {/* Resend Link */}
-              <div className="text-center">
-                <span className="text-gray-600 dark:text-gray-300">
-                  Didn't get a code?{" "}
-                </span>
+              <div className="text-center mb-6 text-sm">
+                <span className="text-white/85">Didn't get the code? </span>
                 {isResendDisabled ? (
-                  <span className="text-gray-500 dark:text-gray-400">
-                    Resend in {countdown}s
-                  </span>
+                  <span className="text-white/75 tabular-nums">Resend in {countdown}s</span>
                 ) : (
                   <button
+                    type="button"
                     onClick={handleResend}
-                    className="font-medium text-gray-900 dark:text-white hover:underline focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-500 rounded"
+                    className="text-white font-semibold underline underline-offset-4 decoration-white/50 hover:decoration-white transition-colors duration-200 focus:outline-none focus-visible:decoration-2"
                   >
-                    Click to resend
+                    Resend
                   </button>
                 )}
+              </div>
+
+              <div className="text-center">
+                <p className="text-white/80 text-[13px] leading-relaxed">
+                  Not in your inbox? Check your spam folder.
+                  {onChangeEmail && (
+                    <>
+                      <br />
+                      Typo in your address?{" "}
+                      <button
+                        type="button"
+                        onClick={onChangeEmail}
+                        className="text-white font-semibold underline underline-offset-4 decoration-white/50 hover:decoration-white transition-colors"
+                      >
+                        Edit email
+                      </button>
+                    </>
+                  )}
+                </p>
               </div>
             </motion.div>
           )}

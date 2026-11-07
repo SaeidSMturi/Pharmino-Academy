@@ -2,11 +2,11 @@
  * Capsule login — Views/Account/Login.cshtml, behaviour in js/login-capsule.js.
  *
  * A two-tone capsule sits closed in the middle of the page, splits open and lets the
- * login card out of the seam. Small pills and tablets fall slowly behind it. On sign-in
+ * login card out of the seam. On sign-in
  * the card slips back in, the capsule snaps shut with a click, and the form submits.
  *
  * Without the script nothing here hides the form: every hidden state is keyed on
- * html.cap-js, which the script sets. Reduced motion skips the intro and the rain.
+ * html.cap-js, which the script sets. Reduced motion skips the intro.
  */
 
 .cap-stage {
@@ -157,51 +157,6 @@ html.cap-js .cap-stage[data-cap="pre-close"] .cap-right { opacity: 0; transform:
   80% { transform: translateX(3px); }
 }
 
-/* ---- falling pills ------------------------------------------------------------ */
-.cap-rain {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-.cap-pill {
-  position: absolute;
-  top: -60px;
-  display: block;
-  opacity: .32;
-  animation: cap-fall var(--dur, 14s) linear var(--delay, 0s) infinite;
-  will-change: transform;
-}
-.cap-pill--capsule {
-  width: var(--size, 34px);
-  height: calc(var(--size, 34px) * .42);
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--a, #4272FF) 0 50%, var(--b, #FF7E42) 50% 100%);
-}
-.cap-pill--tablet {
-  width: calc(var(--size, 34px) * .6);
-  height: calc(var(--size, 34px) * .6);
-  border-radius: 50%;
-  background: var(--a, #42EAFF);
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .25);
-}
-.cap-pill--tablet::after {
-  content: "";
-  position: absolute;
-  left: 18%;
-  right: 18%;
-  top: 50%;
-  height: 2px;
-  margin-top: -1px;
-  background: rgba(0, 0, 0, .25);
-}
-@keyframes cap-fall {
-  from { transform: translateY(0) rotate(var(--r0, 0deg)); }
-  to { transform: translateY(calc(100vh + 120px)) rotate(var(--r1, 360deg)); }
-}
-html.light .cap-pill { opacity: .22; }
-
 /* ---- phones: a smaller capsule and a gentler spread ---------------------------- */
 @media (max-width: 480px) {
   .cap-stage { --cap-h: 88px; --cap-w: 104px; --cap-spread: 52vw; }
@@ -209,6 +164,5 @@ html.light .cap-pill { opacity: .22; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cap-rain { display: none; }
   .cap-stage *, .cap-stage *::before, .cap-stage *::after { animation: none !important; transition: none !important; }
 }

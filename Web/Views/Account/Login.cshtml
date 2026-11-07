@@ -106,12 +106,7 @@
     </div>
 
     <div class="min-h-screen flex flex-col items-center justify-center relative p-4 overflow-hidden">
-        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#4272FF]/15 blur-[120px] pointer-events-none"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#FF7E42]/15 blur-[120px] pointer-events-none"></div>
-        <div class="absolute top-[30%] right-[20%] w-[30vw] h-[30vw] rounded-full bg-[#42EAFF]/10 blur-[100px] pointer-events-none"></div>
 
-        @* pills and tablets falling slowly behind the card (filled in by login-capsule.js) *@
-        <div class="cap-rain" aria-hidden="true"></div>
 
         @* The capsule: it opens to let the card out, and snaps shut again on sign-in. *@
         <main class="cap-stage w-full max-w-md z-10" data-error="@(ViewData.ModelState.IsValid ? "false" : "true")">
@@ -175,6 +170,7 @@
         </main>
     </div>
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/gradient-bg.js" asp-append-version="true" data-preset="login"></script>
     <script src="~/js/theme.js" asp-append-version="true"></script>
     <script src="~/js/login-capsule.js" asp-append-version="true"></script>
 </body>
