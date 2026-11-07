@@ -873,21 +873,30 @@ html[lang^="fa"] div {
    Kept last in the file so it wins over the earlier #fff rules.
    ===================================================================== */
 [data-theme="light"] .glass-panel {
-    background: rgba(242, 245, 250, 0.92) !important;
+    background: rgba(229, 234, 242, 0.94) !important;
 }
 [data-theme="light"] aside#sidebar {
-    background: #f4f6fa !important;
+    background: #e7ebf2 !important;
 }
 [data-theme="light"] .bg-dark-bg,
 [data-theme="light"] .bg-dark-bg\/40,
 [data-theme="light"] .bg-dark-bg\/60,
 [data-theme="light"] .bg-dark-bg\/80,
 [data-theme="light"] .bg-dark-bg\/90 {
-    background-color: rgba(242, 245, 250, 0.6) !important;
+    background-color: rgba(229, 234, 242, 0.6) !important;
 }
 [data-theme="light"] .bg-white\/\[0\.02\],
 [data-theme="light"] .bg-white\/\[0\.03\],
 [data-theme="light"] .bg-white\/\[0\.05\],
-[data-theme="light"] .bg-white\/5 {
-    background-color: #f8fafc !important;
+[data-theme="light"] .bg-white\/5,
+[data-theme="light"] main .bg-white\/5 {
+    background-color: #eef1f6 !important;
+}
+[data-theme="light"] main .bg-white\/5:hover {
+    background-color: #e6eaf1 !important;
+}
+/* Boxes inside the sidebar (profile card, bottom links): a touch lighter than the sidebar itself. */
+[data-theme="light"] #sidebar .glass-panel,
+[data-theme="light"] #sidebar .bg-brand-surface {
+    background: #eef1f6 !important;
 }
