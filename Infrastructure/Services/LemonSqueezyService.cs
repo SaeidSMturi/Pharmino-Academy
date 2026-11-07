@@ -63,7 +63,7 @@ namespace Infrastructure.Services
                 UserId = userId,
                 CourseId = courseId,
                 OrderToken = orderToken,
-                Amount = CurrencyHelper.FromSiteCurrency(priceInOmr, chargeCurrency),
+                Amount = CurrencyHelper.ToChargeAmount(priceInOmr, chargeCurrency),
                 Currency = chargeCurrency,
                 Status = "Pending",
                 CreateDate = DateTime.UtcNow,
@@ -97,7 +97,7 @@ namespace Infrastructure.Services
                         type = "checkouts",
                         attributes = new
                         {
-                            custom_price = CurrencyHelper.ToMinorUnits(transaction.Amount, transaction.Currency),
+                            custom_price = CurrencyHelper.ToLemonSqueezyCents(transaction.Amount),
                             product_options = new
                             {
                                 name = course?.Title ?? "Course Enrollment",
@@ -241,8 +241,10 @@ namespace Infrastructure.Services
                 return;
             }
 
-            // Webhooks are retried: process each order once.
-            if (!string.Equals(transaction.Status, "Pending", StringComparison.OrdinalIgnoreCase))
+            // Webhooks are retried: process each order once. An order marked Failed by the amount check below
+            // for this same Lemon Squeezy order may be re-checked, so "Resend" in the dashboard can complete it.
+            var recheck = string.Equals(transaction.Status, "Failed", StringComparison.OrdinalIgnoreCase) && transaction.PaymentId == orderId;
+            if (!recheck && !string.Equals(transaction.Status, "Pending", StringComparison.OrdinalIgnoreCase))
             {
                 _logger.LogInformation("Order {OrderToken} is already {Status}; webhook ignored.", orderToken, transaction.Status);
                 return;
@@ -255,17 +257,21 @@ namespace Infrastructure.Services
                 return;
             }
 
-            // The amount and currency charged must match what this order was created for.
+            // The price paid must match what this order was created for. Compare the price before tax:
+            // Lemon Squeezy adds VAT/sales tax on top (total = subtotal - discount + tax), which depends on
+            // the buyer's country. A discount code would lower it, and is caught here too.
             var currency = GetString(attrs, "currency");
-            var total = attrs.TryGetProperty("total", out var totalEl) && totalEl.TryGetInt64(out var cents) ? cents : -1;
-            var expected = CurrencyHelper.ToMinorUnits(transaction.Amount, transaction.Currency);
+            var subtotal = attrs.TryGetProperty("subtotal", out var subEl) && subEl.TryGetInt64(out var sub) ? sub : -1;
+            var discount = attrs.TryGetProperty("discount_total", out var discEl) && discEl.TryGetInt64(out var disc) ? disc : 0;
+            var total = subtotal < 0 ? -1 : subtotal - discount;
+            var expected = CurrencyHelper.ToLemonSqueezyCents(transaction.Amount);
             if (!string.Equals(currency, transaction.Currency, StringComparison.OrdinalIgnoreCase) || total != expected)
             {
                 transaction.Status = "Failed";
                 transaction.PaymentId = orderId;
                 transaction.UpdateDate = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
-                _logger.LogError("Lemon Squeezy order {OrderId} paid {Total} {Currency} (minor units) but order {OrderToken} expects {Expected} {ExpectedCurrency}. Marked Failed for review.",
+                _logger.LogError("Lemon Squeezy order {OrderId} paid {Total} {Currency} before tax (hundredths) but order {OrderToken} expects {Expected} {ExpectedCurrency}. Marked Failed for review.",
                     orderId, total, currency, orderToken, expected, transaction.Currency);
                 return;
             }

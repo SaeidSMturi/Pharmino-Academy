@@ -1661,4 +1661,13 @@
   <data name="BillingReceipts" xml:space="preserve">
     <value>Billing &amp; Receipts</value>
   </data>
+  <data name="Emails" xml:space="preserve">
+    <value>Emails</value>
+  </data>
+  <data name="CreateEmail" xml:space="preserve">
+    <value>Create Email</value>
+  </data>
+  <data name="AllEmails" xml:space="preserve">
+    <value>All Emails</value>
+  </data>
 </root>

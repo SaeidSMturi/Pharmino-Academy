@@ -1661,4 +1661,13 @@
   <data name="BillingReceipts" xml:space="preserve">
     <value>الفواتير والإيصالات</value>
   </data>
+  <data name="Emails" xml:space="preserve">
+    <value>البريد الإلكتروني</value>
+  </data>
+  <data name="CreateEmail" xml:space="preserve">
+    <value>إنشاء بريد</value>
+  </data>
+  <data name="AllEmails" xml:space="preserve">
+    <value>كل الحسابات البريدية</value>
+  </data>
 </root>

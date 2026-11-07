@@ -219,6 +219,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\cr.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\gt.svg
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\admin-emails.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\lk.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\ao.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-protection\fingerprint.js
@@ -342,6 +343,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\student-mobile.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\ly.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\kh.svg
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\admin-emails.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\la.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\tt.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\rs.svg
@@ -373,6 +375,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\mf.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\jm.svg
 wwwroot\css\Style.css
+wwwroot\css\admin-emails.css
 wwwroot\css\admin-mobile.css
 wwwroot\css\admin.css
 wwwroot\css\advanced-video-player.css
@@ -658,6 +661,7 @@ wwwroot\dist\signup\signup.css
 wwwroot\dist\signup\signup.js
 wwwroot\favicon.ico
 wwwroot\fonts\BNazanin.ttf
+wwwroot\js\admin-emails.js
 wwwroot\js\advanced-video-player.js
 wwwroot\js\advanced-video-player\controls.js
 wwwroot\js\advanced-video-player\events.js

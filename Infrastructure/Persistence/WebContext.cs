@@ -50,6 +50,7 @@ namespace Infrastructure.Persistence
         #region Email
 
         public DbSet<EmailAccount> Emails { get; set; }
+        public DbSet<Mailbox> Mailboxes { get; set; }
 
         #endregion
 
@@ -688,6 +689,18 @@ namespace Infrastructure.Persistence
                     AssignedDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 }
             );
+
+            #endregion
+
+            #region Mailboxes (labels for HestiaCP mail accounts)
+
+            modelBuilder.Entity<Mailbox>(e =>
+            {
+                e.Property(m => m.Address).HasMaxLength(254).IsRequired();
+                e.HasIndex(m => m.Address).IsUnique();
+                e.Property(m => m.Label).HasMaxLength(20).IsRequired();
+                e.Property(m => m.DisplayName).HasMaxLength(120);
+            });
 
             #endregion
 

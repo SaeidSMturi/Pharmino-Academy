@@ -110,3 +110,18 @@
   #user-main { padding-left: .5rem !important; padding-right: .5rem !important; }
   #user-main .grid-cols-2 { grid-template-columns: 1fr !important; }
 }
+
+/* ---- Arabic / Farsi (right-to-left): mirror the menu's active marker ---- */
+[dir="rtl"] #sidebar .nav-item-active {
+  border-left: 0;
+  border-right: 3px solid #42EAFF;
+  background: linear-gradient(270deg, rgba(66, 234, 255, .1) 0%, transparent 100%);
+  box-shadow: inset -10px 0 20px -10px rgba(66, 234, 255, .3);
+}
+[dir="rtl"] #sidebar nav a .group-hover\:translate-x-1 { --tw-translate-x: 0; }
+[data-theme="light"][dir="rtl"] #sidebar .nav-item-active {
+  border-left: 0 !important;
+  border-right: 3px solid #123C76 !important;
+  background: linear-gradient(270deg, rgba(18, 60, 118, .1) 0%, transparent 100%) !important;
+  box-shadow: inset -10px 0 20px -10px rgba(18, 60, 118, .2) !important;
+}

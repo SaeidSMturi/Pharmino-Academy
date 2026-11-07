@@ -54,6 +54,12 @@
   /* Wide tables scroll sideways inside their own card */
   #admin-main .overflow-x-auto { -webkit-overflow-scrolling: touch; }
 
+  /* Dark theme: on a tall phone screen the background's bright white sweep sits
+     right behind the (barely filled) admin cards; dim it so text stays readable */
+  html:not([data-theme="light"]) .pharmino-gradient-bg::after {
+    content: ""; position: absolute; inset: 0; background: rgba(3, 7, 18, .55);
+  }
+
   /* Header bar: language button shows only the globe + chevron */
   .mobile-bar .lang-switcher-btn > span { display: none; }
   .mobile-bar .lang-switcher-btn { padding: .55rem .7rem !important; }

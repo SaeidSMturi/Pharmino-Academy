@@ -196,6 +196,30 @@ namespace Web
             builder.Services.AddScoped<IPasswordValidator, PasswordValidator>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
+            // Admin → Emails: mailboxes on the HestiaCP mail server ("Hestia" section of appsettings).
+            // Locally, with no Hestia connection set, an in-memory demo server stands in so the pages can be tried out.
+            var hestiaOptions = builder.Configuration.GetSection("Hestia").Get<Web.Services.Mail.HestiaOptions>() ?? new Web.Services.Mail.HestiaOptions();
+            builder.Services.AddSingleton(hestiaOptions);
+            builder.Services.AddHttpClient(Web.Services.Mail.HestiaMailServer.HttpClientName, c => c.Timeout = TimeSpan.FromSeconds(20))
+                .ConfigurePrimaryHttpMessageHandler(() =>
+                {
+                    var handler = new SocketsHttpHandler();
+                    // Optional: reach the panel at a fixed address (e.g. 127.0.0.1 on the same server); the certificate is still checked by name.
+                    if (System.Net.IPAddress.TryParse(hestiaOptions.ConnectAddress, out var address))
+                    {
+                        handler.ConnectCallback = async (ctx, ct) =>
+                        {
+                            var socket = new System.Net.Sockets.Socket(System.Net.Sockets.SocketType.Stream, System.Net.Sockets.ProtocolType.Tcp) { NoDelay = true };
+                            try { await socket.ConnectAsync(address, ctx.DnsEndPoint.Port, ct); return new System.Net.Sockets.NetworkStream(socket, ownsSocket: true); }
+                            catch { socket.Dispose(); throw; }
+                        };
+                    }
+                    return handler;
+                });
+            if (builder.Environment.IsDevelopment() && !hestiaOptions.Configured)
+                builder.Services.AddSingleton<Web.Services.Mail.IMailServerAdmin, Web.Services.Mail.DemoMailServer>();
+            else
+                builder.Services.AddScoped<Web.Services.Mail.IMailServerAdmin, Web.Services.Mail.HestiaMailServer>();
             builder.Services.AddScoped<IAccountService, AccountService>();
             // Email codes and verification tokens for the one-page sign-up (in memory until the account exists).
             builder.Services.AddSingleton<Web.Services.Signup.SignupVerificationService>();

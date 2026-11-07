@@ -1,0 +1,231 @@
+@model Web.Areas.Admin.Controllers.EmailsPageModel
+@using Web.Areas.Admin.Views.Emails
+@{
+    ViewData["Title"] = EmailsText.Get("AllEmails");
+    string T(string k) => EmailsText.Get(k);
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-emails.css" asp-append-version="true" />
+}
+
+@Html.AntiForgeryToken()
+
+<div class="em-page space-y-6" id="em-list-page">
+    <!-- Header -->
+    <div class="flex flex-wrap items-end justify-between gap-4">
+        <div class="text-start">
+            <p class="em-crumb"><i class="fas fa-envelope-open-text"></i> @T("Emails") <span>/</span> @T("AllEmails")</p>
+            <h1 class="text-3xl font-bold text-white mt-1">@T("AllEmails")</h1>
+            <p class="text-slate-400 text-sm mt-1">@T("ListSub")</p>
+        </div>
+        <div class="flex gap-2">
+            <button type="button" id="em-refresh" class="em-btn em-btn-ghost" title="@T("Refresh")" aria-label="@T("Refresh")"><i class="fas fa-rotate"></i></button>
+            <a asp-action="Create" class="em-btn em-btn-primary"><i class="fas fa-plus"></i> @T("NewEmail")</a>
+        </div>
+    </div>
+
+    @if (Model.IsDemo)
+    {
+        <div class="em-banner em-banner-info"><i class="fas fa-flask"></i><span>@T("DemoMode")</span></div>
+    }
+    @if (!Model.Configured)
+    {
+        <div class="em-banner em-banner-warn"><i class="fas fa-plug-circle-xmark"></i><span>@T("NotConfigured")</span></div>
+    }
+
+    <div class="em-card space-y-5">
+        <!-- Label chips -->
+        <div class="em-chips" role="tablist" aria-label="@T("Label")">
+            <button type="button" class="em-chip is-active" data-label-filter="" role="tab" aria-selected="true">@T("All") <b data-count="all">0</b></button>
+            <button type="button" class="em-chip em-chip-admin" data-label-filter="Admin" role="tab" aria-selected="false"><i class="fas fa-user-shield"></i> @T("Admins") <b data-count="Admin">0</b></button>
+            <button type="button" class="em-chip em-chip-student" data-label-filter="Student" role="tab" aria-selected="false"><i class="fas fa-user-graduate"></i> @T("Students") <b data-count="Student">0</b></button>
+            <button type="button" class="em-chip em-chip-none" data-label-filter="none" role="tab" aria-selected="false" hidden>@T("Unlabeled") <b data-count="none">0</b></button>
+        </div>
+
+        <!-- Search + filters -->
+        <div class="em-filters">
+            <div class="em-search">
+                <i class="fas fa-magnifying-glass"></i>
+                <input id="em-q" type="search" class="em-input" placeholder="@T("Search")" spellcheck="false" />
+            </div>
+            <select id="em-status" class="em-input em-select" aria-label="@T("Status")">
+                <option value="">@T("AnyStatus")</option>
+                <option value="active">@T("Active")</option>
+                <option value="suspended">@T("Suspended")</option>
+            </select>
+            <div class="em-range" title="@T("CreatedRange")">
+                <i class="far fa-calendar"></i>
+                <label class="sr-only" for="em-from">@T("From")</label>
+                <input id="em-from" type="date" class="em-input" aria-label="@T("From")" />
+                <span class="text-slate-500">–</span>
+                <label class="sr-only" for="em-to">@T("To")</label>
+                <input id="em-to" type="date" class="em-input" aria-label="@T("To")" />
+            </div>
+            <button type="button" id="em-clear" class="em-btn em-btn-ghost text-xs" hidden><i class="fas fa-xmark"></i> @T("Clear")</button>
+        </div>
+
+        <!-- Table (md and up) -->
+        <div class="em-table-wrap">
+            <table class="em-table">
+                <thead>
+                    <tr>
+                        <th>@T("Address")</th>
+                        <th>@T("Label")</th>
+                        <th>@T("CreatedAt")</th>
+                        <th>@T("Disk")</th>
+                        <th>@T("Status")</th>
+                    </tr>
+                </thead>
+                <tbody id="em-rows"></tbody>
+            </table>
+        </div>
+        <!-- Cards (phones) -->
+        <ul id="em-cards" class="em-cards"></ul>
+
+        <div id="em-state" class="em-state"><i class="fas fa-circle-notch fa-spin"></i> @T("Loading")</div>
+
+        <!-- Pager -->
+        <div class="em-pager" id="em-pager" hidden>
+            <span id="em-range-text" class="text-xs text-slate-400"></span>
+            <div class="flex items-center gap-1" id="em-pages"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ Side panel (sheet) ============ -->
+<div id="em-sheet-backdrop" class="em-sheet-backdrop" hidden></div>
+<aside id="em-sheet" class="em-sheet" role="dialog" aria-modal="true" aria-labelledby="em-sheet-title" hidden>
+    <header class="em-sheet-head">
+        <div class="flex items-center gap-3 min-w-0">
+            <span class="em-avatar" id="em-sheet-avatar">S</span>
+            <div class="min-w-0">
+                <h2 id="em-sheet-title" class="font-bold text-white truncate" dir="ltr"></h2>
+                <p id="em-sheet-name" class="text-xs text-slate-400 truncate"></p>
+            </div>
+        </div>
+        <div class="flex items-center gap-1 shrink-0">
+            <button type="button" class="em-btn em-btn-icon" data-copy-text="em-sheet-title" aria-label="@T("Copy")" title="@T("Copy")"><i class="far fa-copy"></i></button>
+            <button type="button" class="em-btn em-btn-icon" id="em-sheet-close" aria-label="@T("Close")" title="@T("Close")"><i class="fas fa-xmark"></i></button>
+        </div>
+    </header>
+
+    <div class="em-sheet-body">
+        <!-- Label -->
+        <section>
+            <h3 class="em-label">@T("Label")</h3>
+            <div class="em-segment" role="radiogroup">
+                <label class="em-seg em-seg-admin"><input type="radio" name="sheet-label" value="Admin" /><i class="fas fa-user-shield"></i> @T("Admin")</label>
+                <label class="em-seg em-seg-student"><input type="radio" name="sheet-label" value="Student" /><i class="fas fa-user-graduate"></i> @T("Student")</label>
+            </div>
+            <p class="em-hint" id="em-sheet-unlabeled" hidden>@T("UnlabeledHint")</p>
+        </section>
+
+        <!-- Display name -->
+        <section>
+            <h3 class="em-label">@T("DisplayName")</h3>
+            <div class="flex gap-2">
+                <input id="em-sheet-dn" class="em-input flex-1" maxlength="120" placeholder="@T("DisplayNamePh")" />
+                <button type="button" class="em-btn em-btn-outline" data-act="name">@T("Save")</button>
+            </div>
+        </section>
+
+        <!-- Facts -->
+        <section class="em-facts">
+            <div><span>@T("CreatedAt")</span><b id="em-sheet-created"></b></div>
+            <div><span>@T("Status")</span><b id="em-sheet-status"></b></div>
+            <div class="col-span-2">
+                <span>@T("QuotaUsage")</span>
+                <b id="em-sheet-usage"></b>
+                <div class="em-usage"><i id="em-sheet-usage-bar"></i></div>
+            </div>
+        </section>
+
+        <!-- Password -->
+        <section>
+            <h3 class="em-label">@T("ChangePassword")</h3>
+            <div class="flex gap-2" dir="ltr">
+                <div class="em-pw flex-1">
+                    <input id="em-sheet-pw" type="password" class="em-input" autocomplete="new-password" placeholder="@T("NewPassword")" maxlength="128" spellcheck="false" />
+                    <button type="button" class="em-pw-eye" data-eye="em-sheet-pw" aria-label="@T("Show")"><i class="fas fa-eye"></i></button>
+                </div>
+                <button type="button" class="em-btn em-btn-outline" data-generate="em-sheet-pw" title="@T("Generate")" aria-label="@T("Generate")"><i class="fas fa-wand-magic-sparkles"></i></button>
+                <button type="button" class="em-btn em-btn-icon" data-copy-input="em-sheet-pw" aria-label="@T("Copy")" title="@T("Copy")"><i class="far fa-copy"></i></button>
+            </div>
+            <div class="em-strength" data-strength-for="em-sheet-pw">
+                <div class="em-bars"><i></i><i></i><i></i><i></i></div>
+                <span class="em-strength-label"></span>
+            </div>
+            <p class="em-error" data-for="sheet-password"></p>
+            <button type="button" class="em-btn em-btn-primary w-full mt-2" data-act="password"><i class="fas fa-key"></i> @T("ChangePassword")</button>
+        </section>
+
+        <!-- Quota -->
+        <section>
+            <h3 class="em-label">@T("ChangeQuota")</h3>
+            <div class="flex flex-wrap items-center gap-3">
+                <input id="em-sheet-quota" type="number" min="1" max="1000000" class="em-input max-w-[9rem]" placeholder="MB" />
+                <label class="em-switch">
+                    <input type="checkbox" id="em-sheet-unlimited" />
+                    <span class="em-switch-track"><span class="em-switch-thumb"></span></span>
+                    <span class="text-sm text-slate-300">@T("Unlimited")</span>
+                </label>
+                <button type="button" class="em-btn em-btn-outline ms-auto" data-act="quota">@T("Save")</button>
+            </div>
+        </section>
+
+        <!-- Aliases -->
+        <section>
+            <h3 class="em-label">@T("Aliases")</h3>
+            <ul class="em-tags" id="em-sheet-aliases" dir="ltr"></ul>
+            <div class="flex gap-2 mt-2" dir="ltr">
+                <input id="em-sheet-alias" class="em-input flex-1" placeholder="info" spellcheck="false" />
+                <button type="button" class="em-btn em-btn-outline" data-act="alias-add"><i class="fas fa-plus"></i></button>
+            </div>
+        </section>
+
+        <!-- Forwarding -->
+        <section>
+            <h3 class="em-label">@T("Forwarding")</h3>
+            <ul class="em-tags" id="em-sheet-forwards" dir="ltr"></ul>
+            <div class="flex gap-2 mt-2" dir="ltr">
+                <input id="em-sheet-forward" type="email" class="em-input flex-1" placeholder="@T("ForwardPh")" spellcheck="false" />
+                <button type="button" class="em-btn em-btn-outline" data-act="forward-add"><i class="fas fa-plus"></i></button>
+            </div>
+        </section>
+
+        <!-- Suspend -->
+        <section class="flex items-center justify-between gap-4">
+            <div>
+                <h3 class="em-label mb-0">@T("Suspend")</h3>
+                <p class="em-hint">@T("SuspendHint")</p>
+            </div>
+            <label class="em-switch em-switch-warn">
+                <input type="checkbox" id="em-sheet-suspend" />
+                <span class="em-switch-track"><span class="em-switch-thumb"></span></span>
+            </label>
+        </section>
+
+        <!-- Delete -->
+        <section class="em-danger">
+            <h3 class="em-label text-rose-400">@T("DangerZone")</h3>
+            <p class="em-hint">@T("DeleteHint")</p>
+            <input id="em-sheet-confirm" class="em-input mt-2" dir="ltr" spellcheck="false" autocomplete="off" />
+            <button type="button" class="em-btn em-btn-danger w-full mt-2" data-act="delete" disabled><i class="fas fa-trash-can"></i> @T("Delete")</button>
+        </section>
+    </div>
+</aside>
+
+<div id="em-toast" class="em-toast" role="status" aria-live="polite" hidden></div>
+
+@section Scripts {
+    <script>
+        window.EMAILS_T = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(EmailsText.All()));
+        window.EMAILS_URLS = {
+            list: '@Url.Action("List", "Emails", new { area = "Admin" })',
+            manage: '@Url.Action("Manage", "Emails", new { area = "Admin" })'
+        };
+        window.EMAILS_LANG = '@System.Globalization.CultureInfo.CurrentUICulture.Name';
+    </script>
+    <script src="~/js/admin-emails.js" asp-append-version="true"></script>
+}

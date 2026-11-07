@@ -54,7 +54,18 @@
   /* Wide tables scroll sideways inside their own card */
   #admin-main .overflow-x-auto { -webkit-overflow-scrolling: touch; }
 
+  /* Dark theme: on a tall phone screen the background's bright white sweep sits
+     right behind the (barely filled) admin cards; dim it so text stays readable */
+  html:not([data-theme="light"]) .pharmino-gradient-bg::after {
+    content: ""; position: absolute; inset: 0; background: rgba(3, 7, 18, .55);
+  }
+
   /* Header bar: language button shows only the globe + chevron */
   .mobile-bar .lang-switcher-btn > span { display: none; }
   .mobile-bar .lang-switcher-btn { padding: .55rem .7rem !important; }
 }
+
+/* ---- Arabic / Farsi (right-to-left): mirror the menu's highlight bar ---- */
+[dir="rtl"] #sidebar .menu-item::before { left: auto; right: 0; border-radius: 4px 0 0 4px; }
+[dir="rtl"] #sidebar .menu-item:hover { padding-left: 1rem; padding-right: 1.25rem; background: linear-gradient(270deg, rgba(66, 234, 255, .1) 0%, transparent 100%); }
+[dir="rtl"] #sidebar .sidebar-active { background: linear-gradient(270deg, rgba(66, 114, 255, .15) 0%, rgba(66, 234, 255, .02) 100%); }

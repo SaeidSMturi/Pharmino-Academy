@@ -30,12 +30,17 @@ namespace Application.DTOs.Payment
 
         public static int DecimalDigits(string currency) => ThreeDecimalCurrencies.Contains(currency) ? 3 : 2;
 
-        /// <summary>Amount in the currency's smallest unit (cents, baisa…), as payment APIs expect.</summary>
-        public static long ToMinorUnits(decimal amount, string currency)
-        {
-            var factor = DecimalDigits(currency) == 3 ? 1000m : 100m;
-            return (long)Math.Round(amount * factor, MidpointRounding.AwayFromZero);
-        }
+        /// <summary>
+        /// Amount as Lemon Squeezy expects it (custom_price, order totals): always hundredths of the store
+        /// currency, OMR included. Verified on the live store: custom_price 19250 shows as "OMR 192.500".
+        /// Lemon Squeezy cannot charge a third OMR decimal, so charge amounts are rounded with <see cref="ToChargeAmount"/>.
+        /// </summary>
+        public static long ToLemonSqueezyCents(decimal amount) =>
+            (long)Math.Round(amount * 100m, MidpointRounding.AwayFromZero);
+
+        /// <summary>What Lemon Squeezy actually charges for an OMR price: the store-currency amount rounded to 2 decimals.</summary>
+        public static decimal ToChargeAmount(decimal amountInOmr, string chargeCurrency) =>
+            Math.Round(FromSiteCurrency(amountInOmr, chargeCurrency), 2, MidpointRounding.AwayFromZero);
 
         /// <summary>Converts a site-currency (OMR) amount to the currency the payment provider charges in.</summary>
         public static decimal FromSiteCurrency(decimal amountInOmr, string targetCurrency)

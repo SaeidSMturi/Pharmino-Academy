@@ -1,0 +1,199 @@
+@model Web.Areas.Admin.Controllers.EmailsPageModel
+@using Web.Areas.Admin.Views.Emails
+@{
+    ViewData["Title"] = EmailsText.Get("CreateEmail");
+    string T(string k) => EmailsText.Get(k);
+    var domain = Model.Domains.FirstOrDefault() ?? "pharminoacademy.com";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-emails.css" asp-append-version="true" />
+}
+
+@Html.AntiForgeryToken()
+
+<div class="em-page space-y-6" id="em-create-page">
+    <!-- Header -->
+    <div class="flex flex-wrap items-end justify-between gap-4">
+        <div class="text-start">
+            <p class="em-crumb"><i class="fas fa-envelope-open-text"></i> @T("Emails") <span>/</span> @T("CreateEmail")</p>
+            <h1 class="text-3xl font-bold text-white mt-1">@T("CreateEmail")</h1>
+            <p class="text-slate-400 text-sm mt-1">@T("CreateSub")</p>
+        </div>
+        <a asp-action="Index" class="em-btn em-btn-ghost"><i class="fas fa-list"></i> @T("AllEmails")</a>
+    </div>
+
+    @if (Model.IsDemo)
+    {
+        <div class="em-banner em-banner-info"><i class="fas fa-flask"></i><span>@T("DemoMode")</span></div>
+    }
+    @if (!Model.Configured)
+    {
+        <div class="em-banner em-banner-warn"><i class="fas fa-plug-circle-xmark"></i><span>@T("NotConfigured")</span></div>
+    }
+    else if (Model.Error is not null)
+    {
+        <div class="em-banner em-banner-warn"><i class="fas fa-triangle-exclamation"></i><span>@Model.Error</span></div>
+    }
+
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
+        <!-- ============ Form ============ -->
+        <form id="em-create-form" class="em-card xl:col-span-2 space-y-6" novalidate autocomplete="off">
+            <!-- Account + domain -->
+            <div class="em-field">
+                <label for="em-account" class="em-label">@T("Account")</label>
+                <div class="em-group" dir="ltr">
+                    <input id="em-account" name="account" class="em-input em-group-input" placeholder="@T("AccountPh")" spellcheck="false" autocapitalize="off" maxlength="64" required @(Model.Configured ? "" : "disabled") />
+                    @if (Model.Domains.Count > 1)
+                    {
+                        <select id="em-domain" name="domain" class="em-group-addon em-group-select">
+                            @foreach (var d in Model.Domains)
+                            {
+                                <option value="@d">@@@d</option>
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        <span class="em-group-addon">@@@domain</span>
+                        <input type="hidden" id="em-domain" name="domain" value="@domain" />
+                    }
+                </div>
+                <p class="em-hint">@T("AccountHint")</p>
+                <p class="em-error" data-for="account"></p>
+            </div>
+
+            <!-- Label -->
+            <div class="em-field">
+                <span class="em-label" id="em-label-title">@T("Label")</span>
+                <div class="em-segment" role="radiogroup" aria-labelledby="em-label-title">
+                    <label class="em-seg em-seg-admin"><input type="radio" name="label" value="Admin" /><i class="fas fa-user-shield"></i> @T("Admin")</label>
+                    <label class="em-seg em-seg-student"><input type="radio" name="label" value="Student" checked /><i class="fas fa-user-graduate"></i> @T("Student")</label>
+                </div>
+                <p class="em-error" data-for="label"></p>
+            </div>
+
+            <!-- Display name -->
+            <div class="em-field">
+                <label for="em-name" class="em-label">@T("DisplayName") <span class="em-opt">(@T("Optional"))</span></label>
+                <input id="em-name" name="displayName" class="em-input" placeholder="@T("DisplayNamePh")" maxlength="120" />
+            </div>
+
+            <!-- Password -->
+            <div class="em-field">
+                <label for="em-password" class="em-label">@T("Password")</label>
+                <div class="flex gap-2" dir="ltr">
+                    <div class="em-pw flex-1">
+                        <input id="em-password" name="password" type="password" class="em-input" autocomplete="new-password" spellcheck="false" maxlength="128" required />
+                        <button type="button" class="em-pw-eye" data-eye="em-password" aria-label="@T("Show")" title="@T("Show")"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <button type="button" class="em-btn em-btn-outline" data-generate="em-password"><i class="fas fa-wand-magic-sparkles"></i> <span class="hidden sm:inline">@T("Generate")</span></button>
+                    <button type="button" class="em-btn em-btn-icon" data-copy-input="em-password" aria-label="@T("Copy")" title="@T("Copy")"><i class="far fa-copy"></i></button>
+                </div>
+                <div class="em-strength" data-strength-for="em-password">
+                    <div class="em-bars"><i></i><i></i><i></i><i></i></div>
+                    <span class="em-strength-label"></span>
+                </div>
+                <ul class="em-rules" data-rules-for="em-password">
+                    <li data-rule="len"><span class="em-check"></span>@T("Rule10")</li>
+                    <li data-rule="mix"><span class="em-check"></span>@T("RuleMix")</li>
+                    <li data-rule="sym"><span class="em-check"></span>@T("RuleSymbol")</li>
+                    <li data-rule="name"><span class="em-check"></span>@T("RuleNoName")</li>
+                </ul>
+                <p class="em-error" data-for="password"></p>
+            </div>
+
+            <!-- Quota -->
+            <div class="em-field">
+                <label for="em-quota" class="em-label">@T("Quota")</label>
+                <div class="flex items-center gap-3">
+                    <input id="em-quota" name="quota" type="number" min="1" max="1000000" step="1" class="em-input max-w-[12rem]" placeholder="1024" disabled />
+                    <label class="em-switch">
+                        <input type="checkbox" id="em-unlimited" checked />
+                        <span class="em-switch-track"><span class="em-switch-thumb"></span></span>
+                        <span class="text-sm text-slate-300">@T("Unlimited")</span>
+                    </label>
+                </div>
+                <p class="em-error" data-for="quota"></p>
+            </div>
+
+            <!-- Advanced -->
+            <details class="em-advanced">
+                <summary><i class="fas fa-sliders"></i> @T("Advanced") <i class="fas fa-chevron-down em-adv-chev"></i></summary>
+                <div class="space-y-5 pt-4">
+                    <div class="em-field">
+                        <label for="em-aliases" class="em-label">@T("Aliases") <span class="em-opt">(@T("Optional"))</span></label>
+                        <input id="em-aliases" name="aliases" class="em-input" dir="ltr" placeholder="@T("AliasesPh")" spellcheck="false" />
+                        <p class="em-error" data-for="aliases"></p>
+                    </div>
+                    <div class="em-field">
+                        <label for="em-forward" class="em-label">@T("ForwardTo") <span class="em-opt">(@T("Optional"))</span></label>
+                        <input id="em-forward" name="forwardTo" type="email" class="em-input" dir="ltr" placeholder="@T("ForwardPh")" spellcheck="false" />
+                        <p class="em-error" data-for="forward"></p>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Send details -->
+            <div class="em-field">
+                <label for="em-sendto" class="em-label">@T("SendDetails") <span class="em-opt">(@T("Optional"))</span></label>
+                <input id="em-sendto" name="sendDetailsTo" type="email" class="em-input" dir="ltr" placeholder="name@gmail.com" spellcheck="false" />
+                <p class="em-hint">@T("SendDetailsHint")</p>
+                <p class="em-error" data-for="sendTo"></p>
+            </div>
+
+            <p class="em-error em-form-error" data-for="_form"></p>
+            <button type="submit" class="em-btn em-btn-primary w-full" @(Model.Configured ? "" : "disabled")>
+                <i class="fas fa-envelope-circle-check"></i> <span>@T("CreateMailbox")</span>
+            </button>
+        </form>
+
+        <!-- Success state (replaces the form) -->
+        <div id="em-created" class="em-card xl:col-span-2 text-center space-y-5" hidden>
+            <div class="em-success-icon"><i class="fas fa-check"></i></div>
+            <div>
+                <h2 class="text-2xl font-bold text-white">@T("Created")</h2>
+                <p class="text-slate-400 text-sm mt-1">@T("CreatedSub")</p>
+            </div>
+            <div class="em-cred" dir="ltr">
+                <div><span>@T("Address")</span><b id="em-created-address"></b><button type="button" class="em-btn em-btn-icon" data-copy-text="em-created-address" aria-label="@T("Copy")"><i class="far fa-copy"></i></button></div>
+                <div><span>@T("Password")</span><b id="em-created-password" class="font-mono"></b><button type="button" class="em-btn em-btn-icon" data-copy-text="em-created-password" aria-label="@T("Copy")"><i class="far fa-copy"></i></button></div>
+            </div>
+            <ul id="em-created-warnings" class="em-warnings"></ul>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button type="button" id="em-create-another" class="em-btn em-btn-outline"><i class="fas fa-plus"></i> @T("CreateAnother")</button>
+                <a asp-action="Index" class="em-btn em-btn-primary"><i class="fas fa-list"></i> @T("ViewAll")</a>
+            </div>
+        </div>
+
+        <!-- ============ Connection settings ============ -->
+        <aside class="em-card space-y-5">
+            <div>
+                <h2 class="text-lg font-bold text-white flex items-center gap-2"><i class="fas fa-plug text-brand-cyan"></i> @T("Connection")</h2>
+                <p class="text-slate-400 text-xs mt-1">@T("ConnectionSub")</p>
+            </div>
+            <dl class="em-conn" dir="ltr">
+                <div><dt>@T("Username")</dt><dd id="em-conn-user"><span class="text-slate-500">@T("UsernameIs")</span></dd></div>
+                <div><dt>@T("Incoming")</dt><dd>@Model.MailHost<span>993 · SSL/TLS</span></dd></div>
+                <div><dt>@T("Outgoing")</dt><dd>@Model.MailHost<span>465 · SSL/TLS</span></dd></div>
+            </dl>
+            @if (!string.IsNullOrEmpty(Model.WebmailUrl))
+            {
+                <div class="pt-4 border-t border-white/5">
+                    <p class="em-label mb-1">@T("Webmail")</p>
+                    <a href="@Model.WebmailUrl" target="_blank" rel="noopener" class="text-brand-cyan text-sm font-semibold hover:underline">@T("OpenWebmail") <i class="fas fa-arrow-up-right-from-square text-[10px]"></i></a>
+                </div>
+            }
+        </aside>
+    </div>
+</div>
+
+<div id="em-toast" class="em-toast" role="status" aria-live="polite" hidden></div>
+
+@section Scripts {
+    <script>
+        window.EMAILS_T = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(EmailsText.All()));
+        window.EMAILS_URLS = { create: '@Url.Action("Create", "Emails", new { area = "Admin" })' };
+    </script>
+    <script src="~/js/admin-emails.js" asp-append-version="true"></script>
+}

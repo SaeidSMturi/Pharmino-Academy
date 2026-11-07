@@ -667,7 +667,6 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\Web.Re
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\Web.Resources.Views.Shared._Layout.fa.resources
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\fa\Web.resources.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\rj1i4o2db1-{0}-q5j6sprp92-q5j6sprp92.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\b2msq9thvz-{0}-4tf3qoi7hs-4tf3qoi7hs.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\c7c8xhpwka-{0}-lz2vllkufs-lz2vllkufs.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\62j3x091fd-{0}-8jz8xopk6q-8jz8xopk6q.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\h1zmaf09gy-{0}-a473m32dqn-a473m32dqn.gz
@@ -1126,5 +1125,8 @@ C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d
 C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\ar\Web.resources.dll
 C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\en\Web.resources.dll
 C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\fa\Web.resources.dll
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\2e35gc6mqd-{0}-epi2najgck-epi2najgck.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\x47f3soksq-{0}-ojskdxegvw-ojskdxegvw.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\2e35gc6mqd-{0}-cj13f9lws5-cj13f9lws5.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\b2msq9thvz-{0}-dq3rw18fd9-dq3rw18fd9.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\n4vjpyaz1h-{0}-18qvvx3uv0-18qvvx3uv0.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\xa5f26jw6d-{0}-meyc1mqxhb-meyc1mqxhb.gz

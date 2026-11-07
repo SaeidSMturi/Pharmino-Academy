@@ -14,6 +14,9 @@
     var canViewDashboard = await _permissionService.UserHasPermissionAsync(currentUserId, "Dashboard.View");
     var canViewCourses = await _permissionService.UserHasPermissionAsync(currentUserId, "Courses.View");
     var canViewPayments = await _permissionService.UserHasPermissionAsync(currentUserId, "Payments.View");
+    var canManageEmails = await _permissionService.UserHasPermissionAsync(currentUserId, "Emails.Manage");
+    var onEmails = ViewContext.RouteData.Values["controller"]?.ToString() == "Emails";
+    var emailsAction = ViewContext.RouteData.Values["action"]?.ToString();
 
     var currentCulture = System.Globalization.CultureInfo.CurrentCulture.Name;
     var isRtl = System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
@@ -75,6 +78,7 @@
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admin-mobile.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
     @{
         var isFarsi = currentCulture.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
         var isArabic = currentCulture.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
@@ -133,7 +137,7 @@
 
         /* Premium Glass Panel */
         .glass-panel {
-        background: var(--tw-colors-dark-surface);
+        background: rgba(15, 20, 31, 0.72); /* dark.surface - the CSS variable it used to read never existed */
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid rgba(66, 234, 255, 0.08);
@@ -237,10 +241,7 @@
 </head>
 <body class="antialiased font-sans">
 
-    <!-- Ambient Backgrounds -->
-    <div class="ambient-grid"></div>
-    <div class="glow-orb-1"></div>
-    <div class="glow-orb-2"></div>
+    @* Background: the site-wide animated gradient (wwwroot/js/gradient-bg.js), same as the student area *@
 
     <!-- Mobile Header -->
     <header class="lg:hidden fixed top-0 left-0 right-0 z-40 glass-panel border-b-0">
@@ -406,6 +407,33 @@
                     </div>
                 }
 
+                @if (canManageEmails)
+                {
+                    <!-- Emails: small tree (Create / All), open while on an Emails page -->
+                    <div class="mt-1">
+                        <button type="button" id="emails-menu-toggle" aria-expanded="@(onEmails ? "true" : "false")" aria-controls="emails-submenu"
+                                class="menu-item w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm @(onEmails ? "text-white" : "")">
+                            <span class="flex items-center gap-3">
+                                <i class="fas fa-envelope-open-text w-5 text-center"></i>
+                                <span class="font-medium">@Localizer["Emails"]</span>
+                            </span>
+                            <i id="emails-menu-chevron" class="fas fa-chevron-down text-[10px] transition-transform duration-300 @(onEmails ? "rotate-180" : "")"></i>
+                        </button>
+                        <div id="emails-submenu" class="@(isRtl ? "mr-5 pr-4 border-r" : "ml-5 pl-4 border-l") border-brand-blue/20 space-y-1 overflow-hidden transition-all duration-300 @(onEmails ? "max-h-[500px] opacity-100 mt-1" : "max-h-0 opacity-0")">
+                            <a asp-area="Admin" asp-controller="Emails" asp-action="Create"
+                               class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-colors @(onEmails && emailsAction == "Create" ? "text-brand-cyan font-semibold" : "text-slate-400 hover:text-brand-cyan")">
+                                <i class="fas fa-plus text-[10px] w-3 text-center"></i>
+                                <span>@Localizer["CreateEmail"]</span>
+                            </a>
+                            <a asp-area="Admin" asp-controller="Emails" asp-action="Index"
+                               class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-colors @(onEmails && emailsAction == "Index" ? "text-brand-cyan font-semibold" : "text-slate-400 hover:text-brand-cyan")">
+                                <i class="fas fa-list text-[10px] w-3 text-center"></i>
+                                <span>@Localizer["AllEmails"]</span>
+                            </a>
+                        </div>
+                    </div>
+                }
+
                 <div class="pt-4">
                     <p class="text-[10px] font-bold text-slate-500/70 uppercase tracking-widest mb-2 px-4">@Localizer["System"]</p>
 
@@ -540,6 +568,22 @@
         });
         }
 
+        // Emails tree
+        const emailsToggle = document.getElementById('emails-menu-toggle');
+        const emailsSubmenu = document.getElementById('emails-submenu');
+        if (emailsToggle && emailsSubmenu) {
+        emailsToggle.addEventListener('click', () => {
+        const open = emailsSubmenu.classList.contains('max-h-[500px]');
+        emailsSubmenu.classList.toggle('max-h-[500px]', !open);
+        emailsSubmenu.classList.toggle('opacity-100', !open);
+        emailsSubmenu.classList.toggle('mt-1', !open);
+        emailsSubmenu.classList.toggle('max-h-0', open);
+        emailsSubmenu.classList.toggle('opacity-0', open);
+        document.getElementById('emails-menu-chevron')?.classList.toggle('rotate-180', !open);
+        emailsToggle.setAttribute('aria-expanded', String(!open));
+        });
+        }
+
         // Submenu logic with elegant height transition
         const usersMenuToggle = document.getElementById('users-menu-toggle');
         const usersSubmenu = document.getElementById('users-submenu');
@@ -572,6 +616,7 @@
         }
     </script>
 
+    <script src="~/js/gradient-bg.js" asp-append-version="true" data-preset="site"></script>
     <script src="~/js/theme.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

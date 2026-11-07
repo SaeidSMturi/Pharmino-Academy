@@ -867,3 +867,27 @@ html[lang^="fa"] div {
 
 
 
+
+/* =====================================================================
+   Light mode: surfaces one step softer than pure white (less glare).
+   Kept last in the file so it wins over the earlier #fff rules.
+   ===================================================================== */
+[data-theme="light"] .glass-panel {
+    background: rgba(242, 245, 250, 0.92) !important;
+}
+[data-theme="light"] aside#sidebar {
+    background: #f4f6fa !important;
+}
+[data-theme="light"] .bg-dark-bg,
+[data-theme="light"] .bg-dark-bg\/40,
+[data-theme="light"] .bg-dark-bg\/60,
+[data-theme="light"] .bg-dark-bg\/80,
+[data-theme="light"] .bg-dark-bg\/90 {
+    background-color: rgba(242, 245, 250, 0.6) !important;
+}
+[data-theme="light"] .bg-white\/\[0\.02\],
+[data-theme="light"] .bg-white\/\[0\.03\],
+[data-theme="light"] .bg-white\/\[0\.05\],
+[data-theme="light"] .bg-white\/5 {
+    background-color: #f8fafc !important;
+}

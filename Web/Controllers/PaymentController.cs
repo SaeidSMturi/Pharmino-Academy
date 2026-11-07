@@ -71,7 +71,7 @@ namespace Web.Controllers
             // What the payment provider will actually charge (OMR, or the USD equivalent).
             var chargeCurrency = _lemonSettings.IsSupportedCurrency ? _lemonSettings.Currency.ToUpperInvariant() : "USD";
             ViewBag.ChargeCurrency = chargeCurrency;
-            ViewBag.ChargeAmount = CurrencyHelper.FromSiteCurrency(course.EffectivePrice, chargeCurrency);
+            ViewBag.ChargeAmount = CurrencyHelper.ToChargeAmount(course.EffectivePrice, chargeCurrency);
 
             return View(course);
         }
