@@ -98,6 +98,18 @@ namespace Application.Services
             }
         }
 
+        public async Task<int> PurgeErrorsAsync(Func<string, bool> isNoise, DateTime? notSeenSince = null)
+        {
+            var all = await _context.SeoErrorLogs.ToListAsync();
+            var noise = all.Where(e => isNoise(e.Url) || IsExternalOrIgnoredRoute(e.Url)
+                                      || (notSeenSince.HasValue && e.LastOccurred < notSeenSince.Value)).ToList();
+            if (noise.Count == 0) return 0;
+
+            _context.SeoErrorLogs.RemoveRange(noise);
+            await _context.SaveChangesAsync();
+            return noise.Count;
+        }
+
         public async Task PurgeAllResolvedErrorsAsync()
         {
             var resolvedLogs = await _context.SeoErrorLogs

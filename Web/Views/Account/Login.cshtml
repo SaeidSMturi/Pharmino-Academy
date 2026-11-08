@@ -9,6 +9,7 @@
 <!DOCTYPE html>
 <html lang="@currentCulture" dir="@(isRtl ? "rtl" : "ltr")">
 <head>
+    <meta name="robots" content="noindex, follow">
     <script>
         (function () {
             try {
@@ -94,6 +95,8 @@
             }
         </style>
     }
+    <partial name="_Favicons" />
+    <partial name="_ShaderBackground" />
 </head>
 <body class="antialiased selection:bg-cyan-500 selection:text-white">
 
@@ -161,7 +164,7 @@
                 </form>
             </div>
 
-            <p class="mt-6 text-center text-sm text-slate-500 font-medium">
+            <p class="pa-onbg mt-6 text-center text-sm text-slate-500 font-medium">
                 @Localizer["NoAccount"]
                 <a asp-area="" asp-controller="Account" asp-action="Register" class="font-bold text-[#FF7E42] hover:text-[#FFB343] transition-colors ml-1">
                     @Localizer["SignUpLink"]
@@ -170,7 +173,6 @@
         </main>
     </div>
     <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/gradient-bg.js" asp-append-version="true" data-preset="login"></script>
     <script src="~/js/theme.js" asp-append-version="true"></script>
     <script src="~/js/login-capsule.js" asp-append-version="true"></script>
 </body>

@@ -1,7 +1,7 @@
 @inject Application.Interfaces.ISettingsService SettingsService
 
 @{
-    var siteName = await SettingsService.GetStringSettingAsync("Site Name", "Pharmacy Store");
+    var siteName = await SettingsService.GetStringSettingAsync("Site Name", "Pharmino Academy");
     var supportEmail = await SettingsService.GetStringSettingAsync("Support Email");
     var supportPhone = await SettingsService.GetStringSettingAsync("Support Phone");
 }
@@ -11,11 +11,11 @@
     <div class="container mx-auto px-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
             <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                <i class="fas fa-hospital text-2xl"></i>
+                <i class="fas fa-graduation-cap text-2xl"></i>
             </div>
             <div>
                 <h1 class="text-2xl font-bold">@siteName</h1>
-                <p class="text-sm text-cyan-100">Professional Healthcare Solutions</p>
+                <p class="text-sm text-cyan-100">Pharmacy exam prep &amp; licensing courses</p>
             </div>
         </div>
         <div class="hidden md:flex items-center gap-6">

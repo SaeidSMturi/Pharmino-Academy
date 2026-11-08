@@ -431,15 +431,15 @@ html.theme-transitioning *::after {
 }
 
 [data-theme="light"] #sidebar .text-slate-400 {
-    color: #64748b !important;
+    color: #475569 !important;
 }
 
 [data-theme="light"] #sidebar .text-slate-500 {
-    color: #94a3b8 !important;
+    color: #475569 !important;
 }
 
 [data-theme="light"] #sidebar nav a:not(.nav-item-active) {
-    color: #64748b !important;
+    color: #334155 !important;
 }
 
 [data-theme="light"] #sidebar nav a:not(.nav-item-active):hover {
@@ -873,21 +873,133 @@ html[lang^="fa"] div {
    Kept last in the file so it wins over the earlier #fff rules.
    ===================================================================== */
 [data-theme="light"] .glass-panel {
-    background: rgba(242, 245, 250, 0.92) !important;
+    background: rgba(229, 234, 242, 0.94) !important;
 }
 [data-theme="light"] aside#sidebar {
-    background: #f4f6fa !important;
+    background: #e7ebf2 !important;
 }
 [data-theme="light"] .bg-dark-bg,
 [data-theme="light"] .bg-dark-bg\/40,
 [data-theme="light"] .bg-dark-bg\/60,
 [data-theme="light"] .bg-dark-bg\/80,
 [data-theme="light"] .bg-dark-bg\/90 {
-    background-color: rgba(242, 245, 250, 0.6) !important;
+    background-color: rgba(229, 234, 242, 0.6) !important;
 }
 [data-theme="light"] .bg-white\/\[0\.02\],
 [data-theme="light"] .bg-white\/\[0\.03\],
 [data-theme="light"] .bg-white\/\[0\.05\],
-[data-theme="light"] .bg-white\/5 {
-    background-color: #f8fafc !important;
+[data-theme="light"] .bg-white\/5,
+[data-theme="light"] main .bg-white\/5 {
+    background-color: #eef1f6 !important;
+}
+[data-theme="light"] main .bg-white\/5:hover {
+    background-color: #e6eaf1 !important;
+}
+/* Boxes inside the sidebar (profile card, bottom links): a touch lighter than the sidebar itself. */
+[data-theme="light"] #sidebar .glass-panel,
+[data-theme="light"] #sidebar .bg-brand-surface {
+    background: #eef1f6 !important;
+}
+
+/* =====================================================================
+   Light mode: readable accent colours
+   The accents were picked for dark panels (#42EAFF cyan, #FF7E42 orange,
+   #FFB343 yellow, #E1D788 gold, 400-level greens/reds/purples). On the
+   light cards and the light "Waves" background they wash out, so in light
+   mode each one switches to a deeper shade of the same hue (WCAG AA,
+   at least 4.5:1 on the light panels).
+   ===================================================================== */
+[data-theme="light"] {
+  --pa-l-cyan: #155e75;    /* cyan-800   (was #42EAFF) */
+  --pa-l-blue: #1d4ed8;    /* blue-700   (was #4272FF) */
+  --pa-l-orange: #c2410c;  /* orange-700 (was #FF7E42) */
+  --pa-l-yellow: #b45309;  /* amber-700  (was #FFB343) */
+  --pa-l-gold: #8a6a00;    /* deep gold  (was #E1D788) */
+  --pa-l-green: #047857;   /* emerald-700 */
+  --pa-l-red: #b91c1c;     /* red-700 */
+  --pa-l-rose: #be123c;    /* rose-700 */
+  --pa-l-purple: #7e22ce;  /* purple-700 */
+  --pa-l-teal: #0f766e;    /* teal-700 */
+  --pa-l-muted: #475569;   /* slate-600 for secondary text */
+}
+
+/* Cyan / blue */
+[data-theme="light"] .text-brand-cyan, [data-theme="light"] .text-custom-cyan,
+[data-theme="light"] .text-cyan-300, [data-theme="light"] .text-cyan-400,
+[data-theme="light"] .text-sky-400, [data-theme="light"] .text-\[\#42EAFF\],
+[data-theme="light"] .text-custom-cyan\/80, [data-theme="light"] .text-brand-cyan\/80,
+[data-theme="light"] .hover\:text-brand-cyan:hover, [data-theme="light"] .hover\:text-custom-cyan:hover,
+[data-theme="light"] .group:hover .group-hover\:text-brand-cyan { color: var(--pa-l-cyan) !important; }
+[data-theme="light"] .text-brand-blue, [data-theme="light"] .text-custom-blue,
+[data-theme="light"] .text-blue-400, [data-theme="light"] .text-blue-300, [data-theme="light"] .text-indigo-400,
+[data-theme="light"] .hover\:text-\[\#4272FF\]:hover, [data-theme="light"] .hover\:text-brand-blue:hover { color: var(--pa-l-blue) !important; }
+
+/* Orange / yellow / gold */
+[data-theme="light"] .text-brand-orange, [data-theme="light"] .text-custom-orange,
+[data-theme="light"] .text-orange-400, [data-theme="light"] .text-orange-300, [data-theme="light"] .text-\[\#FF7E42\],
+[data-theme="light"] .hover\:text-brand-orange:hover, [data-theme="light"] .hover\:text-custom-orange:hover { color: var(--pa-l-orange) !important; }
+[data-theme="light"] .text-brand-yellow, [data-theme="light"] .text-custom-yellow,
+[data-theme="light"] .text-amber-200\/70, [data-theme="light"] .text-amber-300, [data-theme="light"] .text-amber-400,
+[data-theme="light"] .text-yellow-300, [data-theme="light"] .text-yellow-400,
+[data-theme="light"] .text-\[\#FFB343\], [data-theme="light"] .text-\[\#FFC233\],
+[data-theme="light"] .hover\:text-\[\#FFB343\]:hover, [data-theme="light"] .hover\:text-brand-yellow:hover { color: var(--pa-l-yellow) !important; }
+[data-theme="light"] .text-custom-gold, [data-theme="light"] .text-custom-gold\/80,
+[data-theme="light"] .text-custom-gold\/70, [data-theme="light"] .text-custom-gold\/50,
+[data-theme="light"] .hover\:text-custom-gold:hover, [data-theme="light"] .group:hover .group-hover\:text-custom-gold { color: var(--pa-l-gold) !important; }
+
+/* Status colours */
+[data-theme="light"] .text-emerald-300, [data-theme="light"] .text-emerald-400, [data-theme="light"] .text-emerald-400\/90,
+[data-theme="light"] .text-green-300, [data-theme="light"] .text-green-400, [data-theme="light"] .text-\[\#4ade80\] { color: var(--pa-l-green) !important; }
+[data-theme="light"] .text-red-300, [data-theme="light"] .text-red-400,
+[data-theme="light"] .text-\[\#ff6b6b\], [data-theme="light"] .hover\:text-\[\#ff6b6b\]:hover { color: var(--pa-l-red) !important; }
+[data-theme="light"] .text-rose-300, [data-theme="light"] .text-rose-400, [data-theme="light"] .text-pink-400 { color: var(--pa-l-rose) !important; }
+[data-theme="light"] .text-purple-200\/70, [data-theme="light"] .text-purple-300, [data-theme="light"] .text-purple-400,
+[data-theme="light"] .text-violet-400, [data-theme="light"] .text-fuchsia-400 { color: var(--pa-l-purple) !important; }
+[data-theme="light"] .text-teal-300, [data-theme="light"] .text-teal-400 { color: var(--pa-l-teal) !important; }
+
+/* Secondary grey text */
+[data-theme="light"] .text-slate-400, [data-theme="light"] .text-slate-500,
+[data-theme="light"] .text-gray-400, [data-theme="light"] .text-gray-500 { color: var(--pa-l-muted) !important; }
+[data-theme="light"] .placeholder-slate-600::placeholder, [data-theme="light"] .placeholder-slate-500::placeholder { color: #64748b !important; }
+
+/* Gradient text (bg-clip-text): darker stops of the same hues */
+[data-theme="light"] .bg-clip-text.text-transparent {
+  background-image: linear-gradient(90deg, var(--pa-l-cyan), var(--pa-l-blue)) !important;
+}
+[data-theme="light"] .bg-clip-text.text-transparent.from-brand-orange,
+[data-theme="light"] .bg-clip-text.text-transparent.from-custom-orange,
+[data-theme="light"] .bg-clip-text.text-transparent.from-brand-yellow,
+[data-theme="light"] .bg-clip-text.text-transparent.from-amber-500 {
+  background-image: linear-gradient(90deg, var(--pa-l-orange), var(--pa-l-yellow)) !important;
+}
+[data-theme="light"] .bg-clip-text.text-transparent.from-custom-gold {
+  background-image: linear-gradient(90deg, var(--pa-l-gold), var(--pa-l-yellow)) !important;
+}
+
+/* Text that sits straight on the animated background (no card behind it): a frosted backing */
+[data-theme="light"] .pa-onbg {
+  background: rgba(255, 255, 255, .82);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, .9);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .12);
+  border-radius: 1rem;
+  padding: .55rem 1rem;
+  width: fit-content;
+}
+[data-theme="light"] .pa-onbg.text-center { margin-left: auto; margin-right: auto; }
+[data-theme="light"] .pa-onbg h2, [data-theme="light"] .pa-onbg .text-white { color: #0f172a !important; }
+
+/* Logo: a deeper gold for the "O" and ACADEMY on light backgrounds (brand gold #f5c12e is too pale there) */
+[data-theme="light"] .pa-logo { --pa-gold: #d39b00; }
+
+/* Faded slate labels (admin sidebar section titles) */
+[data-theme="light"] .text-slate-500\/70, [data-theme="light"] #sidebar .text-slate-500\/70 { color: #475569 !important; }
+
+/* Paragraphs that sit straight on the light "Waves" background (home, course pages):
+   near-black with a soft light halo, so they read over both the pale and the deep-blue parts. */
+[data-theme="light"] .text-custom-snow\/70,
+[data-theme="light"] .text-custom-snow\/60 {
+  color: #0f172a !important;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, .7), 0 0 14px rgba(255, 255, 255, .65);
 }

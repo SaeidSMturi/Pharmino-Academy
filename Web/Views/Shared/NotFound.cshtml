@@ -28,6 +28,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
+    <meta name="robots" content="noindex, follow">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -76,6 +77,8 @@
             50% { transform: translateY(-20px); }
         }
     </style>
+    <partial name="_Favicons" />
+    <partial name="_ShaderBackground" />
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-purple-900/10 to-slate-900 min-h-screen flex items-center justify-center p-4 relative">
     <div class="absolute top-6 @(isRtl ? "left-6" : "right-6") flex items-center gap-3 z-50">
@@ -107,7 +110,6 @@
             </button>
         </div>
     </div>
-    <script src="~/js/gradient-bg.js" asp-append-version="true" data-preset="site"></script>
     <script src="~/js/theme.js"></script>
 </body>
 </html>

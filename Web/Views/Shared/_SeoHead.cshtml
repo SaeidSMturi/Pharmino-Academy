@@ -1,34 +1,45 @@
 @using Application.Interfaces
+@using Web.Seo
 @inject ISeoService SeoService
+@inject Microsoft.Extensions.Configuration.IConfiguration Config
 
 @{
-    var request = Context.Request;
-    var host = request.Host.Value;
-    var scheme = request.Scheme;
-    var path = request.Path.Value ?? "/";
-    var currentUrl = $"{scheme}://{host}{path}";
-    var currentCulture = System.Globalization.CultureInfo.CurrentCulture.Name;
-    var isArabic = currentCulture.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
-    var isFarsi = currentCulture.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
+    var path = Context.Request.Path.Value ?? "/";
+    var lang = SeoSite.CurrentLang;
+    var isArabic = lang == "ar";
+    var isFarsi = lang == "fa";
+    var baseUrl = SeoSite.BaseUrl(Context);
+    var brand = SeoSite.BrandName(lang);
 
-    // 1. Get default or controller-assigned values
-    var defaultTitle = isFarsi ? "سامانه تخصصی آموزش داروسازی فارمینو" : (isArabic ? "منصة آموزش الصيدلة التخصصية" : "Specialized Pharmacy Education System");
-    var defaultMetaDescription = isFarsi ? "جامع‌ترین پلتفرم آنلاین آموزش داروسازی، فارماکولوژی، داروسازی بالینی و نسخه‌خوانی." : (isArabic ? "المنصة الإلكترونية الأكثر شمولاً لتعليم الصيدلة، علم الأدوية، الصيدلة السريرية وقراءة الوصفات الطبية." : "The most comprehensive online platform for pharmacy education, pharmacology, clinical pharmacy, and prescription reading.");
-    var defaultMetaKeywords = isFarsi ? "آموزش داروسازی, دوره‌های داروسازی, فارماکولوژی, نسخه‌خوانی, داروسازی بالینی" : (isArabic ? "تعليم الصيدلة, دورات الصيدلة, علم الأدوية, قراءة الوصفات الطبية, الصيدلة السريرية" : "pharmacy education, pharmacy courses, pharmacology, prescription reading, clinical pharmacy");
+    // 1. Defaults (pages override these through ViewData)
+    var defaultTitle = isFarsi
+        ? "آمادگی آزمون لایسنس داروسازی عمان و کشورهای خلیج فارس"
+        : (isArabic ? "التحضير لامتحان ترخيص الصيادلة في عُمان والخليج" : "Pharmacist Licensing Exam Preparation for Oman & the Gulf");
+    var defaultMetaDescription = isFarsi
+        ? "آمادگی آنلاین آزمون لایسنس داروسازی عمان (OMSB / Pearson VUE) و خلیج فارس: ویدیو، جزوه و آزمون تمرینی از داروسازی که خودش قبول شده است."
+        : (isArabic
+            ? "تحضير أونلاين لامتحان ترخيص الصيادلة في عُمان (OMSB / Pearson VUE) والخليج: فيديوهات وملفات PDF واختبارات تدريبية من صيدلي اجتاز الامتحان."
+            : "Online prep for the Oman pharmacist exam (OMSB / Pearson VUE) and Gulf licensing: video lessons, PDFs and practice exams from a pharmacist who passed.");
+    var defaultMetaKeywords = isFarsi
+        ? "آزمون داروسازی عمان, آزمون OMSB, Pearson VUE داروسازی, لایسنس داروسازی خلیج فارس, آمادگی آزمون داروسازی, داروسازی بالینی"
+        : (isArabic
+            ? "امتحان الصيدلة عمان, امتحان OMSB للصيادلة, بيرسون فيو صيدلة, ترخيص الصيادلة الخليج, التحضير لامتحان الصيدلة, صيادلة مصر"
+            : "Oman pharmacist exam, OMSB pharmacy exam, Pearson VUE pharmacy exam, Gulf pharmacist licensing, pharmacy exam preparation, pharmacist jobs Oman, pharmacists from India, pharmacists from Pakistan, Egyptian pharmacists");
 
-    var title = ViewData["Title"]?.ToString() ?? defaultTitle;
+    var title = ViewData["SeoTitle"]?.ToString() ?? ViewData["Title"]?.ToString() ?? defaultTitle;
     var metaDescription = ViewData["MetaDescription"]?.ToString() ?? defaultMetaDescription;
     var metaKeywords = ViewData["MetaKeywords"]?.ToString() ?? defaultMetaKeywords;
-    var metaRobots = ViewData["MetaRobots"]?.ToString() ?? "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
-    var canonicalUrl = ViewData["CanonicalUrl"]?.ToString() ?? currentUrl;
-    var ogTitle = title;
-    var ogDescription = metaDescription;
-    var ogImage = ViewData["OgImage"]?.ToString() ?? $"{scheme}://{host}/images/logo-og.png";
+    var noIndexPath = SeoSite.IsNoIndexPath(path);
+    var metaRobots = ViewData["MetaRobots"]?.ToString()
+        ?? (noIndexPath ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
+    var canonicalUrl = ViewData["CanonicalUrl"]?.ToString() ?? SeoSite.LocalizedUrl(baseUrl, path, lang);
+    var ogImage = ViewData["OgImage"]?.ToString() ?? $"{baseUrl}/images/og-default.png";
     var ogType = ViewData["OgType"]?.ToString() ?? "website";
     var jsonLd = ViewData["JsonLd"]?.ToString();
-    var ogLocale = isFarsi ? "fa_IR" : (isArabic ? "ar_SA" : "en_US");
+    string? ogTitle = null;
+    string? ogDescription = null;
 
-    // 2. Check Admin DB Override for the current URL path
+    // 2. Admin overrides for this path (Admin > SEO > Page SEO)
     var customPageSeo = await SeoService.GetPageSeoByPathAsync(path);
     if (customPageSeo != null && customPageSeo.IsActive)
     {
@@ -37,33 +48,117 @@
         if (!string.IsNullOrWhiteSpace(customPageSeo.MetaKeywords)) metaKeywords = customPageSeo.MetaKeywords;
         if (!string.IsNullOrWhiteSpace(customPageSeo.MetaRobots)) metaRobots = customPageSeo.MetaRobots;
         if (!string.IsNullOrWhiteSpace(customPageSeo.CanonicalUrl)) canonicalUrl = customPageSeo.CanonicalUrl;
-        
-        ogTitle = !string.IsNullOrWhiteSpace(customPageSeo.OgTitle) ? customPageSeo.OgTitle : title;
-        ogDescription = !string.IsNullOrWhiteSpace(customPageSeo.OgDescription) ? customPageSeo.OgDescription : metaDescription;
+        if (!string.IsNullOrWhiteSpace(customPageSeo.OgTitle)) ogTitle = customPageSeo.OgTitle;
+        if (!string.IsNullOrWhiteSpace(customPageSeo.OgDescription)) ogDescription = customPageSeo.OgDescription;
         if (!string.IsNullOrWhiteSpace(customPageSeo.OgImage)) ogImage = customPageSeo.OgImage;
         if (!string.IsNullOrWhiteSpace(customPageSeo.OgType)) ogType = customPageSeo.OgType;
         if (!string.IsNullOrWhiteSpace(customPageSeo.JsonLd)) jsonLd = customPageSeo.JsonLd;
     }
+
+    // Search engines show at most ~160 characters; trim longer text at a word boundary.
+    metaDescription = SeoSite.FitDescription(metaDescription);
+
+    var fullTitle = title.Contains(brand, StringComparison.OrdinalIgnoreCase) || title.Contains("Pharmino", StringComparison.OrdinalIgnoreCase)
+        ? title
+        : $"{title} | {brand}";
+    ogTitle ??= fullTitle;
+    ogDescription ??= metaDescription;
+    var indexable = !metaRobots.Contains("noindex", StringComparison.OrdinalIgnoreCase);
+
+    var googleVerification = Config["Seo:GoogleSiteVerification"];
+    var bingVerification = Config["Seo:BingSiteVerification"];
+    var yandexVerification = Config["Seo:YandexVerification"];
+    var sameAs = Config.GetSection("Seo:SameAs").Get<string[]>() ?? Array.Empty<string>();
+
+    // Site-wide entity graph: who the academy is, where it serves, and the site search target.
+    var orgJson = System.Text.Json.JsonSerializer.Serialize(new Dictionary<string, object>
+    {
+        ["@context"] = "https://schema.org",
+        ["@graph"] = new object[]
+        {
+            new Dictionary<string, object>
+            {
+                ["@type"] = "EducationalOrganization",
+                ["@id"] = $"{baseUrl}/#organization",
+                ["name"] = "Pharmino Academy",
+                ["alternateName"] = new[] { "أكاديمية فارمينو", "آکادمی فارمینو", "PharminoAcademy" },
+                ["url"] = baseUrl + "/",
+                ["logo"] = $"{baseUrl}/images/logo.png",
+                ["image"] = $"{baseUrl}/images/og-default.png",
+                ["description"] = defaultMetaDescription,
+                ["areaServed"] = SeoSite.AreaServed.Select(c => new Dictionary<string, object> { ["@type"] = "Country", ["name"] = c }).ToArray(),
+                ["knowsAbout"] = new[] { "Pharmacy licensing exams", "OMSB pharmacist exam", "Pearson VUE pharmacy exam", "Clinical pharmacy", "Pharmacology", "Pharmaceutical calculations" },
+                ["sameAs"] = sameAs
+            },
+            new Dictionary<string, object>
+            {
+                ["@type"] = "WebSite",
+                ["@id"] = $"{baseUrl}/#website",
+                ["url"] = baseUrl + "/",
+                ["name"] = "Pharmino Academy",
+                ["inLanguage"] = new[] { "en", "ar", "fa" },
+                ["publisher"] = new Dictionary<string, object> { ["@id"] = $"{baseUrl}/#organization" }
+            }
+        }
+    });
 }
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>@title - Pharmacists</title>
+<title>@fullTitle</title>
 <meta name="description" content="@metaDescription">
 <meta name="keywords" content="@metaKeywords">
 <meta name="robots" content="@metaRobots">
-<meta name="author" content="Pharmacists Platform">
+<meta name="author" content="Pharmino Academy">
+<meta name="application-name" content="@brand">
+<meta name="theme-color" content="#0a0f1c">
 <link rel="canonical" href="@canonicalUrl" />
+<partial name="_Favicons" />
+@if (!string.IsNullOrWhiteSpace(googleVerification))
+{
+    <meta name="google-site-verification" content="@googleVerification" />
+}
+@if (!string.IsNullOrWhiteSpace(bingVerification))
+{
+    <meta name="msvalidate.01" content="@bingVerification" />
+}
+@if (!string.IsNullOrWhiteSpace(yandexVerification))
+{
+    <meta name="yandex-verification" content="@yandexVerification" />
+}
 
-<!-- Open Graph / Facebook / LinkedIn / Telegram -->
+@if (indexable && ViewData["NoHreflang"] == null)
+{
+    @* Language versions of this page: tells Google which URL to show to Arabic, Farsi and English searchers in each region. *@
+    foreach (var l in SeoSite.Cultures)
+    {
+        <link rel="alternate" hreflang="@l" href="@SeoSite.LocalizedUrl(baseUrl, path, l)" />
+    }
+    foreach (var code in SeoSite.RegionalEnglish)
+    {
+        <link rel="alternate" hreflang="@code" href="@SeoSite.LocalizedUrl(baseUrl, path, "en")" />
+    }
+    foreach (var code in SeoSite.RegionalArabic)
+    {
+        <link rel="alternate" hreflang="@code" href="@SeoSite.LocalizedUrl(baseUrl, path, "ar")" />
+    }
+    <link rel="alternate" hreflang="x-default" href="@SeoSite.LocalizedUrl(baseUrl, path, "en")" />
+}
+
+<!-- Open Graph / Facebook / LinkedIn / WhatsApp / Telegram -->
 <meta property="og:type" content="@ogType">
 <meta property="og:url" content="@canonicalUrl">
 <meta property="og:title" content="@ogTitle">
 <meta property="og:description" content="@ogDescription">
 <meta property="og:image" content="@ogImage">
-<meta property="og:site_name" content="Pharmacists">
-<meta property="og:locale" content="@ogLocale">
+<meta property="og:image:alt" content="@brand">
+<meta property="og:site_name" content="@brand">
+<meta property="og:locale" content="@SeoSite.OgLocale(lang)">
+@foreach (var l in SeoSite.Cultures.Where(c => c != lang))
+{
+    <meta property="og:locale:alternate" content="@SeoSite.OgLocale(l)">
+}
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
@@ -72,6 +167,10 @@
 <meta name="twitter:description" content="@ogDescription">
 <meta name="twitter:image" content="@ogImage">
 
+@if (indexable)
+{
+    <script type="application/ld+json">@Html.Raw(orgJson)</script>
+}
 @if (!string.IsNullOrWhiteSpace(jsonLd))
 {
     <script type="application/ld+json">

@@ -152,6 +152,28 @@ namespace Application.Services
             queue.Enqueue(baseUrl);
             visited.Add(baseUrl);
 
+            // Also scan every page listed in the live sitemap (course pages may not be linked from the home page).
+            try
+            {
+                var sitemapXml = await _httpClient.GetStringAsync(baseUrl + "/sitemap.xml");
+                foreach (Match loc in Regex.Matches(sitemapXml, @"<loc>\s*(?<u>[^<\s]+)\s*</loc>", RegexOptions.IgnoreCase))
+                {
+                    var u = System.Net.WebUtility.HtmlDecode(loc.Groups["u"].Value).TrimEnd('/');
+                    if (Uri.TryCreate(u, UriKind.Absolute, out var su) && su.Host.Equals(baseUri.Host, StringComparison.OrdinalIgnoreCase)
+                        && !IsExternalOrIgnoredRoute(u) && visited.Add(u))
+                    {
+                        queue.Enqueue(u);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // No sitemap reachable: the crawl still follows links from the home page.
+            }
+
+            // One result per page, even when it is reached by several spellings (/ and /index, trailing slash …).
+            var savedPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
             int pagesScanned = 0;
             // محدودیت را بالا بردیم تا تمام صفحات سایت‌های بزرگ هم اسکن شوند
             const int maxPages = 1500;
@@ -216,6 +238,11 @@ namespace Application.Services
                         hasNoIndex = true;
                     }
 
+                    // Pages marked noindex (login, sign-up, checkout …) are hidden from search engines on purpose,
+                    // so they are not SEO issues: follow their links, but do not record or score them.
+                    var normalizedPath = NormalizeUrlPath(currentUrl);
+                    bool recordPage = !hasNoIndex && savedPaths.Add(normalizedPath);
+
                     string? title = titleRegex.Match(html).Success ? System.Net.WebUtility.HtmlDecode(titleRegex.Match(html).Groups["title"].Value.Trim()) : null;
                     string? description = descRegex.Match(html).Success ? System.Net.WebUtility.HtmlDecode(descRegex.Match(html).Groups["desc"].Value.Trim()) : null;
                     int h1Count = h1Regex.Matches(html).Count;
@@ -225,6 +252,7 @@ namespace Application.Services
                     var imgMatches = imgRegex.Matches(html);
                     foreach (Match imgMatch in imgMatches)
                     {
+                        if (!recordPage) break;
                         var imgTag = imgMatch.Value;
                         var srcM = srcRegex.Match(imgTag);
                         if (srcM.Success)
@@ -260,7 +288,7 @@ namespace Application.Services
                     // 3. ذخیره اطلاعات صفحه
                     var normalizedUrl = NormalizeUrlPath(currentUrl);
 
-                    if (!IsExternalOrIgnoredRoute(normalizedUrl))
+                    if (recordPage && !IsExternalOrIgnoredRoute(normalizedUrl))
                     {
                         var safeUrl = normalizedUrl.Length > 250 ? normalizedUrl.Substring(0, 250) : normalizedUrl;
 
@@ -374,11 +402,12 @@ namespace Application.Services
                 score -= 30;
             }
 
-            var wwwroot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-            if (!File.Exists(Path.Combine(wwwroot, "robots.txt"))) score -= 5;
-            if (!File.Exists(Path.Combine(wwwroot, "sitemap_index.xml"))) score -= 5;
+            // robots.txt and the sitemap are served live by SeoFilesController, so they always exist.
 
-            var scans = await _context.SeoPageScans.ToListAsync();
+            // Only pages search engines may index count; noindex pages (login, checkout …) and failed fetches do not.
+            var scans = (await _context.SeoPageScans.ToListAsync())
+                .Where(s => !s.HasNoIndex && (s.ResponseStatus ?? "").StartsWith("Success", StringComparison.OrdinalIgnoreCase))
+                .ToList();
             if (scans.Any())
             {
                 int totalPages = scans.Count;

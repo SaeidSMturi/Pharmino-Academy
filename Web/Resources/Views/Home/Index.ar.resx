@@ -87,7 +87,7 @@
     <value>امتحان الصيدلة في عمان</value>
   </data>
   <data name="MainHeroDescription" xml:space="preserve">
-    <value>انضم إلى أكاديمية عمان للصيدلة واحصل على تدريب شامل من شخص نجح في اجتياز امتحان OMSB بنجاح. توجيه من الخبراء، وطرق مجربة، ودعم كامل حتى تحصل على رخصتك.</value>
+    <value>انضم إلى أكاديمية فارمينو واحصل على تدريب شامل من شخص نجح في اجتياز امتحان OMSB بنجاح. توجيه من الخبراء، وطرق مجربة، ودعم كامل حتى تحصل على رخصتك.</value>
   </data>
   <data name="StartJourney" xml:space="preserve">
     <value>ابدأ رحلتك</value>
@@ -162,7 +162,7 @@
     <value>تسجيل الخروج</value>
   </data>
   <data name="SiteName" xml:space="preserve">
-    <value>أكاديمية عمان للصيدلة</value>
+    <value>أكاديمية فارمينو</value>
   </data>
   <data name="MyCourses" xml:space="preserve">
     <value>دوراتي</value>

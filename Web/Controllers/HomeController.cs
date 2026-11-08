@@ -61,72 +61,42 @@ namespace Web.Controllers
 
             if (isFarsi)
             {
-                ViewData["Title"] = "صفحه اصلی | آموزش تخصصی داروسازی و علوم دارویی";
-                ViewData["MetaDescription"] = "جامع‌ترین پلتفرم آنلاین آموزش داروسازی، فارماکولوژی، داروسازی بالینی و نسخه‌خوانی با برترین دوره‌ها و اساتید.";
-                ViewData["MetaKeywords"] = "آموزش داروسازی, فارماکولوژی, نسخه‌خوانی, داروسازی بالینی, دوره‌های آنلاین داروسازی, داروساز";
+                ViewData["SeoTitle"] = "آمادگی آزمون داروسازی عمان (OMSB) و لایسنس داروسازی خلیج فارس | آکادمی فارمینو";
+                ViewData["MetaDescription"] = "آمادگی آنلاین آزمون لایسنس داروسازی عمان (OMSB / Pearson VUE) و خلیج فارس: ویدیو، جزوه و آزمون تمرینی از داروسازی که خودش قبول شده است.";
+                ViewData["MetaKeywords"] = "آزمون داروسازی عمان, آزمون OMSB, آزمون Pearson VUE داروسازی, لایسنس داروسازی خلیج فارس, کار داروساز در عمان, آمادگی آزمون داروسازی";
             }
             else if (isArabic)
             {
-                ViewData["Title"] = "الرئيسية | التعليم التخصصي في الصيدلة والعلوم الصيدلانية";
-                ViewData["MetaDescription"] = "المنصة الإلكترونية الأكثر شمولاً لتعليم الصيدلة، علم الأدوية، الصيدلة السريرية، وقراءة الوصفات الطبية مع أفضل الدورات والمحاضرين.";
-                ViewData["MetaKeywords"] = "تعليم الصيدلة, علم الأدوية, قراءة الوصفات الطبية, الصيدلة السريرية, دورات صيدلة عبر الإنترنت, صيدلي";
+                ViewData["SeoTitle"] = "التحضير لامتحان الصيدلة في عُمان OMSB وترخيص الصيادلة في الخليج | أكاديمية فارمينو";
+                ViewData["MetaDescription"] = "تحضير أونلاين لامتحان ترخيص الصيادلة في عُمان (OMSB / Pearson VUE) والخليج: فيديوهات وملفات PDF واختبارات تدريبية من صيدلي اجتاز الامتحان.";
+                ViewData["MetaKeywords"] = "امتحان الصيدلة عمان, امتحان OMSB للصيادلة, امتحان بيرسون فيو للصيادلة, ترخيص الصيادلة في الخليج, عمل الصيادلة في عمان, صيادلة مصر, التحضير لامتحان الصيدلة";
             }
             else
             {
-                ViewData["Title"] = "Home Page | Specialized Pharmacy & Pharmaceutical Sciences Education";
-                ViewData["MetaDescription"] = "The most comprehensive online platform for pharmacy education, pharmacology, clinical pharmacy, and prescription reading featuring top courses and instructors.";
-                ViewData["MetaKeywords"] = "pharmacy education, pharmacology, prescription reading, clinical pharmacy, online pharmacy courses, pharmacist";
+                ViewData["SeoTitle"] = "Oman Pharmacist Exam (OMSB) Prep & Gulf Pharmacy Licensing | Pharmino Academy";
+                ViewData["MetaDescription"] = "Online prep for the Oman pharmacist exam (OMSB / Pearson VUE) and Gulf licensing: video lessons, PDFs and practice exams from a pharmacist who passed.";
+                ViewData["MetaKeywords"] = "Oman pharmacist exam, OMSB pharmacy exam, Pearson VUE pharmacist exam, Oman pharmacy license, Gulf pharmacist licensing exam, pharmacist jobs in Oman, pharmacy exam preparation India, pharmacy exam preparation Pakistan, Egyptian pharmacists Gulf";
             }
             ViewData["OgType"] = "website";
 
-            var scheme = Request.Scheme ?? "https";
-            var host = Request.Host.Value;
+            var baseUrl = Web.Seo.SeoSite.BaseUrl(HttpContext);
+            var lang = Web.Seo.SeoSite.Lang(cultureName);
+            var itemListTitle = isFarsi ? "جدیدترین دوره‌های آمادگی آزمون داروسازی" : (isArabic ? "أحدث دورات التحضير لامتحان الصيدلة" : "Latest Pharmacy Exam Prep Courses");
 
-            var siteName = isFarsi ? "پلتفرم داروسازان" : (isArabic ? "منصة الصيدليين" : "Pharmacists Platform");
-            var siteDesc = isFarsi ? "سامانه آموزش تخصصی داروسازی" : (isArabic ? "نظام آموزش الصيدلة التخصصي" : "Specialized Pharmacy Education System");
-            var itemListTitle = isFarsi ? "جدیدترین دوره‌های داروسازی" : (isArabic ? "أحدث دورات الصيدلة" : "Latest Pharmacy Courses");
-
-            var courseListItems = latestCourses.Select((c, idx) => $@"
-            {{
-                ""@type"": ""ListItem"",
-                ""position"": {idx + 1},
-                ""item"": {{
-                    ""@type"": ""Course"",
-                    ""name"": ""{System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(c.Title ?? "")}"",
-                    ""description"": ""{System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(c.Description ?? "")}"",
-                    ""provider"": {{
-                        ""@type"": ""Organization"",
-                        ""name"": ""{siteName}"",
-                        ""sameAs"": ""{scheme}://{host}""
-                    }}
-                }}
-            }}").ToList();
-
-            var jsonLdGraph = $@"
-            {{
-                ""@context"": ""https://schema.org"",
-                ""@graph"": [
-                    {{
-                        ""@type"": ""WebSite"",
-                        ""@id"": ""{scheme}://{host}/#website"",
-                        ""url"": ""{scheme}://{host}"",
-                        ""name"": ""Pharmacists"",
-                        ""description"": ""{siteDesc}""
-                    }},
-                    {{
-                        ""@type"": ""Organization"",
-                        ""@id"": ""{scheme}://{host}/#organization"",
-                        ""name"": ""{siteName}"",
-                        ""url"": ""{scheme}://{host}"",
-                        ""logo"": ""{scheme}://{host}/images/logo-og.png""
-                    }},
-                    {{
-                        ""@type"": ""ItemList"",
-                        ""name"": ""{itemListTitle}"",
-                        ""itemListElement"": [{string.Join(",", courseListItems)}]
-                    }}
-                ]
-            }}";
+            // Organization and WebSite come from _SeoHead on every page; the home page adds the course list.
+            var jsonLdGraph = System.Text.Json.JsonSerializer.Serialize(new Dictionary<string, object>
+            {
+                ["@context"] = "https://schema.org",
+                ["@type"] = "ItemList",
+                ["name"] = itemListTitle,
+                ["itemListElement"] = latestCourses.Select((c, idx) => new Dictionary<string, object>
+                {
+                    ["@type"] = "ListItem",
+                    ["position"] = idx + 1,
+                    ["url"] = Web.Seo.SeoSite.LocalizedUrl(baseUrl, $"/Course/{c.CourseId}", lang),
+                    ["name"] = c.Title ?? ""
+                }).ToArray()
+            });
 
             ViewData["JsonLd"] = jsonLdGraph;
 
@@ -199,6 +169,9 @@ namespace Web.Controllers
             Response.Headers.Append("Cache-Control", "public,max-age=2592000");
         }
 
+        // Converts every course video: staff only (was open to anonymous visitors).
+        [Web.Attributes.RequireRole]
+        [Web.Attributes.Permission("Courses.Edit")]
         [HttpGet("MigrateAllToHls")]
         public async Task<IActionResult> MigrateAllToHls()
         {
@@ -247,20 +220,20 @@ namespace Web.Controllers
 
             if (isFarsi)
             {
-                ViewData["Title"] = "سیاست حفظ حریم خصوصی و شرایط استفاده";
-                ViewData["MetaDescription"] = "بیانیه حریم خصوصی و قوانین استفاده از خدمات آموزشی پلتفرم داروسازان.";
+                ViewData["SeoTitle"] = "سیاست حفظ حریم خصوصی و شرایط استفاده";
+                ViewData["MetaDescription"] = "سیاست حفظ حریم خصوصی و شرایط استفاده آکادمی فارمینو: نحوه محافظت از اطلاعات، پرداخت‌ها و دسترسی شما به دوره‌های آنلاین آمادگی آزمون داروسازی.";
                 ViewData["MetaKeywords"] = "حریم خصوصی, شرایط استفاده, قوانین پلتفرم, مقررات داروسازی";
             }
             else if (isArabic)
             {
-                ViewData["Title"] = "سياسة الخصوصية وشروط الاستخدام";
-                ViewData["MetaDescription"] = "بيان سياسة الخصوصية والشروط والأحكام لاستخدام الخدمات التعليمية لمنصة الصيدليين.";
+                ViewData["SeoTitle"] = "سياسة الخصوصية وشروط الاستخدام";
+                ViewData["MetaDescription"] = "اقرأ سياسة الخصوصية وشروط الاستخدام في أكاديمية فارمينو: كيف نحمي بياناتك ومدفوعاتك ووصولك إلى دورات التحضير لامتحانات الصيدلة أونلاين.";
                 ViewData["MetaKeywords"] = "سياسة الخصوصية, شروط الاستخدام, قوانین المنصة, لوائح الصيدليين";
             }
             else
             {
-                ViewData["Title"] = "Privacy Policy & Terms of Use";
-                ViewData["MetaDescription"] = "Privacy policy statement and terms & conditions for using Pharmacists platform educational services.";
+                ViewData["SeoTitle"] = "Privacy Policy & Terms of Use";
+                ViewData["MetaDescription"] = "Read the Pharmino Academy privacy policy and terms of use: how we protect your data, payments and access to our online pharmacy exam prep courses.";
                 ViewData["MetaKeywords"] = "privacy policy, terms of use, platform rules, pharmacists regulations";
             }
             return View();

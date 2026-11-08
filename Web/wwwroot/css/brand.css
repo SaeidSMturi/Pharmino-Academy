@@ -1,0 +1,126 @@
+/* Pharmino Academy logo (Views/Shared/_BrandLogo.cshtml).
+   Brand colours from Logo/: navy #1a2e5c, gold #f5c12e, cream #fbf7f0.
+   Dark theme (the default): navy parts turn near-white so the mark stays readable on dark panels. */
+
+.pa-logo {
+    --pa-navy: #f4f6fb;
+    --pa-gold: #f5c12e;
+    --pa-cream: #0f1626;
+    --pa-word: #f4f6fb;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55em;
+    font-size: 22px;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    unicode-bidi: isolate;
+}
+
+[data-theme="light"] .pa-logo,
+.pa-logo--brand-colors {
+    --pa-navy: #1a2e5c;
+    --pa-cream: #fbf7f0;
+    --pa-word: #1a2e5c;
+}
+
+.pa-logo__mark {
+    width: auto;
+    height: 2.2em;
+    flex-shrink: 0;
+    overflow: visible;
+    filter: drop-shadow(0 2px 6px rgba(245, 193, 46, 0.18));
+}
+
+.pa-logo__text {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.18em;
+}
+
+/* The layouts force a language font on every span with !important; the wordmark keeps its own. */
+.pa-logo .pa-logo__word {
+    font-family: 'Montserrat', 'Plus Jakarta Sans', 'Segoe UI', sans-serif !important;
+    font-weight: 600;
+    font-size: 1em;
+    letter-spacing: 0.06em;
+    color: var(--pa-word);
+}
+
+.pa-logo .pa-logo__o {
+    color: var(--pa-gold);
+}
+
+.pa-logo .pa-logo__sub {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    color: var(--pa-gold);
+}
+
+.pa-logo .pa-logo__sub b {
+    font-family: 'Century Gothic', 'URW Gothic', 'Montserrat', 'Segoe UI', sans-serif !important;
+    font-weight: 700;
+    font-size: 0.42em;
+    letter-spacing: 0.62em;
+    margin-right: -0.62em; /* letter-spacing adds space after the last letter */
+}
+
+.pa-logo .pa-logo__sub i {
+    flex: 1 1 0;
+    min-width: 0.6em;
+    height: 1.5px;
+    border-radius: 2px;
+    background: var(--pa-gold);
+    font-style: normal;
+}
+
+/* Sizes */
+.pa-logo--header { font-size: 25px; }
+.pa-logo--compact { font-size: 18px; }
+.pa-logo--compact .pa-logo__mark { height: 1.9em; }
+.pa-logo--mark .pa-logo__mark { height: 2.4em; }
+.pa-logo--stack { font-size: 26px; }
+.pa-logo--sidebar { font-size: 21px; }
+
+a:hover > .pa-logo .pa-logo__mark,
+a:hover .pa-logo__mark {
+    transform: scale(1.04);
+}
+.pa-logo__mark { transition: transform .25s ease; }
+
+/* ------------------------------------------------------------------
+   Coloured sidebar icons (student and admin dashboards).
+   Each menu icon gets its own colour (--ic); light mode uses darker shades of the same hue for contrast.
+   The icon keeps its colour when the item is active or hovered.
+   ------------------------------------------------------------------ */
+#sidebar nav i.fa-grip-vertical,
+#sidebar nav i.fa-layer-group      { --ic: #22d3ee; --ic-l: #0e7490; }  /* dashboard / courses – cyan */
+#sidebar nav i.fa-file-pen,
+#sidebar nav i.fa-file-signature   { --ic: #a78bfa; --ic-l: #6d28d9; }  /* exams / forms – violet */
+#sidebar nav i.fa-receipt,
+#sidebar nav i.fa-credit-card      { --ic: #fbbf24; --ic-l: #b45309; }  /* payments – amber */
+#sidebar nav i.fa-user-astronaut,
+#sidebar nav i.fa-users-rays       { --ic: #f472b6; --ic-l: #be185d; }  /* profile / users – pink */
+#sidebar nav i.fa-shield-halved    { --ic: #34d399; --ic-l: #047857; }  /* security / roles – emerald */
+#sidebar nav i.fa-display          { --ic: #60a5fa; --ic-l: #1d4ed8; }  /* devices – blue */
+#sidebar nav i.fa-video            { --ic: #fb7185; --ic-l: #be123c; }  /* videos – rose */
+#sidebar nav i.fa-wallet           { --ic: #4ade80; --ic-l: #15803d; }  /* wallet – green */
+#sidebar nav i.fa-pen-nib          { --ic: #fb923c; --ic-l: #c2410c; }  /* content – orange */
+#sidebar nav i.fa-envelope-open-text { --ic: #2dd4bf; --ic-l: #0f766e; } /* email – teal */
+#sidebar nav i.fa-lock             { --ic: #f87171; --ic-l: #b91c1c; }  /* access – red */
+#sidebar nav i.fa-sliders          { --ic: #818cf8; --ic-l: #4338ca; }  /* settings – indigo */
+#sidebar nav i.fa-chart-line       { --ic: #a3e635; --ic-l: #4d7c0f; }  /* SEO / stats – lime */
+#sidebar nav i.fa-history          { --ic: #e879f9; --ic-l: #a21caf; }  /* logs – fuchsia */
+#sidebar nav i.fa-plus,
+#sidebar nav i.fa-list             { --ic: #38bdf8; --ic-l: #0369a1; }  /* sub-items – sky */
+
+#sidebar nav i[class*="fa-"] {
+    color: var(--ic, inherit) !important;
+    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--ic, transparent) 35%, transparent));
+}
+[data-theme="light"] #sidebar nav i[class*="fa-"] {
+    color: var(--ic-l, var(--ic, inherit)) !important;
+    filter: none;
+}

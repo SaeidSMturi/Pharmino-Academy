@@ -235,6 +235,7 @@ namespace Web
             builder.Services.AddScoped<ISuspiciousActivityService, SuspiciousActivityService>();
             builder.Services.AddScoped<ISettingsService, SettingsService>();
             builder.Services.AddScoped<ISeoService, SeoService>();
+            builder.Services.AddSingleton<Web.Seo.SeoErrorFilter>();
             builder.Services.AddSingleton<IVideoTokenService, VideoTokenService>();
             builder.Services.AddSingleton<IVideoSessionManager, VideoSessionManager>();
 
@@ -408,6 +409,19 @@ namespace Web
                         }
                     }
                 }
+                await next();
+            });
+
+            // 🔎 robots.txt and sitemaps are generated live (SeoFilesController), ahead of any stale static copy in wwwroot.
+            app.Use(async (context, next) =>
+            {
+                var requestPath = context.Request.Path.Value ?? string.Empty;
+                if (requestPath.Equals("/robots.txt", StringComparison.OrdinalIgnoreCase))
+                    context.Request.Path = "/seo-files/robots";
+                else if (requestPath.StartsWith("/sitemap", StringComparison.OrdinalIgnoreCase) &&
+                         requestPath.EndsWith(".xml", StringComparison.OrdinalIgnoreCase) &&
+                         requestPath.LastIndexOf('/') == 0)
+                    context.Request.Path = "/seo-files/sitemap";
                 await next();
             });
 

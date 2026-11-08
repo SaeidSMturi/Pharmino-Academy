@@ -236,17 +236,17 @@ namespace Web.Controllers
             if (isFarsi)
             {
                 ViewData["Title"] = "فراموشی رمز عبور";
-                ViewData["MetaDescription"] = "بازیابی رمز عبور حساب کاربری در پلتفرم داروسازان.";
+                ViewData["MetaDescription"] = "بازیابی رمز عبور حساب کاربری در آکادمی فارمینو.";
             }
             else if (isArabic)
             {
                 ViewData["Title"] = "نسيان كلمة المرور";
-                ViewData["MetaDescription"] = "استعادة كلمة مرور الحساب في منصة الصيدليين.";
+                ViewData["MetaDescription"] = "استعادة كلمة مرور الحساب في أكاديمية فارمينو.";
             }
             else
             {
                 ViewData["Title"] = "Forgot Password";
-                ViewData["MetaDescription"] = "Recover your account password on the Pharmacists platform.";
+                ViewData["MetaDescription"] = "Recover your account password at Pharmino Academy.";
             }
             ViewData["MetaRobots"] = "noindex, follow";
             return View();

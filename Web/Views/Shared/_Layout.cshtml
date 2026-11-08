@@ -42,6 +42,8 @@
     <script src="~/js/marked.min.js"></script>
     <link rel="stylesheet" href="~/css/Style.css" />
     <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap">
+    <link rel="stylesheet" href="~/css/brand.css" asp-append-version="true" />
     @if (isFarsi)
     {
         <style>
@@ -70,26 +72,18 @@
         </style>
     }
     @await RenderSectionAsync("Styles", required: false)
+    <partial name="_ShaderBackground" />
 </head>
 <body class="antialiased font-sans overflow-x-hidden">
 
-    <div id="preloader">
-        <div class="loader-ring"></div>
-    </div>
 
 
     <header id="header-wrapper" class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 transition-all duration-500 ease-in-out">
         <div id="header-container" class="w-full max-w-6xl px-5 py-3 rounded-full bg-custom-dark/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(18,60,118,0.3)] flex justify-between items-center transition-all duration-500 ease-in-out border border-custom-gold/20 relative">
 
             <div class="text-xl font-extrabold tracking-tight z-10">
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="flex items-center gap-3 group">
-                    <div class="relative w-10 h-10 flex items-center justify-center">
-                        <div class="absolute inset-0 rounded-full bg-custom-navy blur-md opacity-50 group-hover:opacity-80 transition-opacity duration-300"></div>
-                        <div class="relative w-full h-full rounded-full bg-gradient-to-br from-custom-navy to-[#1a5099] border border-custom-gold/30 flex items-center justify-center text-custom-gold group-hover:scale-105 transition-transform duration-300 shadow-inner">
-                            <i class="fas fa-prescription-bottle-medical text-sm"></i>
-                        </div>
-                    </div>
-                    <span class="text-custom-snow text-lg font-black tracking-wide group-hover:text-custom-gold transition-colors duration-300"><setting key="Site Name"></setting></span>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="flex items-center group" aria-label="Pharmino Academy">
+                    <partial name="_BrandLogo" model='"header"' />
                 </a>
             </div>
 
@@ -198,11 +192,8 @@
         <div class="absolute bottom-20 left-0 w-64 h-64 bg-custom-navy/20 rounded-full blur-[80px] pointer-events-none"></div>
 
         <div class="flex justify-between items-center p-6 border-b border-white/5 relative z-10">
-            <a asp-area="" asp-controller="Home" asp-action="Index" class="text-xl font-bold text-custom-snow flex items-center gap-2 group">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-custom-navy to-custom-gold flex items-center justify-center text-white shadow-[0_0_15px_rgba(225,215,136,0.4)] group-hover:scale-110 transition-transform duration-300">
-                    <i class="fas fa-prescription-bottle-medical text-sm"></i>
-                </div>
-                <setting key="Site Name"></setting>
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="flex items-center group" aria-label="Pharmino Academy">
+                <partial name="_BrandLogo" model='"compact"' />
             </a>
             <div class="flex items-center gap-3">
                 <partial name="_ThemeToggle" />
@@ -337,9 +328,9 @@
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                 <div>
-                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-custom-gold">
-                        <i class="fas fa-prescription-bottle-medical drop-shadow-[0_0_8px_rgba(225,215,136,0.5)]"></i> @Localizer["SiteName"]
-                    </h3>
+                    <div class="mb-4">
+                        <partial name="_BrandLogo" model='"stack"' />
+                    </div>
                     <p class="text-slate-400 text-sm leading-relaxed">
                         @Localizer["FooterDescription"]
                     </p>
@@ -387,8 +378,7 @@
         </div>
     </footer>
 
-<script src="~/js/site.js"></script>
-<script src="~/js/gradient-bg.js" asp-append-version="true" data-preset="site"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
 <script src="~/js/theme.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

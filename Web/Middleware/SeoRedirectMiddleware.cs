@@ -19,7 +19,7 @@ namespace Web.Middleware
             _logger = logger;
         }
 
-        public async Task InvokeAsync(HttpContext context, ISeoService seoService)
+        public async Task InvokeAsync(HttpContext context, ISeoService seoService, Web.Seo.SeoErrorFilter errorFilter)
         {
             var path = context.Request.Path.Value?.ToLower() ?? "";
 
@@ -53,7 +53,16 @@ namespace Web.Middleware
             var statusCode = context.Response.StatusCode;
             if (statusCode == 404 || statusCode >= 500)
             {
-                if (IsBotOrScannerPath(path, ext))
+                // After a crash the exception handler re-runs the request as /Home/Error; log the page that actually failed.
+                var failedPath = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>()?.Path;
+                if (!string.IsNullOrEmpty(failedPath))
+                {
+                    path = failedPath.ToLower();
+                    ext = Path.GetExtension(path);
+                }
+
+                // Only real pages of the public site count as SEO errors; scanner probes (/.env, /wp-admin …) are ignored.
+                if (IsBotOrScannerPath(path, ext) || !errorFilter.IsWorthLogging(path))
                 {
                     return;
                 }

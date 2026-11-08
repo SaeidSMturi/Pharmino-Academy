@@ -3,6 +3,7 @@
         // Preloader Logic
         const preloader = document.getElementById('preloader');
         window.addEventListener('load', () => {
+        if (!preloader || preloader.dataset.managed) return;
         setTimeout(() => {
         preloader.style.opacity = '0';
         preloader.style.visibility = 'hidden';

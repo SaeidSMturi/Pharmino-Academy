@@ -14,15 +14,23 @@ namespace Web.Areas.Admin.Controllers
     {
         private readonly ISeoService _seoService;
         private readonly ILogger<SeoController> _logger;
+        private readonly Web.Seo.SeoErrorFilter _errorFilter;
 
-        public SeoController(ISeoService seoService, ILogger<SeoController> logger)
+        public SeoController(ISeoService seoService, ILogger<SeoController> logger, Web.Seo.SeoErrorFilter errorFilter)
         {
             _seoService = seoService;
             _logger = logger;
+            _errorFilter = errorFilter;
         }
+
+        // Removes logged 404s from hacking scanners (/.env, /wp-admin …), which are not broken pages, and errors
+        // that have not happened again for 30 days (one-offs already fixed or gone).
+        private Task<int> PurgeScannerNoiseAsync() =>
+            _seoService.PurgeErrorsAsync(url => !_errorFilter.IsWorthLogging(url), DateTime.UtcNow.AddDays(-30));
 
         public async Task<IActionResult> Index()
         {
+            await PurgeScannerNoiseAsync();
             var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
             
             var viewModel = new SeoDashboardViewModel
@@ -87,6 +95,7 @@ namespace Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Errors()
         {
+            await PurgeScannerNoiseAsync();
             var errors = await _seoService.GetErrorLogsAsync();
             ViewBag.PageScans = await _seoService.GetPageScansAsync();
             ViewBag.MissingAlts = await _seoService.GetSeoImagesAsync();
@@ -113,6 +122,7 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> PurgeBotErrors()
         {
             await _seoService.PurgeBotErrorsAsync();
+            await PurgeScannerNoiseAsync();
             TempData["SuccessMessage"] = "تمام ارورها و اسکن‌های ربات‌ها با موفقیت پاک‌سازی شدند.";
             return RedirectToAction(nameof(Errors));
         }
@@ -183,7 +193,7 @@ namespace Web.Areas.Admin.Controllers
                 
                 await _seoService.GenerateSitemapsAsync(baseUrl);
                 
-                return Json(new { success = true, message = "Sitemap index and parts generated successfully inside wwwroot." });
+                return Json(new { success = true, message = "The sitemap is now generated live at /sitemap.xml (with Arabic and Farsi versions). Old static copies were removed." });
             }
             catch (Exception ex)
             {

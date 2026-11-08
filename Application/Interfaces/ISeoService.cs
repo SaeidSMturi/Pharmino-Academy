@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.DTOs;
@@ -21,6 +22,11 @@ namespace Application.Interfaces
         Task ResolveErrorLogAsync(int id);
         Task DeleteErrorLogAsync(int id);
         Task PurgeBotErrorsAsync();
+        /// <summary>
+        /// Deletes every logged error whose URL <paramref name="isNoise"/> marks as scanner/bot noise, plus unresolved
+        /// errors not seen since <paramref name="notSeenSince"/> (stale one-offs that stopped happening). Returns how many were removed.
+        /// </summary>
+        Task<int> PurgeErrorsAsync(Func<string, bool> isNoise, DateTime? notSeenSince = null);
         Task PurgeAllResolvedErrorsAsync();
 
         // Crawling & Content Monitoring
@@ -44,6 +50,7 @@ namespace Application.Interfaces
 
         // Dynamic Sitemap Generator
         Task GenerateSitemapsAsync(string baseUrl);
+        bool IsSitemapPathExcluded(string path, IEnumerable<Domain.Entities.Seo.SeoSitemapSetting> settings);
 
         // General System Checks
         Task<bool> CheckRobotsTxtAsync(string baseUrl);

@@ -1,0 +1,62 @@
+@*
+    Start-up preloader: liquid-glass reveal of the PA logo (wwwroot/js/glass-reveal.js). Home page only (Views/Home/Index.cshtml), played in full on every
+    page load (about 3 s; click to skip). Only browsers without WebGL2 get the still logo. Replaces the old spinner.
+    The background comes from each layout's own #preloader rule (and the light theme's override).
+*@
+<div id="preloader" class="pa-preloader" data-managed="1" data-logo="/images/brand/pa-mark.svg" role="status" aria-label="Pharmino Academy">
+    <div class="pa-reveal"></div>
+    <img class="pa-still" src="/images/brand/pa-mark.svg" alt="Pharmino Academy" width="96" height="112" />
+</div>
+<script>
+    (function () {
+        // Decide before the first paint, so the still logo never flashes before the reveal.
+        // Plays on every load and also when Windows/macOS "reduce motion" is on (owner's choice).
+        if (window.WebGL2RenderingContext) document.getElementById('preloader').classList.add('is-first');
+    })();
+</script>
+<style>
+    #preloader.pa-preloader {
+        transition: opacity .6s cubic-bezier(.4, 0, .2, 1), visibility .6s;
+    }
+    /* Older cached scripts hide #preloader with inline styles; only glass-reveal.js (.is-done) may. */
+    #preloader.pa-preloader:not(.is-done) {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    #preloader.pa-preloader.is-done {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+    .pa-preloader .pa-reveal {
+        position: absolute;
+        inset: 0;
+    }
+    .pa-preloader .pa-still {
+        position: relative;
+        width: 84px;
+        height: auto;
+        animation: pa-still-breathe 1.6s ease-in-out infinite;
+        filter: drop-shadow(0 6px 18px rgba(245, 193, 46, .25));
+    }
+    /* Dark backgrounds: show the still mark on a cream tile, like the end of the reveal. */
+    html:not([data-theme="light"]) .pa-preloader .pa-still {
+        background: #fbf7f0;
+        padding: 16px 18px;
+        border-radius: 28px;
+        width: 120px;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, .08), 0 18px 40px rgba(0, 0, 0, .45);
+    }
+    .pa-preloader.is-first .pa-still,
+    .pa-preloader.is-playing .pa-still {
+        display: none;
+    }
+    @@keyframes pa-still-breathe {
+        0%, 100% { transform: scale(1); opacity: .92; }
+        50% { transform: scale(1.04); opacity: 1; }
+    }
+    @@media (prefers-reduced-motion: reduce) {
+        .pa-preloader .pa-still { animation: none; }
+    }
+</style>
+<script src="~/js/glass-reveal.js" asp-append-version="true" defer></script>

@@ -44,212 +44,63 @@ namespace Application.Services
             }
         }
 
+        /// <summary>
+        /// Admin-edited robots.txt lives outside wwwroot (AppData/robots.txt) so deployments don't overwrite it;
+        /// it is served by /robots.txt through SeoFilesController, which also fixes the Sitemap line.
+        /// </summary>
+        private string RobotsTxtPath => Path.Combine(_env.ContentRootPath, "AppData", "robots.txt");
+
         public async Task<string> ReadRobotsTxtAsync()
         {
-            var wwwroot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-            var robotsPath = Path.Combine(wwwroot, "robots.txt");
-            
-            if (File.Exists(robotsPath))
+            if (File.Exists(RobotsTxtPath))
             {
-                return await File.ReadAllTextAsync(robotsPath, Encoding.UTF8);
+                return await File.ReadAllTextAsync(RobotsTxtPath, Encoding.UTF8);
             }
-
-            // Return default template
-            return "User-agent: *\nAllow: /\n\nSitemap: /sitemap_index.xml\n";
+            return DefaultRobotsTxt;
         }
+
+        public const string DefaultRobotsTxt =
+            "User-agent: *\n" +
+            "Allow: /\n" +
+            "Disallow: /Admin/\n" +
+            "Disallow: /Students/\n" +
+            "Disallow: /User/\n" +
+            "Disallow: /api/\n" +
+            "Disallow: /Payment/\n" +
+            "Disallow: /Language/\n" +
+            "Disallow: /SampleAuth/\n" +
+            "Disallow: /resize\n" +
+            "Disallow: /MigrateAllToHls\n";
 
         public async Task WriteRobotsTxtAsync(string content)
         {
-            var wwwroot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-            if (!Directory.Exists(wwwroot))
-            {
-                Directory.CreateDirectory(wwwroot);
-            }
-            var robotsPath = Path.Combine(wwwroot, "robots.txt");
-            await File.WriteAllTextAsync(robotsPath, content, Encoding.UTF8);
+            Directory.CreateDirectory(Path.GetDirectoryName(RobotsTxtPath)!);
+            await File.WriteAllTextAsync(RobotsTxtPath, content, Encoding.UTF8);
         }
 
-        public async Task GenerateSitemapsAsync(string baseUrl)
+        /// <summary>
+        /// Sitemaps are now built live on every request (/sitemap.xml, see SeoFilesController), so they always use
+        /// the public domain and current courses. This only removes old static copies from wwwroot.
+        /// </summary>
+        public Task GenerateSitemapsAsync(string baseUrl)
         {
             var wwwroot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-            if (!Directory.Exists(wwwroot))
+            foreach (var name in new[] { "sitemap_index.xml", "sitemap_posts.xml", "sitemap_pages.xml", "sitemap_products.xml", "sitemap_categories.xml", "sitemap_custom.xml", "sitemap.xml", "robots.txt" })
             {
-                Directory.CreateDirectory(wwwroot);
+                var file = Path.Combine(wwwroot, name);
+                if (File.Exists(file)) File.Delete(file);
             }
+            return Task.CompletedTask;
+        }
 
-            var cleanBaseUrl = baseUrl.TrimEnd('/');
-            XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
-
-            // Load all custom sitemap settings
-            var settings = await _context.SeoSitemapSettings.ToListAsync();
-            
-            // Map settings configurations
-            var postsPriority = settings.FirstOrDefault(s => s.Key == "Section.Posts.Priority")?.Value ?? "0.8";
-            var postsChangeFreq = settings.FirstOrDefault(s => s.Key == "Section.Posts.ChangeFreq")?.Value ?? "weekly";
-            
-            var pagesPriority = settings.FirstOrDefault(s => s.Key == "Section.Pages.Priority")?.Value ?? "1.0";
-            var pagesChangeFreq = settings.FirstOrDefault(s => s.Key == "Section.Pages.ChangeFreq")?.Value ?? "daily";
-
-            var productsPriority = settings.FirstOrDefault(s => s.Key == "Section.Products.Priority")?.Value ?? "0.9";
-            var productsChangeFreq = settings.FirstOrDefault(s => s.Key == "Section.Products.ChangeFreq")?.Value ?? "weekly";
-
-            var categoriesPriority = settings.FirstOrDefault(s => s.Key == "Section.Categories.Priority")?.Value ?? "0.6";
-            var categoriesChangeFreq = settings.FirstOrDefault(s => s.Key == "Section.Categories.ChangeFreq")?.Value ?? "weekly";
-
-            // Excluded paths pattern
-            var excludedPaths = settings
+        /// <summary>True when a sitemap path is excluded by an Admin sitemap setting (supports a trailing *).</summary>
+        public bool IsSitemapPathExcluded(string path, IEnumerable<SeoSitemapSetting> settings)
+        {
+            var excluded = settings
                 .Where(s => s.IsExcludedPath && !string.IsNullOrWhiteSpace(s.Value))
                 .Select(s => s.Value!.ToLower().Trim())
                 .ToList();
-
-            // Custom links to include
-            var customLinks = settings
-                .Where(s => s.IsCustomLink && !string.IsNullOrWhiteSpace(s.Value))
-                .ToList();
-
-            // 1. Generate sitemap_posts.xml
-            var posts = await _context.Posts
-                .Where(p => p.IsPublish)
-                .OrderByDescending(p => p.CreateDate)
-                .ToListAsync();
-
-            var postsFiltered = posts.Where(p => !IsPathExcluded($"/Post/Details/{p.PostId}", excludedPaths)).ToList();
-
-            var postsDoc = new XDocument(
-                new XDeclaration("1.0", "utf-8", "yes"),
-                new XElement(ns + "urlset",
-                    postsFiltered.Select(p => new XElement(ns + "url",
-                        new XElement(ns + "loc", $"{cleanBaseUrl}/Post/Details/{p.PostId}"),
-                        new XElement(ns + "lastmod", p.CreateDate.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")),
-                        new XElement(ns + "changefreq", postsChangeFreq),
-                        new XElement(ns + "priority", postsPriority)
-                    ))
-                )
-            );
-            await File.WriteAllTextAsync(Path.Combine(wwwroot, "sitemap_posts.xml"), postsDoc.ToString(), Encoding.UTF8);
-
-            // 2. Generate sitemap_pages.xml
-            var staticPages = new List<(string Path, string Frequency, double Priority)>
-            {
-                ("/", pagesChangeFreq, double.Parse(pagesPriority)),
-                ("/Home/Index", pagesChangeFreq, double.Parse(pagesPriority) * 0.9),
-                ("/Privacy", "monthly", 0.3)
-            };
-
-            var staticPagesFiltered = staticPages.Where(sp => !IsPathExcluded(sp.Path, excludedPaths)).ToList();
-
-            var pagesDoc = new XDocument(
-                new XDeclaration("1.0", "utf-8", "yes"),
-                new XElement(ns + "urlset",
-                    staticPagesFiltered.Select(sp => new XElement(ns + "url",
-                        new XElement(ns + "loc", $"{cleanBaseUrl}{sp.Path}"),
-                        new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")),
-                        new XElement(ns + "changefreq", sp.Frequency),
-                        new XElement(ns + "priority", sp.Priority.ToString("0.0"))
-                    ))
-                )
-            );
-            await File.WriteAllTextAsync(Path.Combine(wwwroot, "sitemap_pages.xml"), pagesDoc.ToString(), Encoding.UTF8);
-
-            // 3. Generate sitemap_products.xml
-            var courses = await _context.Courses
-                .Where(c => c.IsActive && c.IsListedForSale)
-                .OrderByDescending(c => c.CreateDate)
-                .ToListAsync();
-
-            var coursesFiltered = courses.Where(c => !IsPathExcluded($"/Course/{c.CourseId}", excludedPaths)).ToList();
-
-            var productsDoc = new XDocument(
-                new XDeclaration("1.0", "utf-8", "yes"),
-                new XElement(ns + "urlset",
-                    coursesFiltered.Select(c => new XElement(ns + "url",
-                        new XElement(ns + "loc", $"{cleanBaseUrl}/Course/{c.CourseId}"),
-                        new XElement(ns + "lastmod", (c.LastUpdate ?? c.CreateDate).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")),
-                        new XElement(ns + "changefreq", productsChangeFreq),
-                        new XElement(ns + "priority", productsPriority)
-                    ))
-                )
-            );
-            await File.WriteAllTextAsync(Path.Combine(wwwroot, "sitemap_products.xml"), productsDoc.ToString(), Encoding.UTF8);
-
-            // 4. Generate sitemap_categories.xml
-            var tagsList = posts.Where(p => !string.IsNullOrEmpty(p.Tags))
-                .SelectMany(p => p.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries))
-                .Select(t => t.Trim().ToLower())
-                .Distinct()
-                .ToList();
-
-            if (!tagsList.Any())
-            {
-                tagsList.AddRange(new[] { "general", "medication", "pharmacy", "health" });
-            }
-
-            var tagsFiltered = tagsList.Where(tag => !IsPathExcluded($"/Category/{tag}", excludedPaths)).ToList();
-
-            var categoriesDoc = new XDocument(
-                new XDeclaration("1.0", "utf-8", "yes"),
-                new XElement(ns + "urlset",
-                    tagsFiltered.Select(tag => new XElement(ns + "url",
-                        new XElement(ns + "loc", $"{cleanBaseUrl}/Category/{Uri.EscapeDataString(tag)}"),
-                        new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")),
-                        new XElement(ns + "changefreq", categoriesChangeFreq),
-                        new XElement(ns + "priority", categoriesPriority)
-                    ))
-                )
-            );
-            await File.WriteAllTextAsync(Path.Combine(wwwroot, "sitemap_categories.xml"), categoriesDoc.ToString(), Encoding.UTF8);
-
-            // 5. Generate sitemap_custom.xml (for custom links added by user)
-            var customFiltered = customLinks.Where(cl => !IsPathExcluded(cl.Value!, excludedPaths)).ToList();
-            
-            var customDoc = new XDocument(
-                new XDeclaration("1.0", "utf-8", "yes"),
-                new XElement(ns + "urlset",
-                    customFiltered.Select(cl => new XElement(ns + "url",
-                        new XElement(ns + "loc", cl.Value!.StartsWith("http") ? cl.Value : $"{cleanBaseUrl}{cl.Value}"),
-                        new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")),
-                        new XElement(ns + "changefreq", cl.CustomChangeFreq ?? "weekly"),
-                        new XElement(ns + "priority", (cl.CustomPriority ?? 0.5).ToString("0.0"))
-                    ))
-                )
-            );
-            await File.WriteAllTextAsync(Path.Combine(wwwroot, "sitemap_custom.xml"), customDoc.ToString(), Encoding.UTF8);
-
-            // 6. Generate sitemap_index.xml (include custom sitemap if it has items)
-            var indexDoc = new XDocument(
-                new XDeclaration("1.0", "utf-8", "yes"),
-                new XElement(ns + "sitemapindex",
-                    new XElement(ns + "sitemap",
-                        new XElement(ns + "loc", $"{cleanBaseUrl}/sitemap_posts.xml"),
-                        new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
-                    ),
-                    new XElement(ns + "sitemap",
-                        new XElement(ns + "loc", $"{cleanBaseUrl}/sitemap_pages.xml"),
-                        new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
-                    ),
-                    new XElement(ns + "sitemap",
-                        new XElement(ns + "loc", $"{cleanBaseUrl}/sitemap_products.xml"),
-                        new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
-                    ),
-                    new XElement(ns + "sitemap",
-                        new XElement(ns + "loc", $"{cleanBaseUrl}/sitemap_categories.xml"),
-                        new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
-                    ),
-                    new XElement(ns + "sitemap",
-                        new XElement(ns + "loc", $"{cleanBaseUrl}/sitemap_custom.xml"),
-                        new XElement(ns + "lastmod", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))
-                    )
-                )
-            );
-            await File.WriteAllTextAsync(Path.Combine(wwwroot, "sitemap_index.xml"), indexDoc.ToString(), Encoding.UTF8);
-
-            // Update robots.txt to reference index sitemap if not exists
-            var robotsPath = Path.Combine(wwwroot, "robots.txt");
-            string robotsContent = $"User-agent: *\nAllow: /\n\nSitemap: {cleanBaseUrl}/sitemap_index.xml\n";
-            if (!File.Exists(robotsPath))
-            {
-                await File.WriteAllTextAsync(robotsPath, robotsContent, Encoding.UTF8);
-            }
+            return IsPathExcluded(path, excluded);
         }
 
         private bool IsPathExcluded(string path, List<string> excludedPaths)

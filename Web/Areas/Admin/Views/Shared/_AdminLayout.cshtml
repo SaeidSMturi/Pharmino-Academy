@@ -47,7 +47,7 @@
     </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Pharmacists Admin</title>
+    <title>@ViewData["Title"] - Pharmino Academy Admin</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -77,6 +77,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap">
+    <link rel="stylesheet" href="~/css/brand.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admin-mobile.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
     @{
@@ -238,10 +240,12 @@
         pointer-events: none;
         }
     </style>
+    <partial name="_Favicons" />
+    <partial name="_ShaderBackground" />
 </head>
 <body class="antialiased font-sans">
 
-    @* Background: the site-wide animated gradient (wwwroot/js/gradient-bg.js), same as the student area *@
+    @* Background: the site-wide animated shader (_ShaderBackground partial, wwwroot/js/theme-shader-bg.js) *@
 
     <!-- Mobile Header -->
     <header class="lg:hidden fixed top-0 left-0 right-0 z-40 glass-panel border-b-0">
@@ -250,9 +254,9 @@
                 <button id="mobile-menu-btn" type="button" aria-label="Open menu" aria-controls="sidebar" class="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center text-slate-300 hover:text-brand-cyan hover:bg-white/5 transition-colors">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <h1 class="min-w-0 truncate text-lg font-bold bg-gradient-to-r from-brand-cyan to-brand-blue bg-clip-text text-transparent">
-                    Pharmacists
-                </h1>
+                <a href="/Admin" class="min-w-0 flex items-center" aria-label="Pharmino Academy">
+                    <partial name="_BrandLogo" model='"compact"' />
+                </a>
             </div>
             <div class="flex items-center gap-2 shrink-0">
                 <partial name="_ThemeToggle" />
@@ -270,16 +274,9 @@
         <aside id="sidebar" class="fixed lg:relative inset-y-0 @(isRtl ? "right-0" : "left-0") z-50 w-72 max-w-[85vw] lg:max-w-none transform @(isRtl ? "translate-x-full" : "-translate-x-full") lg:translate-x-0 transition-transform duration-300 ease-out flex flex-col lg:m-5 lg:h-[calc(100vh-2.5rem)] lg:rounded-3xl glass-panel">
 
             <!-- Logo Section -->
-            <div class="hidden lg:flex items-center gap-3 p-8">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-cyan to-brand-blue p-[1px] shadow-[0_0_20px_rgba(66,234,255,0.3)]">
-                    <div class="w-full h-full bg-dark-bg rounded-xl flex items-center justify-center">
-                        <i class="fas fa-cube text-brand-cyan text-lg"></i>
-                    </div>
-                </div>
-                <div class="text-start">
-                    <h1 class="text-xl font-bold text-white tracking-wide">Pharmacists <span class="text-brand-cyan">@Localizer["Admin"]</span></h1>
-                    <p class="text-[10px] text-brand-blue font-semibold uppercase tracking-[0.2em]">@Localizer["ControlCenter"]</p>
-                </div>
+            <div class="hidden lg:flex flex-col items-center gap-2 px-6 pt-8 pb-6">
+                <a href="/Admin" aria-label="Pharmino Academy"><partial name="_BrandLogo" model='"sidebar"' /></a>
+                <p class="text-[10px] text-brand-blue font-semibold uppercase tracking-[0.2em]">@Localizer["Admin"] · @Localizer["ControlCenter"]</p>
             </div>
 
             <!-- Admin Profile Card -->
@@ -616,7 +613,6 @@
         }
     </script>
 
-    <script src="~/js/gradient-bg.js" asp-append-version="true" data-preset="site"></script>
     <script src="~/js/theme.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

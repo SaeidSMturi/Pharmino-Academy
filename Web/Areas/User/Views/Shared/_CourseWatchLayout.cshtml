@@ -163,13 +163,12 @@
         }
     </style>
     @await RenderSectionAsync("Styles", false)
+    <partial name="_Favicons" />
+    <partial name="_ShaderBackground" />
 </head>
 <body class="antialiased selection:bg-brand-cyan selection:text-brand-dark min-h-screen flex flex-col bg-brand-dark text-slate-100">
 
     <!-- Preloader -->
-    <div id="preloader">
-        <div class="loader-ring"></div>
-    </div>
 
     <!-- Background Ambience -->
     <div class="fixed -top-32 -left-32 w-96 h-96 bg-brand-blue/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
@@ -247,7 +246,7 @@
     <script>
         window.addEventListener('load', () => {
             const p = document.getElementById('preloader');
-            if (p) {
+            if (p && !p.dataset.managed) {
                 setTimeout(() => {
                     p.style.opacity = '0';
                     p.style.visibility = 'hidden';

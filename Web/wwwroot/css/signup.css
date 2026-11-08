@@ -37,9 +37,14 @@ html.light .su {
   --su-field: #ffffff;
   --su-field-line: #cbd5e1;
   --su-soft: rgba(15, 23, 42, .03);
-  --su-accent: #0284c7;
-  --su-green-2: #059669;
-  --su-red: #dc2626;
+  --su-accent: #0e7490;   /* deeper than the dark-mode #42EAFF so it reads on light glass */
+  --su-blue: #1d4ed8;
+  --su-orange: #c2410c;
+  --su-green: #047857;
+  --su-green-2: #047857;
+  --su-red: #b91c1c;
+  --su-amber: #b45309;
+  --su-text-3: #475569;
 }
 
 .su-card {

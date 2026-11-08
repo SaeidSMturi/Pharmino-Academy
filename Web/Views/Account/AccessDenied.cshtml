@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html lang="@currentCulture" dir="@(isRtl ? "rtl" : "ltr")">
 <head>
+    <meta name="robots" content="noindex, follow">
     <script>
         (function () {
             try {
@@ -103,6 +104,8 @@
             }
         </style>
     }
+    <partial name="_Favicons" />
+    <partial name="_ShaderBackground" />
 </head>
 <body class="antialiased relative min-h-screen">
 
@@ -149,7 +152,6 @@
             </div>
         </main>
     </div>
-    <script src="~/js/gradient-bg.js" asp-append-version="true" data-preset="site"></script>
     <script src="~/js/theme.js" asp-append-version="true"></script>
 </body>
 </html>

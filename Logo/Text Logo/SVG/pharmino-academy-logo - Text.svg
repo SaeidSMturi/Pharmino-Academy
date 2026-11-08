@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 766.65 192.9">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        fill: #f5c12e;
+      }
+
+      .cls-1, .cls-5, .cls-6 {
+        font-size: 120.84px;
+      }
+
+      .cls-7, .cls-5, .cls-8 {
+        fill: #1a2e5c;
+      }
+
+      .cls-7, .cls-9 {
+        font-size: 90px;
+        letter-spacing: 0em;
+      }
+
+      .cls-10 {
+        fill: #fff;
+      }
+
+      .cls-2, .cls-11 {
+        font-family: Montserrat-Arabic-Regular, Montserrat-Arabic;
+      }
+
+      .cls-3 {
+        font-family: CenturyGothic-Bold, 'Century Gothic';
+        font-size: 56.78px;
+        font-weight: 700;
+      }
+    </style>
+  </defs>
+  <g>
+    <g>
+      <g>
+        <text class="cls-2" transform="translate(0 102.71) scale(1.1 1)"><tspan class="cls-6" x="0" y="0" xml:space="preserve">PH  </tspan><tspan class="cls-9" x="242.15" y="0"> </tspan><tspan class="cls-6" x="266.45" y="0">RMINO</tspan></text>
+        <text class="cls-2" transform="translate(0 102.71) scale(1.1 1)"><tspan class="cls-6" x="0" y="0" xml:space="preserve">PH  </tspan><tspan class="cls-9" x="242.15" y="0"> </tspan><tspan class="cls-6" x="266.45" y="0">RMINO</tspan></text>
+        <text class="cls-2" transform="translate(0 102.71) scale(1.1 1)"><tspan class="cls-6" x="0" y="0" xml:space="preserve">PH  </tspan><tspan class="cls-9" x="242.15" y="0"> </tspan><tspan class="cls-6" x="266.45" y="0">RMINO</tspan></text>
+      </g>
+      <text class="cls-3" transform="translate(141.09 175.49) scale(1.33 1)"><tspan x="0" y="0">A C A D E M Y</tspan></text>
+      <path class="cls-4" d="M679.01,155.35h18.45c4.23,0,8.43-.02,12.65-.02h43.65q2.1,0,3.22.55.25.85.25,1.75c-1.3,1.3-2.27,1.15-4,1.12h-12.42c-2.12,0-4.25,0-6.4-.03h-10.75c-4.58,0-9.18-.02-13.75-.02h-14.4c-2.43,0-4.85-.02-7.25-.02h-2.2c-2.2,0-4.38,0-6.58-.05h-.85c-.78-.03-1.55-.03-2.32-.05-.43-.02-.85-.02-1.3-.05q-1.03-.15-2.03-1.15.25-1.25.75-1.75c1.75-.32,3.5-.28,5.28-.28Z"/>
+      <path class="cls-4" d="M19.65,155.36h90.55q4.5,0,5.27.77,0,1.5-.75,2.25c-1.05.23-1.88.3-2.92.3H18.28c-1.7-.02-3.43-.05-5.12-.12-.3-.02-.6-.02-.93-.05q-.75-.12-1.5-.88c.05-.9.1-1.35.75-2,2.7-.35,5.48-.27,8.18-.27Z"/>
+    </g>
+    <g>
+      <g>
+        <text class="cls-2" transform="translate(0 102.71) scale(1.1 1)"><tspan class="cls-6" x="0" y="0" xml:space="preserve">PH  </tspan><tspan class="cls-9" x="242.15" y="0"> </tspan><tspan class="cls-6" x="266.45" y="0">RMINO</tspan></text>
+        <text class="cls-11" transform="translate(0 102.71) scale(1.1 1)"><tspan class="cls-5" x="0" y="0" xml:space="preserve">PH  </tspan><tspan class="cls-7" x="242.15" y="0"> </tspan><tspan class="cls-5" x="266.45" y="0">RMIN</tspan><tspan class="cls-1" x="599.6" y="0">O</tspan></text>
+      </g>
+      <text class="cls-3" transform="translate(141.09 175.49) scale(1.33 1)"><tspan x="0" y="0">A C A D E M Y</tspan></text>
+      <path class="cls-4" d="M679.01,155.35h18.45c4.23,0,8.43-.02,12.65-.02h43.65q2.1,0,3.22.55.25.85.25,1.75c-1.3,1.3-2.27,1.15-4,1.12h-12.42c-2.12,0-4.25,0-6.4-.03h-10.75c-4.58,0-9.18-.02-13.75-.02h-14.4c-2.43,0-4.85-.02-7.25-.02h-2.2c-2.2,0-4.38,0-6.58-.05h-.85c-.78-.03-1.55-.03-2.32-.05-.43-.02-.85-.02-1.3-.05q-1.03-.15-2.03-1.15.25-1.25.75-1.75c1.75-.32,3.5-.28,5.28-.28Z"/>
+      <path class="cls-4" d="M19.65,155.36h90.55q4.5,0,5.27.77,0,1.5-.75,2.25c-1.05.23-1.88.3-2.92.3H18.28c-1.7-.02-3.43-.05-5.12-.12-.3-.02-.6-.02-.93-.05q-.75-.12-1.5-.88c.05-.9.1-1.35.75-2,2.7-.35,5.48-.27,8.18-.27Z"/>
+    </g>
+  </g>
+  <line class="cls-10" x1="225.66" y1="70.93" x2="219.82" y2="83.62"/>
+  <g>
+    <rect class="cls-4" x="227.88" y="72.67" width="30.62" height="9.2" rx="3.8" ry="3.8"/>
+    <rect class="cls-4" x="227.88" y="72.67" width="30.62" height="9.2" rx="3.8" ry="3.8" transform="translate(165.92 320.47) rotate(-90)"/>
+  </g>
+  <polygon class="cls-8" points="194.58 102.71 211.44 102.71 251.69 18.12 235.62 18.12 194.58 102.71"/>
+  <polygon class="cls-8" points="292.34 102.71 275.6 102.71 235.62 18.12 251.69 18.12 292.34 102.71"/>
+</svg>

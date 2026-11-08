@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html lang="@currentCulture" dir="@(isRtl ? "rtl" : "ltr")">
 <head>
+    <meta name="robots" content="noindex, follow">
     <script>
         (function () {
             try {
@@ -25,7 +26,7 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - @(isRtl ? "أكاديمية عمان للصيدلة" : "OmanPharmaAcademy")</title>
+    <title>@ViewData["Title"] - @(isRtl ? "أكاديمية فارمينو" : "Pharmino Academy")</title>
     <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -108,6 +109,8 @@
             }
         </style>
     }
+    <partial name="_Favicons" />
+    <partial name="_ShaderBackground" />
 </head>
 <body class="antialiased relative min-h-screen">
 
@@ -256,7 +259,7 @@
                         </p>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <a href="mailto:support@omanpharmaacademy.com"
+                            <a href="mailto:support@pharminoacademy.com"
                                class="flex items-center justify-between p-5 bg-slate-900/40 rounded-2xl border border-slate-800/60 hover:border-brand-blue/40 transition-all duration-300 group">
                                 <div class="flex items-center space-x-4 @(isRtl ? "space-x-reverse" : "")">
                                     <div class="w-12 h-12 bg-brand-blue/10 rounded-xl flex items-center justify-center border border-brand-blue/20 group-hover:scale-105 transition-transform">
@@ -266,7 +269,7 @@
                                         <p class="text-white font-bold text-sm">
                                             @(isFarsi ? "پشتیبانی از طریق ایمیل" : (isArabic ? "الدعم عبر البريد الإلكتروني" : "Email Support"))
                                         </p>
-                                        <p class="text-slate-500 text-xs mt-0.5 truncate max-w-[160px] md:max-w-none">support@omanpharmaacademy.com</p>
+                                        <p class="text-slate-500 text-xs mt-0.5 truncate max-w-[160px] md:max-w-none">support@pharminoacademy.com</p>
                                     </div>
                                 </div>
                                 <i class="fas @(isRtl ? "fa-chevron-left" : "fa-chevron-right") text-slate-600 group-hover:text-brand-blue group-hover:translate-x-1 transition-all text-sm"></i>
@@ -328,7 +331,6 @@
             </div>
         </div>
     </div>
-    <script src="~/js/gradient-bg.js" asp-append-version="true" data-preset="site"></script>
     <script src="~/js/theme.js" asp-append-version="true"></script>
 </body>
 </html>

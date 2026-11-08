@@ -1,0 +1,22 @@
+@*
+    Animated site background (wwwroot/js/theme-shader-bg.js): 21st.dev "Waves" shader in light mode,
+    21st.dev "Mesh Gradient" shader in dark mode. Include once per page, inside <head>.
+*@
+<style>
+    #pa-shader-bg {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        pointer-events: none;
+        display: block;
+    }
+    /* Let the shader show through the page's own flat background colours. */
+    html.pa-has-shader-bg,
+    html.pa-has-shader-bg body {
+        background: transparent !important;
+        background-image: none !important;
+    }
+</style>
+<script src="~/js/theme-shader-bg.js" asp-append-version="true" defer></script>

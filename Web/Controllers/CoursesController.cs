@@ -51,21 +51,21 @@ namespace Web.Controllers
 
                 if (isFarsi)
                 {
-                    ViewData["Title"] = "دوره‌های تخصصی داروسازی | فهرست کلیه دوره‌ها";
-                    ViewData["MetaDescription"] = "جدیدترین دوره‌های تخصصی داروسازی، فارماکولوژی، داروسازی بالینی و آمادگی آزمون را مشاهده و ثبت‌نام کنید.";
+                    ViewData["SeoTitle"] = "دوره‌های آمادگی آزمون داروسازی عمان و خلیج فارس";
+                    ViewData["MetaDescription"] = "همه دوره‌های آنلاین آمادگی آزمون لایسنس داروسازی عمان (OMSB / Pearson VUE) و کشورهای خلیج فارس: ویدیو، جزوه و آزمون تمرینی. همین حالا ثبت‌نام کنید.";
                     ViewData["MetaKeywords"] = "دوره‌های داروسازی, فارماکولوژی, ثبت‌نام دوره داروسازی, داروسازی بالینی, آزمون داروسازی";
                 }
                 else if (isArabic)
                 {
-                    ViewData["Title"] = "دورات الصيدلة التخصصية | قائمة جميع الدورات";
-                    ViewData["MetaDescription"] = "استكشف وسجل في أحدث دورات الصيدلة التخصصية، علم الأدوية، الصيدلة السريرية، والإعداد لاختبارات البورد.";
+                    ViewData["SeoTitle"] = "دورات التحضير لامتحان الصيدلة في عُمان والخليج";
+                    ViewData["MetaDescription"] = "جميع دورات التحضير لامتحان ترخيص الصيادلة في عُمان (OMSB / Pearson VUE) والخليج: فيديوهات وملفات PDF واختبارات تدريبية. سجّل الآن.";
                     ViewData["MetaKeywords"] = "دورات صيدلة, علم الأدوية, التسجيل في دورات الصيدلة, الصيدلة السريرية, امتحان الصيدلة";
                 }
                 else
                 {
-                    ViewData["Title"] = "Specialized Pharmacy Courses | All Courses List";
-                    ViewData["MetaDescription"] = "Explore and enroll in the latest specialized pharmacy, pharmacology, clinical pharmacy, and board exam preparation courses.";
-                    ViewData["MetaKeywords"] = "pharmacy courses, pharmacology, pharmacy course enrollment, clinical pharmacy, pharmacy exam";
+                    ViewData["SeoTitle"] = "Oman & Gulf Pharmacist Exam Prep Courses";
+                    ViewData["MetaDescription"] = "All online courses for the Oman pharmacist exam (OMSB / Pearson VUE) and Gulf licensing: video lessons, PDFs and practice exams. Enroll today.";
+                    ViewData["MetaKeywords"] = "Oman pharmacist exam course, OMSB exam preparation, Pearson VUE pharmacy exam course, Gulf pharmacy licensing course, online pharmacy courses";
                 }
                 ViewData["OgType"] = "website";
 
@@ -82,7 +82,7 @@ namespace Web.Controllers
                             ""@type"": ""Course"",
                             ""name"": ""{System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(c.Title ?? "")}"",
                             ""description"": ""{System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(c.Description ?? "")}"",
-                            ""url"": ""{scheme}://{host}/Course/{c.CourseId}""
+                            ""url"": ""{Web.Seo.SeoSite.LocalizedUrl(Web.Seo.SeoSite.BaseUrl(HttpContext), $"/Course/{c.CourseId}", Web.Seo.SeoSite.Lang(cultureName))}""
                         }}
                     }}").ToList();
 
@@ -107,6 +107,10 @@ namespace Web.Controllers
             }
         }
 
+        // "/Course" on its own (no id) used to be a 404; send it to the course list instead.
+        [HttpGet("Course")]
+        public IActionResult CourseRoot() => RedirectToActionPermanent(nameof(Index));
+
         [Route("Course/{id}")]
         public async Task<IActionResult> Details(int id)
         {
@@ -119,8 +123,8 @@ namespace Web.Controllers
                 if (course == null)
                 {
                     _logger.LogWarning("Course with ID {CourseId} was not found. User redirected to home page.", id);
-                    TempData["ErrorMessage"] = "Course not found";
-                    return RedirectToAction(nameof(Index));
+                    Response.StatusCode = StatusCodes.Status404NotFound;
+                    return View("NotFound");
                 }
 
                 var userId = GetCurrentUserId();
@@ -167,35 +171,38 @@ namespace Web.Controllers
                 var isFarsiDetails = cultureNameDetails.StartsWith("fa", System.StringComparison.OrdinalIgnoreCase);
                 var isArabicDetails = cultureNameDetails.StartsWith("ar", System.StringComparison.OrdinalIgnoreCase);
                 var rawDescription = System.Text.RegularExpressions.Regex.Replace(course.Description ?? "", "<.*?>", string.Empty);
-                var metaDesc = rawDescription.Length > 160 ? rawDescription.Substring(0, 157) + "..." : rawDescription;
+                // Search engines show 120–160 characters: use the course's own text when it is long enough, else a full sentence about the course.
+                rawDescription = System.Net.WebUtility.HtmlDecode(System.Text.RegularExpressions.Regex.Replace(rawDescription, @"\s+", " ")).Trim();
+                var metaDesc = rawDescription.Length >= 120 ? Web.Seo.SeoSite.FitDescription(rawDescription) : "";
 
                 if (isFarsiDetails)
                 {
-                    ViewData["Title"] = $"{course.Title} | دوره تخصصی داروسازی";
-                    ViewData["MetaDescription"] = string.IsNullOrWhiteSpace(metaDesc) ? $"دوره آموزشی تخصصی {course.Title} در پلتفرم داروسازان." : metaDesc;
+                    ViewData["SeoTitle"] = course.Title;
+                    ViewData["MetaDescription"] = string.IsNullOrWhiteSpace(metaDesc) ? Web.Seo.SeoSite.FitDescription($"{course.Title}: دوره آنلاین آکادمی فارمینو برای آمادگی آزمون لایسنس داروسازی عمان (OMSB) و خلیج فارس، همراه با ویدیو، جزوه و سؤالات تمرینی.") : metaDesc;
                     ViewData["MetaKeywords"] = $"{course.Title}, یادگیری {course.Title}, دوره داروسازی, فارماکولوژی";
                 }
                 else if (isArabicDetails)
                 {
-                    ViewData["Title"] = $"{course.Title} | دورة صيدلة تخصصية";
-                    ViewData["MetaDescription"] = string.IsNullOrWhiteSpace(metaDesc) ? $"دورة تدريبية تخصصية لـ {course.Title} على منصة الصيدليين." : metaDesc;
+                    ViewData["SeoTitle"] = course.Title;
+                    ViewData["MetaDescription"] = string.IsNullOrWhiteSpace(metaDesc) ? Web.Seo.SeoSite.FitDescription($"{course.Title}: دورة أونلاين في أكاديمية فارمينو للتحضير لامتحانات ترخيص الصيادلة في عُمان (OMSB) والخليج، مع فيديوهات وملفات PDF وأسئلة تدريبية.") : metaDesc;
                     ViewData["MetaKeywords"] = $"{course.Title}, تعلم {course.Title}, دورة صيدلة, علم الأدوية";
                 }
                 else
                 {
-                    ViewData["Title"] = $"{course.Title} | Specialized Pharmacy Course";
-                    ViewData["MetaDescription"] = string.IsNullOrWhiteSpace(metaDesc) ? $"Specialized training course for {course.Title} on the Pharmacists platform." : metaDesc;
+                    ViewData["SeoTitle"] = course.Title;
+                    ViewData["MetaDescription"] = string.IsNullOrWhiteSpace(metaDesc) ? Web.Seo.SeoSite.FitDescription($"{course.Title}: online course at Pharmino Academy for the Oman (OMSB) and Gulf pharmacist licensing exams, with video lessons, PDFs and practice questions.") : metaDesc;
                     ViewData["MetaKeywords"] = $"{course.Title}, learn {course.Title}, pharmacy course, pharmacology";
                 }
                 ViewData["OgType"] = "article";
-                ViewData["CanonicalUrl"] = $"{scheme}://{host}/Course/{course.CourseId}";
+                var seoBase = Web.Seo.SeoSite.BaseUrl(HttpContext);
+                ViewData["CanonicalUrl"] = Web.Seo.SeoSite.LocalizedUrl(seoBase, $"/Course/{course.CourseId}", Web.Seo.SeoSite.Lang(cultureNameDetails));
 
                 if (!string.IsNullOrEmpty(course.ImageName) && course.ImageName != "default.jpg")
                 {
-                    ViewData["OgImage"] = $"{scheme}://{host}/uploads/courses/{course.ImageName}";
+                    ViewData["OgImage"] = $"{seoBase}/uploads/courses/{course.ImageName}";
                 }
 
-                var providerName = isFarsiDetails ? "پلتفرم داروسازان" : (isArabicDetails ? "منصة الصيدليين" : "Pharmacists Platform");
+                var providerName = Web.Seo.SeoSite.BrandName(cultureNameDetails);
 
                 var courseJsonLd = $@"
                 {{
@@ -206,7 +213,7 @@ namespace Web.Controllers
                     ""provider"": {{
                         ""@type"": ""Organization"",
                         ""name"": ""{providerName}"",
-                        ""sameAs"": ""{scheme}://{host}""
+                        ""url"": ""{seoBase}/""
                     }},
                     ""offers"": {{
                         ""@type"": ""Offer"",
