@@ -236,6 +236,8 @@ namespace Web
             builder.Services.AddScoped<ISettingsService, SettingsService>();
             builder.Services.AddScoped<ISeoService, SeoService>();
             builder.Services.AddSingleton<Web.Seo.SeoErrorFilter>();
+            builder.Services.AddSingleton<Web.Services.CourseCoverCache>();
+            builder.Services.AddScoped<Web.Services.StudentEnrollments>();
             builder.Services.AddSingleton<IVideoTokenService, VideoTokenService>();
             builder.Services.AddSingleton<IVideoSessionManager, VideoSessionManager>();
 
@@ -361,51 +363,29 @@ namespace Web
                     !requestPath.Contains("/videos/", StringComparison.OrdinalIgnoreCase) &&
                     !requestPath.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
                 {
-                    var fileName = Path.GetFileName(requestPath);
-                    if (!string.IsNullOrEmpty(fileName) && fileName != "default.jpg")
+                    // Only covers sit directly in /uploads/courses/{file}. A restored file is served by UseStaticFiles below;
+                    // if it could not be saved to disk, the bucket copy is sent from memory instead.
+                    var fileName = requestPath.Substring("/uploads/courses/".Length);
+                    if (Web.Services.CourseCoverCache.IsCoverFileName(fileName))
                     {
-                        var env = context.RequestServices.GetRequiredService<IWebHostEnvironment>();
-                        var webRoot = !string.IsNullOrWhiteSpace(env.WebRootPath)
-                            ? env.WebRootPath
-                            : Path.Combine(env.ContentRootPath, "wwwroot");
-                        var localFilePath = Path.Combine(webRoot, "uploads", "courses", fileName);
-
-                        if (!File.Exists(localFilePath))
+                        var covers = context.RequestServices.GetRequiredService<Web.Services.CourseCoverCache>();
+                        var cover = await covers.GetAsync(fileName);
+                        if (cover is { LocalPath: null, Bytes: not null })
                         {
-                            try
-                            {
-                                var storageService = context.RequestServices.GetRequiredService<IStorageService>();
-                                if (await storageService.FileExistsAsync("uploads/courses", fileName))
-                                {
-                                    var bytes = await storageService.ReadFileBytesAsync("uploads/courses", fileName);
-                                    if (bytes != null && bytes.Length > 0)
-                                    {
-                                        var dir = Path.GetDirectoryName(localFilePath);
-                                        if (!Directory.Exists(dir))
-                                        {
-                                            Directory.CreateDirectory(dir!);
-                                        }
-                                        await File.WriteAllBytesAsync(localFilePath, bytes);
-
-                                        var ext = Path.GetExtension(fileName).ToLowerInvariant();
-                                        var contentType = ext switch
-                                        {
-                                            ".png" => "image/png",
-                                            ".gif" => "image/gif",
-                                            ".webp" => "image/webp",
-                                            ".svg" => "image/svg+xml",
-                                            _ => "image/jpeg"
-                                        };
-                                        context.Response.ContentType = contentType;
-                                        await context.Response.Body.WriteAsync(bytes);
-                                        return;
-                                    }
-                                }
-                            }
-                            catch
-                            {
-                                // Pass through if retrieval fails
-                            }
+                            context.Response.ContentType = cover.ContentType;
+                            context.Response.Headers.CacheControl = "public,max-age=86400";
+                            await context.Response.Body.WriteAsync(cover.Bytes);
+                            return;
+                        }
+                        if (cover == null && Path.GetExtension(fileName).ToLowerInvariant() is ".jpg" or ".jpeg" or ".png" or ".gif" or ".webp")
+                        {
+                            // The cover is gone everywhere: show the branded default cover instead of a broken image.
+                            var env = context.RequestServices.GetRequiredService<IWebHostEnvironment>();
+                            var defaultCover = Path.Combine(env.WebRootPath, Web.Services.CourseCoverCache.DefaultCoverUrl.TrimStart('/'));
+                            context.Response.ContentType = "image/svg+xml";
+                            context.Response.Headers.CacheControl = "no-cache";
+                            await context.Response.SendFileAsync(defaultCover);
+                            return;
                         }
                     }
                 }

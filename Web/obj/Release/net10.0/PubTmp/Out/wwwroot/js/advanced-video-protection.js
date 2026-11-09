@@ -378,26 +378,7 @@ class AdvancedVideoProtection {
     startDevToolsDetection() {
         this.log('🛠️ Starting DevTools detection...');
 
-        // Method 1: debugger trap
-        const devtools = { open: false, orientation: null };
-        
-        const threshold = 160;
-        
-        const detectDevTools = () => {
-            const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-            const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-            const isOpen = widthThreshold || heightThreshold;
-
-            if (isOpen && !this.state.devToolsOpen) {
-                this.state.devToolsOpen = true;
-                this.onDevToolsOpen();
-            } else if (!isOpen && this.state.devToolsOpen) {
-                this.state.devToolsOpen = false;
-                this.onDevToolsClose();
-            }
-        };
-
-        this.intervals.devtools = setInterval(detectDevTools, 500);
+        // (A window-size check used to run here; browser zoom and side panels set it off for ordinary students.)
 
         // Method 2: Console.log detection
         const element = new Image();
@@ -413,15 +394,18 @@ class AdvancedVideoProtection {
             console.log('%c', element);
         }, 5000);
 
-        // Method 3: debugger statement timing
-        setInterval(() => {
+        // Method 3: debugger statement timing (only pauses while DevTools is open)
+        this.intervals.devtools = setInterval(() => {
             const start = performance.now();
             debugger;
-            const end = performance.now();
-            
-            if (end - start > 100) {
+            const isOpen = performance.now() - start > 100;
+
+            if (isOpen && !this.state.devToolsOpen) {
                 this.state.devToolsOpen = true;
                 this.onDevToolsOpen();
+            } else if (!isOpen && this.state.devToolsOpen) {
+                this.state.devToolsOpen = false;
+                this.onDevToolsClose();
             }
         }, 1000);
     }

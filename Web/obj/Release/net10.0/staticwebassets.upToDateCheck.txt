@@ -128,6 +128,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\mn.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\sk.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\gb-sct.svg
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\images\brand\course-cover-default.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\ms.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
@@ -660,6 +661,7 @@ wwwroot\dist\signup\signup.js
 wwwroot\favicon.ico
 wwwroot\fonts\BNazanin.ttf
 wwwroot\images\brand\apple-touch-icon.png
+wwwroot\images\brand\course-cover-default.svg
 wwwroot\images\brand\icon-192.png
 wwwroot\images\brand\icon-512.png
 wwwroot\images\brand\pa-mark.svg

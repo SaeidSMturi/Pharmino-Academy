@@ -233,4 +233,10 @@
 	<data name="Testimonial3Quote" xml:space="preserve">
     <value>قبولی در نخستین تلاش با نمره عالی باورنکردنی بود. پشتیبانی دلسوزانه و محتوای به‌روز اعتماد به نفس واقعی به من بخشید.</value>
   </data>
+  <data name="Enrolled" xml:space="preserve">
+    <value>ثبت‌نام شده</value>
+  </data>
+  <data name="ContinueLearning" xml:space="preserve">
+    <value>مشاهده دوره و یادگیری</value>
+  </data>
 </root>

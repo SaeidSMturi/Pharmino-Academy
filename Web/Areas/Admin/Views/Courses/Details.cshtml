@@ -337,11 +337,6 @@
                             </button>
                         }
 
-                        <button type="button" onclick="createTestVideo()"
-                                class="w-full sm:w-auto text-center px-4 py-2 bg-amber-500/20 border border-amber-500/30 text-amber-400 rounded-xl font-extrabold hover:bg-amber-500 hover:text-dark-bg transition-all text-xs flex items-center justify-center">
-                            <i class="fas fa-flask @(isRtl ? "ml-1.5" : "mr-1.5") text-sm"></i> @Localizer["AddTestVideo"]
-                        </button>
-
                         <a asp-controller="CourseVideos" asp-action="Create" asp-route-courseId="@Model.CourseId"
                            class="w-full sm:w-auto text-center px-4 py-2 bg-gradient-to-r from-brand-cyan to-brand-blue rounded-xl text-dark-bg font-extrabold hover:shadow-[0_0_15px_rgba(66,234,255,0.3)] transition-all text-xs flex items-center justify-center">
                             <i class="fas fa-plus @(isRtl ? "ml-1.5" : "mr-1.5") text-sm"></i> @Localizer["AddVideo"]
@@ -1354,60 +1349,6 @@
                 if (result.success) { location.reload(); }
                 else { alert('Error: ' + result.message); }
             } catch (e) { alert('Connection error while removing student.'); }
-        }
-
-        // Test Method Execution
-        async function createTestVideo() {
-            const videoUrl = prompt('Enter a valid video URL (mp4) to download as a Test Mock:', 'https://www.w3schools.com/html/mov_bbb.mp4');
-
-            if (!videoUrl) return;
-
-            if (!confirm('This will trigger a backend download and HLS conversion. Proceed?')) return;
-
-            const btn = document.querySelector('button[onclick="createTestVideo()"]');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1.5"></i> Processing...';
-            btn.disabled = true;
-
-            try {
-                const formData = new URLSearchParams({
-                    courseId: '@Model.CourseId',
-                    videoUrl: videoUrl
-                });
-
-                const response = await fetch('/Admin/CourseVideos/TestOnly_DownloadVideoFromUrl', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    const errText = await response.text();
-                    console.error("Server Error:", errText);
-                    alert(`Server Error (${response.status}): Operation failed.`);
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                    return;
-                }
-
-                const result = await response.json();
-
-                if (result.success) {
-                    alert('Test video downloaded successfully! Refreshing...');
-                    location.reload();
-                } else {
-                    alert('Test failed: ' + result.message);
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                }
-            } catch (error) {
-                alert('Connection error: ' + error.message);
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
         }
 
         // 📦 Bundle Operations

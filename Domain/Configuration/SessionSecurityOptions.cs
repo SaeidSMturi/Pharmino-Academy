@@ -16,7 +16,7 @@
         /// Maximum number of concurrent active sessions allowed per user. When exceeded, the least-recently-
         /// active session(s) are automatically evicted to make room for the new login (anti account-sharing).
         /// </summary>
-        public int MaxConcurrentLogins { get; set; } = 2;
+        public int MaxConcurrentLogins { get; set; } = 1;
 
         /// <summary>
         /// مدت اعتبار (به ساعت) هر نشست از آخرین فعالیت؛ به صورت Sliding در هر درخواست معتبر تمدید می‌شود

@@ -530,7 +530,6 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compre
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\15c8sfbgbu-{0}-n1w7lfdwi0-n1w7lfdwi0.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\rqkye4xa2r-{0}-99emilyk1j-99emilyk1j.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\qxtltq3tzw-{0}-gtxjp1wxkm-gtxjp1wxkm.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\czcm2eovn5-{0}-3f6ah0a671-3f6ah0a671.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\nk8dogfvvt-{0}-smxqa5gqq0-smxqa5gqq0.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\2s28s4nlbv-{0}-c6cczd3u2l-c6cczd3u2l.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\3rgcb30j84-{0}-hj9fzf3fdj-hj9fzf3fdj.gz
@@ -613,7 +612,6 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\Web.ge
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\ref\Web.dll
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\opb8szq0ka-{0}-tivxt5ldv9-tivxt5ldv9.gz
 C:\Users\user\Desktop\Pharmacists\Web\obj\Debug\net10.0\compressed\jrbsexuqkk-{0}-01te2tn2yu-01te2tn2yu.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\opb8szq0ka-{0}-tivxt5ldv9-tivxt5ldv9.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\jrbsexuqkk-{0}-01te2tn2yu-01te2tn2yu.gz
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\publish\web.config
 C:\Users\user\Desktop\Pharmacists\Web\bin\Debug\net10.0\publish\AppData\VideoEngine\version.json
@@ -1121,9 +1119,12 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\en\Web
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\fa\Web.resources.cs
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\g4c6ga8xq0-{0}-oi1018jx5w-oi1018jx5w.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\95wzysxikh-{0}-cuu56x0oju-cuu56x0oju.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\3nzl7dddxg-{0}-adcqxc21mb-adcqxc21mb.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\1fvynraiop-{0}-vpl05zxl1e-vpl05zxl1e.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\bd99rxen5c-{0}-bqirjfysvn-bqirjfysvn.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\b2msq9thvz-{0}-embijvifnb-embijvifnb.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\mo5xe3o7ip-{0}-rbfilr31k9-rbfilr31k9.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\04lfaqve3i-{0}-vhou7tonxa-vhou7tonxa.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\04lfaqve3i-{0}-d7e0ghcsh6-d7e0ghcsh6.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\opb8szq0ka-{0}-v3br5w8n5i-v3br5w8n5i.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\czcm2eovn5-{0}-ho1plbp69q-ho1plbp69q.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\ebi4giryyb-{0}-aigja5bqzg-aigja5bqzg.gz
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Debug\net10.0\compressed\3nzl7dddxg-{0}-7thz1zj44r-7thz1zj44r.gz

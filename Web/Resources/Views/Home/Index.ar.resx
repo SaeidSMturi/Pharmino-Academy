@@ -234,4 +234,10 @@
     <value>اجتياز الامتحان من المحاولة الأولى بدا مستحيلاً حتى انضممت إلى هذه الأكاديمية. الدعم المباشر والمحتوى المحدث منحني الثقة التي كنت أحتاجها.</value>
   </data>
 	
+  <data name="Enrolled" xml:space="preserve">
+    <value>مسجل</value>
+  </data>
+  <data name="ContinueLearning" xml:space="preserve">
+    <value>متابعة التعلم</value>
+  </data>
 </root>

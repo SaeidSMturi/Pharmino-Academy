@@ -6,12 +6,14 @@ export class SecurityDetectors {
 
     startDevToolsDetection() {
         this.ctx.log('🛠️ Starting DevTools detection...');
-        const threshold = 160;
 
-        const detectDevTools = () => {
-            const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-            const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-            const isOpen = widthThreshold || heightThreshold;
+        // The `debugger` statement only pauses while DevTools is open, so a long pause means it is open.
+        // (A window-size check used to run here too; browser zoom and side panels set it off for ordinary
+        // students, pausing their video and raising their stream's suspicion score.)
+        this.ctx.intervals.devtools = setInterval(() => {
+            const start = performance.now();
+            debugger;
+            const isOpen = performance.now() - start > 100;
 
             if (isOpen && !this.ctx.state.devToolsOpen) {
                 this.ctx.state.devToolsOpen = true;
@@ -19,17 +21,6 @@ export class SecurityDetectors {
             } else if (!isOpen && this.ctx.state.devToolsOpen) {
                 this.ctx.state.devToolsOpen = false;
                 this.ctx.log('✅ DevTools closed');
-            }
-        };
-
-        this.ctx.intervals.devtools = setInterval(detectDevTools, 500);
-
-        setInterval(() => {
-            const start = performance.now();
-            debugger;
-            if (performance.now() - start > 100) {
-                this.ctx.state.devToolsOpen = true;
-                this.onDevToolsOpen();
             }
         }, 1000);
     }

@@ -23,6 +23,10 @@ namespace Web.Areas.Admin.Controllers
     [Authorize]
     public class CoursesController : AdminBaseController
     {
+        // Shown when a cover saved on this server could not be copied to the storage bucket: a redeploy would lose it.
+        private const string CoverNotInBucketMessage =
+            "The cover image could not be copied to cloud storage, so it is only on this server and will disappear after the next deploy. Check the storage settings and upload the cover again.";
+
         private readonly WebContext _context;
         private readonly IWebHostEnvironment _environment;
         private readonly UploadLimitsOptions _uploadLimits;
@@ -464,6 +468,7 @@ namespace Web.Areas.Admin.Controllers
                     catch (Exception s3Ex)
                     {
                         _logger.LogWarning(s3Ex, "Failed to upload course cover image to bucket, file saved locally.");
+                        TempData["ErrorMessage"] = CoverNotInBucketMessage;
                     }
 
                     course.ImageName = uniqueFileName;
@@ -632,6 +637,7 @@ namespace Web.Areas.Admin.Controllers
                     catch (Exception s3Ex)
                     {
                         _logger.LogWarning(s3Ex, "Failed to upload replacement cover image to bucket, saved locally.");
+                        TempData["ErrorMessage"] = CoverNotInBucketMessage;
                     }
 
                     existingCourse.ImageName = uniqueFileName;

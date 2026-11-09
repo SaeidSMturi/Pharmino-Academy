@@ -537,6 +537,13 @@ namespace Web.Areas.User.Controllers
         #endregion
 
         #region PDF Operations
+        /// <summary>
+        /// Staff who manage courses (admins, course managers). Roles are not in the login cookie, so ask the
+        /// permission service, the same way the admin area does.
+        /// </summary>
+        private Task<bool> IsCourseStaffAsync(int userId) =>
+            HttpContext.RequestServices.GetRequiredService<IPermissionService>().UserHasPermissionAsync(userId, "Courses.View");
+
         [HttpGet("/Students/Course/Pdf/{pdfId}")]
         [HttpGet("/User/Course/Pdf/{pdfId}")]
         public async Task<IActionResult> ViewPdf(int pdfId)
@@ -544,7 +551,7 @@ namespace Web.Areas.User.Controllers
             var userId = GetCurrentUserId();
             var pdf = await _courseService.GetPdfByIdAsync(pdfId);
 
-            var isAdmin = User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.HasClaim(c => c.Type == "Permission" && (c.Value == "Courses.View" || c.Value == "SuperAdmin"));
+            var isAdmin = await IsCourseStaffAsync(userId);
             if (pdf == null || (!isAdmin && !await _courseService.CanUserAccessPdfAsync(userId, pdfId)))
             {
                 TempData["ErrorMessage"] = "PDF not found or access denied.";
@@ -668,7 +675,7 @@ namespace Web.Areas.User.Controllers
             if (userId == 0 || userId != tokenUserId) return (false, Forbid(), null, null);
 
             var pdf = await _courseService.GetPdfByIdAsync(pdfId);
-            var isAdmin = User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.HasClaim(c => c.Type == "Permission" && (c.Value == "Courses.View" || c.Value == "SuperAdmin"));
+            var isAdmin = await IsCourseStaffAsync(userId);
             if (pdf == null || (!isAdmin && !await _courseService.CanUserAccessPdfAsync(userId, pdfId)))
                 return (false, Forbid(), null, null);
 

@@ -233,4 +233,10 @@
 	<data name="Testimonial3Quote" xml:space="preserve">
     <value>Passing the exam on the first try felt impossible until I joined this academy. The direct support and up-to-date content gave me the confidence I needed.</value>
   </data>
+  <data name="Enrolled" xml:space="preserve">
+    <value>Enrolled</value>
+  </data>
+  <data name="ContinueLearning" xml:space="preserve">
+    <value>Continue Learning</value>
+  </data>
 </root>

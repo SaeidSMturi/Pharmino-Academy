@@ -1,7 +1,13 @@
 @model Domain.Entities.Course.Course
+@inject Web.Services.StudentEnrollments StudentEnrollments
+@inject Application.Interfaces.IPermissionService PermissionService
 
 @{
     ViewData["Title"] = Model.Title;
+    var ownedCourseIds = await StudentEnrollments.GetCourseIdsAsync(User);
+    // Roles are not in the login cookie; the permission service decides who may manage courses.
+    var viewerId = int.TryParse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value, out var vid) ? vid : 0;
+    var canManageCourse = viewerId > 0 && await PermissionService.UserHasPermissionAsync(viewerId, "Courses.Edit");
     var cultureName = System.Globalization.CultureInfo.CurrentUICulture.Name;
     var isFarsi = cultureName.StartsWith("fa", StringComparison.OrdinalIgnoreCase);
     var isArabic = cultureName.StartsWith("ar", StringComparison.OrdinalIgnoreCase);
@@ -264,7 +270,7 @@
                     else
                     {
                         <div class="space-y-3 w-full">
-                            @if (User.IsInRole("Admin"))
+                            @if (canManageCourse)
                             {
                                 <a href="/Admin/Courses/Details/@Model.CourseId"
                                    class="flex items-center justify-center w-full px-6 py-3.5 rounded-2xl bg-gradient-to-r from-brand-cyan to-brand-blue hover:from-cyan-400 hover:to-blue-500 text-dark-bg font-extrabold text-base transition-all duration-300 transform hover:-translate-y-0.5 shadow-[0_0_20px_rgba(66,234,255,0.4)] gap-2.5">
@@ -361,7 +367,7 @@
                                 <span class="flex items-center gap-1"><i class="fas fa-video text-custom-cyan/80"></i> @subCourse.Videos.Count vids</span>
                             </div>
 
-                            @if (isEnrolled)
+                            @if (isEnrolled || ownedCourseIds.Contains(subCourse.CourseId))
                             {
                                 <a asp-area="User" asp-controller="Courses" asp-action="MyCourseDetails" asp-route-id="@subCourse.CourseId"
                                    class="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all shadow-[0_0_15px_rgba(168,85,247,0.4)] flex items-center gap-1.5">

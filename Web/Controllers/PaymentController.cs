@@ -38,7 +38,7 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Checkout(int courseId)
+        public async Task<IActionResult> Checkout(int courseId, [FromServices] ICourseService courseService)
         {
             var userId = GetCurrentUserId();
             if (userId == 0) return RedirectToAction("Login", "Account");
@@ -56,7 +56,8 @@ namespace Web.Controllers
                 return RedirectToAction("Details", "Courses", new { id = courseId });
             }
 
-            var isEnrolled = await _context.CourseEnrollments.AnyAsync(e => e.UserId == userId && e.CourseId == courseId);
+            // Owned directly or through a bundle: never sell it twice.
+            var isEnrolled = await courseService.IsUserEnrolledAsync(userId, courseId);
             if (isEnrolled)
             {
                 TempData["InfoMessage"] = "You are already enrolled in this course.";
@@ -78,7 +79,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ProcessPayment(int courseId, string selectedCurrency)
+        public async Task<IActionResult> ProcessPayment(int courseId, string selectedCurrency, [FromServices] ICourseService courseService)
         {
             var userId = GetCurrentUserId();
             if (userId == 0) return RedirectToAction("Login", "Account");
@@ -97,7 +98,7 @@ namespace Web.Controllers
             }
 
             // Checkout only checks this when the page is shown; check again so nobody pays twice.
-            if (await _context.CourseEnrollments.AnyAsync(e => e.UserId == userId && e.CourseId == courseId))
+            if (await courseService.IsUserEnrolledAsync(userId, courseId))
             {
                 TempData["InfoMessage"] = "You are already enrolled in this course.";
                 return RedirectToAction("Details", "Courses", new { id = courseId });

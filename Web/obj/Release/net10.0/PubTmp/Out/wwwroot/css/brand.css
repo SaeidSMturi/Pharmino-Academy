@@ -107,7 +107,8 @@ a:hover .pa-logo__mark {
 #sidebar nav i.fa-display          { --ic: #60a5fa; --ic-l: #1d4ed8; }  /* devices – blue */
 #sidebar nav i.fa-video            { --ic: #fb7185; --ic-l: #be123c; }  /* videos – rose */
 #sidebar nav i.fa-wallet           { --ic: #4ade80; --ic-l: #15803d; }  /* wallet – green */
-#sidebar nav i.fa-pen-nib          { --ic: #fb923c; --ic-l: #c2410c; }  /* content – orange */
+#sidebar nav i.fa-pen-nib,
+#sidebar nav i.fa-compass          { --ic: #fb923c; --ic-l: #c2410c; }  /* content / browse courses – orange */
 #sidebar nav i.fa-envelope-open-text { --ic: #2dd4bf; --ic-l: #0f766e; } /* email – teal */
 #sidebar nav i.fa-lock             { --ic: #f87171; --ic-l: #b91c1c; }  /* access – red */
 #sidebar nav i.fa-sliders          { --ic: #818cf8; --ic-l: #4338ca; }  /* settings – indigo */

@@ -1,9 +1,14 @@
 @model Domain.Entities.Course.CoursePdf
+@inject Application.Interfaces.IPermissionService PermissionService
 
 @{
     ViewData["Title"] = ViewBag.PdfTitle;
     var courseTitle = ViewBag.CourseTitle as string;
     var courseId = (int)ViewBag.CourseId;
+    // Staff (admins / course managers) get the admin back link and the Forensic Reveal tool; students never see them.
+    // (Roles are not in the login cookie, so the permission service decides, as in the admin area.)
+    var staffUserId = int.TryParse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value, out var uid) ? uid : 0;
+    var isStaff = staffUserId > 0 && await PermissionService.UserHasPermissionAsync(staffUserId, "Courses.View");
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -12,8 +17,8 @@
 <div class="space-y-4 select-none antialiased animate-fade-in-up" oncontextmenu="return false;" style="font-family: 'Plus Jakarta Sans', sans-serif;">
 
     <!-- Top Action Bar -->
-    <div class="flex items-center justify-between px-1">
-        @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.HasClaim(c => c.Type == "Permission" && (c.Value == "Courses.View" || c.Value == "SuperAdmin")))
+    <div class="flex items-center justify-between gap-2 px-1">
+        @if (isStaff)
         {
             <a asp-area="Admin" asp-controller="Courses" asp-action="Details" asp-route-id="@courseId" class="group inline-flex items-center px-4 py-2 rounded-xl bg-brand-cyan/10 text-brand-cyan hover:bg-brand-cyan hover:text-dark-bg border border-brand-cyan/20 transition-all duration-300">
                 <i class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-0.5 transition-transform"></i>
@@ -22,34 +27,35 @@
         }
         else
         {
-            <a asp-area="User" asp-controller="Courses" asp-action="MyCourseDetails" asp-route-id="@courseId" class="group inline-flex items-center px-4 py-2 rounded-xl bg-white/5 text-slate-400 hover:text-brand-cyan border border-white/5 hover:border-brand-cyan/20 transition-all duration-300">
-                <i class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-0.5 transition-transform"></i>
-                <span class="text-xs font-bold uppercase tracking-wider">Back to <span class="text-slate-300 group-hover:text-brand-cyan transition-colors ml-1">@courseTitle</span></span>
+            <a asp-area="User" asp-controller="Courses" asp-action="MyCourseDetails" asp-route-id="@courseId" class="group inline-flex items-center min-w-0 max-w-full px-4 py-2 rounded-xl bg-white/5 text-slate-400 hover:text-brand-cyan border border-white/5 hover:border-brand-cyan/20 transition-all duration-300">
+                <i class="fas fa-arrow-left mr-2 shrink-0 transform group-hover:-translate-x-0.5 transition-transform"></i>
+                <span class="text-xs font-bold uppercase tracking-wider truncate">Back to <span class="text-slate-300 group-hover:text-brand-cyan transition-colors ml-1">@courseTitle</span></span>
             </a>
         }
-        <div class="flex items-center gap-2 text-[10px] bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan px-3 py-1.5 rounded-xl font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(66,234,255,0.1)]">
+        <div class="hidden sm:flex shrink-0 items-center gap-2 text-[10px] bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan px-3 py-1.5 rounded-xl font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(66,234,255,0.1)]">
             <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse"></span>
             Cryptographic Node Stream
         </div>
     </div>
 
     <!-- Main PDF Viewer Frame -->
-    <div id="pdf-container" class="flex flex-col bg-brand-dark/40 rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl backdrop-blur-xl transition-all duration-300 relative" style="height: 820px;">
+    <!-- Height is set by the script so the viewer fills the screen below the page header (min 420px). -->
+    <div id="pdf-container" class="flex flex-col bg-brand-dark/40 rounded-2xl sm:rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl backdrop-blur-xl relative" style="height: 80vh;">
 
-        <!-- Premium Neon Glass Toolbar -->
-        <div class="bg-gradient-to-r from-white/[0.03] to-white/[0.01] border-b border-white/5 p-3.5 flex flex-wrap items-center justify-between gap-4 text-slate-200 z-10 shadow-sm backdrop-blur-md">
+        <!-- Toolbar: wraps to a second row on phones -->
+        <div id="pdf-toolbar" class="bg-gradient-to-r from-white/[0.03] to-white/[0.01] border-b border-white/5 p-2 sm:p-3.5 flex flex-wrap items-center justify-between gap-2 sm:gap-4 text-slate-200 z-10 shadow-sm backdrop-blur-md">
 
             <!-- Pagination Controls -->
-            <div class="flex items-center gap-0.5 bg-black/40 p-1 rounded-xl border border-white/5">
-                <button id="first-page" class="p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all disabled:opacity-20 disabled:hover:bg-transparent" title="First Page">
+            <div class="flex shrink-0 items-center gap-0.5 bg-black/40 p-1 rounded-xl border border-white/5">
+                <button id="first-page" class="hidden sm:block p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all disabled:opacity-20 disabled:hover:bg-transparent" title="First Page">
                     <i class="fas fa-angle-double-left text-xs"></i>
                 </button>
                 <button id="prev-page" class="p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all disabled:opacity-20 disabled:hover:bg-transparent" title="Previous Page">
                     <i class="fas fa-angle-left text-xs"></i>
                 </button>
 
-                <div class="flex items-center gap-2 px-3 text-xs font-bold text-slate-400 border-x border-white/5 mx-1">
-                    <span>Page</span>
+                <div class="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 text-xs font-bold text-slate-400 border-x border-white/5 mx-1">
+                    <span class="hidden sm:inline">Page</span>
                     <input type="number" id="page-idx-input" class="w-12 text-center bg-brand-dark border border-white/10 rounded-lg py-1 px-0.5 text-brand-cyan font-extrabold focus:outline-none focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/30 transition-all" value="1" min="1" />
                     <span>of</span>
                     <span id="page-count" class="font-extrabold text-slate-200">...</span>
@@ -58,32 +64,36 @@
                 <button id="next-page" class="p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all disabled:opacity-20 disabled:hover:bg-transparent" title="Next Page">
                     <i class="fas fa-angle-right text-xs"></i>
                 </button>
-                <button id="last-page" class="p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all disabled:opacity-20 disabled:hover:bg-transparent" title="Last Page">
+                <button id="last-page" class="hidden sm:block p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all disabled:opacity-20 disabled:hover:bg-transparent" title="Last Page">
                     <i class="fas fa-angle-double-right text-xs"></i>
                 </button>
             </div>
 
             <!-- Zoom Controls -->
-            <div class="flex items-center gap-0.5 bg-black/40 p-1 rounded-xl border border-white/5">
+            <div class="flex shrink-0 items-center gap-0.5 bg-black/40 p-1 rounded-xl border border-white/5">
                 <button id="zoom-out" class="p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all" title="Zoom Out">
                     <i class="fas fa-minus text-[10px]"></i>
                 </button>
-                <span id="zoom-percent" class="px-2 text-xs font-extrabold font-mono w-14 text-center text-slate-200">100%</span>
+                <span id="zoom-percent" class="px-1 sm:px-2 text-xs font-extrabold font-mono w-12 sm:w-14 text-center text-slate-200">100%</span>
                 <button id="zoom-in" class="p-2 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all" title="Zoom In">
                     <i class="fas fa-plus text-[10px]"></i>
                 </button>
                 <div class="w-px h-4 bg-white/5 mx-1"></div>
-                <button id="zoom-fit" class="px-3 py-1.5 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all text-xs font-bold flex items-center gap-1.5" title="Fit to Width">
-                    <i class="fas fa-arrows-left-right text-[11px]"></i> Fit Width
+                <!-- Switches between showing the whole page and filling the width; the label names what a click does -->
+                <button id="zoom-fit" class="px-2 sm:px-3 py-1.5 text-slate-400 hover:text-brand-cyan hover:bg-white/5 rounded-lg transition-all text-xs font-bold flex items-center gap-1.5 whitespace-nowrap" title="Fit to Width">
+                    <i class="fas fa-arrows-left-right text-[11px]"></i> <span id="zoom-fit-label" class="hidden sm:inline">Fit Width</span>
                 </button>
             </div>
 
             <!-- Utility Action Buttons -->
-            <div class="flex items-center gap-2">
-                <button id="forensic-toggle" class="px-3 py-2 text-slate-400 hover:text-rose-400 bg-black/40 hover:bg-rose-500/10 border border-white/5 hover:border-rose-500/30 rounded-xl transition-all flex items-center gap-1.5" title="Forensic Reveal (Expose Watermarks)">
-                    <i class="fas fa-fingerprint text-xs"></i>
-                    <span class="text-[11px] font-bold hidden sm:inline">Forensic Reveal</span>
-                </button>
+            <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
+                @if (isStaff)
+                {
+                    <button id="forensic-toggle" class="px-3 py-2 text-slate-400 hover:text-rose-400 bg-black/40 hover:bg-rose-500/10 border border-white/5 hover:border-rose-500/30 rounded-xl transition-all flex items-center gap-1.5" title="Forensic Reveal (Expose Watermarks)">
+                        <i class="fas fa-fingerprint text-xs"></i>
+                        <span class="text-[11px] font-bold hidden sm:inline">Forensic Reveal</span>
+                    </button>
+                }
                 <button id="rotate-pdf" class="p-2.5 text-slate-400 hover:text-brand-cyan bg-black/40 hover:bg-white/5 border border-white/5 rounded-xl transition-all" title="Rotate 90°">
                     <i class="fas fa-rotate text-xs"></i>
                 </button>
@@ -97,7 +107,8 @@
         </div>
 
         <!-- Viewport Workspace Wrapper -->
-        <div id="viewport-wrapper" class="relative flex-1 bg-brand-dark/20 p-6 flex justify-center overflow-auto custom-scrollbar">
+        <!-- The page is centred with margin:auto (not justify-center), so a zoomed-in page can still scroll to its left/top edge. -->
+        <div id="viewport-wrapper" class="relative flex-1 min-h-0 bg-brand-dark/20 p-2 sm:p-6 flex overflow-auto custom-scrollbar">
 
             <!-- Elegant Micro-Loading State -->
             <div id="pdf-loading" class="absolute inset-0 bg-brand-dark/95 flex flex-col justify-center items-center z-50 transition-opacity duration-300">
@@ -109,7 +120,7 @@
             </div>
 
             <!-- Canvas Container Matrix -->
-            <div id="page-frame" class="relative shadow-[0_40px_80px_rgba(0,0,0,0.7)] rounded-2xl overflow-hidden my-auto border border-white/5 bg-white">
+            <div id="page-frame" class="relative shrink-0 shadow-[0_40px_80px_rgba(0,0,0,0.7)] rounded-lg sm:rounded-2xl overflow-hidden m-auto border border-white/5 bg-white">
                 <canvas id="pdf-canvas" class="block transition-transform duration-150 ease-out"></canvas>
                 <!-- Live moving overlay: identifies the viewer on any screenshot or screen recording -->
                 <div id="live-mark" class="pointer-events-none absolute z-10 select-none whitespace-nowrap font-mono text-[11px] font-bold px-2 py-1 rounded-md"
@@ -151,11 +162,8 @@
         }
 
             #pdf-container:fullscreen #viewport-wrapper {
-                max-height: none !important;
-                height: calc(100vh - 65px) !important;
                 background-color: #030712;
-            }
-    </style>
+            }    </style>
 }
 
 @section Scripts {
@@ -165,19 +173,21 @@
         const streamToken = encodeURIComponent('@ViewBag.StreamToken');
         const infoUrl = '@Url.Action("PdfInfo")' + '?token=' + streamToken;
         const pageUrl = n => '@Url.Action("PdfPage")' + '?token=' + streamToken + '&page=' + n;
-        const backUrl = '@(User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.HasClaim(c => c.Type == "Permission" && (c.Value == "Courses.View" || c.Value == "SuperAdmin")) ? Url.Action("Details", "Courses", new { area = "Admin", id = Model.CourseId }) : Url.Action("MyCourseDetails", new { id = Model.CourseId }))';
+        const backUrl = '@(isStaff ? Url.Action("Details", "Courses", new { area = "Admin", id = Model.CourseId }) : Url.Action("MyCourseDetails", new { id = Model.CourseId }))';
 
         // Pages are rendered at 2x PDF points, so natural CSS size = bitmap size / 2.
         const SERVER_SCALE = 2;
 
         let numPages = 0,
         pageNum = 1,
-        scale = 1.25,
+        scale = 1,
         rotation = 0,
         renderSeq = 0,
-        currentBitmap = null;
+        currentBitmap = null,
+        // 'page' = whole page visible (default), 'width' = page fills the width, null = manual zoom
+        fitMode = 'page';
 
-        const maxScale = 3.0, minScale = 0.5;
+        const maxScale = 3.0, minScale = 0.25;
 
         const canvas = document.getElementById('pdf-canvas'),
         ctx = canvas.getContext('2d'),
@@ -188,7 +198,39 @@
         wrapperEl = document.getElementById('viewport-wrapper'),
         containerEl = document.getElementById('pdf-container'),
         liveMarkEl = document.getElementById('live-mark'),
+        fitBtn = document.getElementById('zoom-fit'),
+        fitLabel = document.getElementById('zoom-fit-label'),
+        fitIcon = document.querySelector('#zoom-fit i'),
         fsIcon = document.querySelector('#fullscreen-toggle i');
+
+        // The viewer fills the screen from where it starts down to the bottom (fullscreen CSS takes over there).
+        const sizeContainer = () => {
+        if (document.fullscreenElement) return;
+        const top = containerEl.getBoundingClientRect().top + window.scrollY;
+        containerEl.style.height = Math.max(420, Math.round(window.innerHeight - top - 16)) + 'px';
+        };
+        sizeContainer();
+
+        // Scale at which the current page shows whole ('page') or fills the width ('width').
+        const fitScale = mode => {
+        if (!currentBitmap) return scale;
+        const cs = getComputedStyle(wrapperEl);
+        const availW = wrapperEl.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 2;
+        const availH = wrapperEl.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 2;
+        const swap = rotation % 180 !== 0;
+        const naturalW = (swap ? currentBitmap.height : currentBitmap.width) / SERVER_SCALE;
+        const naturalH = (swap ? currentBitmap.width : currentBitmap.height) / SERVER_SCALE;
+        const s = mode === 'width' ? availW / naturalW : Math.min(availW / naturalW, availH / naturalH);
+        return Math.min(maxScale, Math.max(0.1, s));
+        };
+
+        const updateFitButton = () => {
+        const toWidth = fitMode === 'page';
+        fitLabel.textContent = toWidth ? 'Fit Width' : 'Fit Page';
+        fitBtn.title = toWidth ? 'Fit to Width' : 'Show Whole Page';
+        fitBtn.setAttribute('aria-label', fitBtn.title);
+        fitIcon.className = (toWidth ? 'fas fa-arrows-left-right' : 'fas fa-file') + ' text-[11px]';
+        };
 
         // Small in-memory cache of decoded pages (kept tiny on purpose).
         const bitmapCache = new Map();
@@ -221,6 +263,8 @@
 
         const drawBitmap = bmp => {
         currentBitmap = bmp;
+        if (fitMode) scale = fitScale(fitMode);
+        zoomPercentEl.textContent = `${Math.round(scale * 100)}%`;
         const swap = rotation % 180 !== 0;
         const naturalW = (swap ? bmp.height : bmp.width) / SERVER_SCALE;
         const naturalH = (swap ? bmp.width : bmp.height) / SERVER_SCALE;
@@ -293,15 +337,23 @@
         };
 
         const changeZoom = (zoomType) => {
-        if (zoomType === 'in' && scale < maxScale) scale += 0.25;
-        else if (zoomType === 'out' && scale > minScale) scale -= 0.25;
-        else if (zoomType === 'fit' && currentBitmap) {
-        const swap = rotation % 180 !== 0;
-        const naturalW = (swap ? currentBitmap.height : currentBitmap.width) / SERVER_SCALE;
-        scale = Math.min(maxScale, Math.max(minScale, (wrapperEl.clientWidth - 48) / naturalW));
-        }
+        if (zoomType === 'in') { fitMode = null; scale = Math.min(maxScale, scale + 0.25); }
+        else if (zoomType === 'out') { fitMode = null; scale = Math.max(minScale, scale - 0.25); }
+        else if (zoomType === 'fit') { fitMode = fitMode === 'page' ? 'width' : 'page'; }
+        updateFitButton();
         queueRenderPage(pageNum);
+        if (zoomType === 'fit') wrapperEl.scrollTo(0, 0);
         };
+
+        // Keep the fitted page fitted when the window or phone orientation changes.
+        let resizeTimer = 0;
+        window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+        sizeContainer();
+        if (currentBitmap) queueRenderPage(pageNum);
+        }, 120);
+        });
 
         // Live overlay: viewer code + masked email + clock, jumping to a new spot every few seconds.
         const startLiveMark = (code, who) => {
@@ -369,12 +421,14 @@
         });
 
         document.addEventListener('fullscreenchange', () => {
-        if (!document.fullscreenElement) fsIcon.classList.replace('fa-compress', 'fa-expand');
+        if (!document.fullscreenElement) { fsIcon.classList.replace('fa-compress', 'fa-expand'); sizeContainer(); }
         setTimeout(() => { if (currentBitmap) queueRenderPage(pageNum); }, 150);
         });
 
+        // Forensic Reveal exists only for staff (the button is not rendered for students).
         let isForensicMode = false;
-        document.getElementById('forensic-toggle').addEventListener('click', function() {
+        const forensicBtn = document.getElementById('forensic-toggle');
+        if (forensicBtn) forensicBtn.addEventListener('click', function() {
             isForensicMode = !isForensicMode;
             const span = this.querySelector('span');
             if (isForensicMode) {
@@ -395,8 +449,8 @@
 
         let isInversionMode = false;
         document.getElementById('dark-mode-toggle').addEventListener('click', function() {
-            if (isForensicMode) {
-                document.getElementById('forensic-toggle').click();
+            if (isForensicMode && forensicBtn) {
+                forensicBtn.click();
             }
             isInversionMode = !isInversionMode;
             const icon = this.querySelector('i');
@@ -428,12 +482,7 @@
         }
         });
 
-        setInterval(function() {
-        if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
-        window.location.replace(backUrl);
-        }
-        }, 1000);
-
+        // (A window-size check used to sit here; it also threw out students using browser zoom or a side panel.)
         setInterval(function() {
         const before = new Date().getTime();
         debugger;

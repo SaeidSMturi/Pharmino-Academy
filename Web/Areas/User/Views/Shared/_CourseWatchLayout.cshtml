@@ -178,7 +178,7 @@
     <header class="watch-bar sticky top-0 z-40 glass-panel border-b border-white/10 px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-2 shrink-0 shadow-lg">
         <div class="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
             <!-- Back to Course Details button -->
-            @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.HasClaim(c => c.Type == "Permission" && (c.Value == "Courses.View" || c.Value == "SuperAdmin")))
+            @if (await _permissionService.UserHasPermissionAsync(currentUserId, "Courses.View"))
             {
                 <a href="@Url.Action("Details", "Courses", new { area = "Admin", id = courseId })"
                    class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-brand-cyan border border-white/10 transition-all text-xs font-bold shrink-0">

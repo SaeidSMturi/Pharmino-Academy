@@ -1,9 +1,11 @@
 @using System.Globalization
 @model List<Domain.Entities.Course.Course>
+@inject Web.Services.StudentEnrollments StudentEnrollments
 
 @{
     var isRtl = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
     ViewData["Title"] = Localizer["Courses"].Value;
+    var ownedCourseIds = await StudentEnrollments.GetCourseIdsAsync(User);
 }
 
 <div class="container mx-auto px-4 py-12 relative z-10">
@@ -30,6 +32,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach (var course in Model)
             {
+                var owned = ownedCourseIds.Contains(course.CourseId);
                 <div class="group rounded-3xl overflow-hidden glass-panel transform transition-all duration-500 hover:shadow-[0_20px_50px_rgba(66,234,255,0.2)] flex flex-col h-full border border-custom-cyan/10 hover:border-custom-cyan/40 relative">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-custom-cyan to-custom-blue transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 z-20"></div>
 
@@ -44,6 +47,12 @@
                             <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-custom-card to-[#0d1527]">
                                 <i class="fas fa-graduation-cap text-7xl text-custom-cyan/20 transform group-hover:scale-110 group-hover:text-custom-cyan/40 transition-all duration-500"></i>
                             </div>
+                        }
+                        @if (owned)
+                        {
+                            <span class="absolute top-4 @(isRtl ? "right-4" : "left-4") z-20 px-3.5 py-1 text-xs font-black uppercase tracking-wider rounded-full bg-emerald-500 text-white shadow-lg flex items-center gap-1.5">
+                                <i class="fas fa-circle-check"></i> @Localizer["Enrolled"]
+                            </span>
                         }
                         <div class="absolute top-4 @(isRtl ? "left-4" : "right-4") flex flex-col gap-1.5 items-end z-20">
                             @if (course.IsBundle)
@@ -79,7 +88,19 @@
                         <h3 class="text-2xl font-bold text-custom-snow mb-3 group-hover:text-custom-cyan transition-colors duration-300">@course.Title</h3>
                         <p class="text-custom-snow/60 text-sm line-clamp-3 mb-8 flex-grow leading-relaxed">@course.Description</p>
 
-                        <div class="flex items-center justify-between mt-auto pt-6 border-t border-custom-cyan/10">
+                        <div class="flex items-center justify-between gap-3 mt-auto pt-6 border-t border-custom-cyan/10">
+                            @if (owned)
+                            {
+                                <div class="flex items-center gap-2 text-emerald-400 font-black text-lg">
+                                    <i class="fas fa-circle-check"></i> @Localizer["Enrolled"]
+                                </div>
+                                <a href="/Students/Course/@course.CourseId"
+                                   class="shrink-0 px-6 py-2.5 rounded-full bg-emerald-500/15 hover:bg-emerald-500 text-emerald-300 hover:text-white text-sm font-bold transition-all duration-300 border border-emerald-500/40 transform hover:scale-105">
+                                    @Localizer["ContinueLearning"]
+                                </a>
+                            }
+                            else
+                            {
                             <div>
                                 @if (course.HasActiveDiscount)
                                 {
@@ -102,6 +123,7 @@
                                class="px-6 py-2.5 rounded-full bg-custom-blue/20 hover:bg-custom-blue text-custom-cyan hover:text-white text-sm font-bold transition-all duration-300 border border-custom-blue/50 hover:shadow-[0_0_25px_rgba(66,114,255,0.5)] transform hover:scale-105">
                                 @Localizer["ViewCourse"]
                             </a>
+                            }
                         </div>
                     </div>
                 </div>

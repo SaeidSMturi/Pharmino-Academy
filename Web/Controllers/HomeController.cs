@@ -104,8 +104,13 @@ namespace Web.Controllers
         }
 
         [HttpGet("resize")]
-        public async Task<IActionResult> ResizeImage(string imagePath, int width, int height)
+        public async Task<IActionResult> ResizeImage(string imagePath, int width, int height, [FromServices] Web.Services.CourseCoverCache covers)
         {
+            if (string.IsNullOrWhiteSpace(imagePath)) return NotFound();
+            width = Math.Clamp(width, 0, 2000);
+            height = Math.Clamp(height, 0, 2000);
+            if (width == 0 && height == 0) width = 800;
+
             string cleanImagePath = imagePath.TrimStart('~', '/');
             string cacheKey = $"img_{cleanImagePath}_{width}_{height}";
 
@@ -115,16 +120,34 @@ namespace Web.Controllers
                 return File(cachedImage, "image/webp");
             }
 
-            var actualPath = Path.Combine(_env.WebRootPath, cleanImagePath);
-            if (!System.IO.File.Exists(actualPath))
+            // Only image files inside wwwroot (the path comes from the query string).
+            var webRoot = Path.GetFullPath(_env.WebRootPath);
+            var actualPath = Path.GetFullPath(Path.Combine(webRoot, cleanImagePath));
+            var imageExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+            if (!actualPath.StartsWith(webRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase) ||
+                !imageExtensions.Contains(Path.GetExtension(actualPath).ToLowerInvariant()))
+                return NotFound();
+
+            // Course covers: after a redeploy the local copy is gone, so fetch it back from the storage bucket.
+            const string coverPrefix = "uploads/courses/";
+            byte[]? bucketBytes = null;
+            if (!System.IO.File.Exists(actualPath) && cleanImagePath.StartsWith(coverPrefix, StringComparison.OrdinalIgnoreCase))
             {
-                var fallbackSvg = $"<svg xmlns='http://www.w3.org/2000/svg' width='{width}' height='{height}'><rect width='100%' height='100%' fill='#123C76'/><text x='50%' y='50%' fill='#E1D788' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16'>Image Not Found</text></svg>";
-                return Content(fallbackSvg, "image/svg+xml");
+                var cover = await covers.GetAsync(cleanImagePath.Substring(coverPrefix.Length));
+                if (cover?.LocalPath != null) actualPath = cover.LocalPath;
+                else bucketBytes = cover?.Bytes;
+            }
+
+            if (bucketBytes == null && !System.IO.File.Exists(actualPath))
+            {
+                // No image anywhere: show the branded default cover (not cached, so a re-uploaded cover appears at once).
+                Response.Headers.CacheControl = "no-cache";
+                return PhysicalFile(Path.Combine(webRoot, Web.Services.CourseCoverCache.DefaultCoverUrl.TrimStart('/')), "image/svg+xml");
             }
 
             using (var outputStream = new MemoryStream())
             {
-                using (var image = await Image.LoadAsync(actualPath))
+                using (var image = bucketBytes != null ? Image.Load(bucketBytes) : await Image.LoadAsync(actualPath))
                 {
                     int targetHeight = height > 0 ? height : (int)(image.Height * ((float)width / image.Width));
 
