@@ -965,4 +965,6 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\comp
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\aug71iqmg3-{0}-n4o954704b-n4o954704b.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\1psqcz6ni4-{0}-36g0vtqxcz-36g0vtqxcz.gz
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\compressed\x9e8s9qj0q-{0}-m52eoqbmhz-m52eoqbmhz.gz
-C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\staticwebassets.upToDateCheck.txt
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\ar\Web.resources.cs
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\en\Web.resources.cs
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\fa\Web.resources.cs

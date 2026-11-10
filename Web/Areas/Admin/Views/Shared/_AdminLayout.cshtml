@@ -15,6 +15,7 @@
     var canViewCourses = await _permissionService.UserHasPermissionAsync(currentUserId, "Courses.View");
     var canViewPayments = await _permissionService.UserHasPermissionAsync(currentUserId, "Payments.View");
     var canManageEmails = await _permissionService.UserHasPermissionAsync(currentUserId, "Emails.Manage");
+    var canManagePosts = await _permissionService.UserHasPermissionAsync(currentUserId, "Posts.Manage");
     var onEmails = ViewContext.RouteData.Values["controller"]?.ToString() == "Emails";
     var emailsAction = ViewContext.RouteData.Values["action"]?.ToString();
 
@@ -311,7 +312,7 @@
                     <span class="font-medium">@Localizer["Dashboard"]</span>
                 </a>
 
-                @if (canViewUsers || canViewRoles || canViewDashboard || canViewCourses)
+                @if (canViewUsers || canViewRoles || canViewDashboard || canViewCourses || canManagePosts)
                 {
                     <div class="pt-4">
                         <p class="text-[10px] font-bold text-slate-500/70 uppercase tracking-widest mb-2 px-4">@Localizer["Management"]</p>
@@ -393,7 +394,7 @@
                             </a>
                         }
 
-                        @if (canViewDashboard)
+                        @if (canManagePosts)
                         {
                             <a asp-area="Admin" asp-controller="Posts" asp-action="Index"
                                class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm @(ViewContext.RouteData.Values["controller"]?.ToString() == "Posts" ? "sidebar-active" : "")">
