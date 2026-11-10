@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.IO;
@@ -20,6 +21,7 @@ namespace Web.Areas.Admin.Controllers
         private readonly WebContext _context;
         private readonly IWebHostEnvironment _environment;
         private readonly ILogger<PostsController> _logger;
+        private readonly Web.Services.Content.ArticleHtmlSanitizer _htmlSanitizer;
 
         // Helper DTO to accept JSON body { id: N } or { Id: N }
         public class IdRequest
@@ -29,14 +31,16 @@ namespace Web.Areas.Admin.Controllers
         }
 
         // تزریق ILogger به کانستراکتور
-        public PostsController(WebContext context, IWebHostEnvironment environment, ILogger<PostsController> logger)
+        public PostsController(WebContext context, IWebHostEnvironment environment, ILogger<PostsController> logger,
+            Web.Services.Content.ArticleHtmlSanitizer htmlSanitizer)
         {
             _context = context;
             _environment = environment;
             _logger = logger;
+            _htmlSanitizer = htmlSanitizer;
         }
 
-        [Permission("Dashboard.View")]
+        [Permission("Posts.Manage")]
         public async Task<IActionResult> Index()
         {
             _logger.LogInformation("Admin requested post list index.");
@@ -57,14 +61,14 @@ namespace Web.Areas.Admin.Controllers
             }
         }
 
-        [Permission("Dashboard.View")]
+        [Permission("Posts.Manage")]
         public IActionResult Create()
         {
             _logger.LogInformation("Navigating to post creation page.");
             return View();
         }
 
-        [Permission("Dashboard.View")]
+        [Permission("Posts.Manage")]
         public async Task<IActionResult> Edit(int id)
         {
             _logger.LogInformation("Navigating to edit page for Post ID: {PostId}", id);
@@ -77,10 +81,13 @@ namespace Web.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            // Articles saved before the editor's clean-up existed may hold scripts or event handlers;
+            // never hand those to the editor (an onclick inside an editable area can run). Not saved here.
+            post.Body = _htmlSanitizer.Sanitize(post.Body);
             return View(post);
         }
 
-        [Permission("Dashboard.View")]
+        [Permission("Posts.Manage")]
         public async Task<IActionResult> Details(int id)
         {
             _logger.LogInformation("Fetching details for Post ID: {PostId}", id);
@@ -97,11 +104,13 @@ namespace Web.Areas.Admin.Controllers
             }
 
             _logger.LogInformation("Successfully retrieved details for Post ID: {PostId}. Author ID: {AuthorId}", id, post.AuthorId);
+            // The page shows the body with Html.Raw: clean it first (older rows were saved without clean-up).
+            post.Body = _htmlSanitizer.Sanitize(post.Body);
             return View(post);
         }
 
         [HttpPost]
-        [Permission("Dashboard.View")]
+        [Permission("Posts.Manage")]
         public async Task<IActionResult> Delete([FromBody] IdRequest? payload, int? id)
         {
             var postId = payload?.Id > 0 ? payload!.Id : (payload?.id > 0 ? payload!.id : (id ?? 0));
@@ -137,7 +146,7 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Permission("Dashboard.View")]
+        [Permission("Posts.Manage")]
         public async Task<IActionResult> TogglePublish([FromBody] IdRequest? payload, int? id)
         {
             var postId = payload?.Id > 0 ? payload!.Id : (payload?.id > 0 ? payload!.id : (id ?? 0));
@@ -172,7 +181,7 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Permission("Dashboard.View")]
+        [Permission("Posts.Manage")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind(nameof(Post.Title), nameof(Post.Description), nameof(Post.MetaDescription), nameof(Post.Body), nameof(Post.Tags), nameof(Post.ShortKey), nameof(Post.IsPublish))] Post post, IFormFile? ImageFile)
         {
@@ -182,7 +191,9 @@ namespace Web.Areas.Admin.Controllers
             post.Title = post.Title?.Trim();
             post.Description = post.Description?.Trim();
             post.MetaDescription = post.MetaDescription?.Trim();
-            post.Body = post.Body?.Trim();
+            // Server-side clean-up of the editor's HTML (scripts, styles, event handlers, iframes and data: URLs removed).
+            post.Body = _htmlSanitizer.Sanitize(post.Body);
+            if (string.IsNullOrWhiteSpace(post.Body)) ModelState.AddModelError(nameof(Post.Body), "Please enter Post Content!");
             post.Tags = post.Tags?.Trim();
             if (!string.IsNullOrWhiteSpace(post.ShortKey))
             {
@@ -278,7 +289,7 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Permission("Dashboard.View")]
+        [Permission("Posts.Manage")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([Bind(nameof(Post.PostId), nameof(Post.Title), nameof(Post.Description), nameof(Post.MetaDescription), nameof(Post.Body), nameof(Post.Tags), nameof(Post.ShortKey), nameof(Post.IsPublish))] Post post, IFormFile? ImageFile)
         {
@@ -288,7 +299,9 @@ namespace Web.Areas.Admin.Controllers
             post.Title = post.Title?.Trim();
             post.Description = post.Description?.Trim();
             post.MetaDescription = post.MetaDescription?.Trim();
-            post.Body = post.Body?.Trim();
+            // Server-side clean-up of the editor's HTML (scripts, styles, event handlers, iframes and data: URLs removed).
+            post.Body = _htmlSanitizer.Sanitize(post.Body);
+            if (string.IsNullOrWhiteSpace(post.Body)) ModelState.AddModelError(nameof(Post.Body), "Please enter Post Content!");
             post.Tags = post.Tags?.Trim();
             if (!string.IsNullOrWhiteSpace(post.ShortKey))
             {
@@ -301,6 +314,8 @@ namespace Web.Areas.Admin.Controllers
             }
 
             // Remove navigation properties
+            // The cover is not part of this form (it is kept unless a new file is uploaded), so its [Required] must not block the save.
+            ModelState.Remove("ImageName");
             ModelState.Remove("User");
             ModelState.Remove("PostComments");
 
@@ -394,6 +409,104 @@ namespace Web.Areas.Admin.Controllers
 
             TempData["SuccessMessage"] = "Post updated successfully";
             return RedirectToAction(nameof(Index));
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // Image upload for the article editor
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        /// <summary>Upload size accepted from the editor (the stored file is far smaller after compression).</summary>
+        private const long EditorUploadMaxBytes = 10L * 1024 * 1024;
+        private const int EditorUploadsPerWindow = 60;
+        private static readonly TimeSpan EditorUploadWindow = TimeSpan.FromMinutes(10);
+
+        /// <summary>
+        /// Receives one image from the article editor. Only signed-in staff with the Posts.Manage permission can
+        /// call it (plus the area's admin-role check), with a valid antiforgery token, at most
+        /// <see cref="EditorUploadsPerWindow"/> uploads per user every 10 minutes. The file must decode as a real
+        /// JPEG/PNG/GIF/WebP; it is re-encoded (WebP, metadata removed, scaled to at most 1920px) and stored under
+        /// a random name in wwwroot/uploads/posts/content and in the storage bucket.
+        /// Returns { url, width, height }.
+        /// </summary>
+        [HttpPost]
+        [Permission("Posts.Manage")]
+        [ValidateAntiForgeryToken]
+        [RequestSizeLimit(EditorUploadMaxBytes + 64 * 1024)]
+        [RequestFormLimits(MultipartBodyLengthLimit = EditorUploadMaxBytes + 64 * 1024)]
+        public async Task<IActionResult> UploadImage(IFormFile? file,
+            [FromServices] Web.Services.Content.ArticleImageProcessor imageProcessor,
+            [FromServices] Application.Interfaces.IStorageService storage,
+            [FromServices] IMemoryCache cache)
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "unknown";
+
+            if (file == null || file.Length == 0)
+                return BadRequest(new { error = "No image was received." });
+            if (file.Length > EditorUploadMaxBytes)
+                return BadRequest(new { error = "The image is larger than 10 MB." });
+
+            // Per-user rate limit.
+            var rateKey = "editor-upload:" + userId;
+            var count = cache.GetOrCreate(rateKey, e => { e.AbsoluteExpirationRelativeToNow = EditorUploadWindow; e.Size = 1; return new int[1]; })!;
+            if (Interlocked.Increment(ref count[0]) > EditorUploadsPerWindow)
+            {
+                _logger.LogWarning("Editor image upload rate limit hit by user {UserId}.", userId);
+                return StatusCode(StatusCodes.Status429TooManyRequests, new { error = "Too many uploads. Please wait a few minutes." });
+            }
+
+            Web.Services.Content.ArticleImageProcessor.Result processed;
+            try
+            {
+                await using var stream = file.OpenReadStream();
+                processed = await imageProcessor.ProcessAsync(stream, HttpContext.RequestAborted);
+            }
+            catch (Web.Services.Content.ArticleImageProcessor.InvalidImageException ex)
+            {
+                _logger.LogWarning("Editor image upload refused for user {UserId}: {Reason} (file '{Name}', {Length} bytes).", userId, ex.Message, file.FileName, file.Length);
+                return BadRequest(new { error = ex.Message });
+            }
+
+            const string directory = Web.Services.CourseCoverCache.ArticleImagesDirectory;
+            var fileName = Guid.NewGuid().ToString("N") + processed.Extension;
+            var webRoot = !string.IsNullOrWhiteSpace(_environment.WebRootPath) ? _environment.WebRootPath : Path.Combine(_environment.ContentRootPath, "wwwroot");
+            var folder = Path.Combine(webRoot, "uploads", "posts", "content");
+            var localPath = Path.Combine(folder, fileName);
+
+            try
+            {
+                Directory.CreateDirectory(folder);
+                await System.IO.File.WriteAllBytesAsync(localPath, processed.Bytes);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Could not save editor image {FileName} to {Folder}.", fileName, folder);
+                return StatusCode(500, new { error = "The image could not be saved on the server." });
+            }
+
+            // Durable copy in the bucket (the local folder is wiped by a redeploy; the site restores from here).
+            var inBucket = true;
+            try
+            {
+                await storage.UploadPhysicalFileAsync(localPath, directory, fileName);
+            }
+            catch (Exception ex)
+            {
+                inBucket = false;
+                _logger.LogWarning(ex, "Editor image {FileName} saved locally but not copied to the storage bucket.", fileName);
+            }
+
+            _logger.LogInformation("Editor image uploaded by user {UserId}: {FileName} ({Original} → {Stored} bytes, {Width}x{Height}).",
+                userId, fileName, file.Length, processed.Bytes.Length, processed.Width, processed.Height);
+
+            return Json(new
+            {
+                url = "/" + directory + "/" + fileName,
+                width = processed.Width,
+                height = processed.Height,
+                originalBytes = file.Length,
+                storedBytes = processed.Bytes.Length,
+                warning = inBucket ? null : "Saved on this server only: it could not be copied to cloud storage, so it may disappear after the next deploy."
+            });
         }
     }
 }

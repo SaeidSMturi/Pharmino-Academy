@@ -3,9 +3,9 @@
 <Project>
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAGz8QLi8yXEC4COfc1FFGEwAAAAACAAAAAAAQZgAAAAEAACAAAAColSHmFuMWeZnSt27okgrx9F9nsWfoDbvSP+mNyNe6xAAAAAAOgAAAAAIAACAAAABF6kg0pKOXxzqC4JpMnwBG3ee076+BWyofBzC1XxTy5CAAAACnmqleMr5yy5n9IY642ElfiQOWmRP/aklt8YNFogoY8EAAAABuCUtcgeZpbnIBv5MGcOwkHmEf0cTruQ7N5G4XBfytHJ7r5N3nBde5Zpf0l/+FMyRRP3uZ7uOS9x/hctDgy1YQ</EncryptedPassword>
-    <_PublishTargetUrl>ftp://pharminoacademy.com/</_PublishTargetUrl>
-    <History>False|2026-10-20T19:42:11.8057547Z||;False|2026-10-20T23:34:50.2162172+04:00||;</History>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAGz8QLi8yXEC4COfc1FFGEwAAAAACAAAAAAAQZgAAAAEAACAAAACaR1KfdKeU1xwSase3a8BCZbUtAgvd4nMlmWboECw0MwAAAAAOgAAAAAIAACAAAAB7BF2PSLpsRtNvG+VzEid5TcDXQ55TEvw2CUOoF3rB6SAAAADf6JT/ReDZ9x1QuCLH4RmpI5lf4s3k3ACQR90nexHNPEAAAAAg5RhPGn37xF1B4qusDKjJMwQmLZt9eclLggVxfpbe0KRGsNUHsSQ9VlEjS+PJQ/5ak4n+LxEuVu1wscGjvpIN</EncryptedPassword>
+    <_PublishTargetUrl>ftp://pharminoacademy.com</_PublishTargetUrl>
+    <History>False|2026-11-10T15:10:26.0149286Z||;False|2026-11-10T19:05:28.9922467+04:00||;False|2026-11-10T18:52:44.9570235+04:00||;False|2026-11-10T18:51:37.7266737+04:00||;False|2026-11-10T18:50:04.9967704+04:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

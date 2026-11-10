@@ -87,6 +87,9 @@ namespace Infrastructure.Services
             var uploadsFolder = Path.Combine(_env.WebRootPath, directory);
             Directory.CreateDirectory(uploadsFolder);
             var destPath = Path.Combine(uploadsFolder, fileName);
+            // Already in place (callers that save straight into wwwroot): nothing to copy.
+            if (string.Equals(Path.GetFullPath(physicalPath), Path.GetFullPath(destPath), StringComparison.OrdinalIgnoreCase))
+                return;
             // کپی کردن فایل از پوشه موقت به پوشه نهایی
             File.Copy(physicalPath, destPath, overwrite: true);
             await Task.CompletedTask;

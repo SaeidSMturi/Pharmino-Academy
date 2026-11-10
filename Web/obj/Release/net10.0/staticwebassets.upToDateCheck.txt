@@ -19,6 +19,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\glass-reveal.
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\kr.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\fj.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\nr.svg
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\wysiwyg-enterprise\README.txt
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\cl.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\do.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\cd.svg
@@ -104,6 +105,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\cw.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\td.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\gb-nir.svg
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\wysiwyg-enterprise\editor.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\xx.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\theme.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\sc.svg
@@ -118,6 +120,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\login-capsule.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\advanced-video-protection\detectors.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\hls-secure-player.js
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\admin-post-editor.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\ai.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\me.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
@@ -184,6 +187,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\py.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\um.svg
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\wysiwyg-enterprise\editor.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\bg.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\cp.svg
@@ -219,6 +223,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\sh-hl.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\favicon.ico
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\admin-post-editor.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\cy.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\cr.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
@@ -343,6 +348,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\css\student-mobile.css
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\ly.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\kh.svg
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\lib\wysiwyg-enterprise\VERSION.txt
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\js\admin-emails.js
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\la.svg
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag-icons\flags\4x3\tt.svg
@@ -375,6 +381,7 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\wwwroot\dist\signup\flag
 wwwroot\css\Style.css
 wwwroot\css\admin-emails.css
 wwwroot\css\admin-mobile.css
+wwwroot\css\admin-post-editor.css
 wwwroot\css\admin.css
 wwwroot\css\advanced-video-player.css
 wwwroot\css\brand.css
@@ -668,6 +675,7 @@ wwwroot\images\brand\pa-mark.svg
 wwwroot\images\logo.png
 wwwroot\images\og-default.png
 wwwroot\js\admin-emails.js
+wwwroot\js\admin-post-editor.js
 wwwroot\js\advanced-video-player.js
 wwwroot\js\advanced-video-player\controls.js
 wwwroot\js\advanced-video-player\events.js
@@ -754,5 +762,10 @@ wwwroot\lib\pdfjs\README.txt
 wwwroot\lib\pdfjs\pdf.min.mjs
 wwwroot\lib\pdfjs\pdf.worker.min.mjs
 wwwroot\lib\sortable.min.js
+wwwroot\lib\wysiwyg-enterprise\LICENSE
+wwwroot\lib\wysiwyg-enterprise\README.txt
+wwwroot\lib\wysiwyg-enterprise\VERSION.txt
+wwwroot\lib\wysiwyg-enterprise\editor.css
+wwwroot\lib\wysiwyg-enterprise\editor.js
 wwwroot\uploads\courses\0ef00181-1d4a-4c95-b092-9ae556f5eb60.gif
 wwwroot\uploads\posts\1c3e0af6-f84b-41b6-adbe-9fab4e37112d.gif

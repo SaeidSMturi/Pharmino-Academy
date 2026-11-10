@@ -238,6 +238,9 @@ namespace Web
             builder.Services.AddSingleton<Web.Seo.SeoErrorFilter>();
             builder.Services.AddSingleton<Web.Services.CourseCoverCache>();
             builder.Services.AddScoped<Web.Services.StudentEnrollments>();
+            // Article editor (Admin → Content): image compression and server-side HTML clean-up.
+            builder.Services.AddSingleton<Web.Services.Content.ArticleImageProcessor>();
+            builder.Services.AddSingleton<Web.Services.Content.ArticleHtmlSanitizer>();
             builder.Services.AddSingleton<IVideoTokenService, VideoTokenService>();
             builder.Services.AddSingleton<IVideoSessionManager, VideoSessionManager>();
 
@@ -385,6 +388,31 @@ namespace Web
                             context.Response.ContentType = "image/svg+xml";
                             context.Response.Headers.CacheControl = "no-cache";
                             await context.Response.SendFileAsync(defaultCover);
+                            return;
+                        }
+                    }
+                }
+                await next();
+            });
+
+            // 🖼️ Images inside articles (/uploads/posts/content/{file}): restored from the storage bucket after a
+            //    redeploy, or sent straight from it when the server folder is not writable.
+            app.Use(async (context, next) =>
+            {
+                const string prefix = "/uploads/posts/content/";
+                var requestPath = context.Request.Path.Value ?? string.Empty;
+                if (requestPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    var fileName = requestPath.Substring(prefix.Length);
+                    if (Web.Services.CourseCoverCache.IsCoverFileName(fileName))
+                    {
+                        var store = context.RequestServices.GetRequiredService<Web.Services.CourseCoverCache>();
+                        var file = await store.GetAsync(fileName, Web.Services.CourseCoverCache.ArticleImagesDirectory);
+                        if (file is { LocalPath: null, Bytes: not null })
+                        {
+                            context.Response.ContentType = file.ContentType;
+                            context.Response.Headers.CacheControl = "public,max-age=86400";
+                            await context.Response.Body.WriteAsync(file.Bytes);
                             return;
                         }
                     }

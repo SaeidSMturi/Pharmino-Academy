@@ -20,16 +20,18 @@ namespace Web.Services
         /// <summary>A cover found on disk (LocalPath) or, when it could not be saved there, only in memory (Bytes).</summary>
         public sealed record Cover(string? LocalPath, byte[]? Bytes, string ContentType);
 
+        /// <summary>Images placed in articles by the post editor (same bucket-backed handling as covers).</summary>
+        public const string ArticleImagesDirectory = "uploads/posts/content";
+
         private readonly IStorageService _storage;
         private readonly ILogger<CourseCoverCache> _logger;
-        private readonly string _folder;
+        private readonly string _webRoot;
 
         public CourseCoverCache(IStorageService storage, IWebHostEnvironment env, ILogger<CourseCoverCache> logger)
         {
             _storage = storage;
             _logger = logger;
-            var webRoot = !string.IsNullOrWhiteSpace(env.WebRootPath) ? env.WebRootPath : Path.Combine(env.ContentRootPath, "wwwroot");
-            _folder = Path.Combine(webRoot, "uploads", "courses");
+            _webRoot = !string.IsNullOrWhiteSpace(env.WebRootPath) ? env.WebRootPath : Path.Combine(env.ContentRootPath, "wwwroot");
         }
 
         /// <summary>A plain cover file name (no folders, no "..").</summary>
@@ -47,27 +49,33 @@ namespace Web.Services
             _ => "image/jpeg"
         };
 
-        public string LocalPath(string fileName) => Path.Combine(_folder, fileName);
+        private string LocalFolder(string bucketDirectory) => Path.Combine(_webRoot, bucketDirectory.Replace('/', Path.DirectorySeparatorChar));
+
+        public string LocalPath(string fileName, string bucketDirectory = BucketDirectory) => Path.Combine(LocalFolder(bucketDirectory), fileName);
 
         /// <summary>The cover from disk, or from the bucket when the local copy is missing; null when it exists in neither.</summary>
-        public async Task<Cover?> GetAsync(string fileName)
+        public Task<Cover?> GetAsync(string fileName) => GetAsync(fileName, BucketDirectory);
+
+        /// <summary>The same for a file in another bucket-backed upload folder (e.g. <see cref="ArticleImagesDirectory"/>).</summary>
+        public async Task<Cover?> GetAsync(string fileName, string bucketDirectory)
         {
             if (!IsCoverFileName(fileName)) return null;
 
             var contentType = ContentTypeFor(fileName);
-            var localPath = LocalPath(fileName);
+            var folder = LocalFolder(bucketDirectory);
+            var localPath = Path.Combine(folder, fileName);
             if (File.Exists(localPath)) return new Cover(localPath, null, contentType);
             if (fileName == "default.jpg") return null;
 
             byte[]? bytes;
             try
             {
-                if (!await _storage.FileExistsAsync(BucketDirectory, fileName))
+                if (!await _storage.FileExistsAsync(bucketDirectory, fileName))
                 {
-                    _logger.LogWarning("Course cover {FileName} is missing both on disk and in the storage bucket; it must be uploaded again.", fileName);
+                    _logger.LogWarning("Image {FileName} ({Directory}) is missing both on disk and in the storage bucket; it must be uploaded again.", fileName, bucketDirectory);
                     return null;
                 }
-                bytes = await _storage.ReadFileBytesAsync(BucketDirectory, fileName);
+                bytes = await _storage.ReadFileBytesAsync(bucketDirectory, fileName);
             }
             catch (Exception ex)
             {
@@ -78,7 +86,7 @@ namespace Web.Services
 
             try
             {
-                Directory.CreateDirectory(_folder);
+                Directory.CreateDirectory(folder);
                 // Write to a temp name first so a half-written file is never served.
                 var tempPath = localPath + "." + Guid.NewGuid().ToString("N") + ".tmp";
                 await File.WriteAllBytesAsync(tempPath, bytes);
@@ -88,7 +96,7 @@ namespace Web.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Course cover {FileName} was read from the bucket but could not be saved to {Folder} (check the folder's write permission); serving it straight from the bucket.", fileName, _folder);
+                _logger.LogError(ex, "Course cover {FileName} was read from the bucket but could not be saved to {Folder} (check the folder's write permission); serving it straight from the bucket.", fileName, folder);
                 return new Cover(null, bytes, contentType);
             }
         }

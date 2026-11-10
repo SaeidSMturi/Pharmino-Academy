@@ -1,0 +1,34 @@
+/* Admin → Content: fit the article editor (wwwroot/lib/wysiwyg-enterprise) into the admin's Tailwind pages.
+   Tailwind's base styles remove list bullets and image sizing that the editor relies on. */
+
+.pa-post-editor {
+    border-radius: 14px;
+    overflow: visible;
+}
+
+.pa-post-editor .wysiwyg-body ul { list-style: disc; }
+.pa-post-editor .wysiwyg-body ol { list-style: decimal; }
+.pa-post-editor .wysiwyg-body ul ul { list-style: circle; }
+
+.pa-post-editor .wysiwyg-body img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+}
+
+.pa-post-editor .wysiwyg-body table {
+    border-collapse: collapse;
+}
+
+/* The editor's own boxed look sits inside the page's framed field: drop the double frame. */
+.pa-post-editor.wysiwyg-container {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+/* Floating image / table toolbars and modals must sit above the admin header and sidebar. */
+.wysiwyg-image-toolbar,
+.wysiwyg-table-toolbar,
+.wysiwyg-balloon-toolbar {
+    z-index: 60;
+}

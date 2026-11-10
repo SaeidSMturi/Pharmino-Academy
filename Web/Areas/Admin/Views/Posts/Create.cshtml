@@ -121,7 +121,7 @@
                         @Localizer["PostContent"] <span class="text-brand-orange">*</span>
                     </label>
                     <div class="border border-white/10 focus-within:border-brand-cyan/40 focus-within:ring-4 focus-within:ring-brand-cyan/5 rounded-2xl bg-dark-bg/30 p-2 transition-all">
-                        <textarea asp-for="Body" rows="15" id="postBody"
+                        <textarea asp-for="Body" rows="15" id="postBody" data-upload-url="@Url.Action("UploadImage", "Posts", new { area = "Admin" })"
                                   class="w-full bg-transparent p-4 text-slate-200 placeholder-slate-600 focus:outline-none font-mono text-sm leading-6 resize-y custom-scrollbar"
                                   placeholder="@Localizer["PostContent"]..."></textarea>
                     </div>
@@ -199,10 +199,18 @@
     </div>
 </div>
 
+@section Styles {
+    <link rel="stylesheet" href="~/lib/wysiwyg-enterprise/editor.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-post-editor.css" asp-append-version="true" />
+}
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script src="~/lib/wysiwyg-enterprise/editor.js" asp-append-version="true"></script>
+    <script src="~/js/admin-post-editor.js" asp-append-version="true"></script>
 
     <script>
         // Automated regex-based semantic url slug token logic

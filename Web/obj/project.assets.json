@@ -15,6 +15,35 @@
           }
         }
       },
+      "AngleSharp/1.10.0": {
+        "type": "package",
+        "compile": {
+          "lib/net10.0/AngleSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/AngleSharp.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "AngleSharp.Css/1.4.0": {
+        "type": "package",
+        "dependencies": {
+          "AngleSharp": "[1.10.0, 2.0.0)"
+        },
+        "compile": {
+          "lib/net10.0/AngleSharp.Css.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/AngleSharp.Css.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "AWSSDK.Core/4.0.9.4": {
         "type": "package",
         "compile": {
@@ -148,6 +177,23 @@
           "runtimes/win-x86/native/pdfium.dll": {
             "assetType": "native",
             "rid": "win-x86"
+          }
+        }
+      },
+      "HtmlSanitizer/11.0.26": {
+        "type": "package",
+        "dependencies": {
+          "AngleSharp": "1.10.0",
+          "AngleSharp.Css": "1.4.0"
+        },
+        "compile": {
+          "lib/net8.0/HtmlSanitizer.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/HtmlSanitizer.dll": {
+            "related": ".xml"
           }
         }
       },
@@ -1654,6 +1700,52 @@
         "readme.txt"
       ]
     },
+    "AngleSharp/1.10.0": {
+      "sha512": "jibGB16fKOT+p0T7/eMzsiHj/V43QXg/wGQot4VWHF3zEdH+RGco8rHFNeAbf526CrSOkA8WwILz3DDus+cUUA==",
+      "type": "package",
+      "path": "anglesharp/1.10.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "anglesharp.1.10.0.nupkg.sha512",
+        "anglesharp.nuspec",
+        "lib/net10.0/AngleSharp.dll",
+        "lib/net10.0/AngleSharp.xml",
+        "lib/net462/AngleSharp.dll",
+        "lib/net462/AngleSharp.xml",
+        "lib/net472/AngleSharp.dll",
+        "lib/net472/AngleSharp.xml",
+        "lib/net8.0/AngleSharp.dll",
+        "lib/net8.0/AngleSharp.xml",
+        "lib/netstandard2.0/AngleSharp.dll",
+        "lib/netstandard2.0/AngleSharp.xml",
+        "logo.png"
+      ]
+    },
+    "AngleSharp.Css/1.4.0": {
+      "sha512": "AAy28SOmB5EOdXqJC9dVBCKKeoQHyU2EKVMGpy/PT0jJpFvLd4bd5TyufwN09/piQmh0DBtkEn0X/F0SYuF9xQ==",
+      "type": "package",
+      "path": "anglesharp.css/1.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "anglesharp.css.1.4.0.nupkg.sha512",
+        "anglesharp.css.nuspec",
+        "lib/net10.0/AngleSharp.Css.dll",
+        "lib/net10.0/AngleSharp.Css.xml",
+        "lib/net462/AngleSharp.Css.dll",
+        "lib/net462/AngleSharp.Css.xml",
+        "lib/net472/AngleSharp.Css.dll",
+        "lib/net472/AngleSharp.Css.xml",
+        "lib/net8.0/AngleSharp.Css.dll",
+        "lib/net8.0/AngleSharp.Css.xml",
+        "lib/netstandard2.0/AngleSharp.Css.dll",
+        "lib/netstandard2.0/AngleSharp.Css.xml",
+        "logo.png"
+      ]
+    },
     "AWSSDK.Core/4.0.9.4": {
       "sha512": "bpxzv4e0WjOVmKiYkjkNWeKvwyzoIVFS+u5zYnsryM2qTyhkfeLGQ4LPqDo+m/7OIJlGWr6V9zkc3V9bb0QmYg==",
       "type": "package",
@@ -1768,6 +1860,26 @@
         "runtimes/win-x64/native/pdfium.dll",
         "runtimes/win-x86/native/LICENSE",
         "runtimes/win-x86/native/pdfium.dll"
+      ]
+    },
+    "HtmlSanitizer/11.0.26": {
+      "sha512": "ZGjvcmVumFkxxT1JSvENjoTscgJPgpEMMxSdgdfEzWo7HgbYdxohxWtLB0v9+vXb9kTi++ZQok/AvJo6W1otXw==",
+      "type": "package",
+      "path": "htmlsanitizer/11.0.26",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "htmlsanitizer.11.0.26.nupkg.sha512",
+        "htmlsanitizer.nuspec",
+        "lib/net462/HtmlSanitizer.dll",
+        "lib/net462/HtmlSanitizer.xml",
+        "lib/net47/HtmlSanitizer.dll",
+        "lib/net47/HtmlSanitizer.xml",
+        "lib/net8.0/HtmlSanitizer.dll",
+        "lib/net8.0/HtmlSanitizer.xml",
+        "lib/netstandard2.0/HtmlSanitizer.dll",
+        "lib/netstandard2.0/HtmlSanitizer.xml"
       ]
     },
     "Humanizer.Core/2.14.1": {
@@ -4411,6 +4523,7 @@
       "AWSSDK.S3 >= 4.0.25.1",
       "Application >= 1.0.0",
       "Docnet.Core >= 2.6.0",
+      "HtmlSanitizer >= 11.0.26",
       "Infrastructure >= 1.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 10.0.10",
       "Microsoft.EntityFrameworkCore.SqlServer >= 10.0.10",
@@ -4492,6 +4605,10 @@
           "Docnet.Core": {
             "target": "Package",
             "version": "[2.6.0, )"
+          },
+          "HtmlSanitizer": {
+            "target": "Package",
+            "version": "[11.0.26, )"
           },
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",

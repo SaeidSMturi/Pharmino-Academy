@@ -13,11 +13,14 @@ C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubT
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\en\Web.resources.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\fa\Web.resources.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\AdvancedStringBuilder.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\AngleSharp.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\AngleSharp.Css.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\AWSSDK.Core.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\AWSSDK.S3.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\Azure.Core.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\Azure.Identity.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\Docnet.Core.dll
+C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\HtmlSanitizer.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\PhoneNumbers.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\MaxMind.Db.dll
 C:\Users\user\Desktop\Pharmino Project\Pharmino_Web\Web\obj\Release\net10.0\PubTmp\Out\MaxMind.GeoIP2.dll

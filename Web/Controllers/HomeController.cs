@@ -145,45 +145,57 @@ namespace Web.Controllers
                 return PhysicalFile(Path.Combine(webRoot, Web.Services.CourseCoverCache.DefaultCoverUrl.TrimStart('/')), "image/svg+xml");
             }
 
-            using (var outputStream = new MemoryStream())
+            try
             {
-                using (var image = bucketBytes != null ? Image.Load(bucketBytes) : await Image.LoadAsync(actualPath))
+                using (var outputStream = new MemoryStream())
                 {
-                    int targetHeight = height > 0 ? height : (int)(image.Height * ((float)width / image.Width));
-
-                    image.Mutate(x => x
-                        .AutoOrient()
-                        .Resize(new ResizeOptions
-                        {
-                            Size = new Size(width, targetHeight),
-                            Mode = ResizeMode.Max,
-                            Sampler = KnownResamplers.Lanczos3
-                        }));
-
-                    image.Metadata.ExifProfile = null;
-                    image.Metadata.IccProfile = null;
-                    image.Metadata.XmpProfile = null;
-
-                    var encoder = new WebpEncoder
+                    // Only JPEG/PNG/GIF/WebP decoders (Web.Services.SafeImageDecoding); first frame only.
+                    using (var image = bucketBytes != null
+                        ? Image.Load(Web.Services.SafeImageDecoding.Options(maxFrames: 1), bucketBytes)
+                        : await Image.LoadAsync(Web.Services.SafeImageDecoding.Options(maxFrames: 1), actualPath))
                     {
-                        Quality = 75,
-                        Method = WebpEncodingMethod.BestQuality,
-                        FileFormat = WebpFileFormatType.Lossy
-                    };
+                        int targetHeight = height > 0 ? height : (int)(image.Height * ((float)width / image.Width));
 
-                    await image.SaveAsWebpAsync(outputStream, encoder);
+                        image.Mutate(x => x
+                            .AutoOrient()
+                            .Resize(new ResizeOptions
+                            {
+                                Size = new Size(width, targetHeight),
+                                Mode = ResizeMode.Max,
+                                Sampler = KnownResamplers.Lanczos3
+                            }));
+
+                        image.Metadata.ExifProfile = null;
+                        image.Metadata.IccProfile = null;
+                        image.Metadata.XmpProfile = null;
+
+                        var encoder = new WebpEncoder
+                        {
+                            Quality = 75,
+                            Method = WebpEncodingMethod.BestQuality,
+                            FileFormat = WebpFileFormatType.Lossy
+                        };
+
+                        await image.SaveAsWebpAsync(outputStream, encoder);
+                    }
+
+                    byte[] imageBytes = outputStream.ToArray();
+
+                    var cacheOptions = new MemoryCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromDays(7))
+                        .SetSize(imageBytes.Length);
+
+                    _memoryCache.Set(cacheKey, imageBytes, cacheOptions);
+
+                    SetBrowserCacheHeaders();
+                    return File(imageBytes, "image/webp");
                 }
-
-                byte[] imageBytes = outputStream.ToArray();
-
-                var cacheOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromDays(7))
-                    .SetSize(imageBytes.Length);
-
-                _memoryCache.Set(cacheKey, imageBytes, cacheOptions);
-
-                SetBrowserCacheHeaders();
-                return File(imageBytes, "image/webp");
+            }
+            catch (ImageFormatException)
+            {
+                // Not a JPEG/PNG/GIF/WebP (e.g. a TIFF renamed .png) or a damaged file: show the default cover.
+                Response.Headers.CacheControl = "no-cache";
+                return PhysicalFile(Path.Combine(webRoot, Web.Services.CourseCoverCache.DefaultCoverUrl.TrimStart('/')), "image/svg+xml");
             }
         }
 
