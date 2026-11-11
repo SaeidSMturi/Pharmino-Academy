@@ -1,4 +1,4 @@
-using Domain.Configuration;
+﻿using Domain.Configuration;
 using Application.Interfaces;
 using Infrastructure.Services;
 using Infrastructure.Persistence;
@@ -239,6 +239,8 @@ namespace Web
             builder.Services.AddSingleton<Web.Services.CourseCoverCache>();
             builder.Services.AddScoped<Web.Services.StudentEnrollments>();
             // Article editor (Admin → Content): image compression and server-side HTML clean-up.
+            // Image module (SkiaSharp, MIT): uploads, cover resizing and PDF watermarks all go through it.
+            builder.Services.AddSingleton<Web.Services.Imaging.IImageService, Web.Services.Imaging.SkiaImageService>();
             builder.Services.AddSingleton<Web.Services.Content.ArticleImageProcessor>();
             builder.Services.AddSingleton<Web.Services.Content.ArticleHtmlSanitizer>();
             builder.Services.AddSingleton<IVideoTokenService, VideoTokenService>();

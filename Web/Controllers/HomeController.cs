@@ -1,11 +1,8 @@
-using Infrastructure.Persistence;
+﻿using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using SixLabors.ImageSharp.Formats.Webp;
 using System.Diagnostics;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
 using Web.Models;
 using Application.Interfaces;
 
@@ -104,7 +101,7 @@ namespace Web.Controllers
         }
 
         [HttpGet("resize")]
-        public async Task<IActionResult> ResizeImage(string imagePath, int width, int height, [FromServices] Web.Services.CourseCoverCache covers)
+        public async Task<IActionResult> ResizeImage(string imagePath, int width, int height, [FromServices] Web.Services.CourseCoverCache covers, [FromServices] Web.Services.Imaging.IImageService images)
         {
             if (string.IsNullOrWhiteSpace(imagePath)) return NotFound();
             width = Math.Clamp(width, 0, 2000);
@@ -147,51 +144,21 @@ namespace Web.Controllers
 
             try
             {
-                using (var outputStream = new MemoryStream())
-                {
-                    // Only JPEG/PNG/GIF/WebP decoders (Web.Services.SafeImageDecoding); first frame only.
-                    using (var image = bucketBytes != null
-                        ? Image.Load(Web.Services.SafeImageDecoding.Options(maxFrames: 1), bucketBytes)
-                        : await Image.LoadAsync(Web.Services.SafeImageDecoding.Options(maxFrames: 1), actualPath))
-                    {
-                        int targetHeight = height > 0 ? height : (int)(image.Height * ((float)width / image.Width));
+                var source = bucketBytes ?? await System.IO.File.ReadAllBytesAsync(actualPath);
+                // Image module: only JPEG/PNG/GIF/WebP, first frame, upright, scaled down (never up), no metadata.
+                var webp = images.Encode(source, width, height, Web.Services.Imaging.ImageEncoding.WebpLossy(75));
+                byte[] imageBytes = webp.Bytes;
 
-                        image.Mutate(x => x
-                            .AutoOrient()
-                            .Resize(new ResizeOptions
-                            {
-                                Size = new Size(width, targetHeight),
-                                Mode = ResizeMode.Max,
-                                Sampler = KnownResamplers.Lanczos3
-                            }));
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromDays(7))
+                    .SetSize(imageBytes.Length);
 
-                        image.Metadata.ExifProfile = null;
-                        image.Metadata.IccProfile = null;
-                        image.Metadata.XmpProfile = null;
+                _memoryCache.Set(cacheKey, imageBytes, cacheOptions);
 
-                        var encoder = new WebpEncoder
-                        {
-                            Quality = 75,
-                            Method = WebpEncodingMethod.BestQuality,
-                            FileFormat = WebpFileFormatType.Lossy
-                        };
-
-                        await image.SaveAsWebpAsync(outputStream, encoder);
-                    }
-
-                    byte[] imageBytes = outputStream.ToArray();
-
-                    var cacheOptions = new MemoryCacheEntryOptions()
-                        .SetAbsoluteExpiration(TimeSpan.FromDays(7))
-                        .SetSize(imageBytes.Length);
-
-                    _memoryCache.Set(cacheKey, imageBytes, cacheOptions);
-
-                    SetBrowserCacheHeaders();
-                    return File(imageBytes, "image/webp");
-                }
+                SetBrowserCacheHeaders();
+                return File(imageBytes, "image/webp");
             }
-            catch (ImageFormatException)
+            catch (Web.Services.Imaging.InvalidImageException)
             {
                 // Not a JPEG/PNG/GIF/WebP (e.g. a TIFF renamed .png) or a damaged file: show the default cover.
                 Response.Headers.CacheControl = "no-cache";

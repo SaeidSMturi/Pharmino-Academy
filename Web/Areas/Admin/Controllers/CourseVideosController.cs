@@ -1,4 +1,4 @@
-using Domain.Configuration;
+﻿using Domain.Configuration;
 using Application.Interfaces;
 using Infrastructure.Persistence;
 using Domain.Entities.Course;
@@ -919,13 +919,8 @@ namespace Web.Areas.Admin.Controllers
             }
         }
 
-        private string GetVideoForensicCode(int userId, int videoId)
-        {
-            var salt = _configuration["VideoSecurity:WatermarkSalt"] ?? "PharminoSecretSalt";
-            using var hmac = new System.Security.Cryptography.HMACSHA256(System.Text.Encoding.UTF8.GetBytes(salt));
-            var hash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes($"{userId}:{videoId}"));
-            return $"PX-A{userId:D3}{Convert.ToHexString(hash).Substring(0, 4).ToUpperInvariant()}";
-        }
+        private string GetVideoForensicCode(int userId, int videoId) =>
+            Web.Services.VideoForensicCode.Create(_configuration, userId, videoId);
 
         private static string MaskEmail(string? email)
         {

@@ -1455,21 +1455,17 @@
               "target": "Package",
               "version": "[10.0.10, )"
             },
-            "PdfSharpCore": {
-              "target": "Package",
-              "version": "[1.3.67, )"
-            },
             "Serilog.AspNetCore": {
               "target": "Package",
               "version": "[10.0.0, )"
             },
-            "SixLabors.ImageSharp": {
+            "SkiaSharp": {
               "target": "Package",
-              "version": "[3.1.12, )"
+              "version": "[4.155.0, )"
             },
-            "SixLabors.ImageSharp.Drawing": {
+            "SkiaSharp.NativeAssets.Linux.NoDependencies": {
               "target": "Package",
-              "version": "[2.1.7, )"
+              "version": "[4.155.0, )"
             },
             "System.Security.Cryptography.Pkcs": {
               "target": "Package",

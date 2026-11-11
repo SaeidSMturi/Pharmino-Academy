@@ -1,4 +1,4 @@
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Domain.Configuration;
 using Infrastructure.Persistence;
 using Domain.Entities.Course;
@@ -372,7 +372,8 @@ public class CoursePdfsController : AdminBaseController
             return RedirectToAction("Index", "Courses");
         }
 
-        return RedirectToAction("ViewPdf", "Courses", new { area = "User", pdfId = id });
+        // Same secure viewer as students, shown inside the admin panel.
+        return Redirect($"/Admin/Course/Pdf/{id}");
     }
 
     [Permission("Courses.View")]

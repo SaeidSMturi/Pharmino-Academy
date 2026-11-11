@@ -1,4 +1,4 @@
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
@@ -64,15 +64,8 @@ namespace Web.Areas.User.Controllers
         private int GetCurrentUserId() =>
             int.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId) ? userId : 0;
 
-        private string GetVideoForensicCode(int userId, int videoId)
-        {
-            var secret = _configuration["VideoProtection:WatermarkSecret"] ?? "Pharmino-VideoForensic-Secret-4b8c9d12";
-            using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret));
-            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes($"{userId}|{videoId}"));
-            var uidPart = userId.ToString().PadLeft(3, '0');
-            var hashPart = Convert.ToHexString(hash, 0, 2);
-            return $"PX-A{uidPart}{hashPart}".ToUpperInvariant();
-        }
+        private string GetVideoForensicCode(int userId, int videoId) =>
+            Web.Services.VideoForensicCode.Create(_configuration, userId, videoId);
 
         private static string MaskEmail(string? email)
         {
@@ -544,14 +537,29 @@ namespace Web.Areas.User.Controllers
         private Task<bool> IsCourseStaffAsync(int userId) =>
             HttpContext.RequestServices.GetRequiredService<IPermissionService>().UserHasPermissionAsync(userId, "Courses.View");
 
+        /// <summary>Student view of a PDF (also what staff see when they browse the student side).</summary>
         [HttpGet("/Students/Course/Pdf/{pdfId}")]
         [HttpGet("/User/Course/Pdf/{pdfId}")]
-        public async Task<IActionResult> ViewPdf(int pdfId)
+        public Task<IActionResult> ViewPdf(int pdfId) => ShowPdfAsync(pdfId, adminMode: false);
+
+        /// <summary>
+        /// Admin view of the same secure viewer: admin layout, Forensic Reveal and the admin back link. Kept as a
+        /// separate action on purpose, so links built for ViewPdf (student pages) can never point here.
+        /// </summary>
+        [HttpGet("/Admin/Course/Pdf/{pdfId}")]
+        public async Task<IActionResult> ViewPdfAdmin(int pdfId)
+        {
+            if (!await IsCourseStaffAsync(GetCurrentUserId())) return Redirect($"/Students/Course/Pdf/{pdfId}");
+            return await ShowPdfAsync(pdfId, adminMode: true);
+        }
+
+        private async Task<IActionResult> ShowPdfAsync(int pdfId, bool adminMode)
         {
             var userId = GetCurrentUserId();
             var pdf = await _courseService.GetPdfByIdAsync(pdfId);
 
             var isAdmin = await IsCourseStaffAsync(userId);
+            ViewBag.AdminMode = adminMode;
             if (pdf == null || (!isAdmin && !await _courseService.CanUserAccessPdfAsync(userId, pdfId)))
             {
                 TempData["ErrorMessage"] = "PDF not found or access denied.";
@@ -566,7 +574,7 @@ namespace Web.Areas.User.Controllers
             var expiry = DateTimeOffset.UtcNow.AddHours(4).ToUnixTimeSeconds();
             ViewBag.StreamToken = _protector.Protect($"{pdfId}|{userId}|{userIp}|{expiry}");
 
-            return View(pdf);
+            return View("ViewPdf", pdf);
         }
 
         /// <summary>
@@ -588,7 +596,7 @@ namespace Web.Areas.User.Controllers
                     "PDF watermark issued - Code: {Code}, UserId: {UserId}, Email: {Email}, PdfId: {PdfId}, IP: {IP}",
                     code, viewer!.UserId, viewer.Email, viewer.PdfId, viewer.IpAddress);
 
-                return Ok(new { pageCount, code, who = SecurePdfRenderer.MaskEmail(viewer.Email) });
+                return Ok(new { pageCount, code, who = SecurePdfRenderer.MaskEmail(viewer.Email), canPrint = PdfPrintAllowed, maxPrintPages = PdfMaxPrintPages });
             }
             catch (Exception ex)
             {
@@ -636,6 +644,100 @@ namespace Web.Areas.User.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "PdfPage render failed - PdfId: {PdfId}, Page: {Page}", viewer.PdfId, page);
+                return StatusCode(500, new { error = "Could not render page" });
+            }
+        }
+
+        // ---- Printing ---------------------------------------------------------------------------------------
+        // A print job is started on the server (logged, limited), which returns a short-lived ticket for those
+        // pages only. The printed pages are the same server-rendered images with a stronger watermark and a
+        // "Printed by" footer burned in, so every paper copy (or "Print to PDF" file) identifies the student.
+        private bool PdfPrintAllowed => _configuration.GetValue("PdfProtection:AllowPrint", true);
+        private int PdfMaxPrintPages => Math.Clamp(_configuration.GetValue("PdfProtection:MaxPrintPages", 60), 1, 500);
+        private int PdfMaxPrintJobsPerDay => Math.Clamp(_configuration.GetValue("PdfProtection:MaxPrintJobsPerDay", 5), 1, 100);
+        private IDataProtector PrintTicketProtector => _protector.CreateProtector("PdfPrintTicket_v1");
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<IActionResult> PdfPrintStart(string token, int from, int to)
+        {
+            var (ok, error, pdfPath, viewer) = await ValidatePdfTokenAsync(token);
+            if (!ok) return error!;
+            if (!PdfPrintAllowed) return StatusCode(403, new { error = "Printing is turned off for course documents." });
+
+            int pageCount;
+            try { pageCount = _pdfRenderer.GetPageCount(pdfPath!); }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "PdfPrintStart failed - PdfId: {PdfId}", viewer!.PdfId);
+                return StatusCode(500, new { error = "Could not open document" });
+            }
+
+            if (from < 1 || to < from || to > pageCount)
+                return BadRequest(new { error = $"Choose pages between 1 and {pageCount}." });
+            if (to - from + 1 > PdfMaxPrintPages)
+                return BadRequest(new { error = $"You can print up to {PdfMaxPrintPages} pages at a time." });
+
+            var day = DateTime.UtcNow.ToString("yyyyMMdd");
+            var jobs = _cache.GetOrCreate($"pdfprint:jobs:{viewer!.UserId}:{viewer.PdfId}:{day}", e =>
+            {
+                e.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1);
+                e.Size = 1;
+                return new int[1];
+            })!;
+            if (Interlocked.Increment(ref jobs[0]) > PdfMaxPrintJobsPerDay)
+            {
+                _logger.LogWarning("PDF print limit reached - UserId: {UserId}, PdfId: {PdfId}", viewer.UserId, viewer.PdfId);
+                return StatusCode(429, new { error = "You have reached today's print limit for this document." });
+            }
+
+            var code = _pdfRenderer.GetForensicCode(viewer);
+            _logger.LogWarning(
+                "PDF PRINTED - Code: {Code}, UserId: {UserId}, Email: {Email}, PdfId: {PdfId}, Pages: {From}-{To}, IP: {IP}",
+                code, viewer.UserId, viewer.Email, viewer.PdfId, from, to, viewer.IpAddress);
+
+            var expiry = DateTimeOffset.UtcNow.AddMinutes(10).ToUnixTimeSeconds();
+            var ticket = PrintTicketProtector.Protect($"{viewer.PdfId}|{viewer.UserId}|{from}|{to}|{expiry}");
+            return Ok(new { ticket, from, to });
+        }
+
+        /// <summary>One page of a started print job, rendered with the print watermark.</summary>
+        [HttpGet]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<IActionResult> PdfPrintPage(string token, string ticket, int page)
+        {
+            var (ok, error, pdfPath, viewer) = await ValidatePdfTokenAsync(token);
+            if (!ok) return error!;
+            if (!PdfPrintAllowed || string.IsNullOrEmpty(ticket)) return StatusCode(StatusCodes.Status403Forbidden);
+
+            try
+            {
+                var p = PrintTicketProtector.Unprotect(ticket).Split('|');
+                if (p.Length != 5 || int.Parse(p[0]) != viewer!.PdfId || int.Parse(p[1]) != viewer.UserId ||
+                    page < int.Parse(p[2]) || page > int.Parse(p[3]) ||
+                    DateTimeOffset.UtcNow.ToUnixTimeSeconds() > long.Parse(p[4]))
+                    return StatusCode(StatusCodes.Status403Forbidden);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status403Forbidden);
+            }
+
+            try
+            {
+                var jpeg = await Task.Run(() => _pdfRenderer.RenderPage(pdfPath!, page, viewer!, forPrint: true));
+                SetStreamingSecurityHeaders();
+                Response.Headers["Content-Disposition"] = "inline";
+                return File(jpeg, "image/jpeg");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "PdfPrintPage render failed - PdfId: {PdfId}, Page: {Page}", viewer!.PdfId, page);
                 return StatusCode(500, new { error = "Could not render page" });
             }
         }

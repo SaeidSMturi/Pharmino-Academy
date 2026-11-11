@@ -1,14 +1,17 @@
-@model Domain.Entities.Course.CoursePdf
+﻿@model Domain.Entities.Course.CoursePdf
 @inject Application.Interfaces.IPermissionService PermissionService
 
 @{
     ViewData["Title"] = ViewBag.PdfTitle;
     var courseTitle = ViewBag.CourseTitle as string;
     var courseId = (int)ViewBag.CourseId;
-    // Staff (admins / course managers) get the admin back link and the Forensic Reveal tool; students never see them.
+    // Staff tools (Forensic Reveal, admin back link) appear only in the admin view (/Admin/Course/Pdf/{id});
     // (Roles are not in the login cookie, so the permission service decides, as in the admin area.)
     var staffUserId = int.TryParse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value, out var uid) ? uid : 0;
     var isStaff = staffUserId > 0 && await PermissionService.UserHasPermissionAsync(staffUserId, "Courses.View");
+    // Opened from the admin panel (/Admin/Course/Pdf/{id}): keep the admin layout and menu.
+    var adminMode = isStaff && (ViewBag.AdminMode as bool? ?? false);
+    if (adminMode) { Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml"; }
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -18,7 +21,7 @@
 
     <!-- Top Action Bar -->
     <div class="flex items-center justify-between gap-2 px-1">
-        @if (isStaff)
+        @if (adminMode)
         {
             <a asp-area="Admin" asp-controller="Courses" asp-action="Details" asp-route-id="@courseId" class="group inline-flex items-center px-4 py-2 rounded-xl bg-brand-cyan/10 text-brand-cyan hover:bg-brand-cyan hover:text-dark-bg border border-brand-cyan/20 transition-all duration-300">
                 <i class="fas fa-arrow-left mr-2 transform group-hover:-translate-x-0.5 transition-transform"></i>
@@ -87,13 +90,28 @@
 
             <!-- Utility Action Buttons -->
             <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
-                @if (isStaff)
+                @if (adminMode)
                 {
                     <button id="forensic-toggle" class="px-3 py-2 text-slate-400 hover:text-rose-400 bg-black/40 hover:bg-rose-500/10 border border-white/5 hover:border-rose-500/30 rounded-xl transition-all flex items-center gap-1.5" title="Forensic Reveal (Expose Watermarks)">
                         <i class="fas fa-fingerprint text-xs"></i>
                         <span class="text-[11px] font-bold hidden sm:inline">Forensic Reveal</span>
                     </button>
+                    <!-- Reveal method (shown while Forensic Reveal is on). The methods work on any paper colour. -->
+                    <span id="forensic-tools" class="hidden items-center gap-1.5">
+                        <select id="forensic-mode" title="Reveal method" class="bg-black/40 border border-rose-500/40 rounded-lg py-1.5 px-2 text-[11px] font-bold text-slate-200 focus:outline-none">
+                            <option value="pca1">PCA 1</option>
+                            <option value="pca2">PCA 2</option>
+                            <option value="pca3">PCA 3</option>
+                            <option value="sweep">Level Sweep</option>
+                            <option value="gradient">Luminance Gradient</option>
+                        </select>
+                        <input id="forensic-level" type="range" class="hidden w-24 accent-rose-500" />
+                    </span>
                 }
+                <button id="print-pdf" type="button" class="hidden px-3 py-2 text-slate-400 hover:text-brand-cyan bg-black/40 hover:bg-white/5 border border-white/5 rounded-xl transition-all items-center gap-1.5" title="Print (your watermark is printed on every page)">
+                    <i class="fas fa-print text-xs"></i>
+                    <span class="text-[11px] font-bold hidden sm:inline">Print</span>
+                </button>
                 <button id="rotate-pdf" class="p-2.5 text-slate-400 hover:text-brand-cyan bg-black/40 hover:bg-white/5 border border-white/5 rounded-xl transition-all" title="Rotate 90°">
                     <i class="fas fa-rotate text-xs"></i>
                 </button>
@@ -128,10 +146,43 @@
             </div>
         </div>
     </div>
+
+    <!-- Print dialog: the server renders print pages with the watermark burned in; nothing else can be printed -->
+    <div id="print-dialog" class="hidden fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm items-center justify-center p-4">
+        <div class="w-full max-w-sm bg-brand-dark border border-white/10 rounded-2xl p-5 shadow-2xl text-slate-200">
+            <h3 class="text-sm font-extrabold uppercase tracking-wider text-brand-cyan flex items-center gap-2"><i class="fas fa-print"></i> Print pages</h3>
+            <p class="mt-2 text-xs text-slate-400 leading-relaxed">Every printed page carries your name, your code and the print time. Printing is logged.</p>
+            <div class="mt-4 space-y-2 text-xs font-bold">
+                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="print-scope" value="current" checked class="accent-cyan-400" /> Current page</label>
+                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="print-scope" value="range" class="accent-cyan-400" /> Pages
+                    <input id="print-from" type="number" min="1" value="1" class="w-14 text-center bg-black/40 border border-white/10 rounded-lg py-1" /> to
+                    <input id="print-to" type="number" min="1" value="1" class="w-14 text-center bg-black/40 border border-white/10 rounded-lg py-1" />
+                </label>
+                <label class="flex items-center gap-2 pt-1">Paper
+                    <select id="print-paper" class="bg-black/40 border border-white/10 rounded-lg py-1 px-2 text-slate-200">
+                        <option value="A4">A4</option>
+                        <option value="Letter">Letter</option>
+                        <option value="Legal">Legal</option>
+                    </select>
+                </label>
+                <p class="text-[11px] text-slate-500 font-normal">Each page is scaled to fit the paper. Choose the same paper size in the print window.</p>
+                <p id="print-limit" class="text-[11px] text-slate-500 font-normal"></p>
+            </div>
+            <p id="print-status" class="mt-3 text-xs text-brand-orange min-h-[1rem]"></p>
+            <div class="mt-4 flex justify-end gap-2">
+                <button id="print-cancel" type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-white/5 hover:bg-white/10 border border-white/10">Cancel</button>
+                <button id="print-go" type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-brand-cyan text-dark-bg hover:opacity-90">Print</button>
+            </div>
+        </div>
+    </div>
+    @Html.AntiForgeryToken()
 </div>
 
 @section Styles {
     <style>
+        @@media print {
+            body * { visibility: hidden !important; }
+        }
         /* Precision Custom Scrollbars */
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
@@ -173,7 +224,7 @@
         const streamToken = encodeURIComponent('@ViewBag.StreamToken');
         const infoUrl = '@Url.Action("PdfInfo")' + '?token=' + streamToken;
         const pageUrl = n => '@Url.Action("PdfPage")' + '?token=' + streamToken + '&page=' + n;
-        const backUrl = '@(isStaff ? Url.Action("Details", "Courses", new { area = "Admin", id = Model.CourseId }) : Url.Action("MyCourseDetails", new { id = Model.CourseId }))';
+        const backUrl = '@(adminMode ? Url.Action("Details", "Courses", new { area = "Admin", id = Model.CourseId }) : Url.Action("MyCourseDetails", new { id = Model.CourseId }))';
 
         // Pages are rendered at 2x PDF points, so natural CSS size = bitmap size / 2.
         const SERVER_SCALE = 2;
@@ -281,7 +332,125 @@
         ctx.rotate(rotation * Math.PI / 180);
         ctx.drawImage(bmp, -bmp.width / 2, -bmp.height / 2);
         ctx.restore();
+        if (isForensicMode) revealWatermarks();
         };
+
+        // ---- Forensic Reveal (admin view only) -----------------------------------------------------------------
+        // The watermarks are only ~2% darker than the page, and pages are not always white (e.g. cream), so the
+        // methods below look for tiny local differences instead of "near white". Same ideas as Forensically:
+        //  • PCA 1/2/3: project the colours onto a principal component, then equalise the histogram. Tiny differences
+        //    in the dominant colour (the paper) are spread over the full grey range, so the marks stand out.
+        //  • Level Sweep: stretch a narrow band of levels around the paper colour; the slider moves the band.
+        //  • Luminance Gradient: edges of the brightness (Sobel) as a colour map; the slider sets the strength.
+        const forensicModeEl = document.getElementById('forensic-mode');
+        const forensicLevelEl = document.getElementById('forensic-level');
+
+        // Eigen-decomposition of a symmetric 3x3 matrix (Jacobi rotations), largest eigenvalue first.
+        const eigenSym3 = A => {
+        const a = A.map(r => r.slice());
+        const V = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+        for (let sweep = 0; sweep < 50; sweep++) {
+        if (Math.abs(a[0][1]) + Math.abs(a[0][2]) + Math.abs(a[1][2]) < 1e-10) break;
+        for (const [p, q] of [[0, 1], [0, 2], [1, 2]]) {
+        if (Math.abs(a[p][q]) < 1e-14) continue;
+        const theta = (a[q][q] - a[p][p]) / (2 * a[p][q]);
+        const t = (theta >= 0 ? 1 : -1) / (Math.abs(theta) + Math.sqrt(theta * theta + 1));
+        const c = 1 / Math.sqrt(t * t + 1), sn = t * c;
+        for (let k = 0; k < 3; k++) { const kp = a[k][p], kq = a[k][q]; a[k][p] = c * kp - sn * kq; a[k][q] = sn * kp + c * kq; }
+        for (let k = 0; k < 3; k++) { const pk = a[p][k], qk = a[q][k]; a[p][k] = c * pk - sn * qk; a[q][k] = sn * pk + c * qk; }
+        for (let k = 0; k < 3; k++) { const kp = V[k][p], kq = V[k][q]; V[k][p] = c * kp - sn * kq; V[k][q] = sn * kp + c * kq; }
+        }
+        }
+        return [0, 1, 2].map(i => ({ value: a[i][i], vector: [V[0][i], V[1][i], V[2][i]] })).sort((x, y) => y.value - x.value);
+        };
+
+        const revealPca = (d, component) => {
+        const n = d.length / 4;
+        let mr = 0, mg = 0, mb = 0;
+        for (let i = 0; i < d.length; i += 4) { mr += d[i]; mg += d[i + 1]; mb += d[i + 2]; }
+        mr /= n; mg /= n; mb /= n;
+        let rr = 0, rg = 0, rb = 0, gg = 0, gb = 0, bb = 0;
+        for (let i = 0; i < d.length; i += 4) {
+        const r = d[i] - mr, g = d[i + 1] - mg, b = d[i + 2] - mb;
+        rr += r * r; rg += r * g; rb += r * b; gg += g * g; gb += g * b; bb += b * b;
+        }
+        const v = eigenSym3([[rr, rg, rb], [rg, gg, gb], [rb, gb, bb]])[component].vector;
+        const proj = new Float32Array(n);
+        let min = Infinity, max = -Infinity;
+        for (let i = 0, j = 0; i < d.length; i += 4, j++) {
+        const x = (d[i] - mr) * v[0] + (d[i + 1] - mg) * v[1] + (d[i + 2] - mb) * v[2];
+        proj[j] = x; if (x < min) min = x; if (x > max) max = x;
+        }
+        // Histogram equalisation over 4096 bins.
+        const BINS = 4096, span = (max - min) || 1, hist = new Uint32Array(BINS);
+        const bin = new Uint16Array(n);
+        for (let j = 0; j < n; j++) { const k = Math.min(BINS - 1, ((proj[j] - min) / span * (BINS - 1)) | 0); bin[j] = k; hist[k]++; }
+        const lut = new Uint8ClampedArray(BINS);
+        let acc = 0;
+        for (let k = 0; k < BINS; k++) { acc += hist[k]; lut[k] = Math.round(acc / n * 255); }
+        for (let i = 0, j = 0; i < d.length; i += 4, j++) { const y = lut[bin[j]]; d[i] = d[i + 1] = d[i + 2] = y; }
+        };
+
+        const revealLevelSweep = (d, offset) => {
+        // Band centre per channel = the most common level (the paper colour) + slider offset.
+        const peaks = [0, 1, 2].map(c => {
+        const h = new Uint32Array(256);
+        for (let i = c; i < d.length; i += 4) h[d[i]]++;
+        let best = 0; for (let k = 1; k < 256; k++) if (h[k] > h[best]) best = k;
+        return best;
+        });
+        const W = 24;
+        const luts = peaks.map(pk => {
+        const lo = pk - 4 + offset - W / 2, lut = new Uint8ClampedArray(256);
+        for (let k = 0; k < 256; k++) lut[k] = (k - lo) * 255 / W;
+        return lut;
+        });
+        for (let i = 0; i < d.length; i += 4) { d[i] = luts[0][d[i]]; d[i + 1] = luts[1][d[i + 1]]; d[i + 2] = luts[2][d[i + 2]]; }
+        };
+
+        const revealGradient = (d, w, h, strength) => {
+        const L = new Float32Array(w * h);
+        for (let i = 0, j = 0; i < d.length; i += 4, j++) L[j] = d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114;
+        for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+        const o = (y * w + x) * 4;
+        if (x === 0 || y === 0 || x === w - 1 || y === h - 1) { d[o] = 128; d[o + 1] = 128; d[o + 2] = 255; continue; }
+        const j = y * w + x;
+        const gx = (L[j - w + 1] + 2 * L[j + 1] + L[j + w + 1]) - (L[j - w - 1] + 2 * L[j - 1] + L[j + w - 1]);
+        const gy = (L[j + w - 1] + 2 * L[j + w] + L[j + w + 1]) - (L[j - w - 1] + 2 * L[j - w] + L[j - w + 1]);
+        d[o] = 128 + gx * strength;
+        d[o + 1] = 128 + gy * strength;
+        d[o + 2] = 255 - (Math.abs(gx) + Math.abs(gy)) * strength * 0.5;
+        }
+        }
+        };
+
+        const syncForensicSlider = () => {
+        if (!forensicModeEl) return;
+        const m = forensicModeEl.value;
+        forensicLevelEl.classList.toggle('hidden', m.startsWith('pca'));
+        if (m === 'sweep' && forensicLevelEl.dataset.mode !== 'sweep') {
+        Object.assign(forensicLevelEl, { min: -60, max: 60, step: 1, value: 0, title: 'Level band position' });
+        } else if (m === 'gradient' && forensicLevelEl.dataset.mode !== 'gradient') {
+        Object.assign(forensicLevelEl, { min: 1, max: 30, step: 1, value: 10, title: 'Gradient strength' });
+        }
+        forensicLevelEl.dataset.mode = m;
+        };
+
+        const revealWatermarks = () => {
+        const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const mode = forensicModeEl ? forensicModeEl.value : 'pca1';
+        if (mode === 'sweep') revealLevelSweep(img.data, parseInt(forensicLevelEl.value, 10) || 0);
+        else if (mode === 'gradient') revealGradient(img.data, canvas.width, canvas.height, parseInt(forensicLevelEl.value, 10) || 10);
+        else revealPca(img.data, ({ pca1: 0, pca2: 1, pca3: 2 })[mode] ?? 0);
+        ctx.putImageData(img, 0, 0);
+        };
+
+        if (forensicModeEl) {
+        syncForensicSlider();
+        forensicModeEl.addEventListener('change', () => { syncForensicSlider(); if (currentBitmap) drawBitmap(currentBitmap); });
+        forensicLevelEl.addEventListener('input', () => { if (currentBitmap) drawBitmap(currentBitmap); });
+        }
 
         const updateControls = num => {
         pageInputEl.value = num;
@@ -377,6 +546,7 @@
         pageCountEl.textContent = numPages;
         pageInputEl.max = numPages;
         startLiveMark(info.code, info.who);
+        if (info.canPrint) setupPrint(info.maxPrintPages || 1);
         renderPage(pageNum);
         })
         .catch(err => {
@@ -435,16 +605,23 @@
                 if (isInversionMode) {
                     document.getElementById('dark-mode-toggle').click();
                 }
-                canvas.style.filter = 'grayscale(100%) contrast(1500%) brightness(0.85)';
+                canvas.style.filter = 'none';
+                liveMarkEl.style.visibility = 'hidden';
                 this.classList.remove('text-slate-400', 'bg-black/40', 'border-white/5');
                 this.classList.add('bg-rose-500', 'text-dark-bg', 'border-rose-500', 'shadow-[0_0_15px_rgba(244,63,94,0.4)]');
                 if (span) span.textContent = 'Forensic Active';
+                const tools = document.getElementById('forensic-tools');
+                if (tools) { tools.classList.remove('hidden'); tools.classList.add('flex'); }
             } else {
                 canvas.style.filter = 'none';
+                liveMarkEl.style.visibility = '';
                 this.classList.add('text-slate-400', 'bg-black/40', 'border-white/5');
                 this.classList.remove('bg-rose-500', 'text-dark-bg', 'border-rose-500', 'shadow-[0_0_15px_rgba(244,63,94,0.4)]');
                 if (span) span.textContent = 'Forensic Reveal';
+                const tools = document.getElementById('forensic-tools');
+                if (tools) { tools.classList.add('hidden'); tools.classList.remove('flex'); }
             }
+            if (currentBitmap) drawBitmap(currentBitmap);
         });
 
         let isInversionMode = false;
@@ -464,6 +641,122 @@
                 icon.classList.replace('fa-sun', 'fa-moon');
                 icon.classList.remove('text-brand-yellow');
             }
+        });
+
+        // ---- Print -------------------------------------------------------------------------------------
+        // The server starts (and logs) a print job and returns a short-lived ticket for those pages; each page is
+        // rendered with a stronger watermark and a "Printed by" footer. The pages go into a hidden frame that is
+        // printed and then removed. The viewer page itself prints blank (see @@media print above).
+        const printUrlStart = '@Url.Action("PdfPrintStart")';
+        const printPageUrl = (ticket, n) => '@Url.Action("PdfPrintPage")' + '?token=' + streamToken + '&ticket=' + encodeURIComponent(ticket) + '&page=' + n;
+        const printDialog = document.getElementById('print-dialog');
+        const printStatus = document.getElementById('print-status');
+        const printGo = document.getElementById('print-go');
+        let printBusy = false;
+
+        const showPrintDialog = open => {
+        printDialog.classList.toggle('hidden', !open);
+        printDialog.classList.toggle('flex', open);
+        };
+
+        const setupPrint = maxPages => {
+        const btn = document.getElementById('print-pdf');
+        btn.classList.remove('hidden');
+        btn.classList.add('flex');
+        document.getElementById('print-limit').textContent = 'Up to ' + maxPages + ' pages per print.';
+        // Default paper: Letter in the US/Canada, A4 elsewhere.
+        const lang = (navigator.language || '').toLowerCase();
+        document.getElementById('print-paper').value = /-(us|ca)$/.test(lang) ? 'Letter' : 'A4';
+        btn.addEventListener('click', () => {
+        if (printBusy) return;
+        document.getElementById('print-from').value = pageNum;
+        document.getElementById('print-to').value = Math.min(numPages, pageNum + maxPages - 1);
+        document.getElementById('print-from').max = numPages;
+        document.getElementById('print-to').max = numPages;
+        printStatus.textContent = '';
+        showPrintDialog(true);
+        });
+        };
+        document.getElementById('print-cancel').addEventListener('click', () => { if (!printBusy) showPrintDialog(false); });
+        ['print-from', 'print-to'].forEach(id => document.getElementById(id).addEventListener('focus', () => {
+        document.querySelector('input[name="print-scope"][value="range"]').checked = true;
+        }));
+
+        printGo.addEventListener('click', async () => {
+        if (printBusy) return;
+        const range = document.querySelector('input[name="print-scope"]:checked').value === 'range';
+        const from = range ? parseInt(document.getElementById('print-from').value, 10) : pageNum;
+        const to = range ? parseInt(document.getElementById('print-to').value, 10) : pageNum;
+        if (!(from >= 1 && to >= from && to <= numPages)) { printStatus.textContent = 'Choose pages between 1 and ' + numPages + '.'; return; }
+
+        printBusy = true;
+        printGo.disabled = true;
+        const urls = [];
+        try {
+        printStatus.textContent = 'Preparing...';
+        const body = new URLSearchParams({ token: decodeURIComponent(streamToken), from: String(from), to: String(to) });
+        const af = document.querySelector('input[name="__RequestVerificationToken"]');
+        const res = await fetch(printUrlStart, {
+        method: 'POST', credentials: 'same-origin', cache: 'no-store', body,
+        headers: af ? { 'RequestVerificationToken': af.value } : {}
+        });
+        let data = null;
+        try { data = await res.json(); } catch (e) { }
+        if (!res.ok || !data || !data.ticket) throw new Error((data && data.error) || 'Printing is not available right now.');
+
+        for (let n = from; n <= to; n++) {
+        printStatus.textContent = 'Preparing page ' + (n - from + 1) + ' of ' + (to - from + 1) + '...';
+        const r = await fetch(printPageUrl(data.ticket, n), { credentials: 'same-origin', cache: 'no-store' });
+        if (!r.ok) throw new Error('Could not prepare page ' + n + '.');
+        urls.push(URL.createObjectURL(await r.blob()));
+        }
+
+        printStatus.textContent = 'Opening the print window...';
+        const frame = document.createElement('iframe');
+        frame.setAttribute('aria-hidden', 'true');
+        frame.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden;';
+        document.body.appendChild(frame);
+        const doc = frame.contentDocument;
+        doc.open();
+        // Fit every page onto the chosen paper (A4 / Letter / Legal), whatever the PDF's own size (e.g. A5):
+        // each page sits in a box the size of the printable area and is scaled to fit, centred. Landscape
+        // pages get a landscape sheet (CSS named page).
+        const PAPER = { A4: [210, 297], Letter: [215.9, 279.4], Legal: [215.9, 355.6] };
+        const paperName = document.getElementById('print-paper').value;
+        const [pw, ph] = PAPER[paperName] || PAPER.A4;
+        const M = 6; // mm margin: most printers cannot print to the very edge
+        const css = '@@page{size:' + pw + 'mm ' + ph + 'mm;margin:' + M + 'mm}'
+        + '@@page land{size:' + ph + 'mm ' + pw + 'mm;margin:' + M + 'mm}'
+        + 'html,body{margin:0;padding:0;background:#fff}'
+        + '.pg{width:' + (pw - 2 * M - 0.5) + 'mm;height:' + (ph - 2 * M - 0.5) + 'mm;display:flex;align-items:center;justify-content:center;overflow:hidden;break-after:page;page-break-after:always}'
+        + '.pg.land{page:land;width:' + (ph - 2 * M - 0.5) + 'mm;height:' + (pw - 2 * M - 0.5) + 'mm}'
+        + '.pg:last-child{break-after:auto;page-break-after:auto}'
+        + '.pg img{display:block;max-width:100%;max-height:100%;width:auto;height:auto}';
+        doc.write('<!doctype html><html><head><title>Print</title><style>' + css + '</style></head><body></body></html>');
+        doc.close();
+        await Promise.all(urls.map(u => new Promise(resolve => {
+        const box = doc.createElement('div');
+        box.className = 'pg';
+        const im = doc.createElement('img');
+        im.onload = () => { if (im.naturalWidth > im.naturalHeight) box.classList.add('land'); resolve(); };
+        im.onerror = resolve;
+        im.src = u;
+        box.appendChild(im);
+        doc.body.appendChild(box);
+        })));
+        const cleanup = () => { setTimeout(() => { frame.remove(); urls.forEach(u => URL.revokeObjectURL(u)); }, 1000); };
+        frame.contentWindow.addEventListener('afterprint', cleanup);
+        showPrintDialog(false);
+        frame.contentWindow.focus();
+        frame.contentWindow.print();
+        setTimeout(cleanup, 120000); // safety net if afterprint never fires
+        } catch (err) {
+        urls.forEach(u => URL.revokeObjectURL(u));
+        printStatus.textContent = err.message || 'Printing failed.';
+        } finally {
+        printBusy = false;
+        printGo.disabled = false;
+        }
         });
 
         // Anti-Exploit Security Engine hooks

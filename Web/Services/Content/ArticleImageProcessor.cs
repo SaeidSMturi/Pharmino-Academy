@@ -1,22 +1,17 @@
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats;
-using SixLabors.ImageSharp.Formats.Gif;
-using SixLabors.ImageSharp.Formats.Jpeg;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Formats.Webp;
-using SixLabors.ImageSharp.Processing;
+﻿using Web.Services.Imaging;
 
 namespace Web.Services.Content
 {
     /// <summary>
     /// Turns an image uploaded from the article editor into a small, web-ready file without visible quality loss.
     ///
-    /// • The bytes must decode as a real JPEG, PNG, GIF or WebP (the extension and Content-Type are not trusted;
-    ///   SVG is refused because it can carry scripts).
+    /// • The bytes must be a real JPEG, PNG, GIF or WebP (the extension and Content-Type are not trusted;
+    ///   SVG is refused because it can carry scripts). Checked by the image module (<see cref="IImageService"/>).
     /// • Larger than <see cref="MaxWidth"/>×<see cref="MaxHeight"/>: scaled down (never up) – still sharp on
     ///   high-DPI screens in an article column.
-    /// • Photos → lossy WebP at quality 82 (visually lossless). Screenshots, diagrams and transparent images
-    ///   (PNG/GIF/lossless WebP sources) → lossless WebP when it is not much larger, so text and edges stay crisp.
+    /// • Photos → lossy WebP at quality 80 (visually lossless). Screenshots, diagrams and transparent images
+    ///   (PNG/GIF/lossless WebP sources) → the smaller of lossless WebP and PNG when it is not much larger than a
+    ///   high-quality lossy WebP, so text and edges stay crisp; otherwise that lossy WebP.
     /// • EXIF/ICC/XMP metadata (camera data, GPS location) is removed; the photo is turned upright first.
     /// • Animated GIFs are kept as they are, so the animation survives.
     /// </summary>
@@ -24,17 +19,14 @@ namespace Web.Services.Content
     {
         public const int MaxWidth = 1920;
         public const int MaxHeight = 1920;
-        private const long MaxPixels = 40_000_000;      // refuses "decompression bomb" images
-        private const int MaxDimension = 12_000;
-        private const int PhotoQuality = 82;
+        private const int PhotoQuality = 80;
         private const int GraphicLossyQuality = 90;
 
-        public sealed record Result(byte[] Bytes, string Extension, string ContentType, int Width, int Height);
+        private readonly IImageService _images;
 
-        public sealed class InvalidImageException : Exception
-        {
-            public InvalidImageException(string message) : base(message) { }
-        }
+        public ArticleImageProcessor(IImageService images) => _images = images;
+
+        public sealed record Result(byte[] Bytes, string Extension, string ContentType, int Width, int Height);
 
         public async Task<Result> ProcessAsync(Stream input, CancellationToken ct = default)
         {
@@ -43,72 +35,40 @@ namespace Web.Services.Content
             await input.CopyToAsync(buffer, ct);
             var original = buffer.ToArray();
 
-            ImageInfo info;
-            try
-            {
-                // Only JPEG/PNG/GIF/WebP decoders exist here, so other formats fail before being parsed.
-                info = Image.Identify(SafeImageDecoding.Options(), original);
-            }
-            catch (Exception)
-            {
-                throw new InvalidImageException("This file is not a supported image (JPEG, PNG, GIF or WebP).");
-            }
-
-            var format = info.Metadata.DecodedImageFormat;
-            if (format is not (JpegFormat or PngFormat or GifFormat or WebpFormat))
-                throw new InvalidImageException("Only JPEG, PNG, GIF and WebP images can be uploaded.");
-            if (info.Width < 1 || info.Height < 1 || info.Width > MaxDimension || info.Height > MaxDimension ||
-                (long)info.Width * info.Height > MaxPixels)
-                throw new InvalidImageException("The image dimensions are too large.");
+            // Throws InvalidImageException for anything that is not a usable JPEG/PNG/GIF/WebP.
+            var probe = _images.Probe(original);
 
             // Animated GIF: keep the original file so the animation is not lost.
-            if (format is GifFormat && info.FrameMetadataCollection.Count > 1)
-                return new Result(original, ".gif", "image/gif", info.Width, info.Height);
-
-            using var image = Image.Load(SafeImageDecoding.Options(maxFrames: 1), original);
-            image.Mutate(x => x.AutoOrient());
-
-            if (image.Width > MaxWidth || image.Height > MaxHeight)
-            {
-                image.Mutate(x => x.Resize(new ResizeOptions
-                {
-                    Size = new Size(MaxWidth, MaxHeight),
-                    Mode = ResizeMode.Max,
-                    Sampler = KnownResamplers.Lanczos3
-                }));
-            }
-
-            // Drop camera data, GPS location and embedded profiles.
-            image.Metadata.ExifProfile = null;
-            image.Metadata.IccProfile = null;
-            image.Metadata.XmpProfile = null;
-            image.Metadata.IptcProfile = null;
+            if (probe.Kind == ImageKind.Gif && probe.FrameCount > 1)
+                return new Result(original, ".gif", "image/gif", probe.Width, probe.Height);
 
             // Lossless-style sources are usually screenshots, diagrams or images with transparency.
-            var isGraphic = format is PngFormat or GifFormat ||
-                            (format is WebpFormat && info.Metadata.GetWebpMetadata().FileFormat == WebpFileFormatType.Lossless);
+            var isGraphic = probe.Kind is ImageKind.Png or ImageKind.Gif || (probe.Kind == ImageKind.Webp && probe.IsLosslessWebp);
 
-            byte[] bytes;
+            EncodedImage chosen;
             if (isGraphic)
             {
-                var lossless = Encode(image, new WebpEncoder { FileFormat = WebpFileFormatType.Lossless, Quality = 100, Method = WebpEncodingMethod.Level4 });
-                var lossy = Encode(image, new WebpEncoder { FileFormat = WebpFileFormatType.Lossy, Quality = GraphicLossyQuality, Method = WebpEncodingMethod.BestQuality });
+                var v = _images.EncodeVariants(original, MaxWidth, MaxHeight,
+                    ImageEncoding.WebpLossless(), ImageEncoding.Png(), ImageEncoding.WebpLossy(GraphicLossyQuality));
+                var lossless = v[0].Bytes.Length <= v[1].Bytes.Length ? v[0] : v[1];
                 // Pixel-perfect when it costs little; otherwise the high-quality lossy version (photos saved as PNG).
-                bytes = lossless.Length <= lossy.Length * 1.25 ? lossless : lossy;
+                chosen = lossless.Bytes.Length <= v[2].Bytes.Length * 1.25 ? lossless : v[2];
+
+                // Never make a clean, already-optimised file bigger: keep the original PNG/WebP when it is smaller,
+                // fits the size limit and carries no metadata. (It has just been fully decoded, so it is a valid image.)
+                if (probe.Kind is ImageKind.Png or ImageKind.Webp && !probe.HasMetadata && probe.FrameCount == 1 &&
+                    probe.Width <= MaxWidth && probe.Height <= MaxHeight && original.Length < chosen.Bytes.Length)
+                {
+                    var ext = probe.Kind == ImageKind.Png ? ".png" : ".webp";
+                    return new Result(original, ext, probe.ContentType, probe.Width, probe.Height);
+                }
             }
             else
             {
-                bytes = Encode(image, new WebpEncoder { FileFormat = WebpFileFormatType.Lossy, Quality = PhotoQuality, Method = WebpEncodingMethod.BestQuality });
+                chosen = _images.Encode(original, MaxWidth, MaxHeight, ImageEncoding.WebpLossy(PhotoQuality));
             }
 
-            return new Result(bytes, ".webp", "image/webp", image.Width, image.Height);
-        }
-
-        private static byte[] Encode(Image image, IImageEncoder encoder)
-        {
-            using var ms = new MemoryStream();
-            image.Save(ms, encoder);
-            return ms.ToArray();
+            return new Result(chosen.Bytes, chosen.Encoding.Extension, chosen.Encoding.ContentType, chosen.Width, chosen.Height);
         }
     }
 }

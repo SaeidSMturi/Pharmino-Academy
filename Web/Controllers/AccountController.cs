@@ -1,4 +1,4 @@
-using Domain.Configuration;
+﻿using Domain.Configuration;
 using Application.DTOs.Account;
 using Web.Extensions;
 using Application.Interfaces;
@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using SixLabors.ImageSharp;
 using System.Security.Claims;
 using Web.Models;
 using Application.DTOs.User;

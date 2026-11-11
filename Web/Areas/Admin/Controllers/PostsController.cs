@@ -1,4 +1,4 @@
-using Infrastructure.Persistence;
+﻿using Infrastructure.Persistence;
 using Domain.Entities.Post;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -460,7 +460,7 @@ namespace Web.Areas.Admin.Controllers
                 await using var stream = file.OpenReadStream();
                 processed = await imageProcessor.ProcessAsync(stream, HttpContext.RequestAborted);
             }
-            catch (Web.Services.Content.ArticleImageProcessor.InvalidImageException ex)
+            catch (Web.Services.Imaging.InvalidImageException ex)
             {
                 _logger.LogWarning("Editor image upload refused for user {UserId}: {Reason} (file '{Name}', {Length} bytes).", userId, ex.Message, file.FileName, file.Length);
                 return BadRequest(new { error = ex.Message });

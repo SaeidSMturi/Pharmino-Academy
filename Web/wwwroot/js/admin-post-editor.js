@@ -136,6 +136,31 @@
         ui: { theme: isLight ? "light" : "dark", showWordCounter: true, showReadingTime: true, minHeight: "420px" }
     });
 
+    // The editor builds its toolbar/dropdown buttons without type="button"; inside the article <form> each of them
+    // would act as a submit button and save the post on every click. Make them plain buttons (now and as the
+    // editor adds more), and as a safety net refuse any submit triggered from inside the editor.
+    var fixButtons = function (root) {
+        var buttons = root.querySelectorAll ? root.querySelectorAll("button:not([type])") : [];
+        for (var i = 0; i < buttons.length; i++) buttons[i].setAttribute("type", "button");
+        if (root.tagName === "BUTTON" && !root.hasAttribute("type")) root.setAttribute("type", "button");
+    };
+    fixButtons(host);
+    new MutationObserver(function (records) {
+        records.forEach(function (r) {
+            for (var i = 0; i < r.addedNodes.length; i++) if (r.addedNodes[i].nodeType === 1) fixButtons(r.addedNodes[i]);
+        });
+    }).observe(host, { childList: true, subtree: true });
+    if (form) {
+        form.addEventListener("submit", function (e) {
+            if (e.submitter && host.contains(e.submitter)) { e.preventDefault(); e.stopImmediatePropagation(); }
+        }, true);
+        // Enter in an editor field (e.g. the table-size inputs) must not submit the article either.
+        host.addEventListener("keydown", function (e) {
+            var t = e.target;
+            if (e.key === "Enter" && t && t.tagName === "INPUT") e.preventDefault();
+        });
+    }
+
     if (textarea.value.trim()) editor.setHTML(textarea.value);
 
     var sync = function () {
