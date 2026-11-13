@@ -4,7 +4,8 @@
 @inject Microsoft.Extensions.Configuration.IConfiguration Config
 
 @{
-    var path = Context.Request.Path.Value ?? "/";
+    var rawPath = Context.Request.Path.Value ?? "/";
+    var path = SeoSite.CanonicalPath(rawPath);
     var lang = SeoSite.CurrentLang;
     var isArabic = lang == "ar";
     var isFarsi = lang == "fa";
@@ -32,7 +33,8 @@
     var noIndexPath = SeoSite.IsNoIndexPath(path);
     var metaRobots = ViewData["MetaRobots"]?.ToString()
         ?? (noIndexPath ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
-    var canonicalUrl = ViewData["CanonicalUrl"]?.ToString() ?? SeoSite.LocalizedUrl(baseUrl, path, lang);
+    var defaultCanonical = SeoSite.LocalizedUrl(baseUrl, path, lang);
+    var canonicalUrl = SeoSite.ResolveCanonical(baseUrl, ViewData["CanonicalUrl"]?.ToString(), defaultCanonical);
     var ogImage = ViewData["OgImage"]?.ToString() ?? $"{baseUrl}/images/og-default.png";
     var ogType = ViewData["OgType"]?.ToString() ?? "website";
     var jsonLd = ViewData["JsonLd"]?.ToString();
@@ -40,14 +42,14 @@
     string? ogDescription = null;
 
     // 2. Admin overrides for this path (Admin > SEO > Page SEO)
-    var customPageSeo = await SeoService.GetPageSeoByPathAsync(path);
+    var customPageSeo = await SeoService.GetPageSeoByPathAsync(rawPath);
     if (customPageSeo != null && customPageSeo.IsActive)
     {
         if (!string.IsNullOrWhiteSpace(customPageSeo.Title)) title = customPageSeo.Title;
         if (!string.IsNullOrWhiteSpace(customPageSeo.MetaDescription)) metaDescription = customPageSeo.MetaDescription;
         if (!string.IsNullOrWhiteSpace(customPageSeo.MetaKeywords)) metaKeywords = customPageSeo.MetaKeywords;
         if (!string.IsNullOrWhiteSpace(customPageSeo.MetaRobots)) metaRobots = customPageSeo.MetaRobots;
-        if (!string.IsNullOrWhiteSpace(customPageSeo.CanonicalUrl)) canonicalUrl = customPageSeo.CanonicalUrl;
+        if (!string.IsNullOrWhiteSpace(customPageSeo.CanonicalUrl)) canonicalUrl = SeoSite.ResolveCanonical(baseUrl, customPageSeo.CanonicalUrl, canonicalUrl);
         if (!string.IsNullOrWhiteSpace(customPageSeo.OgTitle)) ogTitle = customPageSeo.OgTitle;
         if (!string.IsNullOrWhiteSpace(customPageSeo.OgDescription)) ogDescription = customPageSeo.OgDescription;
         if (!string.IsNullOrWhiteSpace(customPageSeo.OgImage)) ogImage = customPageSeo.OgImage;

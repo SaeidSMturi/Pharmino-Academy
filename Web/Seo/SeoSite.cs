@@ -55,6 +55,41 @@ namespace Web.Seo
             return lang == "en" ? url : $"{url}?culture={lang}";
         }
 
+
+        /// <summary>
+        /// One canonical form of a request path, so every URL variant of a page (/course/5/, /Home/Index, /courses, /?utm=…)
+        /// maps to the same address that the sitemap lists: no trailing slash, no /Home or /Index, each segment capitalised.
+        /// </summary>
+        public static string CanonicalPath(string? path)
+        {
+            if (string.IsNullOrWhiteSpace(path)) return "/";
+            var q = path.IndexOfAny(new[] { '?', '#' });
+            if (q >= 0) path = path[..q];
+            var parts = path.Split('/', StringSplitOptions.RemoveEmptyEntries).ToList();
+            if (parts.Count > 0 && parts[^1].Equals("Index", StringComparison.OrdinalIgnoreCase)) parts.RemoveAt(parts.Count - 1);
+            if (parts.Count == 1 && parts[0].Equals("Home", StringComparison.OrdinalIgnoreCase)) parts.Clear();
+            if (parts.Count == 0) return "/";
+            for (var i = 0; i < parts.Count; i++)
+            {
+                var seg = parts[i];
+                if (seg.Length > 0 && char.IsLower(seg[0])) parts[i] = char.ToUpperInvariant(seg[0]) + seg[1..];
+            }
+            return "/" + string.Join('/', parts);
+        }
+
+        /// <summary>Absolute, query-free canonical URL of the current request in the current language.</summary>
+        public static string CanonicalUrl(HttpContext context, string? lang = null)
+            => LocalizedUrl(BaseUrl(context), CanonicalPath(context.Request.Path.Value), lang ?? CurrentLang);
+
+        /// <summary>Makes an admin-entered canonical absolute (Google ignores relative or malformed ones); falls back when unusable.</summary>
+        public static string ResolveCanonical(string baseUrl, string? value, string fallback)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return fallback;
+            value = value.Trim();
+            if (value.StartsWith('/') && !value.StartsWith("//")) return baseUrl.TrimEnd('/') + value;
+            return Uri.TryCreate(value, UriKind.Absolute, out var u) && (u.Scheme == Uri.UriSchemeHttps || u.Scheme == Uri.UriSchemeHttp) ? value : fallback;
+        }
+
         public static string OgLocale(string lang) => lang switch
         {
             "ar" => "ar_AR",

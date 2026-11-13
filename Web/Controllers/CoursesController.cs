@@ -195,7 +195,7 @@ namespace Web.Controllers
                 }
                 ViewData["OgType"] = "article";
                 var seoBase = Web.Seo.SeoSite.BaseUrl(HttpContext);
-                ViewData["CanonicalUrl"] = Web.Seo.SeoSite.LocalizedUrl(seoBase, $"/Course/{course.CourseId}", Web.Seo.SeoSite.Lang(cultureNameDetails));
+                ViewData["CanonicalUrl"] = Web.Seo.SeoSite.LocalizedUrl(seoBase, $"/Course/{course.CourseId}", Web.Seo.SeoSite.CurrentLang);
 
                 if (!string.IsNullOrEmpty(course.ImageName) && course.ImageName != "default.jpg")
                 {

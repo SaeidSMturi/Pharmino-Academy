@@ -1,0 +1,6 @@
+@using Web.Seo
+@* Self-referencing canonical for layouts that do not use _SeoHead (admin, user area, watch page, 404/error pages). *@
+@{
+    var canonical = SeoSite.ResolveCanonical(SeoSite.BaseUrl(Context), ViewData["CanonicalUrl"]?.ToString(), SeoSite.CanonicalUrl(Context));
+}
+<link rel="canonical" href="@canonical" />

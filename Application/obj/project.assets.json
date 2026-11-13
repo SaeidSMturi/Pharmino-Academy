@@ -110,116 +110,6 @@
           "bin/placeholder/Domain.dll": {}
         }
       }
-    },
-    "net10.0/linux-x64": {
-      "libphonenumber-csharp/9.0.42": {
-        "type": "package",
-        "compile": {
-          "lib/net10.0/PhoneNumbers.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net10.0/PhoneNumbers.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.EntityFrameworkCore/10.0.10": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore.Abstractions": "10.0.10",
-          "Microsoft.EntityFrameworkCore.Analyzers": "10.0.10"
-        },
-        "compile": {
-          "lib/net10.0/Microsoft.EntityFrameworkCore.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net10.0/Microsoft.EntityFrameworkCore.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net10.0/Microsoft.EntityFrameworkCore.props": {}
-        }
-      },
-      "Microsoft.EntityFrameworkCore.Abstractions/10.0.10": {
-        "type": "package",
-        "compile": {
-          "lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.EntityFrameworkCore.Analyzers/10.0.10": {
-        "type": "package"
-      },
-      "PdfPig/0.1.9": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/UglyToad.PdfPig.Core.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/UglyToad.PdfPig.DocumentLayoutAnalysis.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/UglyToad.PdfPig.Fonts.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/UglyToad.PdfPig.Package.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/UglyToad.PdfPig.Tokenization.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/UglyToad.PdfPig.Tokens.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/UglyToad.PdfPig.dll": {
-            "related": ".Core.pdb;.Core.xml;.DocumentLayoutAnalysis.pdb;.DocumentLayoutAnalysis.xml;.Fonts.pdb;.Fonts.xml;.Package.pdb;.Package.xml;.pdb;.Tokenization.pdb;.Tokenization.xml;.Tokens.pdb;.Tokens.xml;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/UglyToad.PdfPig.Core.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/UglyToad.PdfPig.DocumentLayoutAnalysis.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/UglyToad.PdfPig.Fonts.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/UglyToad.PdfPig.Package.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/UglyToad.PdfPig.Tokenization.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/UglyToad.PdfPig.Tokens.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/UglyToad.PdfPig.dll": {
-            "related": ".Core.pdb;.Core.xml;.DocumentLayoutAnalysis.pdb;.DocumentLayoutAnalysis.xml;.Fonts.pdb;.Fonts.xml;.Package.pdb;.Package.xml;.pdb;.Tokenization.pdb;.Tokenization.xml;.Tokens.pdb;.Tokens.xml;.xml"
-          }
-        }
-      },
-      "Domain/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v10.0",
-        "compile": {
-          "bin/placeholder/Domain.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Domain.dll": {}
-        }
-      }
     }
   },
   "libraries": {
@@ -420,23 +310,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\user\\.nuget\\packages\\": {},
-    "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Sina\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj",
+      "projectUniqueName": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Application\\Application.csproj",
       "projectName": "Application",
-      "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj",
-      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\obj\\",
+      "projectPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Application\\Application.csproj",
+      "packagesPath": "C:\\Users\\Sina\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Application\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Sina\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -453,8 +343,8 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj": {
-              "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj"
+            "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Domain\\Domain.csproj": {
+              "projectPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Domain\\Domain.csproj"
             }
           }
         }
@@ -508,7 +398,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.402/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -923,11 +813,6 @@
           "System.Xml.XPath": "(,4.3.32767]",
           "System.Xml.XPath.XDocument": "(,5.0.32767]"
         }
-      }
-    },
-    "runtimes": {
-      "linux-x64": {
-        "#import": []
       }
     }
   }

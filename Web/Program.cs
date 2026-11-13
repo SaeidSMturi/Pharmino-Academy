@@ -323,6 +323,19 @@ namespace Web
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+            // 🌐 One host only: https://www.example.com/x -> https://example.com/x (301), so Google never sees two copies of the site.
+            app.Use(async (context, next) =>
+            {
+                var host = context.Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? context.Request.Host.Host;
+                if (host.StartsWith("www.", StringComparison.OrdinalIgnoreCase) && host.Contains('.') && !host.Equals("www.localhost", StringComparison.OrdinalIgnoreCase))
+                {
+                    var bare = host[4..];
+                    var port = context.Request.Host.Port.HasValue && context.Request.Host.Port != 80 && context.Request.Host.Port != 443 ? $":{context.Request.Host.Port}" : "";
+                    context.Response.Redirect($"{context.Request.Scheme}://{bare}{port}{context.Request.PathBase}{context.Request.Path}{context.Request.QueryString}", permanent: true);
+                    return;
+                }
+                await next();
+            });
             app.UseHttpsRedirection();
 
             // 🔄 Terminology Route Redirect: /User -> /Students

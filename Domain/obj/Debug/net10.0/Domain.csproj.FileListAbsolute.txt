@@ -52,3 +52,14 @@ C:\Users\user\AppData\Local\Temp\pharmino-build\Domain.pdb
 C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Domain.deps.json
 C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Domain.dll
 C:\Users\user\AppData\Local\Temp\claude\7a483537d33ade38\63d09bbd-f1bb-4f4d-bb1d-9102d5be25fb\scratchpad\buildout\Domain.pdb
+C:\Users\Sina\source\repos\Pharmino-Academy\Domain\bin\Debug\net10.0\Domain.deps.json
+C:\Users\Sina\source\repos\Pharmino-Academy\Domain\bin\Debug\net10.0\Domain.dll
+C:\Users\Sina\source\repos\Pharmino-Academy\Domain\bin\Debug\net10.0\Domain.pdb
+C:\Users\Sina\source\repos\Pharmino-Academy\Domain\obj\Debug\net10.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Sina\source\repos\Pharmino-Academy\Domain\obj\Debug\net10.0\Domain.AssemblyInfoInputs.cache
+C:\Users\Sina\source\repos\Pharmino-Academy\Domain\obj\Debug\net10.0\Domain.AssemblyInfo.cs
+C:\Users\Sina\source\repos\Pharmino-Academy\Domain\obj\Debug\net10.0\Domain.csproj.CoreCompileInputs.cache
+C:\Users\Sina\source\repos\Pharmino-Academy\Domain\obj\Debug\net10.0\Domain.dll
+C:\Users\Sina\source\repos\Pharmino-Academy\Domain\obj\Debug\net10.0\refint\Domain.dll
+C:\Users\Sina\source\repos\Pharmino-Academy\Domain\obj\Debug\net10.0\Domain.pdb
+C:\Users\Sina\source\repos\Pharmino-Academy\Domain\obj\Debug\net10.0\ref\Domain.dll

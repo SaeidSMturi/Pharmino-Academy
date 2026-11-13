@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj": {}
+    "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Web\\Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj": {
+    "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj",
+        "projectUniqueName": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\obj\\",
+        "projectPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Application\\Application.csproj",
+        "packagesPath": "C:\\Users\\Sina\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Sina\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -34,8 +34,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj"
+              "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Domain\\Domain.csproj"
               }
             }
           }
@@ -89,7 +89,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.402/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -507,20 +507,20 @@
         }
       }
     },
-    "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj": {
+    "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\obj\\",
+        "projectPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\Sina\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Sina\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -571,7 +571,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.402/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -849,20 +849,20 @@
         }
       }
     },
-    "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj": {
+    "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Infrastructure\\Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Sina\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Sina\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -879,11 +879,11 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj": {
-                "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj"
+              "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Application\\Application.csproj"
               },
-              "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Domain\\Domain.csproj"
+              "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Domain\\Domain.csproj"
               }
             }
           }
@@ -959,7 +959,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.402/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -1377,20 +1377,20 @@
         }
       }
     },
-    "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj": {
+    "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Web\\Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
+        "projectUniqueName": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Web\\Web.csproj",
         "projectName": "Web",
-        "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\Web.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Web\\obj\\",
+        "projectPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Web\\Web.csproj",
+        "packagesPath": "C:\\Users\\Sina\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Web\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Sina\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -1407,11 +1407,11 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj": {
-                "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Application\\Application.csproj"
+              "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Application\\Application.csproj"
               },
-              "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\user\\Desktop\\Pharmino Project\\Pharmino_Web\\Infrastructure\\Infrastructure.csproj"
+              "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Infrastructure\\Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\Sina\\source\\repos\\Pharmino-Academy\\Infrastructure\\Infrastructure.csproj"
               }
             }
           }
@@ -1507,7 +1507,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.402/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
